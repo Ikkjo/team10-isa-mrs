@@ -10,14 +10,14 @@ import java.util.List;
 public class Adventure { // TODO: extends Entity
     private String instructorBiography;
     private List<String> fishing;
-    private String cancelationConditions;
+    private String cancellationConditions;
     private int maxCapacity;
 
     public Adventure(String instructorBiography, List<String> fishing, String cancelationConditions, int maxCapacity) {
         // super(...)
         this.instructorBiography = instructorBiography;
         this.fishing = fishing;
-        this.cancelationConditions = cancelationConditions;
+        this.cancellationConditions = cancellationConditions;
         this.maxCapacity = maxCapacity;
     }
 }
