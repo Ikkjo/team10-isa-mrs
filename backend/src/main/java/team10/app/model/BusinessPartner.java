@@ -13,11 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 public class BusinessPartner extends User {
     private Loyalty loyalty;
-    private List<RentalEntity> entities;
-    
+
     public BusinessPartner(String firstName, String lastName, String email, String password, UserRole appUserRole) {
         super(firstName, lastName, email, password, appUserRole);
         this.loyalty = new Loyalty();
-        this.entities = new ArrayList<>();
     }
 }

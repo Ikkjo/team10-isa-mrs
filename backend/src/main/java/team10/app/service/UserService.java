@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import team10.app.dto.RegistrationRequestDto;
 import team10.app.model.*;
 import team10.app.repository.ShipOwnerRepository;
 import team10.app.repository.UserRepository;
@@ -21,9 +22,22 @@ public class UserService {
     private final ShipOwnerRepository shipOwnerRepository;
     private final FishingInstructorRepository fishingInstructorRepository;
 
-    public boolean userExists(User user) {
-        return userRepository.findByEmail(user.getEmail()).isPresent()
-                && userRepository.findByUsername(user.getUsername()).isPresent();
+    public boolean userExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    public User buildUser(RegistrationRequestDto rr) {
+            if (rr.getRole().equals(HOUSE_OWNER))
+                return new VacationHomeOwner(rr.getFirstname(), rr.getLastname(), rr.getEmail(), rr.getPassword());
+            else if (rr.getRole().equals(SHIP_OWNER))
+                return new ShipOwner(rr.getFirstname(), rr.getLastname(), rr.getEmail(), rr.getPassword());
+            else if (rr.getRole().equals(FISHING_INSTRUCTOR))
+                return new FishingInstructor(rr.getFirstname(), rr.getLastname(), rr.getEmail(), rr.getPassword());
+            // TODO: Add Client builder
+            // TODO: Add exception
+            else
+                return null;
+
     }
 
     public void saveUser(User user) throws IllegalStateException {

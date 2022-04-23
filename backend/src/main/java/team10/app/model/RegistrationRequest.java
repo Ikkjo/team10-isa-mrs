@@ -1,4 +1,4 @@
-package team10.app.dto;
+package team10.app.model;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
