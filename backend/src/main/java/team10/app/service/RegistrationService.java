@@ -40,6 +40,10 @@ class RegistrationService {
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userService.saveUser(user);
 
+        // TODO : Add exception to throw
+        user = userService.getByEmail(user.getEmail(), user.getUserRole()).orElseThrow();
+
+
         String token = UUID.randomUUID().toString();
 
         ConfirmationToken confirmationToken = new ConfirmationToken(
@@ -49,6 +53,7 @@ class RegistrationService {
                 user
         );
 
+        // TODO: Ovde puca, skontati zasto :)
         confirmationTokenService.saveConfirmationToken(
                 confirmationToken);
 
