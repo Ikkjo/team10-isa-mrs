@@ -58,6 +58,11 @@ public abstract class User implements UserDetails {
             columnDefinition = "TEXT"
     )
     private String password;
+    @Column(
+            name = "phone_number",
+            columnDefinition = "TEXT"
+    )
+    private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private Boolean deleted = false;
