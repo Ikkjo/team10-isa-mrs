@@ -7,17 +7,30 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Adventure { // TODO: extends Entity
+public class Adventure extends RentalEntity {
     private String instructorBiography;
     private List<String> fishing;
-    private String cancelationConditions;
+    private String cancellationConditions;
     private int maxCapacity;
 
-    public Adventure(String instructorBiography, List<String> fishing, String cancelationConditions, int maxCapacity) {
-        // super(...)
+    public Adventure(String name,
+                     String description,
+                     List<String> pictures,
+                     List<String> rulesOfConduct,
+                     double price,
+                     String instructorBiography,
+                     int maxCapacity,
+                     List<String> fishing,
+                     String cancellationConditions) {
+        this.name = name;
+        this.description = description;
+        this.pictures = pictures;
+        this.rulesOfConduct = rulesOfConduct;
+        this.price = price;
+        this.deleted = false;
         this.instructorBiography = instructorBiography;
-        this.fishing = fishing;
-        this.cancelationConditions = cancelationConditions;
         this.maxCapacity = maxCapacity;
+        this.fishing = fishing;
+        this.cancellationConditions = cancellationConditions;
     }
 }
