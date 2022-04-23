@@ -5,11 +5,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class RentalEntity {
-    private String name;
-    private String description;
-    private List<String> pictures;
-    private List<String> rulesOfConduct;
-    private Double price;
-    private Boolean isDeleted = false;
+public abstract class RentalEntity {
+    protected String name;
+    protected String description;
+    protected List<String> pictures;
+    protected List<String> rulesOfConduct;
+    protected double price;
+    protected boolean deleted = false;
 }
