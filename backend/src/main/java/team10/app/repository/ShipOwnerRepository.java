@@ -15,7 +15,6 @@ import java.util.Optional;
 public interface ShipOwnerRepository extends JpaRepository<ShipOwner, Long> {
 
     Optional<ShipOwner> findByEmail(String email);
-    Optional<ShipOwner> findByUsername(String email);
 
     @Transactional
     @Modifying
