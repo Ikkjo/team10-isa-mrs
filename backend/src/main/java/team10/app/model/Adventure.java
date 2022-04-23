@@ -13,7 +13,7 @@ public class Adventure { // TODO: extends Entity
     private String cancellationConditions;
     private int maxCapacity;
 
-    public Adventure(String instructorBiography, List<String> fishing, String cancelationConditions, int maxCapacity) {
+    public Adventure(String instructorBiography, List<String> fishing, String cancellationConditions, int maxCapacity) {
         // super(...)
         this.instructorBiography = instructorBiography;
         this.fishing = fishing;
