@@ -1,12 +1,12 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.RegistrationRequestDto;
-import team10.app.model.*;
+import team10.app.model.FishingInstructor;
+import team10.app.model.ShipOwner;
+import team10.app.model.User;
+import team10.app.model.VacationHomeOwner;
 import team10.app.repository.ShipOwnerRepository;
 import team10.app.repository.UserRepository;
 import team10.app.repository.VacationHomeOwnerRepository;
