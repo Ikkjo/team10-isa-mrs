@@ -17,7 +17,16 @@
             </div>
             <div class="form-control">
                 <label for="phone-number">Phone Number</label>
-                <input type="text" v-model="phone" name="phone-number" placeholder="+381 612345678">
+                <vue-phone-number-input
+                 class="phone-number" 
+                 v-model="phone" 
+                 default-country-code="RS" 
+                 size="lg"
+                 color="#f0a500"
+                 valid-color="green"
+                 error-color="red"
+
+                 />
             </div>
         </div>
         <div class="wrapper">
@@ -144,11 +153,23 @@ export default {
 }
 
 .form-control input, select, textarea {
-  width: 100%;
-  height: 40px;
-  margin: 5px;
-  padding: 3px 7px;
-  font-size: 17px;
+    width: 100%;
+    height: 48px;
+    padding: 3px 7px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid ;
+    border-color: lightgrey;
+    transition: 0.5s;
+    outline-color: lightgrey;
+}
+
+.form-control input:hover, textarea:hover, select:hover {
+    border-color: var(--orange-primary, #f0a500);
+}
+
+.form-control input:focus, textarea:focus, select:focus {
+    outline-color: var(--orange-primary, #f0a500);
 }
 
 textarea {
@@ -156,13 +177,12 @@ textarea {
     resize: none;
 }
 
-.form-control label {
+.form-control slabel {
     width: 100%;
 }
 
 .form-control .block-label {
     display: block;
 }
-
 
 </style>

@@ -33,7 +33,7 @@ export default {
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--white, #fff);
+    background-color: #fff;
     color: var(--black, #000);
 }
 
@@ -59,8 +59,8 @@ a {
     background-color: var(--orange-secondary, orange);
 }
 
-input {
-  background-color: var(--white, #fff);
+select {
+  background-color: #fff;;
 }
 
 </style>
