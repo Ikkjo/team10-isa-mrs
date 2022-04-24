@@ -52,7 +52,6 @@ public class RegistrationService {
                 user
         );
 
-        // TODO: Ovde puca, skontati zasto :)
         confirmationTokenService.saveConfirmationToken(
                 confirmationToken);
 
