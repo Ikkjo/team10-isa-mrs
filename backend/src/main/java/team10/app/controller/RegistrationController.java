@@ -12,7 +12,7 @@ public class RegistrationController {
 
     private final RegistrationService registrationService;
 
-    @CrossOrigin(origins = "http://localhost:8081")
+    @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping
     public String register(@RequestBody RegistrationRequestDto request) {
         return registrationService.register(request);
