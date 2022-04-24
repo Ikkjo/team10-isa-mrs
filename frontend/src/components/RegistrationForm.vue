@@ -1,5 +1,5 @@
 <template>
-    <form id="registration-form">
+    <form id="registration-form" @submit.prevent="signUpPressed">
         <div class="wrapper">
             <div class="form-control">
                 <label for="first-name">First Name</label>
@@ -51,7 +51,7 @@
             </div>
              <div class="form-control">
                 <label for="country" class="block-label">Country</label>
-                <select name="country" id="country">
+                <select name="country" id="country" v-model="country">
                     <option v-for="country in countries" :value="country" :key="country">{{country}}</option>
                 </select>
             </div>
@@ -60,11 +60,12 @@
         <div class="wrapper">
             <div class="form-control">
                 <label for="datepicker">Date of Birth</label>
-                <DropdownDatepicker id="datepicker" name="datepicker" displayFormat="dmy"/>
+                <DropdownDatepicker id="datepicker" name="datepicker" displayFormat="dmy" :minAge="18" />
             </div>
             <div class="form-control">
                 <label for="role" class="block-label">Account Type</label>
-                <select name="role" id="role">
+                <select name="role" id="role" v-model="role">
+                    <option value="">Choose account type</option>
                     <option value="HOUSE_OWNER">Vacation Home Owner</option>
                     <option value="SHIP_OWNER">Ship Owner</option>
                     <option value="FISHING_INSTRUCTOR">Fishing Instructor</option>
@@ -75,7 +76,7 @@
         <div class="wrapper" id="registration-reason">
              <div class="form-control">
                 <label for="description" class="block-label">Reason for Registration</label>
-                <textarea name="description" id="description" cols="30" rows="4"  placeholder="Tell us a few reasons why you want to join..."></textarea>
+                <textarea name="description" id="description" cols="30" rows="4" v-model="registrationReason" placeholder="Tell us a few reasons why you want to join..."></textarea>
             </div>
         </div>
         <div class="btn-div">
@@ -104,7 +105,9 @@ export default {
             address: '',
             city: '',
             country: '',
-            coutries: []
+            coutries: [],
+            registrationReason: '',
+            role: ''
         }
     },
     validations:{
@@ -146,7 +149,14 @@ export default {
         this.countries = ['USA', 'Serbia']
     },
     methods: {
-
+        signUpPressed(){
+        //     axios.post("https://localhost:8080/api/v1/registration",
+        //     {
+        //         firstName: firstName,
+        //         lastName: lastName,
+        //     }
+        //     )
+        }
     },
 
 

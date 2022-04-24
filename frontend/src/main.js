@@ -7,7 +7,8 @@ import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 
 Vue.use(Vuelidate)
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.config.devtools = true;
 
 new Vue({
   render: h => h(App),
