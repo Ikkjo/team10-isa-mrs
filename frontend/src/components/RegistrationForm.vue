@@ -86,7 +86,7 @@
     </form>
 </template>
 <script>
-import { required, minLength, maxLength, sameAs, email, requried } from 'vuelidate/lib/validators'
+import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
 import DropdownDatepicker from 'vue-dropdown-datepicker/src/dropdown-datepicker.vue';
 
 export default {
@@ -122,7 +122,7 @@ export default {
             maxLength: maxLength(20)
         },
         email: {
-            requried,
+            required,
             email
         },
         password: {
@@ -140,7 +140,7 @@ export default {
             maxLength: maxLength(40)
         },
         city: {
-            requried,
+            required,
             minLength: minLength(2),
             maxLength: maxLength(40)
         },
