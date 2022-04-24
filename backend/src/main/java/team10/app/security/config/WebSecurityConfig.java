@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @AllArgsConstructor
@@ -15,12 +16,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/registration/**")
-                .permitAll()
+                    .antMatchers("/api/v1/registration/**")
+                    .permitAll()
                 .anyRequest()
-                .authenticated().and()
+                    .authenticated().and()
+                .cors().and()
                 .formLogin();
     }
+
+
 }
