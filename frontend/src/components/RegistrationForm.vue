@@ -18,14 +18,14 @@
             <div class="form-control">
                 <label for="phone-number">Phone Number</label>
                 <vue-phone-number-input
-                 class="phone-number" 
-                 v-model="phone" 
-                 default-country-code="RS" 
-                 size="lg"
-                 color="#f0a500"
-                 valid-color="green"
-                 error-color="red"
-
+                    class="phone-number" 
+                    v-model="phoneTmp" 
+                    default-country-code="RS" 
+                    size="lg"
+                    color="#f0a500"
+                    valid-color="green"
+                    error-color="red"
+                    @update="updatePhone"
                  />
             </div>
         </div>
@@ -60,7 +60,13 @@
         <div class="wrapper">
             <div class="form-control">
                 <label for="datepicker">Date of Birth</label>
-                <DropdownDatepicker id="datepicker" name="datepicker" displayFormat="dmy" :minAge="18" />
+                <DropdownDatepicker
+                    id="datepicker" 
+                    name="datepicker" 
+                    displayFormat="dmy" 
+                    :minAge="18"
+                    :onChange="updateDOB"
+                    />
             </div>
             <div class="form-control">
                 <label for="role" class="block-label">Account Type</label>
@@ -99,7 +105,7 @@ export default {
             firstName: '',
             lastName: '',
             email: '',
-            phone: '',
+            phone: null,
             password: '',
             confirmPassword: '',
             address: '',
@@ -107,7 +113,8 @@ export default {
             country: '',
             coutries: [],
             registrationReason: '',
-            role: ''
+            role: '',
+            phoneTmp: '',
         }
     },
     validations:{
@@ -156,6 +163,12 @@ export default {
         //         lastName: lastName,
         //     }
         //     )
+        },
+        updatePhone(event){
+            this.phone = event
+        },
+        updateDOB(event){
+            console.log(event)
         }
     },
 
