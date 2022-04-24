@@ -45,15 +45,16 @@ a {
 .btn {
     display: inline-block;
     border: none;
-    border-radius: 49px;
+    border-radius: 5px;
+    padding: 10px;
     outline: none;
     color: var(--white, #fff);
     background-color: var(--orange-primary, orange);
-    margin: 5px;
     cursor: pointer;
     font-family: inherit;
     text-decoration: none;
     transition: 0.5s;
+    font-size: 17px;
 }
 
 .btn:hover {

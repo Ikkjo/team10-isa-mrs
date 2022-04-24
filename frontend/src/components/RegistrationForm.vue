@@ -63,7 +63,7 @@
                 <DropdownDatepicker id="datepicker" name="datepicker" displayFormat="dmy"/>
             </div>
             <div class="form-control">
-                <label for="role" class="block-label">Account type</label>
+                <label for="role" class="block-label">Account Type</label>
                 <select name="role" id="role">
                     <option value="HOUSE_OWNER">Vacation Home Owner</option>
                     <option value="SHIP_OWNER">Ship Owner</option>
@@ -75,8 +75,12 @@
         <div class="wrapper" id="registration-reason">
              <div class="form-control">
                 <label for="description" class="block-label">Reason for Registration</label>
-                <textarea name="description" id="description" cols="30" rows="5"  placeholder="Tell us a few reasons why you want to join..."></textarea>
+                <textarea name="description" id="description" cols="30" rows="4"  placeholder="Tell us a few reasons why you want to join..."></textarea>
             </div>
+        </div>
+        <div class="btn-div">
+            <button class="btn">Create Account</button>
+            <p>Already have an account? <a href="/login">Log in</a></p>
         </div>
     </form>
 </template>
@@ -152,7 +156,7 @@ export default {
 <style>
 
 .form-control {
-  margin: 20px 10px;
+  margin: 15px 10px;
 }
 
 .wrapper {
@@ -206,6 +210,21 @@ textarea {
 
 #registration-reason {
     display: block;
+}
+
+.btn-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
+    width: 40%;
+}
+
+.btn-div p {
+    margin-top: 10px;
 }
 
 </style>
