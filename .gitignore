@@ -149,5 +149,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-
 application.properties
