@@ -1,13 +1,22 @@
 <template>
-  
+<RegistrationForm class="registration-form"/>
 </template>
 
 <script>
-export default {
+import RegistrationForm from '../components/RegistrationForm.vue'
 
+export default {
+    name: 'RegistrationPage',
+    components: {
+        RegistrationForm,
+  }
 }
 </script>
 
 <style>
+
+.registration-form {
+    width: 50%;
+}
 
 </style>

@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <RegistrationForm/>
+    <RegistrationPage/>
   </div>
 </template>
 
 <script>
-import RegistrationForm from './components/RegistrationForm.vue'
+import RegistrationPage from './views/Registration.vue'
 
 export default {
   name: 'App',
   components: {
-    RegistrationForm,
+    RegistrationPage,
   }
 }
 </script>
@@ -41,8 +41,22 @@ a {
     text-decoration: none;
 }
 
-button {
-  background-color: var(--orange-primary, orange);
+.btn {
+    display: inline-block;
+    border: none;
+    border-radius: 49px;
+    outline: none;
+    color: var(--white, #fff);
+    background-color: var(--orange-primary, orange);
+    margin: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+.btn:hover {
+    background-color: var(--orange-secondary, orange);
 }
 
 input {
