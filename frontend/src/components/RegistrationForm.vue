@@ -175,6 +175,7 @@ export default {
     transition: 0.5s;
     outline-color: lightgrey;
     background-color: #fff;
+    font-family: inherit;
 }
 
 .form-control input:hover, textarea:hover, select:hover {
