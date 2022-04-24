@@ -27,11 +27,11 @@ public class UserService {
 
     public User buildUser(RegistrationRequestDto rr) {
             if (rr.getRole().equals(HOUSE_OWNER))
-                return new VacationHomeOwner(rr.getFirstname(), rr.getLastname(), rr.getEmail(), rr.getPassword());
+                return new VacationHomeOwner(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword());
             else if (rr.getRole().equals(SHIP_OWNER))
-                return new ShipOwner(rr.getFirstname(), rr.getLastname(), rr.getEmail(), rr.getPassword());
+                return new ShipOwner(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword());
             else if (rr.getRole().equals(FISHING_INSTRUCTOR))
-                return new FishingInstructor(rr.getFirstname(), rr.getLastname(), rr.getEmail(), rr.getPassword());
+                return new FishingInstructor(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword());
             // TODO: Add Client builder
             // TODO: Add exception
             else

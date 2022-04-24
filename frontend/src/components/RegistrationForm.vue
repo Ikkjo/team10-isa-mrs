@@ -65,7 +65,9 @@
                     name="datepicker" 
                     displayFormat="dmy" 
                     :minAge="18"
-                    :onChange="updateDOB"
+                    :onDayChange="updateDay"
+                    :onMonthChange="updateMonth"
+                    :onYearChange="updateYear"
                     />
             </div>
             <div class="form-control">
@@ -94,6 +96,7 @@
 <script>
 import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
 import DropdownDatepicker from 'vue-dropdown-datepicker/src/dropdown-datepicker.vue';
+import axios from 'axios';
 
 export default {
     name: 'RegistrationFrom',
@@ -115,6 +118,11 @@ export default {
             registrationReason: '',
             role: '',
             phoneTmp: '',
+            dateOfBirth:{
+                day: null,
+                month: null,
+                year: null,
+            }
         }
     },
     validations:{
@@ -157,18 +165,43 @@ export default {
     },
     methods: {
         signUpPressed(){
-        //     axios.post("https://localhost:8080/api/v1/registration",
-        //     {
-        //         firstName: firstName,
-        //         lastName: lastName,
-        //     }
-        //     )
+            let registrationRequestDTO = {
+                    firstName: this.firstName,
+                    lastName: this.lastName,
+                    email: this.email,
+                    password: this.password,
+                    role: this.role,
+                    phone: this.phone.formattedNumber,
+                    dateOfBirth: ""+this.dateOfBirth.day+"."+this.dateOfBirth.month+"."+this.dateOfBirth.year+".",
+                    address: this.address,
+                    city: this.city,
+                    country: this.country,
+                    registrationReason: this.registrationReason
+                }
+            console.log(registrationRequestDTO)
+            axios
+                .post("http://localhost:8888/api/v1/registration", registrationRequestDTO)
+                .then(function(response) {
+                    console.log(response)
+                    // notify that awaiting accept
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    // is email taken
+                    // is phone taken
+                })
         },
         updatePhone(event){
             this.phone = event
         },
-        updateDOB(event){
-            console.log(event)
+        updateDay(event){
+            this.dateOfBirth.day = event;
+        },
+        updateMonth(event){
+            this.dateOfBirth.month = event;
+        },
+        updateYear(event){
+            this.dateOfBirth.year = event
         }
     },
 

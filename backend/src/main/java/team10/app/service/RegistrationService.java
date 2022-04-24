@@ -13,8 +13,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public
-class RegistrationService {
+public class RegistrationService {
 
     private final UserService userService;
     private final EmailValidator emailValidator;

@@ -6,12 +6,13 @@ import team10.app.dto.RegistrationRequestDto;
 import team10.app.service.RegistrationService;
 
 @RestController
-@RequestMapping(path = "/registration")
+@RequestMapping(path = "/api/v1/registration")
 @AllArgsConstructor
 public class RegistrationController {
 
     private final RegistrationService registrationService;
 
+    @CrossOrigin(origins = "http://localhost:8081")
     @PostMapping
     public String register(@RequestBody RegistrationRequestDto request) {
         return registrationService.register(request);
