@@ -71,7 +71,7 @@ export default {
     data() {
         return {
             firstName: '',
-            lastNmae: '',
+            lastName: '',
             email: '',
             phone: '',
             password: '',
@@ -81,6 +81,41 @@ export default {
             country: '',
             coutries: []
         }
+    },
+    validations:{
+        firstName: {
+            required,
+            minLength: minLength(2),
+            maxLength: maxLength(20)
+        },
+        lastName: {
+            required,
+            minLength: minLength(2),
+            maxLength: maxLength(20)
+        },
+        email: {
+            requried,
+            email
+        },
+        password: {
+            required,
+            minLength: minLength(8),
+            maxLength: maxLength(30)
+        },
+        confirmPassword: {
+            required,
+            sameAsPassword: sameAs("password")
+        },
+        address: {
+            requred,
+            minLength: minLength(5),
+            maxLength: maxLength(40)
+        },
+        city: {
+            requried,
+            minLength: minLength(2),
+            maxLength: maxLength(40)
+        },
     },
     created() {
         this.countries = ['USA', 'Serbia']
