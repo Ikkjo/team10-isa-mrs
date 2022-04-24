@@ -7,6 +7,7 @@
 <script>
 import RegistrationPage from './views/Registration.vue'
 
+
 export default {
   name: 'App',
   components: {
@@ -59,8 +60,5 @@ a {
     background-color: var(--orange-secondary, orange);
 }
 
-select {
-  background-color: #fff;;
-}
 
 </style>

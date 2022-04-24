@@ -58,7 +58,11 @@
         </div>
         
         <div class="wrapper">
-             <div class="form-control">
+            <div class="form-control">
+                <label for="datepicker">Date of Birth</label>
+                <DropdownDatepicker id="datepicker" name="datepicker" displayFormat="dmy"/>
+            </div>
+            <div class="form-control">
                 <label for="role" class="block-label">Account type</label>
                 <select name="role" id="role">
                     <option value="HOUSE_OWNER">Vacation Home Owner</option>
@@ -66,6 +70,9 @@
                     <option value="FISHING_INSTRUCTOR">Fishing Instructor</option>
                 </select>
             </div>
+        </div>
+
+        <div class="wrapper" id="registration-reason">
              <div class="form-control">
                 <label for="description" class="block-label">Reason for Registration</label>
                 <textarea name="description" id="description" cols="30" rows="5"  placeholder="Tell us a few reasons why you want to join..."></textarea>
@@ -73,11 +80,15 @@
         </div>
     </form>
 </template>
-
 <script>
 import { required, minLength, maxLength, sameAs, email, requried } from 'vuelidate/lib/validators'
+import DropdownDatepicker from 'vue-dropdown-datepicker/src/dropdown-datepicker.vue';
+
 export default {
     name: 'RegistrationFrom',
+    components: {
+        DropdownDatepicker,
+    },
     data() {
         return {
             firstName: '',
@@ -138,7 +149,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 .form-control {
   margin: 20px 10px;
@@ -163,6 +174,7 @@ export default {
     border-color: lightgrey;
     transition: 0.5s;
     outline-color: lightgrey;
+    background-color: #fff;
 }
 
 .form-control input:hover, textarea:hover, select:hover {
@@ -178,11 +190,20 @@ textarea {
     resize: none;
 }
 
-.form-control slabel {
+.form-control label {
     width: 100%;
 }
 
 .form-control .block-label {
+    display: block;
+}
+
+#datepicker {
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+}
+
+#registration-reason {
     display: block;
 }
 
