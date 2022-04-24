@@ -148,5 +148,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-backend/src/main/resources/application.properties
 
+
+application.properties
