@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import { required, minLength, maxLength, sameAs, email, requried } from 'vuelidate/lib/validators'
 export default {
     name: 'RegistrationFrom',
     data() {
@@ -116,7 +117,7 @@ export default {
             sameAsPassword: sameAs("password")
         },
         address: {
-            requred,
+            required,
             minLength: minLength(5),
             maxLength: maxLength(40)
         },
