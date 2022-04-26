@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <RegistrationPage/>
+    <!-- <RegistrationPage/> -->
+    <PricingForm/>
   </div>
 </template>
 
 <script>
-import RegistrationPage from './views/Registration.vue'
+// import RegistrationPage from './views/Registration.vue'
+import PricingForm from './components/Pricing.vue'
 
 
 export default {
   name: 'App',
   components: {
-    RegistrationPage,
+    // RegistrationPage,
+    PricingForm,
   }
 }
 </script>
@@ -40,6 +43,10 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: #fff;
     color: var(--black, #000);
+}
+
+#app {
+  height: 100%;
 }
 
 a {
@@ -73,6 +80,34 @@ a:hover {
 
 .btn:active {
   transform: scale(0.98);
+}
+
+.form-control input, select, textarea {
+    padding: 3px 7px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    transition: 0.5s;
+    outline-color: lightgrey;
+    background-color: #fff;
+    font-family: inherit;
+}
+
+.form-control input {
+   height: 48px;
+}
+
+.form-control input:hover, textarea:hover, select:hover {
+    border-color: var(--orange-primary, #f0a500);
+}
+
+.form-control input:focus, textarea:focus, select:focus {
+    outline-color: var(--orange-primary, #f0a500);
+}
+
+.checkbox {
+  width: 30px;
+  height: 30px;
 }
 
 

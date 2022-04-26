@@ -222,31 +222,14 @@ export default {
     grid-template-columns: 50% 30% 20%;
 }
 
-.form-control input, select, textarea {
-    width: 100%;
-    height: 48px;
-    padding: 3px 7px;
-    font-size: 17px;
-    border-radius: 5px;
-    border: 1px solid ;
-    border-color: lightgrey;
-    transition: 0.5s;
-    outline-color: lightgrey;
-    background-color: #fff;
-    font-family: inherit;
-}
-
-.form-control input:hover, textarea:hover, select:hover {
-    border-color: var(--orange-primary, #f0a500);
-}
-
-.form-control input:focus, textarea:focus, select:focus {
-    outline-color: var(--orange-primary, #f0a500);
-}
-
 textarea {
     height: auto;
     resize: none;
+}
+
+.form-control input, select, textarea {
+    width: 100%;
+    height: 48px;
 }
 
 .form-control label {
