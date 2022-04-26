@@ -3,10 +3,12 @@ import Vuelidate from 'vuelidate'
 import App from './App.vue'
 import VuePhoneNumberInput from 'vue-phone-number-input'
 import 'vue-phone-number-input/dist/vue-phone-number-input.css'
+import vueCountryRegionSelect from 'vue-country-region-select'
 
 Vue.component('vue-phone-number-input', VuePhoneNumberInput)
 
 Vue.use(Vuelidate)
+Vue.use(vueCountryRegionSelect)
 
 Vue.config.productionTip = false
 Vue.config.devtools = true

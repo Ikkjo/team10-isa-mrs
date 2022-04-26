@@ -51,9 +51,7 @@
             </div>
              <div class="form-control">
                 <label for="country" class="block-label">Country</label>
-                <select name="country" id="country" v-model="country">
-                    <option v-for="country in countries" :value="country" :key="country">{{country}}</option>
-                </select>
+                <country-select v-model="country" :country="country" topCountry="US"/>
             </div>
         </div>
         
