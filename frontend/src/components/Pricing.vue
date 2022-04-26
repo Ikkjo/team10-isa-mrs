@@ -3,9 +3,9 @@
         <h1>Pricing</h1>
         <div class="form-control">
             <div class="wrapper">
-                <button class="btn-circle"><span class="material-icons-round">add</span></button>
+                <button @click="decrease()" class="btn-circle"><span class="material-icons-round">remove</span></button>
                 <input v-model="price" :v-bind="isDisabled()" type="text" placeholder="$00">
-                <button class="btn-circle"><span class="material-icons-round">remove</span></button>
+                <button @click="increase()" class="btn-circle"><span class="material-icons-round">add</span></button>
             </div>
         </div>
     </div>
@@ -17,11 +17,18 @@ export default {
     data() {
         return {
             price: '',
+            increment: 5,
         }
     },
     methods: {
         isDisabled() {
             if (!/^([1-9][0-9]*)$/.test(this.price) || this.price > 10000) this.price = null
+        },
+        increase() {
+            this.price += this.increment
+        },
+        decrease() {
+            this.price -= this.increment
         }
     }
 }
