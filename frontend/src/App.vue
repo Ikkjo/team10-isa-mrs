@@ -1,17 +1,23 @@
 <template>
   <div id="app">
-    <RegistrationPage/>
+    <RegistrationRequest/>
+    <RegistrationRequest/>
+    <RegistrationRequest/>
+    <portal-target name="body"/>
   </div>
 </template>
 
 <script>
-import RegistrationPage from './views/Registration.vue'
+// import RegistrationPage from './views/Registration.vue'
+import RegistrationRequest from './components/RegistrationRequest.vue'
+// import RegistrationRequestModal from './components/RegistrationRequestModal.vue'
 
 
 export default {
   name: 'App',
   components: {
-    RegistrationPage,
+    // RegistrationPage,
+    RegistrationRequest,
   }
 }
 </script>
