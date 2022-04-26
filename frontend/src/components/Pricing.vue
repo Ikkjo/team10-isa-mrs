@@ -3,37 +3,11 @@
         <h1>Pricing</h1>
         <div class="form-control">
             <div class="wrapper">
-                <label for="adults">Adults</label>
-                <input v-model="adults" type="checkbox" name="adults" id="adults" class="checkbox">
+                <button class="btn-circle"><span class="material-icons-round">add</span></button>
+                <input v-model="price" :v-bind="isDisabled()" type="text" placeholder="$00">
+                <button class="btn-circle"><span class="material-icons-round">remove</span></button>
             </div>
-            
-            <input v-if="adults" type="text" name="adults-price" id="adults-price">
         </div>
-      
-        <div class="form-control">
-            <div class="wrapper">
-                <label for="children">Children</label>
-                <input v-model="children" type="checkbox" name="children" id="children" class="checkbox">
-            </div>
-            <input v-if="children" type="text" name="children-price" id="children-price">
-        </div>
-    
-        <div class="form-control">
-            <div class="wrapper">
-                <label for="infants">Infants</label>
-                <input v-model="infants" type="checkbox" name="infants" id="infants" class="checkbox">
-            </div>
-            <input v-if="infants" type="text" name="infants-price" id="infants-price">
-        </div>
-
-        <div class="form-control">
-            <div class="wrapper">
-                <label for="pets">Pets</label>
-                <input v-model="pets" type="checkbox" name="pets" id="pets" class="checkbox">
-            </div>
-            <input v-if="pets" type="text" name="pets-price" id="pets-price">
-        </div>
-
     </div>
 </template>
 
@@ -42,10 +16,12 @@ export default {
     name: 'PricingForm',
     data() {
         return {
-            adults: false,
-            children: false,
-            infants: false,
-            pets: false,
+            price: '',
+        }
+    },
+    methods: {
+        isDisabled() {
+            if (!/^([1-9][0-9]*)$/.test(this.price) || this.price > 10000) this.price = null
         }
     }
 }
@@ -63,18 +39,27 @@ export default {
     display: flex;
     align-items: center;
     font-size: 26px;
-    height: 10%;
+    width: 100%;
+}
+
+.form-control input {
+    width: 240px;
 }
 
 .wrapper {
-    width: 20%;
     display: flex;
     align-items: center;
 }
 
-.wrapper label {
-
-    margin-right: 10%;
-}
-
+.btn-circle {
+    width: 33px;
+    height: 33px;
+    border: none;
+    background: var(--orange-primary, orange);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+} 
 </style>
