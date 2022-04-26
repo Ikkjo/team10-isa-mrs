@@ -180,7 +180,7 @@ export default {
                 }
             console.log(registrationRequestDTO)
             axios
-                .post("http://localhost:8888/api/v1/registration", registrationRequestDTO)
+                .post(process.env.VUE_APP_BASE_URL+"/api/v1/registration", registrationRequestDTO)
                 .then(function(response) {
                     console.log(response)
                     // notify that awaiting accept
@@ -212,7 +212,7 @@ export default {
 <style>
 
 .form-control {
-  margin: 15px 10px;
+    margin: 15px 10px 15px 0px;
 }
 
 .wrapper {
