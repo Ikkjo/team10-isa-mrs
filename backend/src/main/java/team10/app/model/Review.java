@@ -22,6 +22,7 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
 
+
     public Review() {
         this.status = ReviewStatus.CREATED;
         createdAt = LocalDate.now();

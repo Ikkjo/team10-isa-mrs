@@ -3,14 +3,21 @@ package team10.app.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.lang.NonNull;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import team10.app.model.Client;
 
+import java.util.Optional;
+
+@Repository
+//@Transactional(readOnly = true)
 public interface ClientRepository extends JpaRepository<Client, Long> {
-    Client findClientById(Long id);
+
+    Optional<Client> findClientById(Long id);
 
     Page<Client> findAll(Pageable pageable);
 
-    Client findClientByEmail(String email);
+    Optional<Client> findClientByEmail(String email);
 
 }
