@@ -40,7 +40,7 @@
             </div>
         </div>
         
-        <div class="wrapper address-wrapper">
+        <!-- <div class="wrapper address-wrapper">
             <div class="form-control">
                 <label for="address">Address</label>
                 <input type="text" v-model="address" name="address" placeholder="">
@@ -53,7 +53,10 @@
                 <label for="country" class="block-label">Country</label>
                 <country-select v-model="country" :country="country" topCountry="US"/>
             </div>
-        </div>
+        </div> -->
+
+        <AddresInput :address="address" :city="city" :country="country"/>
+
         
         <div class="wrapper">
             <div class="form-control">
@@ -94,12 +97,14 @@
 <script>
 import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
 import DropdownDatepicker from 'vue-dropdown-datepicker/src/dropdown-datepicker.vue';
+import AddresInput from './AddressInput.vue';
 import axios from 'axios';
 
 export default {
     name: 'RegistrationFrom',
     components: {
         DropdownDatepicker,
+        AddresInput,
     },
     data() {
         return {
