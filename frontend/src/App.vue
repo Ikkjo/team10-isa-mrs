@@ -94,7 +94,7 @@ a:hover {
     font-family: inherit;
 }
 
-.form-control input {
+.form-control input, select {
    height: 48px;
 }
 
