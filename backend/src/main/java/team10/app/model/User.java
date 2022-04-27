@@ -33,6 +33,10 @@ public abstract class User implements UserDetails {
             strategy = GenerationType.SEQUENCE,
             generator = "user_sequence"
     )
+    @Column(
+            name = "id",
+            updatable = false
+    )
     private Long id;
     @Column(
             name = "first_name",
@@ -55,7 +59,8 @@ public abstract class User implements UserDetails {
     @Column(
             name = "password",
             nullable = false,
-            columnDefinition = "TEXT"
+            columnDefinition = "TEXT",
+            unique = true
     )
     private String password;
     @Column(
