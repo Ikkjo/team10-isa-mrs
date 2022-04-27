@@ -2,7 +2,7 @@
     <div id="rooms-input">
         <div class="form-control">
             <label for="num-rooms">Rooms</label>
-            <input v-model="numRooms" @change="addRoom" type="number" name="num-rooms">   
+            <input v-model="numRooms" @change="addRoom" type="number" name="num-rooms" min=0>   
         </div>
         <div class="form-control">
             <label for="room">Room</label>
@@ -12,7 +12,7 @@
         </div>
         <div class="form-control">
             <label for="beds">Beds</label>
-            <input @change="onBedChange" type="number" name="beds" id="beds" :value="bedInputValue">
+            <input @change="onBedChange" type="number" name="beds" id="beds" :value="bedInputValue" min=0>
         </div>
     </div>
 </template>
