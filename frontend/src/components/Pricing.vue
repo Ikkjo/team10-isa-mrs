@@ -3,9 +3,12 @@
         <h1>Pricing</h1>
         <div class="form-control">
             <div class="wrapper">
-                <button @click="decrease()" :disabled="price <= 0" class="btn-circle"><span class="material-icons-round">remove</span></button>
-                <input v-model="price" :v-bind="checkPrice()" type="text" placeholder="$00"/>
-                <button @click="increase()" :disabled="price >= 10000" class="btn-circle"><span class="material-icons-round">add</span></button>
+                <div class="price-input">
+                    <button @click="decrease()" :disabled="price <= 0" class="btn-circle"><span class="material-icons-round">remove</span></button>
+                    <input v-model="price" :v-bind="checkPrice()" type="text" placeholder="$00" name="price"/>
+                    <button @click="increase()" :disabled="price >= 10000" class="btn-circle"><span class="material-icons-round">add</span></button>
+                </div>
+                <label for="price">per night</label>
             </div>
         </div>
     </div>
@@ -45,17 +48,27 @@ export default {
 .form-control {
     display: flex;
     align-items: center;
-    font-size: 26px;
     width: 100%;
 }
 
 .form-control input {
     width: 240px;
+    margin: 0 10px 0 10px;
 }
 
 .wrapper {
     display: flex;
+    flex-direction: column;
     align-items: center;
+}
+
+.price-input {
+    display: flex;
+    align-items: center;
+}
+
+.wrapper label {
+    color: lightgray;
 }
 
 .btn-circle {
@@ -68,6 +81,7 @@ export default {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    transition: 0.4s;
 }
 
 .btn-circle:disabled {
