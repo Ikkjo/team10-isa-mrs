@@ -1,15 +1,12 @@
 <template>
     <div id="pricing">
-        <h1>Pricing</h1>
         <div class="form-control">
-            <div class="wrapper">
-                <div class="price-input">
-                    <button @click="decrease()" :disabled="price <= 0" class="btn-circle"><span class="material-icons-round">remove</span></button>
-                    <input v-model="price" :v-bind="checkPrice()" type="text" placeholder="$00" name="price"/>
-                    <button @click="increase()" :disabled="price >= 10000" class="btn-circle"><span class="material-icons-round">add</span></button>
-                </div>
-                <label for="price">per night</label>
+            <div class="price-input">
+                <button @click="decrease()" :disabled="price <= 0" class="btn-circle"><span class="material-icons-round">remove</span></button>
+                <input v-model="price" :v-bind="checkPrice()" type="text" placeholder="$00" name="price"/>
+                <button @click="increase()" :disabled="price >= 10000" class="btn-circle"><span class="material-icons-round">add</span></button>
             </div>
+            <label for="price">per night</label>
         </div>
     </div>
 </template>
@@ -39,27 +36,19 @@ export default {
 
 <style scoped>
 #pricing {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     height: 100%;
 }
 
 .form-control {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    width: 100%;
 }
 
 .form-control input {
     width: 240px;
     margin: 0 10px 0 10px;
-}
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    
 }
 
 .price-input {
