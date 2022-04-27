@@ -62,6 +62,7 @@ export default {
     display: flex;
     flex-direction: column;
     margin-left: 10px;
+    width: 33.33%
 }
 
 .form-control select {
