@@ -27,7 +27,10 @@ public class Client extends User{
                fetch = FetchType.LAZY,
                cascade = CascadeType.ALL)
     private Set<Review> reviews;
-    @OneToMany
+
+    @OneToMany(mappedBy = "client",
+    fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL)
     private Set<Reservation> reservations;
 
     public Client() {

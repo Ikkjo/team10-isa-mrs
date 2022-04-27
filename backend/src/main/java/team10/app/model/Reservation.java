@@ -16,6 +16,7 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 @Getter
 @Setter
 @Entity
+@Table(name = "reservation")
 @Inheritance(strategy=TABLE_PER_CLASS)
 public class Reservation {
 
@@ -39,10 +40,7 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
 
-    @OneToOne(mappedBy = "reservation",
-              fetch = FetchType.EAGER,
-              cascade = CascadeType.ALL)
-    private Rating rating;
+
 
     public Reservation() {
 

@@ -16,6 +16,7 @@ public class Rating {
     @OneToOne(fetch = FetchType.EAGER)
     private Review review;
 
+
     public Rating(){
 
     }
