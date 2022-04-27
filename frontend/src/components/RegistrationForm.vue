@@ -241,7 +241,7 @@ textarea {
     width: 100%;
 }
 
-.form-control .block-label {
+.form-control {
     display: block;
 }
 

@@ -1,5 +1,5 @@
 <template>
-   <div class="wrapper address-wrapper">
+   <div id="address-input">
             <div class="form-control">
                 <label for="address">Address</label>
                 <input type="text" :value="address" @keyup="$emit('update:address', address);" name="address" placeholder="">
@@ -27,6 +27,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+#address-input {
+    display: flex;
+    width: 100%;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control input {
+    width: 240px;
+}
 
 </style>

@@ -1,13 +1,14 @@
 <template>
   <div id="app">
     <!-- <RegistrationPage/> -->
-    <RoomsInput/>
+    <VacationHomeForm/>
   </div>
 </template>
 
 <script>
 // import RegistrationPage from './views/Registration.vue'
-import RoomsInput from './components/RoomsInput.vue'
+// import RoomsInput from './components/RoomsInput.vue'
+import VacationHomeForm from './components/VacationHomeForm.vue'
 
 
 export default {
@@ -15,7 +16,8 @@ export default {
   components: {
     // RegistrationPage,
     // PricingInput,
-    RoomsInput,
+    // RoomsInput,
+    VacationHomeForm,
   }
 }
 </script>
@@ -83,6 +85,11 @@ a:hover {
   transform: scale(0.98);
 }
 
+.form-control {
+  display: flex;
+  flex-direction: column;
+}
+
 .form-control input, select, textarea {
     padding: 3px 7px;
     font-size: 17px;
@@ -109,6 +116,10 @@ a:hover {
 .checkbox {
   width: 30px;
   height: 30px;
+}
+
+.block-label {
+  display: block;
 }
 
 

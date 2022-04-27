@@ -43,6 +43,7 @@ export default {
         onBedChange(event) {
             this.getSelectedRoom().beds = event.target.value.trim();
             this.bedInputValue = event.target.value;
+            this.$emit('updated', this.rooms)
                 
         },
         getSelectedRoom() {
@@ -52,17 +53,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #rooms-input {
     display: flex;
     align-items: center;
 }
 
 .form-control {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    width: 33.33%
+    /* margin-left: 10px;
+    width: 33.33% */
 }
 
 .form-control select {

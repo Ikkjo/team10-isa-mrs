@@ -36,7 +36,7 @@ export default {
 
 <style scoped>
 #pricing {
-    height: 100%;
+    display: flex;
 }
 
 .form-control {
