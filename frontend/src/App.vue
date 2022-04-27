@@ -1,20 +1,21 @@
 <template>
   <div id="app">
     <!-- <RegistrationPage/> -->
-    <PricingForm/>
+    <RoomsInput/>
   </div>
 </template>
 
 <script>
 // import RegistrationPage from './views/Registration.vue'
-import PricingForm from './components/Pricing.vue'
+import RoomsInput from './components/RoomsInput.vue'
 
 
 export default {
   name: 'App',
   components: {
     // RegistrationPage,
-    PricingForm,
+    // PricingInput,
+    RoomsInput,
   }
 }
 </script>

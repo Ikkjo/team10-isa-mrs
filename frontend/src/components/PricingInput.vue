@@ -13,7 +13,7 @@
 
 <script>
 export default {
-    name: 'PricingForm',
+    name: 'PricingInput',
     data() {
         return {
             price: '',
