@@ -6,7 +6,7 @@
         </div>
         <div class="form-control">
             <label for="room">Room</label>
-            <select v-model="selectedRoom" @change="onSelectedRoomChange" name="room" id="room">
+            <select :disabled="numRooms == 0" v-model="selectedRoom" @change="onSelectedRoomChange" name="room" id="room">
                 <option v-for="i in Number(numRooms)" :key="i" :value="'Room '+ i" >Room {{i}}</option>
             </select>
         </div>
@@ -34,6 +34,7 @@ export default {
                 this.rooms.push({name: 'Room '+ (this.rooms.length+1), beds: 0});
             else if (event.target.value < this.rooms.length)
                 if (this.rooms.length > 0) this.rooms.pop()
+            if (this.numRooms == 0) this.selectedRoom = "Room 1"
            
         },
         onSelectedRoomChange() {
