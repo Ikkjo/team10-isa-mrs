@@ -59,11 +59,13 @@ export default {
 }
 
 .form-control {
-    flex: 1 1 auto;
+    width: 33.3%;
+    margin-right: 10px; 
 }
 
-.form-control select {
-    min-width: 100px;
+.form-control:last-child {
+    margin-right: 0 
 }
+
 
 </style>

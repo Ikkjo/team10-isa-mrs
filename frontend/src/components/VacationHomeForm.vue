@@ -9,15 +9,17 @@
         <div class="form-control rules-form">
             <label for="rules-of-conduct">Rules of conduct</label>
             <div class="rules-text">
-                <textarea name="allowed" id="allowed" cols="15" rows="4"></textarea>
-                <textarea name="prohibited" id="prohibited" cols="15" rows="4"></textarea>
+                <textarea name="allowed" id="allowed" cols="15" rows="4" placeholder="Allowed" res></textarea>
+                <textarea name="prohibited" id="prohibited" cols="15" rows="4" placeholder="Prohibited"></textarea>
             </div>
         </div>
         <div class="form-control">
             <label for="additional-services" class="block-label">Additional Services</label>
             <textarea name="additional-services" id="additional-services" cols="30" rows="4" v-model="additionalServices" placeholder="Some things you offer like: wifi, free parking, air conditioning..."></textarea>
         </div>
-        <pricing-input @updated="priceUpdated"/>
+        <pricing-input @updated="priceUpdated" class="form-control pricing"/>
+        <button class="btn">Add vacation home</button>
+        <button class="btn btn-cancel">Cancel</button>
     </div>
 </template>
 
@@ -55,18 +57,44 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #vacation-home-form {
     display: flex;
     flex-direction: column;
+}
+
+#vacation-home-form > * {
+    margin: 15px 0;
 }
 
 .rules-text {
     display: flex;
 }
 
-.form-control {
+.rules-text textarea {
+    width: 50%;
+}
+
+.rules-text textarea:first-child {
+    margin-right: 10px;
+}
+
+.pricing {
+    align-self: center;
+}
+
+.btn {
     margin-top: 15px;
+    width: 50%;
+    align-self: center;
+}
+
+.btn-cancel {
+    background-color: lightgray;
+}
+
+.btn-cancel:hover {
+    background-color: grey;
 }
 
 </style>

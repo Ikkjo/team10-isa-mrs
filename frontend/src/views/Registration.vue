@@ -12,8 +12,7 @@
             <RegistrationForm />
         </div>
     </div>
-    <div class="inner-container picture-container">
-    </div>
+    <div class="inner-container picture-container"></div>
 </div>
 </template>
 

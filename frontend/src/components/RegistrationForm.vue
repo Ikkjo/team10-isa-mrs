@@ -229,7 +229,6 @@ export default {
 
 textarea {
     height: auto;
-    resize: none;
 }
 
 .form-control input, select, textarea {
