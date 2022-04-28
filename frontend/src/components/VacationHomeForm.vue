@@ -9,8 +9,8 @@
         <div class="form-control rules-form">
             <label for="rules-of-conduct">Rules of conduct</label>
             <div class="rules-text">
-                <textarea name="allowed" id="allowed" cols="15" rows="4" placeholder="Allowed" res></textarea>
-                <textarea name="prohibited" id="prohibited" cols="15" rows="4" placeholder="Prohibited"></textarea>
+                <textarea v-model="rulesOfConduct.allowed" name="allowed" id="allowed" cols="15" rows="4" placeholder="Allowed" res></textarea>
+                <textarea v-model="rulesOfConduct.prohibited" name="prohibited" id="prohibited" cols="15" rows="4" placeholder="Prohibited"></textarea>
             </div>
         </div>
         <div class="form-control">
@@ -18,7 +18,7 @@
             <textarea name="additional-services" id="additional-services" cols="30" rows="4" v-model="additionalServices" placeholder="Some things you offer like: wifi, free parking, air conditioning..."></textarea>
         </div>
         <pricing-input @updated="priceUpdated" class="form-control pricing"/>
-        <button class="btn">Add vacation home</button>
+        <button @click="addVacationHomePressed" class="btn">Add vacation home</button>
         <button class="btn btn-cancel">Cancel</button>
     </div>
 </template>
@@ -27,6 +27,8 @@
 import AddressInput from './AddressInput.vue'
 import RoomsInput from './RoomsInput.vue'
 import PricingInput from './PricingInput.vue'
+import axios from 'axios';
+
 export default {
     name: 'VacationHomeForm',
     components: {
@@ -42,6 +44,7 @@ export default {
             country: '',
             rooms: [],
             price: 0,
+            rulesOfConduct: Object,
             additionalServices: '',
 
         }
@@ -52,6 +55,27 @@ export default {
         },
         priceUpdated(price) {
             this.price = price;
+        },
+        addVacationHomePressed() {
+            let vacationHomeDTO = {
+                title: this.title,
+                address: this.address,
+                city: this.city,
+                rooms: this.rooms,
+                price: this.price,
+                rulesOfConduct: this.rulesOfConduct,
+                additionalServices: this.additionalServices,
+            }
+            console.log(vacationHomeDTO)
+            axios
+                .post(process.env.VUE_APP_BASE_URL+"/api/v1/add-vacation-home", vacationHomeDTO)
+                .then(function(response) {
+                    console.log(response)
+                    // notify that awaiting accept
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
         }
     }
 }
