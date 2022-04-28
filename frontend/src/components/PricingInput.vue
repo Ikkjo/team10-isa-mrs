@@ -26,7 +26,8 @@ export default {
             if (!/^([1-9][0-9]*)$/.test(this.price) || this.price > 10000) this.price = null
         },
         increase() {
-            this.price += this.increment
+            if (this.price < 9995) this.price += this.increment
+            else this.price = 10000
             this.$emit('updated', this.price)
         },
         decrease() {
