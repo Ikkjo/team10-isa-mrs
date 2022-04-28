@@ -91,6 +91,8 @@ export default {
 
 .btn-cancel {
     background-color: lightgray;
+    margin-top: 0px !important;
+
 }
 
 .btn-cancel:hover {
