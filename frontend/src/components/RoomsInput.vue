@@ -56,12 +56,10 @@ export default {
 <style scoped>
 #rooms-input {
     display: flex;
-    align-items: center;
 }
 
 .form-control {
-    /* margin-left: 10px;
-    width: 33.33% */
+    flex: 1 1 auto;
 }
 
 .form-control select {

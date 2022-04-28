@@ -30,16 +30,12 @@ export default {
 <style scoped>
 #address-input {
     display: flex;
-    width: 100%;
 }
 
 .form-control {
     display: flex;
     flex-direction: column;
-}
-
-.form-control input {
-    width: 240px;
+    flex: 1 1 auto;
 }
 
 </style>
