@@ -39,23 +39,19 @@ public class RegistrationService {
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userService.saveUser(user);
 
-        // TODO : Add exception to throw
         user = userService.getByEmail(user.getEmail(), user.getUserRole()).orElseThrow();
 
-
         String token = UUID.randomUUID().toString();
-
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15),
                 user
         );
-
         confirmationTokenService.saveConfirmationToken(
                 confirmationToken);
 
-        // TODO: Send confirmation email if user is
+        // TODO: Send confirmation email if user is Client
 
         return token;
     }

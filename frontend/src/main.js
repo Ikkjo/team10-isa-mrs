@@ -6,6 +6,7 @@ import 'vue-phone-number-input/dist/vue-phone-number-input.css'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import 'material-icons/iconfont/material-icons.css'
 
+
 Vue.component('vue-phone-number-input', VuePhoneNumberInput)
 
 Vue.use(Vuelidate)

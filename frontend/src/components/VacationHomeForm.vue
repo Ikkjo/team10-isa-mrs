@@ -59,8 +59,7 @@ export default {
         addVacationHomePressed() {
             let vacationHomeDTO = {
                 title: this.title,
-                address: this.address,
-                city: this.city,
+                address: {'address': this.address, 'city': this.city, 'country': this.country},
                 rooms: this.rooms,
                 price: this.price,
                 rulesOfConduct: this.rulesOfConduct,

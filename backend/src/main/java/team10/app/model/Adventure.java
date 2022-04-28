@@ -25,7 +25,7 @@ public class Adventure extends RentalEntity {
     public Adventure(String name,
                      String description,
                      List<String> pictures,
-                     List<String> rulesOfConduct,
+                     RulesOfConduct rulesOfConduct,
                      double price,
                      String instructorBiography,
                      int maxCapacity,
