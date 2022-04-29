@@ -1,25 +1,14 @@
 <template>
   <div id="app">
     <!-- <RegistrationPage/> -->
-    <AddVacationHome/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-// import RegistrationPage from './views/Registration.vue'
-// import RoomsInput from './components/RoomsInput.vue'
-// import VacationHomeForm from './components/VacationHomeForm.vue'
-import AddVacationHome from './views/AddVacationHome.vue'
-
-
 export default {
   name: 'App',
   components: {
-    // RegistrationPage,
-    // PricingInput,
-    // RoomsInput,
-    // VacationHomeForm,
-    AddVacationHome,
 
   }
 }
@@ -86,6 +75,15 @@ a:hover {
 
 .btn:active {
   transform: scale(0.98);
+}
+
+.btn-cancel {
+    background-color: lightgray;
+
+}
+
+.btn-cancel:hover {
+    background-color: grey;
 }
 
 .form-control {
