@@ -16,7 +16,7 @@
                 <button @click="next" class="btn">Next</button>
             </div>
         </div>
-        // Add conditional classes for background-image
+        <!-- Add conditional classes for background-image -->
         <div class="inner-container picture-container"></div>
     </div>
 </template>
