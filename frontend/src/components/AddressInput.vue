@@ -2,7 +2,7 @@
    <div id="address-input">
             <div class="form-control">
                 <label for="address">Address</label>
-                <input type="text" v-model="address" @keyup="$emit('update:address', address);" name="address" placeholder="">
+                <input type="text" @keyup="$emit('update:address', address);" v-model="address" name="address" placeholder="">
             </div>
             <div class="form-control">
                 <label for="city">City</label>
@@ -10,7 +10,7 @@
             </div>
              <div class="form-control">
                 <label for="country" class="block-label">Country</label>
-                <country-select v-model="country" @select="$emit('update:country', country);" :model.sync="country" topCountry="US"/>
+                <country-select v-model="country" :value="country" :countryName="true" topCountry="US"/>
             </div>
         </div>
 </template>
@@ -23,6 +23,13 @@ export default {
             address: '',
             city: '',
             country: '',
+        }
+    },
+    mounted() {
+        if (this.$route.path === "/add-rental-entity") {
+            if (localStorage.address) this.address = localStorage.address;
+            if (localStorage.city) this.city = localStorage.city;
+            if (localStorage.country) this.country = localStorage.country;
         }
     },
     watch: {
