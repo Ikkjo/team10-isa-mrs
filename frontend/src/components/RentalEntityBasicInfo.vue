@@ -5,7 +5,7 @@
             <label for="title">Title</label>
             <input type="text" v-model="title" name="title">
         </div>
-        <address-input :address="address" :city="city" :country="country"/>
+        <address-input @update:address="addressUpdated" @update:city="cityUpdated" @update:country="countryUpdated"/>
         <div class="form-control">
             <label for="description" class="block-label">Description</label>
             <textarea name="description" id="description" cols="30" rows="4" v-model="description" placeholder=""></textarea>
@@ -14,7 +14,6 @@
             <button @click="cancel" class="btn btn-cancel">Cancel</button> 
             <button @click="next" class="btn">Next</button>
         </div>
-      
     </div>
 </template>
 
@@ -44,6 +43,16 @@ export default {
         if (localStorage.description) this.description = localStorage.description;
     },
     methods: {
+        addressUpdated(address) {
+            this.address = address;
+        },
+        cityUpdated(city) {
+            this.city = city;
+        },
+        countryUpdated(country) {
+            console.log("HEREEEEE")
+            this.country = country;
+        },
         next() {
             localStorage.title = this.title;
             localStorage.address = this.address;
@@ -51,7 +60,7 @@ export default {
             localStorage.country = this.country;
             localStorage.description = this.description;
             // add router.route to next page
-            this.$router.push("/rental-entity-additional-information");
+            this.$router.push("/add-rental-entity/additional-info");
         },
         cancel() {
             localStorage.removeItem("title"); 
