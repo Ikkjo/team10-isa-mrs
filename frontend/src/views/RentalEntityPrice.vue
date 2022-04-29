@@ -1,16 +1,20 @@
 <template>
-	<div id="price-input">
-		<h1>Price</h1>
-		<price-input @updated="priceUpdated" class="form-control pricing"/>
-		<div class="btn-div">
-			<button @click="cancel" class="btn btn-cancel">Cancel</button> 
-			<button @click="next" class="btn">Next</button>
+	<div id="rental-entity-price">
+		<div class="inner-container form">
+			<h1>Price</h1>
+			<price-input @updated="priceUpdated" class="form-control pricing"/>
+			<div class="btn-div">
+				<button @click="cancel" class="btn btn-cancel">Cancel</button> 
+				<button @click="next" class="btn">Next</button>
+			</div>
 		</div>
+		<div class="inner-container picture-container"></div>
 	</div>
 </template>
+	
 
 <script>
-import PriceInput from './PriceInput.vue'
+import PriceInput from '../components/PriceInput.vue'
 export default {
 	name: 'RentalEntityPrice',
 	components: {
@@ -51,10 +55,18 @@ export default {
 </script>
 
 <style scoped>
-#price-input {
+#rental-entity-price {
 	width: 100%;
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    align-items: center;  
+}
+
+.inner-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
 }
 
 h1  {
@@ -74,5 +86,12 @@ h1  {
 
 .btn-cancel {
     margin-top: 0px !important;
+}
+
+.picture-container {
+    background-image: url('../assets/add-vacation-home-bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: cover;
 }
 </style>
