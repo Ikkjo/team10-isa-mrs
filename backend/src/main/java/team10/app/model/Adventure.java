@@ -25,13 +25,13 @@ public class Adventure extends RentalEntity {
     public Adventure(String name,
                      String description,
                      List<String> pictures,
-                     RulesOfConduct rulesOfConduct,
-                     double price,
+                     String rulesOfConduct,
+                     int price,
                      String instructorBiography,
                      int maxCapacity,
                      List<String> fishing,
                      String cancellationConditions) {
-        this.name = name;
+        this.title = name;
         this.description = description;
         this.pictures = pictures;
         this.rulesOfConduct = rulesOfConduct;

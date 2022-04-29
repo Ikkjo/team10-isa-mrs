@@ -15,6 +15,6 @@ public class VacationHomeDTO {
     private Address address;
     private List<Room> rooms;
     private int price;
-    private RulesOfConduct rulesOfConduct;
+    private String rulesOfConduct;
     private String additionalServices;
 }

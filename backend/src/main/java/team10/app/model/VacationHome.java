@@ -17,27 +17,12 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name="vacation_homes")
-public class VacationHome {
+public class VacationHome extends RentalEntity {
 
-    @SequenceGenerator(name = "vacation_home_sequence", sequenceName = "vacation_home_sequence", allocationSize = 1)
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vacation_home_sequence")
-    private Long id;
-    @Column(nullable = false)
-    private String title;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private Address address;
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "vacation_home_rooms", joinColumns = @JoinColumn(name = "vacation_home_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"))
     private List<Room> rooms;
-    @Column(nullable = false)
-    private int price;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "vacation_home_rulesOfConduct", joinColumns = @JoinColumn(name = "vacation_home_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "rules_of_conduct_id", referencedColumnName = "id"))
-    private RulesOfConduct rulesOfConduct;
     @Column(nullable = false)
     private String additionalServices;
 
