@@ -1,27 +1,31 @@
 <template>
-    <div id="basic-info">
-        <h1>Basic information</h1>
-        <div class="form-control">
-            <label for="title">Title</label>
-            <input type="text" v-model="title" name="title">
+    <div id="rental-entity-basic-info">
+        <div class="inner-container form">
+            <h1>Basic information</h1>
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input type="text" v-model="title" name="title">
+            </div>
+            <address-input @update:address="addressUpdated" @update:city="cityUpdated" @update:country="countryUpdated"/>
+            <div class="form-control">
+                <label for="description" class="block-label">Description</label>
+                <textarea name="description" id="description" cols="30" rows="4" v-model="description" placeholder=""></textarea>
+            </div>
+            <div class="btn-div">
+                <button @click="cancel" class="btn btn-cancel">Cancel</button> 
+                <button @click="next" class="btn">Next</button>
+            </div>
         </div>
-        <address-input @update:address="addressUpdated" @update:city="cityUpdated" @update:country="countryUpdated"/>
-        <div class="form-control">
-            <label for="description" class="block-label">Description</label>
-            <textarea name="description" id="description" cols="30" rows="4" v-model="description" placeholder=""></textarea>
-        </div>
-        <div class="btn-div">
-            <button @click="cancel" class="btn btn-cancel">Cancel</button> 
-            <button @click="next" class="btn">Next</button>
-        </div>
+        // Add conditional classes for background-image
+        <div class="inner-container picture-container"></div>
     </div>
 </template>
 
 <script>
-import AddressInput from './AddressInput.vue'
+import AddressInput from '../components/AddressInput.vue'
 
 export default {
-    name: 'VacationHomeBasicInfo',
+    name: 'RentalEntityBasicInfo',
     components: {
         AddressInput,
     },
@@ -95,17 +99,24 @@ export default {
 </script>
 
 <style scoped>
-#basic-info {
+#rental-entity-basic-info {
+    width: 100%;
+    display: flex;
+    align-items: center;  
+}
+
+.inner-container {
+    width: 50%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    height: 100vh;
 }
 
-#basic-info > * {
+.form > * {
     margin: 15px 0;
-}
+    padding: 0 100px 0 100px;
 
-.pricing {
-    align-self: center;
 }
 
 .btn-div {
@@ -121,5 +132,12 @@ export default {
 
 .btn-cancel {
     margin-top: 0px !important;
+}
+
+.picture-container {
+    background-image: url('../assets/add-vacation-home-bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: cover;
 }
 </style>
