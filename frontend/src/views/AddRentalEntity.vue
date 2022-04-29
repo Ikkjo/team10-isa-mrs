@@ -1,18 +1,18 @@
 <template>
   <div id="add-vacation-home">
       <div class="inner-container form">
-        <vacation-home-form/>
+        <RentalEntityBasicInfo/>
       </div>
       <div class="inner-container picture-container"></div>
   </div>
 </template>
 
 <script>
-import VacationHomeForm from '../components/VacationHomeForm.vue'
+import RentalEntityBasicInfo from '../components/RentalEntityBasicInfo.vue'
 export default {
-    name: 'AddVacationHome',
+    name: 'AddRentalEntity',
     components: {
-        VacationHomeForm,
+        RentalEntityBasicInfo,
     }
 
 }
