@@ -12,7 +12,17 @@ const routes = [
     {
       path: '/add-rental-entity',
       name: 'add-rental-entity',
-      component: () => import('../views/AddRentalEntity.vue')
+      component: () => import('../views/RentalEntityBasicInfo.vue')
+    },
+    {
+        path: '/add-rental-entity/additional-info',
+        name: 'add-rental-entity-additional-info',
+        component: () => import('../views/RentalEntityAdditionalInfo.vue')
+    },
+    {
+      path: '/add-rental-entity/price',
+      name: 'add-rental-entity-price',
+      component: () => import('../views/RentalEntityPrice.vue')
     },
 ]
 
