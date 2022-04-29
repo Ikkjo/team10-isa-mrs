@@ -39,25 +39,7 @@
                 <input type="password" v-model="confirmPassword" name="confirm-password" placeholder="">
             </div>
         </div>
-        
-        <!-- <div class="wrapper address-wrapper">
-            <div class="form-control">
-                <label for="address">Address</label>
-                <input type="text" v-model="address" name="address" placeholder="">
-            </div>
-            <div class="form-control">
-                <label for="city">City</label>
-                <input type="text" v-model="city" name="city" placeholder="">
-            </div>
-             <div class="form-control">
-                <label for="country" class="block-label">Country</label>
-                <country-select v-model="country" :country="country" topCountry="US"/>
-            </div>
-        </div> -->
-
         <AddresInput :address="address" :city="city" :country="country"/>
-
-        
         <div class="wrapper">
             <div class="form-control">
                 <label for="datepicker">Date of Birth</label>
@@ -81,7 +63,6 @@
                 </select>
             </div>
         </div>
-
         <div class="wrapper" id="registration-reason">
              <div class="form-control">
                 <label for="description" class="block-label">Reason for Registration</label>
@@ -212,7 +193,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .form-control {
     margin: 15px 10px 15px 0px;
@@ -229,9 +210,10 @@ export default {
 
 textarea {
     height: auto;
+    width: 100%;
 }
 
-.form-control input, select, textarea {
+.form-control input, select {
     width: 100%;
     height: 48px;
 }
