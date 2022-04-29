@@ -1,7 +1,7 @@
 <template>
     <div id="pricing">
         <div class="form-control">
-            <label for="price">Pricing</label>
+            <!-- <label for="price">Pricing</label> -->
             <div class="price-input">
                 <button @click="decrease()" :disabled="price <= 0" class="btn-circle"><span class="material-icons-round">remove</span></button>
                 <input v-model.number="price" :v-bind="checkPrice()" @keyup="$emit('updated', price);" type="text" placeholder="$00" name="price"/>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-    name: 'PricingInput',
+    name: 'PriceInput',
     data() {
         return {
             price: 0,
@@ -34,6 +34,10 @@ export default {
             this.price -= this.increment
             this.$emit('updated', this.price)
         }
+    },
+    mounted() {
+        if (this.$route.path === "/add-rental-entity/price" && localStorage.price)
+            this.price = localStorage.price;
     }
 }
 </script>
