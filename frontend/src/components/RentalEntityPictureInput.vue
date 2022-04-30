@@ -21,7 +21,7 @@
         button-class="btn"
         :custom-strings="{
             upload: '<h1>Bummer!</h1>',
-            drag: 'Drag your 🏡 cover photo here'
+            drag: '<span class=\'material-icons-round\'>file_upload</span>'
         }"
         @change="onChange"/>
     </div>
