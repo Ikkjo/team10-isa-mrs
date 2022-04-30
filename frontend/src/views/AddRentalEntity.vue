@@ -1,0 +1,173 @@
+<template>
+    <div id="rental-entity-basic-info">
+        <!-- STEP 1 -->
+        <section class="inner-container">
+            <div class="form" v-show="step === 1">
+                <h1>Basic information</h1>
+                <div class="form-control">
+                    <label for="title">Title</label>
+                    <input type="text" v-model="title" name="title">
+                </div>
+                <address-input @update:address="addressUpdated" @update:city="cityUpdated" @update:country="countryUpdated"/>
+                <div class="form-control">
+                    <label for="description" class="block-label">Description</label>
+                    <textarea name="description" id="description" cols="30" rows="4" v-model="description" placeholder=""></textarea>
+                </div>
+            </div>
+        <!-- STEP 2 -->
+            <div class="form" v-show="step === 2">
+                <h1>Additional information</h1>
+                <div class="form-control">
+                    <label for="rules-of-conduct">Rules of conduct</label>
+                    <textarea v-model="rulesOfConduct" name="rules-of-conduct" id="rules-of-conduct" cols="30" rows="4" placeholder=""></textarea>
+                </div>
+                <div class="form-control">
+                    <label for="additional-services" class="block-label">Additional Services</label>
+                    <textarea v-model="additionalServices" name="additional-services" id="additional-services" cols="30" rows="4" placeholder="Some things you offer like: wifi, free parking, air conditioning..."></textarea>
+                </div>
+            </div>
+        <!-- STEP 3 -->
+            <div class="form price-div" v-show="step === 3">
+                <h1>Price</h1>
+                <price-input @updated="priceUpdated" class="form-control pricing"/>
+            </div>
+
+            <div class="btn-div">
+                <button @click="back" class="btn btn-back">Back</button> 
+                <button @click="next" class="btn">Next</button>
+            </div>
+        </section>
+        
+        <!-- Add conditional classes for background-image -->
+        <div class="inner-container picture-container"></div>
+    </div>
+</template>
+
+<script>
+import AddressInput from '../components/AddressInput.vue'
+import PriceInput from '../components/PriceInput.vue'
+
+export default {
+    name: 'AddRentalEntity',
+    components: {
+        AddressInput,
+        PriceInput,
+    },
+    data() {
+        return {
+            title: '',
+            address: '',
+            city: '',
+            country: '',
+            description: '',
+            rulesOfConduct: '',
+            additionalServices: '',
+            price: '',
+            step: 1,
+
+        }
+    },
+    methods: {
+        addressUpdated(address) {
+            this.address = address;
+        },
+        cityUpdated(city) {
+            this.city = city;
+        },
+        countryUpdated(country) {
+            this.country = country;
+        },
+        priceUpdated(price) {
+				this.price = price;
+		},
+        next() {
+            // add check if step is == maxSteps
+            this.step +=1 ;
+        },
+        back() {
+            if (this.step > 1) this.step -= 1;
+            // add router.route to main page 
+        },
+        // addVacationHomePressed() {
+        //     let vacationHomeDTO = {
+        //         title: this.title,
+        //         address: {'address': this.address, 'city': this.city, 'country': this.country},
+        //         rooms: this.rooms,
+        //         price: this.price,
+        //         rulesOfConduct: this.rulesOfConduct,
+        //         additionalServices: this.additionalServices,
+        //     }
+        //     console.log(vacationHomeDTO)
+        //     axios
+        //         .post("http://localhost:8888/api/v1/vacation-home-owner/vacation-homes", vacationHomeDTO)
+        //         .then(function(response) {
+        //             console.log(response);
+        //             // notify that awaiting accept
+        //         })
+        //         .catch(function(error) {
+        //             console.log(error);
+        //         })
+        // }
+    },
+}
+</script>
+
+<style scoped>
+#rental-entity-basic-info {
+    width: 100%;
+    display: flex;
+    align-items: center;  
+}
+
+.inner-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+}
+
+.form > * {
+    margin: 15px 0;
+    padding: 0 100px 0 100px;
+}
+
+.price-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price-div > * {
+    margin: 7px 0;
+}
+
+.btn-div {
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn {
+    width: 25%;
+    margin: 15px 0;
+}
+
+.btn-back {
+    background-color: lightgray;
+
+}
+
+.btn-back:hover {
+    background-color: grey;
+}
+
+.picture-container {
+    background-image: url('../assets/add-vacation-home-bg.jpg');
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: cover;
+}
+</style>

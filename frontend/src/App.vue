@@ -77,15 +77,6 @@ a:hover {
   transform: scale(0.98);
 }
 
-.btn-cancel {
-    background-color: lightgray;
-
-}
-
-.btn-cancel:hover {
-    background-color: grey;
-}
-
 .form-control {
   display: flex;
   flex-direction: column;

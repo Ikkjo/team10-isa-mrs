@@ -25,13 +25,6 @@ export default {
             country: '',
         }
     },
-    mounted() {
-        if (this.$route.path === "/add-rental-entity") {
-            if (localStorage.address) this.address = localStorage.address;
-            if (localStorage.city) this.city = localStorage.city;
-            if (localStorage.country) this.country = localStorage.country;
-        }
-    },
     watch: {
         country(newCountry, oldCountry) {
             if (newCountry !== oldCountry) this.$emit('update:country', this.country);
@@ -46,13 +39,12 @@ export default {
     display: flex;
 }
 
+#address-input :last-child {
+    margin-right: 0 ;
+}
+
 .form-control {
-    width: 33.3%;
-    margin-right: 10px; 
+    width: 32%;
+    margin-right: auto; 
 }
-
-.form-control:last-child {
-    margin-right: 0 
-}
-
 </style>
