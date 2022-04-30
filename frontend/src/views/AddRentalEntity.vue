@@ -31,6 +31,10 @@
                 <h1>Price</h1>
                 <price-input @updated="priceUpdated" class="form-control pricing"/>
             </div>
+        <!-- STEP 4: PHOTOS -->
+        <div class="form" v-show="step === 4">
+            <rental-entity-picture-input/>
+        </div>
 
             <div class="bottom">
                 <div class="progress-bar">
@@ -41,7 +45,6 @@
                     <button @click="next" class="btn">Next</button>
                 </div>
             </div>
-           <!-- STEP 4: PHOTOS -->
         </section>
         
         <!-- Add conditional classes for background-image -->
@@ -52,12 +55,14 @@
 <script>
 import AddressInput from '../components/AddressInput.vue'
 import PriceInput from '../components/PriceInput.vue'
+import RentalEntityPictureInput from '../components/RentalEntityPictureInput.vue'
 
 export default {
     name: 'AddRentalEntity',
     components: {
         AddressInput,
         PriceInput,
+        RentalEntityPictureInput,
     },
     data() {
         return {
@@ -89,6 +94,12 @@ export default {
         next() {
             // add check if step is == maxSteps
             this.step +=1 ;
+            if (this.step === 4) {
+                    this.$nextTick(function () {
+                    // DOM updated
+                    window.dispatchEvent(new Event('resize'));
+                });
+            }
         },
         back() {
             if (this.step > 1) this.step -= 1;
@@ -126,6 +137,7 @@ export default {
 }
 
 .inner-container {
+    height: 100%;
     width: 50%;
     display: flex;
     flex-direction: column;
