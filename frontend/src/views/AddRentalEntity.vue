@@ -1,6 +1,6 @@
 <template>
     <div id="rental-entity-basic-info">
-        <!-- STEP 1 -->
+        <!-- STEP 1: BASIC INFORMATION -->
         <section class="inner-container">
             <div class="form" v-show="step === 1">
                 <h1>Basic information</h1>
@@ -14,7 +14,7 @@
                     <textarea name="description" id="description" cols="30" rows="4" v-model="description" placeholder=""></textarea>
                 </div>
             </div>
-        <!-- STEP 2 -->
+        <!-- STEP 2: ADDITIONAL INFORMATION -->
             <div class="form" v-show="step === 2">
                 <h1>Additional information</h1>
                 <div class="form-control">
@@ -26,7 +26,7 @@
                     <textarea v-model="additionalServices" name="additional-services" id="additional-services" cols="30" rows="4" placeholder="Some things you offer like: wifi, free parking, air conditioning..."></textarea>
                 </div>
             </div>
-        <!-- STEP 3 -->
+        <!-- STEP 3: PRICE -->
             <div class="form price-div" v-show="step === 3">
                 <h1>Price</h1>
                 <price-input @updated="priceUpdated" class="form-control pricing"/>
@@ -41,7 +41,7 @@
                     <button @click="next" class="btn">Next</button>
                 </div>
             </div>
-           
+           <!-- STEP 4: PHOTOS -->
         </section>
         
         <!-- Add conditional classes for background-image -->
