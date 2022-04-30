@@ -32,10 +32,16 @@
                 <price-input @updated="priceUpdated" class="form-control pricing"/>
             </div>
 
-            <div class="btn-div">
-                <button @click="back" class="btn btn-back">Back</button> 
-                <button @click="next" class="btn">Next</button>
+            <div class="bottom">
+                <div class="progress-bar">
+                    <div class="bar" :style="step === 1 ? {width: 5 + '%'} : {width: 20 * (step-1) + '%'}"></div>
+                </div>
+                <div class="btn-div">
+                    <button @click="back" class="btn btn-back">Back</button> 
+                    <button @click="next" class="btn">Next</button>
+                </div>
             </div>
+           
         </section>
         
         <!-- Add conditional classes for background-image -->
@@ -142,17 +148,31 @@ export default {
     margin: 7px 0;
 }
 
-.btn-div {
+.bottom {
     position: absolute;
     bottom: 0;
     width: 50%;
+}
+
+.progress-bar {
+    background-color: lightgrey;
+    height: 10px;
+}
+
+.bar {
+    height: 100%;
+    background-color: var(--orange-primary, orange);
+    transition: 0.7s;
+}
+
+.btn-div {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .btn {
     width: 25%;
-    margin: 15px 0;
+    margin: 15px;
 }
 
 .btn-back {
