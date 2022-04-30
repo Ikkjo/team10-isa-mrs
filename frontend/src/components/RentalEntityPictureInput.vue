@@ -12,7 +12,7 @@
             drag: 'Drag your 🏡 cover photo here'
         }"
         @change="onChange"/>
-        <picture-input v-for="i in 10" :key="i" v-show="i <= 4 ? true : Number(images.length) >= i ? true : false"
+        <picture-input v-for="i in 10" :key="i" v-show="i <= 4 ? true : Number(pictures.length) >= i ? true : false"
         ref="pictureInput"
         width="250" 
         height="150" 
@@ -36,20 +36,21 @@ export default {
     },
     data() {
         return {
-            images: [],
+            pictures: [],
         }
     },
     methods: {
-        onChange (image) {
+        onChange (picture) {
             console.log('New picture selected!');
-            if (image) {
+            if (picture) {
                 console.log('Picture loaded.');
-                this.images.push(image);
-                console.log(this.images.length);
+                this.pictures.push(picture);
+                console.log(this.pictures.length);
                 this.$nextTick(function () {
                     // DOM updated
                     window.dispatchEvent(new Event('resize'));
                 });
+                this.$emit('updated', this.pictures);
             } else {
                 console.log('FileReader API not supported: use the <form>, Luke!');
             }

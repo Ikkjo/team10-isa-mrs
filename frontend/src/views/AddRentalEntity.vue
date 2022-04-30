@@ -33,7 +33,7 @@
             </div>
         <!-- STEP 4: PHOTOS -->
         <div class="form" v-show="step === 4">
-            <rental-entity-picture-input/>
+            <rental-entity-picture-input @updated="picturesUpdated"/>
         </div>
 
             <div class="bottom">
@@ -74,6 +74,7 @@ export default {
             rulesOfConduct: '',
             additionalServices: '',
             price: '',
+            pictures: [],
             step: 1,
 
         }
@@ -91,6 +92,9 @@ export default {
         priceUpdated(price) {
 				this.price = price;
 		},
+        picturesUpdated(pictures) {
+            this.pictures = pictures;
+        },
         next() {
             // add check if step is == maxSteps
             this.step +=1 ;
