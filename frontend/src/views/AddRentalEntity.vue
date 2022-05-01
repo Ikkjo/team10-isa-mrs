@@ -48,7 +48,8 @@
                 </div>
                 <div class="btn-div">
                     <button @click="back" class="btn btn-back">Back</button> 
-                    <button @click="next" class="btn">Next</button>
+                    <button v-if="step < numSteps" @click="next" class="btn">Next</button>
+                    <button v-if="step === numSteps" @click="finish" class="btn">Finish</button>
                 </div>
             </div>
         </section>
@@ -63,6 +64,7 @@ import AddressInput from '../components/AddressInput.vue'
 import PriceInput from '../components/PriceInput.vue'
 import RentalEntityPictureInput from '../components/RentalEntityPictureInput.vue'
 import RoomsInput from '../components/RoomsInput.vue'
+import axios from 'axios';
 
 export default {
     name: 'AddRentalEntity',
@@ -125,26 +127,29 @@ export default {
             if (this.step > 1) this.step -= 1;
             // add router.route to main page 
         },
-        // addVacationHomePressed() {
-        //     let vacationHomeDTO = {
-        //         title: this.title,
-        //         address: {'address': this.address, 'city': this.city, 'country': this.country},
-        //         rooms: this.rooms,
-        //         price: this.price,
-        //         rulesOfConduct: this.rulesOfConduct,
-        //         additionalServices: this.additionalServices,
-        //     }
-        //     console.log(vacationHomeDTO)
-        //     axios
-        //         .post("http://localhost:8888/api/v1/vacation-home-owner/vacation-homes", vacationHomeDTO)
-        //         .then(function(response) {
-        //             console.log(response);
-        //             // notify that awaiting accept
-        //         })
-        //         .catch(function(error) {
-        //             console.log(error);
-        //         })
-        // }
+        finish() {
+            let vacationHomeDTO = {
+                title: this.title,
+                address: {'address': this.address, 'city': this.city, 'country': this.country},
+                description: this.description,
+                rulesOfConduct: this.rulesOfConduct,
+                additionalServices: this.additionalServices,
+                price: this.price,
+                pictures: this.pictures,
+                rooms: this.rooms,
+                beds: this.beds,
+            }
+            console.log(vacationHomeDTO);
+            axios
+            .post("http://localhost:8888/api/v1/vacation-home-owner/vacation-homes", vacationHomeDTO)
+            .then(function(response) {
+                console.log(response);
+                // notify that awaiting accept
+            })
+            .catch(function(error) {
+                console.log(error);
+            })
+        },
     },
 }
 </script>
