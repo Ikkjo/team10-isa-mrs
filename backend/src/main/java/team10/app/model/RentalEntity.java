@@ -30,6 +30,8 @@ public abstract class RentalEntity {
     @Column(nullable = false)
     protected String rulesOfConduct;
     @Column(nullable = false)
+    protected String additionalServices;
+    @Column(nullable = false)
     protected int price;
     protected boolean deleted = false;
 
