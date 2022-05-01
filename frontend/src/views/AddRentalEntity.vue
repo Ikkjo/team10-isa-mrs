@@ -35,6 +35,7 @@
             <div class="form" v-show="step === 4">
                 <rental-entity-picture-input @updated="picturesUpdated"/>
             </div>
+            <!-- The rest of the steps can be decided using v-if on type of logged in user -->
             <!-- VACATION HOUSE STEPS -->
             <!-- STEP 5: ROOMS INPUT -->
             <div class="form" v-show="step === 5">
@@ -43,7 +44,7 @@
 
             <div class="bottom">
                 <div class="progress-bar">
-                    <div class="bar" :style="step === 1 ? {width: 5 + '%'} : {width: 20 * (step-1) + '%'}"></div>
+                    <div class="bar" :style="step === 1 ? {width: 5 + '%'} : {width: 100/numSteps * (step-1) + '%'}"></div>
                 </div>
                 <div class="btn-div">
                     <button @click="back" class="btn btn-back">Back</button> 
@@ -85,7 +86,7 @@ export default {
             rooms: 0,
             beds: 0,
             step: 1,
-
+            numSteps: 5,
         }
     },
     methods: {
