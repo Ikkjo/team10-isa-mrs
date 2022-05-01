@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table(name="addresses")
 public class Address {
@@ -20,4 +21,10 @@ public class Address {
     private String city;
     @Column(nullable = false)
     private String country;
+
+    public Address(String address, String city, String country) {
+        this.address = address;
+        this.city = city;
+        this.country = country;
+    }
 }

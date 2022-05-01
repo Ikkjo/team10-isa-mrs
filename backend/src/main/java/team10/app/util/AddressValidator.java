@@ -19,7 +19,7 @@ public class AddressValidator implements Predicate<Address> {
                 .getAddressByAddressCityCountry(
                 address.getAddress(),
                 address.getCity(),
-                address.getCountry()) == null;
+                address.getCountry()).isEmpty();
 
     }
 }
