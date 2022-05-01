@@ -1,6 +1,8 @@
 package team10.app.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team10.app.model.Address;
 
@@ -9,6 +11,8 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class VacationHomeDTO {
     private String title;
     private Address address;
