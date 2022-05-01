@@ -3,17 +3,17 @@
         <div class="wrapper">
             <div class="form-control">
                 <label for="first-name">First Name</label>
-                <input type="text" v-model="firstName" name="first-name">
+                <input type="text" v-model="firstName" name="first-name" @focus="inFocus('firstName')" @blur="outFocus('firstName')" :class="getClass('firstName')" :placeholder="getPlaceholder('firstName')" pattern="[a-zA-Z\.]+$">
             </div>
             <div class="form-control">
                 <label for="last-name">Last Name</label>
-                <input type="text" v-model="lastName" name="last-name">
+                <input type="text" v-model="lastName" name="last-name" @focus="inFocus('lastName')" @blur="outFocus('lastName')" :class="getClass('lastName')" :placeholder="getPlaceholder('lastName')" pattern="[a-zA-Z\.]+$">
             </div>
         </div>
         <div class="wrapper">
             <div class="form-control">
                 <label for="email">Email</label>
-                <input type="text" v-model="email" name="email" placeholder="name@rentr.com">
+                <input type="text" v-model="email" name="email" @focus="inFocus('email')" @blur="outFocus('email')" :class="getClass('email')" :placeholder="getPlaceholder('email', 'example@rentr.com')">
             </div>
             <div class="form-control">
                 <label for="phone-number">Phone Number</label>
@@ -32,11 +32,11 @@
         <div class="wrapper">
             <div class="form-control">
                 <label for="password">Password</label>
-                <input type="password" v-model="password" name="password" placeholder="At least 8 characters">
+                <input type="password" v-model="password" name="password"  @focus="inFocus('password')" @blur="outFocus('password')" :class="getClass('password')" :placeholder="getPlaceholder('password', 'At least 8 characters')">
             </div>
             <div class="form-control">
                 <label for="confirm-password">Confirm password</label>
-                <input type="password" v-model="confirmPassword" name="confirm-password" placeholder="">
+                <input type="password" v-model="confirmPassword" name="confirm-password" @focus="inFocus('confirmPassword')" @blur="outFocus('confirmPassword')" :class="getClass('confirmPassword')" :placeholder="getPlaceholder('confirmPassword')">
             </div>
         </div>
         <AddresInput :address="address" :city="city" :country="country"/>
@@ -66,7 +66,7 @@
         <div class="wrapper" id="registration-reason">
              <div class="form-control">
                 <label for="description" class="block-label">Reason for Registration</label>
-                <textarea name="description" id="description" cols="30" rows="4" v-model="registrationReason" placeholder="Tell us a few reasons why you want to join..."></textarea>
+                <textarea name="description" id="description" cols="30" rows="4" v-model="registrationReason" @focus="inFocus('registrationReason')" @blur="outFocus('registrationReason')" :class="getClass('registrationReason')" :placeholder="getPlaceholder('registrationReason', 'Tell us a few reasons why you want to join...')"></textarea>
             </div>
         </div>
         <div class="btn-div">
@@ -106,6 +106,15 @@ export default {
                 day: null,
                 month: null,
                 year: null,
+            },
+            infocus: {
+                firstName: true,
+                lastName: true,
+                username: true,
+                email: true,
+                password: true,
+                confirmPassword: true,
+                registrationReason: true,
             }
         }
     },
@@ -143,6 +152,11 @@ export default {
             minLength: minLength(2),
             maxLength: maxLength(40)
         },
+        registrationReason: {
+            required,
+            minLength: minLength(20),
+            maxLength: maxLength(200),
+        }
     },
     created() {
         this.countries = ['USA', 'Serbia']
@@ -186,6 +200,23 @@ export default {
         },
         updateYear(event){
             this.dateOfBirth.year = event
+        },
+        isFocused(field) {
+            return this.infocus[field]
+        },
+        inFocus(field) {
+            this.infocus[field] = true
+        },
+        outFocus(field) {
+            this.infocus[field] = false
+        },
+        getClass(field) {
+            let cls = !this.isFocused(field) && this.$v[field].$invalid ? 'alert' : '';
+            return cls;
+        },
+        getPlaceholder(field, defaultPlaceholder='') {
+            let placeholder = !this.isFocused(field) && this.$v[field].$invalid ? 'Required' : defaultPlaceholder;
+            return placeholder;
         }
     },
 
@@ -248,6 +279,12 @@ textarea {
 
 .btn-div p {
     margin-top: 10px;
+}
+
+.alert {
+    transition: 0.5s;
+    border-color: red !important;
+    border-width: 2px;
 }
 
 </style>
