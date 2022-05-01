@@ -15,7 +15,7 @@ import static team10.app.model.UserRole.HOUSE_OWNER;
 public class VacationHomeOwner extends BusinessPartner {
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "vacation_home_ownner_homes", joinColumns = @JoinColumn(name = "vacation_home_owner_id", referencedColumnName = "id"),
+    @JoinTable(name = "vacation_home_owner_homes", joinColumns = @JoinColumn(name = "vacation_home_owner_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "vacation_home_id", referencedColumnName = "id"))
     private Set<VacationHome> vacationHomes;
 
