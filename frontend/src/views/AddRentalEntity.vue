@@ -1,7 +1,7 @@
 <template>
     <div id="rental-entity-basic-info">
-        <!-- STEP 1: BASIC INFORMATION -->
         <section class="inner-container">
+            <!-- STEP 1: BASIC INFORMATION -->
             <div class="form" v-show="step === 1">
                 <h1>Basic information</h1>
                 <div class="form-control">
@@ -14,7 +14,7 @@
                     <textarea name="description" id="description" cols="30" rows="4" v-model="description" placeholder=""></textarea>
                 </div>
             </div>
-        <!-- STEP 2: ADDITIONAL INFORMATION -->
+            <!-- STEP 2: ADDITIONAL INFORMATION -->
             <div class="form" v-show="step === 2">
                 <h1>Additional information</h1>
                 <div class="form-control">
@@ -26,15 +26,20 @@
                     <textarea v-model="additionalServices" name="additional-services" id="additional-services" cols="30" rows="4" placeholder="Some things you offer like: wifi, free parking, air conditioning..."></textarea>
                 </div>
             </div>
-        <!-- STEP 3: PRICE -->
+            <!-- STEP 3: PRICE -->
             <div class="form price-div" v-show="step === 3">
                 <h1>Price</h1>
                 <price-input @updated="priceUpdated" class="form-control pricing"/>
             </div>
-        <!-- STEP 4: PHOTOS -->
-        <div class="form" v-show="step === 4">
-            <rental-entity-picture-input @updated="picturesUpdated"/>
-        </div>
+            <!-- STEP 4: PHOTOS -->
+            <div class="form" v-show="step === 4">
+                <rental-entity-picture-input @updated="picturesUpdated"/>
+            </div>
+            <!-- VACATION HOUSE STEPS -->
+            <!-- STEP 5: ROOMS INPUT -->
+            <div class="form" v-show="step === 5">
+                <rooms-input @updated:rooms="roomsUpdated" @updated:beds="bedsUpdated"/>
+            </div>
 
             <div class="bottom">
                 <div class="progress-bar">
@@ -56,6 +61,7 @@
 import AddressInput from '../components/AddressInput.vue'
 import PriceInput from '../components/PriceInput.vue'
 import RentalEntityPictureInput from '../components/RentalEntityPictureInput.vue'
+import RoomsInput from '../components/RoomsInput.vue'
 
 export default {
     name: 'AddRentalEntity',
@@ -63,6 +69,7 @@ export default {
         AddressInput,
         PriceInput,
         RentalEntityPictureInput,
+        RoomsInput,
     },
     data() {
         return {
@@ -75,6 +82,8 @@ export default {
             additionalServices: '',
             price: '',
             pictures: [],
+            rooms: 0,
+            beds: 0,
             step: 1,
 
         }
@@ -94,6 +103,12 @@ export default {
 		},
         picturesUpdated(pictures) {
             this.pictures = pictures;
+        },
+        roomsUpdated(rooms) {
+            this.rooms = rooms;
+        },
+        bedsUpdated(beds) {
+            this.beds = beds;
         },
         next() {
             // add check if step is == maxSteps
