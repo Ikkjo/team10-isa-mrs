@@ -1,18 +1,21 @@
 <template>
     <div id="rooms-input">
         <div class="form-control">
-            <label for="num-rooms">Rooms</label>
-            <input v-model="numRooms" @change="addRoom" type="number" name="num-rooms" min=0>   
-        </div>
-        <div class="form-control">
-            <label for="room">Room</label>
-            <select :disabled="numRooms == 0" v-model="selectedRoom" @change="onSelectedRoomChange" name="room" id="room">
-                <option v-for="i in Number(numRooms)" :key="i" :value="'Room '+ i" >Room {{i}}</option>
-            </select>
+            <label for="rooms">Rooms</label>
+            <div class="container">
+                <button @click="decreaseRooms()" :disabled="rooms <= 0" class="btn-circle"><span class="material-icons-round">remove</span></button>
+                <input v-model.number="rooms" @change="updateRooms" type="number" name="rooms" min=0 :max=maxRooms>   
+                <button @click="increaseRooms()" :disabled="rooms >= maxRooms" class="btn-circle"><span class="material-icons-round">add</span></button>
+            </div>
         </div>
         <div class="form-control">
             <label for="beds">Beds</label>
-            <input @change="onBedChange" type="number" name="beds" id="beds" :value="bedInputValue" min=0>
+            <div class="container">
+                <button @click="decreaseBeds()" :disabled="beds <= 0" class="btn-circle"><span class="material-icons-round">remove</span></button>
+                <input v-model.number="beds" @change="updateBeds" type="number" name="beds" min=0 :max=maxBeds>    
+                <button @click="increaseBeds()" :disabled="beds >= maxBeds" class="btn-circle"><span class="material-icons-round">add</span></button>
+            </div>
+           
         </div>
     </div>
 </template>
@@ -22,32 +25,34 @@ export default {
     name: 'RoomsInput',
     data() {
         return {
-            numRooms: 0,
-            rooms: [],
-            selectedRoom: "Room 1",
-            bedInputValue: 0
+            rooms: 0,
+            beds: 0,
+            maxRooms: 20,
+            maxBeds: 100,
         }
     },
     methods: {
-        addRoom(event) {
-            if (event.target.value > this.rooms.length)
-                this.rooms.push({name: 'Room '+ (this.rooms.length+1), beds: 0});
-            else if (event.target.value < this.rooms.length)
-                if (this.rooms.length > 0) this.rooms.pop()
-            if (this.numRooms == 0) this.selectedRoom = "Room 1"
-           
+        increaseRooms() {
+            if (this.rooms < this.maxRooms) this.rooms += 1;
+            this.updateRooms();
         },
-        onSelectedRoomChange() {
-            this.bedInputValue = this.getSelectedRoom().beds;
+        decreaseRooms() {
+            if (this.rooms > 0) this.rooms -= 1;
+            this.updateRooms();
         },
-        onBedChange(event) {
-            this.getSelectedRoom().beds = event.target.value.trim();
-            this.bedInputValue = event.target.value;
-            this.$emit('updated', this.rooms)
-                
+        increaseBeds() {
+            if (this.beds < this.maxBeds) this.beds += 1;
+            this.updateBeds();
         },
-        getSelectedRoom() {
-            return this.rooms[Number(this.selectedRoom.slice(4,))-1];
+        decreaseBeds() {
+            if (this.beds > 0) this.beds -= 1;
+            this.updateBeds();
+        },
+        updateRooms() {
+            this.$emit('updated:rooms', this.rooms);
+        },
+        updateBeds() {
+            this.$emit('updated:beds', this.beds);
         }
     },
 }
@@ -55,16 +60,48 @@ export default {
 
 <style scoped>
 #rooms-input {
+    width: 100%;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    align-items: center;
 }
 
 .form-control {
-    width: 33.3%;
-    margin-right: 10px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .form-control:last-child {
-    margin-right: 0 
+    margin-top: 20px
+}
+
+.form-control input {
+    width: 240px;
+    margin: 0 10px 0 10px;
+}
+
+.btn-circle {
+    width: 33px;
+    height: 33px;
+    border: none;
+    background: var(--orange-primary, orange);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+}
+
+.btn-circle:disabled {
+    background-color: lightgray;
 }
 
 
