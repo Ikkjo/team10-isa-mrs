@@ -35,9 +35,6 @@ export default {
             this.$emit('updated', this.price)
         }
     },
-    mounted() {
-
-    }
 }
 </script>
 
