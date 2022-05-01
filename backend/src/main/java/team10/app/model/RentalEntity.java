@@ -16,23 +16,23 @@ public abstract class RentalEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", unique = true, nullable = false)
     private Long id;
+    @Column(nullable = false)
+    protected String title;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     protected Address address;
     @Column(nullable = false)
-    protected String title;
-    @Column(nullable = false)
     protected String description;
-    @ElementCollection
-    @CollectionTable(name = "my_pictures", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "pictures", nullable = false)
-    protected List<String> pictures;
     @Column(nullable = false)
     protected String rulesOfConduct;
     @Column(nullable = false)
     protected String additionalServices;
     @Column(nullable = false)
     protected int price;
+    @ElementCollection
+    @CollectionTable(name = "my_pictures", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "pictures", nullable = false)
+    protected List<String> pictures;
     protected boolean deleted = false;
 
 }
