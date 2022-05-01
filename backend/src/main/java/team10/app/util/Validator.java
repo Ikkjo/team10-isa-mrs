@@ -8,7 +8,7 @@ import team10.app.model.Address;
 @Service
 @AllArgsConstructor
 public class Validator {
-    public final AddressValidator addressValidator;
+    private final AddressValidator addressValidator;
 
     public boolean validateVacationHomeDTO(VacationHomeDTO request) {
         return addressValidator.test(request.getAddress());
