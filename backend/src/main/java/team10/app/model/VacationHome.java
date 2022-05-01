@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team10.app.dto.VacationHomeDTO;
-import team10.app.model.Room;
-import team10.app.model.RulesOfConduct;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,20 +17,21 @@ import java.util.List;
 @Table(name="vacation_homes")
 public class VacationHome extends RentalEntity {
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "vacation_home_rooms", joinColumns = @JoinColumn(name = "vacation_home_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "room_id", referencedColumnName = "id"))
-    private List<Room> rooms;
     @Column(nullable = false)
-    private String additionalServices;
+    private int rooms;
+    @Column(nullable = false)
+    private int beds;
 
     public VacationHome(VacationHomeDTO vacationHomeDTO) {
         this.title = vacationHomeDTO.getTitle();
         this.address = vacationHomeDTO.getAddress();
-        this.rooms = vacationHomeDTO.getRooms();
-        this.price = vacationHomeDTO.getPrice();
+        this.description = vacationHomeDTO.getDescription();
         this.rulesOfConduct = vacationHomeDTO.getRulesOfConduct();
         this.additionalServices = vacationHomeDTO.getAdditionalServices();
+        this.price = vacationHomeDTO.getPrice();
+        this.pictures = vacationHomeDTO.getPictures();
+        this.rooms = vacationHomeDTO.getRooms();
+        this.beds = vacationHomeDTO.getBeds();
     }
 
 
