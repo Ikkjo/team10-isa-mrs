@@ -36,8 +36,7 @@ export default {
         }
     },
     mounted() {
-        if (this.$route.path === "/add-rental-entity/price" && localStorage.price)
-            this.price = localStorage.price;
+
     }
 }
 </script>
