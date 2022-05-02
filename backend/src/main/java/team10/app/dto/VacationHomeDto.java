@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 import team10.app.model.Address;
 
 import java.util.List;
@@ -19,7 +20,6 @@ public class VacationHomeDto {
     private String rulesOfConduct;
     private String additionalServices;
     private int price;
-    private List<String> pictures;
     private int rooms;
     private int beds;
 }

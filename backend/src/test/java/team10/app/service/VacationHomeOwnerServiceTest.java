@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
 import team10.app.model.VacationHome;
@@ -14,6 +15,8 @@ import team10.app.repository.VacationHomeOwnerRepository;
 import team10.app.repository.VacationHomeRepository;
 import team10.app.util.Validator;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -29,6 +32,8 @@ class VacationHomeOwnerServiceTest {
     @Mock
     private AddressRepository addressRepository;
     @Mock
+    private PictureService pictureService;
+    @Mock
     private Validator validator;
     private VacationHomeOwnerService vacationHomeOwnerService;
 
@@ -38,11 +43,12 @@ class VacationHomeOwnerServiceTest {
                 vacationHomeOwnerRepository,
                 vacationHomeRepository,
                 addressRepository,
+                pictureService,
                 validator);
     }
 
     @Test
-    void shouldAddVacationHome() {
+    void shouldAddVacationHome() throws IOException {
         // given
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
@@ -51,11 +57,10 @@ class VacationHomeOwnerServiceTest {
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
                 12,
-                Arrays.asList("12", "2"),
                 10,
                 20
         );
-        VacationHome vacationHome = new VacationHome(vacationHomeDTO);
+        VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         // when
         vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
         // then
@@ -66,7 +71,7 @@ class VacationHomeOwnerServiceTest {
     }
 
     @Test
-    void shouldNotAddVacationHome() {
+    void shouldNotAddVacationHome() throws IOException {
         // given
         Address address = new Address("Ulica b.b.", "Grad", "Drzava");
         addressRepository.save(address);
@@ -77,11 +82,10 @@ class VacationHomeOwnerServiceTest {
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
                 12,
-                Arrays.asList("12", "2"),
                 10,
                 20
         );
-        VacationHome vacationHome = new VacationHome(vacationHomeDTO);
+        VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         // when
         vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
         //then
@@ -89,7 +93,7 @@ class VacationHomeOwnerServiceTest {
     }
 
     @Test
-    void saveVacationHome() {
+    void saveVacationHome() throws IOException {
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
                 new Address("Ulica b.b.", "Grad", "Drzava"),
@@ -97,11 +101,10 @@ class VacationHomeOwnerServiceTest {
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
                 12,
-                Arrays.asList("12", "2"),
                 10,
                 20
         );
-        VacationHome vacationHome = new VacationHome(vacationHomeDTO);
+        VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         vacationHomeOwnerService.saveVacationHome(vacationHome);
 
         verify(addressRepository).save(vacationHome.getAddress());
