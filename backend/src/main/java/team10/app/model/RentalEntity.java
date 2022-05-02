@@ -32,7 +32,7 @@ public abstract class RentalEntity {
     @Column(nullable = false)
     protected int price;
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "picture_id")
     protected Set<Picture> pictures;
     protected boolean deleted = false;
 
