@@ -17,7 +17,9 @@ public class VacationHomeOwnerService {
     private final Validator validator;
 
     public String addVacationHome(VacationHomeDto request) {
-        if (!validator.validateVacationHomeDTO(request)) {}// return bad request
+        if (!validator.validateVacationHomeDTO(request)) {
+            throw new RuntimeException();
+        }
         VacationHome vacationHome = new VacationHome(request);
         saveVacationHome(vacationHome);
         return "succeess";
