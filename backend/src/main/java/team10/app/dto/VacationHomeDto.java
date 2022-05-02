@@ -19,6 +19,7 @@ public class VacationHomeDto {
     private String description;
     private String rulesOfConduct;
     private String additionalServices;
+    private String[] pictures;
     private int price;
     private int rooms;
     private int beds;
