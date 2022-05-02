@@ -13,13 +13,13 @@ public class Picture {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
-    private String name;
     @Column(name = "type")
     private String type;
     @Column(name = "pic_byte", length = 1000)
     private byte[] picByte;
 
-    public Picture(String originalFilename, String contentType, byte[] bytes) {
+    public Picture(String type, byte[] bytes) {
+        this.type = type;
+        this.picByte = bytes;
     }
 }
