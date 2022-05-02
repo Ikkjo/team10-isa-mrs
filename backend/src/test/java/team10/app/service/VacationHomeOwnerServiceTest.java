@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class VacationHomeOwnerServiceTest {
@@ -56,6 +58,7 @@ class VacationHomeOwnerServiceTest {
                 20
         );
         VacationHome vacationHome = new VacationHome(vacationHomeDTO);
+        when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
         // when
         vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
         // then
@@ -82,6 +85,7 @@ class VacationHomeOwnerServiceTest {
                 20
         );
         VacationHome vacationHome = new VacationHome(vacationHomeDTO);
+        when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
         // when
         vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
         //then
