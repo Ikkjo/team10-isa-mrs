@@ -1,8 +1,13 @@
 package team10.app.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class BusinessPartner extends User {
     private Loyalty loyalty;
 
