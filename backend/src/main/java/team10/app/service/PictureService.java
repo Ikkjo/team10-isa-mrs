@@ -1,6 +1,7 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import team10.app.model.Picture;
@@ -21,11 +22,13 @@ public class PictureService {
 
     private final PictureRepository pictureRepository;
 
-    public Set<Picture> buildPictureSet(List<MultipartFile> pictures) throws IOException {
+    public Set<Picture> buildPictureSet(String[] pictures) {
         Set<Picture> pictureSet = new HashSet<>();
-        for (MultipartFile file : pictures) {
-            pictureSet.add(new Picture(file.getOriginalFilename(), file.getContentType(),
-                    compressBytes(file.getBytes())));
+        for (String file : pictures) {
+            String[] tokens = file.split(",");
+            byte[] pictureBytes = Base64.decodeBase64(tokens[1]);
+            pictureSet.add(new Picture(tokens[0],
+                    compressBytes(pictureBytes)));
         }
         return pictureSet;
     }
@@ -44,6 +47,7 @@ public class PictureService {
         try {
             outputStream.close();
         } catch (IOException e) {
+            e.printStackTrace();
         }
         System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
 
@@ -62,8 +66,8 @@ public class PictureService {
                 outputStream.write(buffer, 0, count);
             }
             outputStream.close();
-        } catch (IOException ioe) {
-        } catch (DataFormatException e) {
+        } catch (IOException | DataFormatException ioe) {
+            ioe.printStackTrace();
         }
         return outputStream.toByteArray();
     }
