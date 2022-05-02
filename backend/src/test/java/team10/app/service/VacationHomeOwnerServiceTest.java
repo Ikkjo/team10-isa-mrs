@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import team10.app.dto.VacationHomeDTO;
+import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
 import team10.app.model.VacationHome;
 import team10.app.repository.AddressRepository;
@@ -44,7 +44,7 @@ class VacationHomeOwnerServiceTest {
     @Test
     void shouldAddVacationHome() {
         // given
-        VacationHomeDTO vacationHomeDTO = new VacationHomeDTO(
+        VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
                 new Address("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
@@ -70,7 +70,7 @@ class VacationHomeOwnerServiceTest {
         // given
         Address address = new Address("Ulica b.b.", "Grad", "Drzava");
         addressRepository.save(address);
-        VacationHomeDTO vacationHomeDTO = new VacationHomeDTO(
+        VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
                 address,
                 "Stan na dan za jedan dan stan",
@@ -90,7 +90,7 @@ class VacationHomeOwnerServiceTest {
 
     @Test
     void saveVacationHome() {
-        VacationHomeDTO vacationHomeDTO = new VacationHomeDTO(
+        VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
                 new Address("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",

@@ -1,12 +1,10 @@
 package team10.app.repository;
 
-import org.assertj.core.util.Lists;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import team10.app.dto.VacationHomeDTO;
+import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
 import team10.app.model.VacationHome;
 
@@ -31,7 +29,7 @@ class VacationHomeRepositoryTest {
 
     @Test
     void itShouldFindVacationHomeByAddress() {
-        VacationHomeDTO vacationHomeDTO = new VacationHomeDTO(
+        VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
                 new Address("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",

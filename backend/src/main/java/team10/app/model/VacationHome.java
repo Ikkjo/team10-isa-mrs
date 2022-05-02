@@ -1,18 +1,15 @@
 package team10.app.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import team10.app.dto.VacationHomeDTO;
+import lombok.*;
+import team10.app.dto.VacationHomeDto;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="vacation_homes")
 public class VacationHome extends RentalEntity {
@@ -22,7 +19,7 @@ public class VacationHome extends RentalEntity {
     @Column(nullable = false)
     private int beds;
 
-    public VacationHome(VacationHomeDTO vacationHomeDTO) {
+    public VacationHome(VacationHomeDto vacationHomeDTO) {
         this.title = vacationHomeDTO.getTitle();
         this.address = vacationHomeDTO.getAddress();
         this.description = vacationHomeDTO.getDescription();
