@@ -7,13 +7,12 @@ import lombok.Setter;
 import team10.app.model.Address;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VacationHomeDTO {
+public class VacationHomeDto {
     private String title;
     private Address address;
     private String description;
