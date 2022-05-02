@@ -11,15 +11,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class VacationHomeDto {
-    private String title;
-    private Address address;
-    private String description;
-    private String rulesOfConduct;
-    private String additionalServices;
-    private int price;
-    private List<String> pictures;
+public class VacationHomeDto extends RentalEntityDto {
     private int rooms;
     private int beds;
+
+    public VacationHomeDto(String title, Address address, String description, String rulesOfConduct, String additionalServices, int price, List<String> pictures, int rooms, int beds) {
+        super(title, address, description, rulesOfConduct, additionalServices, price, pictures);
+        this.rooms = rooms;
+        this.beds = beds;
+    }
 }
