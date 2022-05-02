@@ -1,6 +1,7 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.VacationHome;
@@ -17,6 +18,7 @@ public class VacationHomeOwnerService {
     private final VacationHomeRepository vacationHomeRepository;
     private final AddressRepository addressRepository;
     private final PictureService pictureService;
+    private final PictureRepository pictureRepository;
     private final Validator validator;
 
     public String addVacationHome(VacationHomeDto request) throws IOException {
@@ -30,11 +32,12 @@ public class VacationHomeOwnerService {
 
     public void saveVacationHome(VacationHome vacationHome) {
         addressRepository.save(vacationHome.getAddress());
+        pictureRepository.saveAll(vacationHome.getPictures());
         vacationHomeRepository.save(vacationHome);
 
     }
 
-    public VacationHome buildVacationHome(VacationHomeDto vacationHomeDto) throws IOException {
+    public VacationHome buildVacationHome(VacationHomeDto vacationHomeDto) {
         return new VacationHome(
                 vacationHomeDto.getTitle(),
                 vacationHomeDto.getAddress(),
