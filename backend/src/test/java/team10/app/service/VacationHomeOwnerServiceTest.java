@@ -11,6 +11,7 @@ import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
 import team10.app.model.VacationHome;
 import team10.app.repository.AddressRepository;
+import team10.app.repository.PictureRepository;
 import team10.app.repository.VacationHomeOwnerRepository;
 import team10.app.repository.VacationHomeRepository;
 import team10.app.util.Validator;
@@ -34,6 +35,8 @@ class VacationHomeOwnerServiceTest {
     @Mock
     private PictureService pictureService;
     @Mock
+    private PictureRepository pictureRepository;
+    @Mock
     private Validator validator;
     private VacationHomeOwnerService vacationHomeOwnerService;
 
@@ -44,6 +47,7 @@ class VacationHomeOwnerServiceTest {
                 vacationHomeRepository,
                 addressRepository,
                 pictureService,
+                pictureRepository,
                 validator);
     }
 
@@ -56,6 +60,7 @@ class VacationHomeOwnerServiceTest {
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
+                new String[]{"jpeg,123"},
                 12,
                 10,
                 20
@@ -77,10 +82,11 @@ class VacationHomeOwnerServiceTest {
         addressRepository.save(address);
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                address,
+                new Address("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
+                new String[]{"jpeg,123"},
                 12,
                 10,
                 20
@@ -93,13 +99,14 @@ class VacationHomeOwnerServiceTest {
     }
 
     @Test
-    void saveVacationHome() throws IOException {
+    void saveVacationHome() {
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
                 new Address("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
+                new String[]{"jpeg,123"},
                 12,
                 10,
                 20

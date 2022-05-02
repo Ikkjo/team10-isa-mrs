@@ -32,25 +32,22 @@ class VacationHomeRepositoryTest {
     }
 
     @Test
-    void itShouldFindVacationHomeByAddress() throws IOException {
-        MockMultipartFile mockFile = new MockMultipartFile("picture1", "123".getBytes(StandardCharsets.UTF_8));
+    void itShouldFindVacationHomeByAddress() {
+        Picture picture = new Picture("jpeg", "123".getBytes(StandardCharsets.UTF_8));
+        Set<Picture> pictureSet = new HashSet<>(List.of(picture));
+
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
                 new Address("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
+                new String[]{"jpeg,123"},
                 12,
                 10,
                 20
         );
 
-        Set<Picture> pictureSet = new HashSet<>(List.of(
-                new Picture(
-                        mockFile.getOriginalFilename(),
-                        mockFile.getContentType(),
-                        mockFile.getBytes()
-                )));
         VacationHome vacationHome = new VacationHome(
                 vacationHomeDTO.getTitle(),
                 vacationHomeDTO.getAddress(),
