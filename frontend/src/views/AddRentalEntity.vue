@@ -38,7 +38,7 @@
             <!-- The rest of the steps can be decided using v-if on type of logged in user -->
             <!-- VACATION HOUSE STEPS -->
             <!-- STEP 5: ROOMS INPUT -->
-            <div class="form" v-show="step === 5">
+            <div class="form" v-show="step === 5" v-if="user.userRole === 'HOUSE_OWNER'">
                 <rooms-input @updated:rooms="roomsUpdated" @updated:beds="bedsUpdated" ref="roomsInput"/>
             </div>
 
@@ -91,6 +91,9 @@ export default {
             },
             step: 1,
             numSteps: 5,
+            user: {
+                userRole: 'HOUSE_OWNER'
+            }
         }
     },
     validations: {
@@ -141,6 +144,11 @@ export default {
             // add router.route to main page 
         },
         finish() {
+            if (this.user.userRole === 'HOUSE_OWNER') {
+                this.sendVacationHome();
+            }  
+        },
+        sendVacationHome() {
             let vacationHomeDTO = {
                 title: this.form.title,
                 address: {'address': this.form.address, 'city': this.form.city, 'country': this.form.country},
@@ -171,7 +179,7 @@ export default {
             .catch(function(error) {
                 console.log(error);
             })          
-        },
+        }
     },
 }
 </script>
