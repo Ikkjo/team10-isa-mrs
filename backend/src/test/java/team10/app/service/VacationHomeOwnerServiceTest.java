@@ -70,7 +70,7 @@ class VacationHomeOwnerServiceTest {
     }
 
     @Test
-    void shouldNotAddVacationHome() {
+    void shouldNotAddVacationHomeAndShouldThrowRuntimeException() {
         // given
         Address address = new Address("Ulica b.b.", "Grad", "Drzava");
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
@@ -94,7 +94,7 @@ class VacationHomeOwnerServiceTest {
     }
 
     @Test
-    void shouldNotAddVacationHomeAndShouldThrowRuntimeException() {
+    void shouldNotAddVacationHome() {
         // given
         Address address = new Address("Ulica b.b.", "Grad", "Drzava");
         addressRepository.save(address);
