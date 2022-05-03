@@ -17,9 +17,10 @@ import team10.app.util.Validator;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class VacationHomeOwnerServiceTest {
@@ -72,6 +73,30 @@ class VacationHomeOwnerServiceTest {
     void shouldNotAddVacationHome() {
         // given
         Address address = new Address("Ulica b.b.", "Grad", "Drzava");
+        VacationHomeDto vacationHomeDTO = new VacationHomeDto(
+                "Stan na dan",
+                address,
+                "Stan na dan za jedan dan stan",
+                "Ponasalje mora biti lijepo",
+                "Svasta nesto nudimo",
+                12,
+                Arrays.asList("12", "2"),
+                10,
+                20
+        );
+        //given
+        given(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).willReturn(false);
+        // when
+        //then
+        assertThatThrownBy(() -> vacationHomeOwnerService.addVacationHome(vacationHomeDTO)).isInstanceOf(RuntimeException.class);
+
+        verify(vacationHomeRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldNotAddVacationHomeAndShouldThrowRuntimeException() {
+        // given
+        Address address = new Address("Ulica b.b.", "Grad", "Drzava");
         addressRepository.save(address);
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
@@ -89,7 +114,7 @@ class VacationHomeOwnerServiceTest {
         // when
         vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
         //then
-        assertThat(vacationHomeRepository.count()).isEqualTo(0);
+
     }
 
     @Test
