@@ -4,6 +4,7 @@ import lombok.*;
 import team10.app.dto.VacationHomeDto;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,17 +20,23 @@ public class VacationHome extends RentalEntity {
     @Column(nullable = false)
     private int beds;
 
-    public VacationHome(VacationHomeDto vacationHomeDTO) {
-        this.title = vacationHomeDTO.getTitle();
-        this.address = vacationHomeDTO.getAddress();
-        this.description = vacationHomeDTO.getDescription();
-        this.rulesOfConduct = vacationHomeDTO.getRulesOfConduct();
-        this.additionalServices = vacationHomeDTO.getAdditionalServices();
-        this.price = vacationHomeDTO.getPrice();
-        this.pictures = vacationHomeDTO.getPictures();
-        this.rooms = vacationHomeDTO.getRooms();
-        this.beds = vacationHomeDTO.getBeds();
+    public VacationHome(String title,
+                        Address address,
+                        String description,
+                        String rulesOfConduct,
+                        String additionalServices,
+                        int price,
+                        Set<Picture> pictures,
+                        int rooms,
+                        int beds) {
+        this.title = title;
+        this.address = address;
+        this.description = description;
+        this.rulesOfConduct = rulesOfConduct;
+        this.additionalServices = additionalServices;
+        this.price = price;
+        this.pictures = pictures;
+        this.rooms = rooms;
+        this.beds = beds;
     }
-
-
 }
