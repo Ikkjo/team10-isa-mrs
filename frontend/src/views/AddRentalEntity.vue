@@ -6,12 +6,12 @@
                 <h1>Basic information</h1>
                 <div class="form-control">
                     <label for="title">Title</label>
-                    <input type="text" v-model="title" name="title">
+                    <input type="text" v-model="form.title" name="title">
                 </div>
                 <address-input @update:address="addressUpdated" @update:city="cityUpdated" @update:country="countryUpdated"/>
                 <div class="form-control">
                     <label for="description" class="block-label">Description</label>
-                    <textarea name="description" id="description" cols="30" rows="4" v-model="description" placeholder=""></textarea>
+                    <textarea name="description" id="description" cols="30" rows="4" v-model="form.description" placeholder=""></textarea>
                 </div>
             </div>
             <!-- STEP 2: ADDITIONAL INFORMATION -->
@@ -19,11 +19,11 @@
                 <h1>Additional information</h1>
                 <div class="form-control">
                     <label for="rules-of-conduct">Rules of conduct</label>
-                    <textarea v-model="rulesOfConduct" name="rules-of-conduct" id="rules-of-conduct" cols="30" rows="4" placeholder=""></textarea>
+                    <textarea v-model="form.rulesOfConduct" name="rules-of-conduct" id="rules-of-conduct" cols="30" rows="4" placeholder=""></textarea>
                 </div>
                 <div class="form-control">
                     <label for="additional-services" class="block-label">Additional Services</label>
-                    <textarea v-model="additionalServices" name="additional-services" id="additional-services" cols="30" rows="4" placeholder="Some things you offer like: wifi, free parking, air conditioning..."></textarea>
+                    <textarea v-model="form.additionalServices" name="additional-services" id="additional-services" cols="30" rows="4" placeholder="Some things you offer like: wifi, free parking, air conditioning..."></textarea>
                 </div>
             </div>
             <!-- STEP 3: PRICE -->
@@ -39,7 +39,7 @@
             <!-- VACATION HOUSE STEPS -->
             <!-- STEP 5: ROOMS INPUT -->
             <div class="form" v-show="step === 5">
-                <rooms-input @updated:rooms="roomsUpdated" @updated:beds="bedsUpdated"/>
+                <rooms-input @updated:rooms="roomsUpdated" @updated:beds="bedsUpdated" ref="roomsInput"/>
             </div>
 
             <div class="bottom">
@@ -48,8 +48,8 @@
                 </div>
                 <div class="btn-div">
                     <button @click="back" class="btn btn-back">Back</button> 
-                    <button v-if="step < numSteps" @click="next" class="btn">Next</button>
-                    <button v-if="step === numSteps" @click="finish" class="btn">Finish</button>
+                    <button v-if="step < numSteps" @click="next" :disabled="nextDisabled()" class="btn">Next</button>
+                    <button v-if="step === numSteps" @click="finish" :disabled="finishDisabled()" class="btn">Finish</button>
                 </div>
             </div>
         </section>
@@ -76,42 +76,55 @@ export default {
     },
     data() {
         return {
-            title: '',
-            address: '',
-            city: '',
-            country: '',
-            description: '',
-            rulesOfConduct: '',
-            additionalServices: '',
-            price: '',
-            pictures: [],
-            rooms: 0,
-            beds: 0,
+            form: {
+                title: '',
+                address: '',
+                city: '',
+                country: '',
+                description: '',
+                rulesOfConduct: '',
+                additionalServices: '',
+                price: '',
+                pictures: [],
+                rooms: 0,
+                beds: 0,
+            },
             step: 1,
             numSteps: 5,
         }
     },
+    validations: {
+        form: {
+            
+        }
+    },
     methods: {
         addressUpdated(address) {
-            this.address = address;
+            this.form.address = address;
         },
         cityUpdated(city) {
-            this.city = city;
+            this.form.city = city;
         },
         countryUpdated(country) {
-            this.country = country;
+            this.form.country = country;
         },
         priceUpdated(price) {
-				this.price = price;
+				this.form.price = price;
 		},
         picturesUpdated(pictures) {
-            this.pictures = pictures;
+            this.form.pictures = pictures;
         },
         roomsUpdated(rooms) {
-            this.rooms = rooms;
+            this.form.rooms = rooms;
         },
         bedsUpdated(beds) {
-            this.beds = beds;
+            this.form.beds = beds;
+        },
+        nextDisabled() {
+            return false;
+        },
+        finishDisabled() {
+            return this.$refs.roomsInput.$v.$invalid;
         },
         next() {
             // add check if step is == maxSteps
@@ -129,26 +142,35 @@ export default {
         },
         finish() {
             let vacationHomeDTO = {
-                title: this.title,
-                address: {'address': this.address, 'city': this.city, 'country': this.country},
-                description: this.description,
-                rulesOfConduct: this.rulesOfConduct,
-                additionalServices: this.additionalServices,
-                price: this.price,
-                pictures: this.pictures,
-                rooms: this.rooms,
-                beds: this.beds,
+                title: this.form.title,
+                address: {'address': this.form.address, 'city': this.form.city, 'country': this.form.country},
+                description: this.form.description,
+                rulesOfConduct: this.form.rulesOfConduct,
+                additionalServices: this.form.additionalServices,
+                price: this.form.price,
+                pictures: this.form.pictures,
+                rooms: this.form.rooms,
+                beds: this.form.beds,
             }
-            console.log(vacationHomeDTO);
-            axios
-            .post("http://localhost:8888/api/v1/vacation-home-owner/vacation-homes", vacationHomeDTO)
-            .then(function(response) {
+
+            // username = JSON.parse(window.sessionStorage.getItem("user")).username;
+            // token = JSON.parse(window.sessionStorage.getItem("user")).jwt
+            // console.log(vacationHomeDTO);
+            
+            axios({
+                method: 'post',
+                url: 'http://localhost:8888/api/v1/vacation-home-owner/vacation-homes',
+                data: vacationHomeDTO,
+                // headers: {
+                //     Authorization: 'Bearer ' + token,
+                // },
+            }).then(function(response) {
                 console.log(response);
                 // notify that awaiting accept
             })
             .catch(function(error) {
                 console.log(error);
-            })
+            })          
         },
     },
 }
@@ -210,6 +232,10 @@ export default {
 .btn {
     width: 25%;
     margin: 15px;
+}
+
+.btn:disabled {
+    background-color: lightgray;
 }
 
 .btn-back {
