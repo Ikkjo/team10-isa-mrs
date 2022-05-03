@@ -3,9 +3,11 @@ package team10.app.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,7 +26,7 @@ public class Adventure extends RentalEntity {
 
     public Adventure(String name,
                      String description,
-                     List<String> pictures,
+                     Set<Picture> pictures,
                      String rulesOfConduct,
                      int price,
                      String instructorBiography,

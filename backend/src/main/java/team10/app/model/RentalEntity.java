@@ -3,9 +3,11 @@ package team10.app.model;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -29,10 +31,9 @@ public abstract class RentalEntity {
     protected String additionalServices;
     @Column(nullable = false)
     protected int price;
-    @ElementCollection
-    @CollectionTable(name = "my_pictures", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "pictures", nullable = false)
-    protected List<String> pictures;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "picture_id")
+    protected Set<Picture> pictures;
     protected boolean deleted = false;
 
 }
