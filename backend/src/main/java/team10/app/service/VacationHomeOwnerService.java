@@ -16,13 +16,13 @@ public class VacationHomeOwnerService {
     private final AddressRepository addressRepository;
     private final Validator validator;
 
-    public String addVacationHome(VacationHomeDto request) {
+    public boolean addVacationHome(VacationHomeDto request) throws RuntimeException { // TODO: Add custom exception
         if (!validator.validateVacationHomeDTO(request)) {
             throw new RuntimeException();
         }
         VacationHome vacationHome = new VacationHome(request);
         saveVacationHome(vacationHome);
-        return "succeess";
+        return true;
     }
 
     public void saveVacationHome(VacationHome vacationHome) {
