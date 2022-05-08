@@ -109,7 +109,7 @@ class ShipOwnerServiceTest {
         ArgumentCaptor<Ship> argumentCaptor = ArgumentCaptor.forClass(Ship.class);
         verify(shipRepository).save(argumentCaptor.capture());
         Ship capturedShip = argumentCaptor.getValue();
-        assertThat(capturedShip).isEqualTo(ship);
+        assertThat(capturedShip.getAddress()).isEqualTo(ship.getAddress());
     }
 
     @Test
