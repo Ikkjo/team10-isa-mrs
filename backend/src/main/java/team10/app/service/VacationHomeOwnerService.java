@@ -21,13 +21,12 @@ public class VacationHomeOwnerService {
     private final PictureRepository pictureRepository;
     private final Validator validator;
 
-    public boolean addVacationHome(VacationHomeDto request) throws RuntimeException { // TODO: Add custom exception
+    public void addVacationHome(VacationHomeDto request) throws RuntimeException { // TODO: Add custom exception
         if (!validator.validateVacationHomeDTO(request)) {
             throw new RuntimeException();
         }
         VacationHome vacationHome = this.buildVacationHome(request);
         saveVacationHome(vacationHome);
-        return true;
     }
 
     public void saveVacationHome(VacationHome vacationHome) {
