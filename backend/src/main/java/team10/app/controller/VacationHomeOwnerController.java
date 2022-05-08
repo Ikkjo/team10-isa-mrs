@@ -18,7 +18,7 @@ public class VacationHomeOwnerController {
     @PostMapping("/vacation-homes")
     public ResponseEntity<VacationHomeDto> addVacationHome(@RequestBody VacationHomeDto request) {
         try {
-             Boolean success = vacationHomeOwnerService.addVacationHome(request);
+             vacationHomeOwnerService.addVacationHome(request);
         }
         catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
