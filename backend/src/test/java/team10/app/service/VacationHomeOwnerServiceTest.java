@@ -11,6 +11,7 @@ import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
 import team10.app.model.VacationHome;
 import team10.app.repository.AddressRepository;
+import team10.app.repository.PictureRepository;
 import team10.app.repository.VacationHomeOwnerRepository;
 import team10.app.repository.VacationHomeRepository;
 import team10.app.util.Validator;
@@ -32,6 +33,10 @@ class VacationHomeOwnerServiceTest {
     @Mock
     private AddressRepository addressRepository;
     @Mock
+    private PictureService pictureService;
+    @Mock
+    private PictureRepository pictureRepository;
+    @Mock
     private Validator validator;
     private VacationHomeOwnerService vacationHomeOwnerService;
 
@@ -41,6 +46,8 @@ class VacationHomeOwnerServiceTest {
                 vacationHomeOwnerRepository,
                 vacationHomeRepository,
                 addressRepository,
+                pictureService,
+                pictureRepository,
                 validator);
     }
 
@@ -58,7 +65,7 @@ class VacationHomeOwnerServiceTest {
                 10,
                 20
         );
-        VacationHome vacationHome = new VacationHome(vacationHomeDTO);
+        VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
         // when
         vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
@@ -109,7 +116,7 @@ class VacationHomeOwnerServiceTest {
                 10,
                 20
         );
-        VacationHome vacationHome = new VacationHome(vacationHomeDTO);
+        VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
         // when
         vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
@@ -130,7 +137,7 @@ class VacationHomeOwnerServiceTest {
                 10,
                 20
         );
-        VacationHome vacationHome = new VacationHome(vacationHomeDTO);
+        VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         vacationHomeOwnerService.saveVacationHome(vacationHome);
 
         verify(addressRepository).save(vacationHome.getAddress());
