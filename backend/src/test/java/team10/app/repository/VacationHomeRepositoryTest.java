@@ -12,6 +12,7 @@ import team10.app.model.Picture;
 import team10.app.model.VacationHome;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -42,10 +43,10 @@ class VacationHomeRepositoryTest {
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
-                new String[]{"jpeg,123"},
-                12,
-                10,
-                20
+                100,
+                List.of("jpeg,123"),
+                5,
+                10
         );
 
         VacationHome vacationHome = new VacationHome(
