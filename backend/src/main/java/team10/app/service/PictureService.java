@@ -22,7 +22,7 @@ public class PictureService {
 
     private final PictureRepository pictureRepository;
 
-    public Set<Picture> buildPictureSet(String[] pictures) {
+    public Set<Picture> buildPictureSet(List<String> pictures) {
         Set<Picture> pictureSet = new HashSet<>();
         for (String file : pictures) {
             String[] tokens = file.split(",");
