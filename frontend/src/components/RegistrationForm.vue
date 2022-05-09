@@ -281,10 +281,4 @@ textarea {
     margin-top: 10px;
 }
 
-.alert {
-    transition: 0.5s;
-    border-color: red !important;
-    border-width: 2px;
-}
-
 </style>
