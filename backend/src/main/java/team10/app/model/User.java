@@ -23,45 +23,19 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 public abstract class User implements UserDetails {
 
 
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
+    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private Long id;
-    @Column(
-            name = "first_name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
     private String firstName;
-    @Column(
-            name = "last_name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
-    @Column(
-            name = "email",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
-    @Column(
-            name = "password",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
-    @Column(
-            name = "phone_number",
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "phone_number", columnDefinition = "TEXT")
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
