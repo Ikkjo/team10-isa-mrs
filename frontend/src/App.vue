@@ -77,6 +77,11 @@ a:hover {
   transform: scale(0.98);
 }
 
+button:disabled {
+    pointer-events: none;
+    background-color: lightgray;
+}
+
 .form-control {
   display: flex;
   flex-direction: column;

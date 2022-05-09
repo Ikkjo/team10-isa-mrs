@@ -3,17 +3,47 @@
         <div class="wrapper">
             <div class="form-control">
                 <label for="first-name">First Name</label>
-                <input type="text" v-model="firstName" name="first-name" @focus="inFocus('firstName')" @blur="outFocus('firstName')" :class="getClass('firstName')" :placeholder="getPlaceholder('firstName')" pattern="[a-zA-Z\.]+$">
+                <input type="text"
+                    v-model="firstName" 
+                    name="first-name" 
+                    @focus="inFocus('firstName')" 
+                    @blur="outFocus('firstName')" 
+                    :class="getClass('firstName')" 
+                    :placeholder="getPlaceholder('firstName')">
+                <div class="alert-info" 
+                    v-if="!this.infocus['firstName'] && !($v.firstName.minLength && $v.firstName.maxLength)">
+                    First name must be 2 to 20 characters long.
+                </div>
             </div>
             <div class="form-control">
                 <label for="last-name">Last Name</label>
-                <input type="text" v-model="lastName" name="last-name" @focus="inFocus('lastName')" @blur="outFocus('lastName')" :class="getClass('lastName')" :placeholder="getPlaceholder('lastName')" pattern="[a-zA-Z\.]+$">
+                <input type="text" 
+                    v-model="lastName" 
+                    name="last-name" 
+                    @focus="inFocus('lastName')" 
+                    @blur="outFocus('lastName')" 
+                    :class="getClass('lastName')" 
+                    :placeholder="getPlaceholder('lastName')">
+                <div class="alert-info" 
+                    v-if="!this.infocus['lastName'] && !($v.lastName.minLength && $v.lastName.maxLength)">
+                    Last name must be 2 to 20 characters long.
+                </div>
             </div>
         </div>
         <div class="wrapper">
             <div class="form-control">
                 <label for="email">Email</label>
-                <input type="text" v-model="email" name="email" @focus="inFocus('email')" @blur="outFocus('email')" :class="getClass('email')" :placeholder="getPlaceholder('email', 'example@rentr.com')">
+                <input type="text" 
+                    v-model="email" 
+                    name="email" 
+                    @focus="inFocus('email')" 
+                    @blur="outFocus('email')" 
+                    :class="getClass('email')" 
+                    :placeholder="getPlaceholder('email', 'example@rentr.com')">
+                <div class="alert-info" 
+                    v-if="!this.infocus['email'] && !$v.email.email">
+                    Incorrect email format.
+                </div>
             </div>
             <div class="form-control">
                 <label for="phone-number">Phone Number</label>
@@ -25,21 +55,48 @@
                     color="#f0a500"
                     valid-color="green"
                     error-color="red"
-                    @update="updatePhone"
-                 />
+                    @update="updatePhone"/>
+                <div class="alert-info" 
+                    v-if="phone && !phone.isValid">
+                    Incorrect phone number.
+                </div>
             </div>
         </div>
         <div class="wrapper">
             <div class="form-control">
                 <label for="password">Password</label>
-                <input type="password" v-model="password" name="password"  @focus="inFocus('password')" @blur="outFocus('password')" :class="getClass('password')" :placeholder="getPlaceholder('password', 'At least 8 characters')">
+                <input type="password" 
+                    v-model="password" 
+                    name="password"  
+                    @focus="inFocus('password')"
+                    @blur="outFocus('password')" 
+                    :class="getClass('password')"
+                    :placeholder="getPlaceholder('password', 'At least 8 characters')">
+                <div class="alert-info" 
+                    v-if="!this.infocus['password'] && !($v.password.minLength && $v.password.maxLength)">
+                    Password must be 8 to 30 characters long.
+                </div>
             </div>
             <div class="form-control">
                 <label for="confirm-password">Confirm password</label>
-                <input type="password" v-model="confirmPassword" name="confirm-password" @focus="inFocus('confirmPassword')" @blur="outFocus('confirmPassword')" :class="getClass('confirmPassword')" :placeholder="getPlaceholder('confirmPassword')">
+                <input type="password" 
+                    v-model="confirmPassword" 
+                    name="confirm-password" 
+                    @focus="inFocus('confirmPassword')" 
+                    @blur="outFocus('confirmPassword')" 
+                    :class="getClass('confirmPassword')" 
+                    :placeholder="getPlaceholder('confirmPassword')">
+                <div class="alert-info" 
+                    v-if="!this.infocus['confirmPassword'] && !$v.confirmPassword.sameAsPassword">
+                    Passwords don't match.
+                </div>
             </div>
         </div>
-        <AddresInput :address="address" :city="city" :country="country"/>
+        <AddressInput
+            @update:address="updateAddress"
+            @update:city="updateCity"
+            @update:country="updateCountry"
+            :validate="true"/>
         <div class="wrapper">
             <div class="form-control">
                 <label for="datepicker">Date of Birth</label>
@@ -48,44 +105,67 @@
                     name="datepicker" 
                     displayFormat="dmy" 
                     :minAge="18"
+                    :onChange="updateDate"
                     :onDayChange="updateDay"
                     :onMonthChange="updateMonth"
                     :onYearChange="updateYear"
                     />
+                <div class="alert-info"
+                    v-if="this.dateOfBirth.focused && !this.dateOfBirth.isValid">
+                    Select a valid date.
+                </div>
             </div>
             <div class="form-control">
                 <label for="role" class="block-label">Account Type</label>
-                <select name="role" id="role" v-model="role">
+                <select name="role" id="role" @click="roleFocused = true;" v-model="role">
                     <option value="">Choose account type</option>
                     <option value="HOUSE_OWNER">Vacation Home Owner</option>
                     <option value="SHIP_OWNER">Ship Owner</option>
                     <option value="FISHING_INSTRUCTOR">Fishing Instructor</option>
                 </select>
+                <div class="alert-info"
+                    v-if="this.roleFocused && this.role === ''">
+                    Select an account type.
+                </div>
             </div>
         </div>
         <div class="wrapper" id="registration-reason">
              <div class="form-control">
                 <label for="description" class="block-label">Reason for Registration</label>
-                <textarea name="description" id="description" cols="30" rows="4" v-model="registrationReason" @focus="inFocus('registrationReason')" @blur="outFocus('registrationReason')" :class="getClass('registrationReason')" :placeholder="getPlaceholder('registrationReason', 'Tell us a few reasons why you want to join...')"></textarea>
+                <textarea name="description" 
+                    id="description" cols="30" rows="4"
+                    v-model="registrationReason" 
+                    @focus="inFocus('registrationReason')" 
+                    @blur="outFocus('registrationReason')" 
+                    :class="getClass('registrationReason')" 
+                    :placeholder="getPlaceholder('registrationReason', 'Tell us a few reasons why you want to join...')"/>
+                <div class="alert-info" 
+                    v-if="!this.infocus['registrationReason'] && !($v.registrationReason.minLength && $v.registrationReason.maxLength)">
+                    Enter a registration reason.
+                </div>
             </div>
         </div>
         <div class="btn-div">
-            <button class="btn">Create Account</button>
-            <p>Already have an account? <a href="/login">Log in</a></p>
+            <button class="btn"
+                :disabled="$v.$invalid || (!phone || !phone.isValid) 
+                    || !dateOfBirth.isValid || role==='' || country===''">
+                Create Account
+            </button>
+            <div class="already-registered">Already have an account? <router-link to="/login">Log in</router-link></div>
         </div>
     </form>
 </template>
 <script>
 import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
 import DropdownDatepicker from 'vue-dropdown-datepicker/src/dropdown-datepicker.vue';
-import AddresInput from './AddressInput.vue';
+import AddressInput from './AddressInput.vue';
 import axios from 'axios';
 
 export default {
     name: 'RegistrationFrom',
     components: {
         DropdownDatepicker,
-        AddresInput,
+        AddressInput,
     },
     data() {
         return {
@@ -98,14 +178,17 @@ export default {
             address: '',
             city: '',
             country: '',
-            coutries: [],
             registrationReason: '',
             role: '',
+            roleFocused: false,
             phoneTmp: '',
             dateOfBirth:{
                 day: null,
                 month: null,
                 year: null,
+                isValid: false,
+                updatingDay: false,
+                focused: false,
             },
             infocus: {
                 firstName: true,
@@ -142,24 +225,11 @@ export default {
             required,
             sameAsPassword: sameAs("password")
         },
-        address: {
-            required,
-            minLength: minLength(5),
-            maxLength: maxLength(40)
-        },
-        city: {
-            required,
-            minLength: minLength(2),
-            maxLength: maxLength(40)
-        },
         registrationReason: {
             required,
             minLength: minLength(20),
             maxLength: maxLength(200),
         }
-    },
-    created() {
-        this.countries = ['USA', 'Serbia']
     },
     methods: {
         signUpPressed(){
@@ -192,14 +262,41 @@ export default {
         updatePhone(event){
             this.phone = event
         },
+        isDateValid(){
+            if(this.dateOfBirth.day && this.dateOfBirth.month && this.dateOfBirth.year)
+                this.dateOfBirth.isValid = true;
+        },
         updateDay(event){
+            this.dateOfBirth.updatingDay = true;
             this.dateOfBirth.day = event;
+            this.isDateValid();
         },
         updateMonth(event){
             this.dateOfBirth.month = event;
+            this.isDateValid();
         },
         updateYear(event){
-            this.dateOfBirth.year = event
+            this.dateOfBirth.year = event;
+            this.isDateValid();
+            this.dateOfBirth.focused = true;
+        },
+        updateDate(day){
+            if(this.dateOfBirth.updatingDay){
+                this.dateOfBirth.updatingDay = false;
+            }
+            else if (day != this.dateOfBirth.day) {
+                this.dateOfBirth.day = null;
+                this.dateOfBirth.isValid = false;
+            }
+        },
+        updateAddress(event){
+            this.address = event;
+        },
+        updateCity(event){
+            this.city = event;
+        },
+        updateCountry(event){
+            this.country = event;
         },
         isFocused(field) {
             return this.infocus[field]
@@ -219,8 +316,6 @@ export default {
             return placeholder;
         }
     },
-
-
 }
 </script>
 
@@ -271,6 +366,7 @@ textarea {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 20px;
 }
 
 .btn {
@@ -278,7 +374,7 @@ textarea {
 }
 
 .btn-div p {
-    margin-top: 10px;
+    margin-top: 0px;
 }
 
 .alert {
@@ -287,4 +383,15 @@ textarea {
     border-width: 2px;
 }
 
+.alert-info {
+    position: absolute;
+    transition: 0.05s;
+    color: red !important;
+    font-size: 0.9rem;
+}
+
+.already-registered {
+    font-size: 0.9rem !important;
+    margin-top: 5px;
+}
 </style>
