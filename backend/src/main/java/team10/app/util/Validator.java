@@ -32,7 +32,7 @@ public class Validator {
     // Ship
     private static final int TYPE_MIN_LENGTH = 5;
     private static final int TYPE_MAX_LENGTH = 50;
-    private static final double MIN_LENGTH = 2;
+    private static final double MIN_LENGTH = 1;
     private static final double MAX_LENGTH = 50;
     private static final int MIN_ENGINE_COUNT = 1;
     private static final int MAX_ENGINE_COUNT = 5;
