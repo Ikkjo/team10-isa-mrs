@@ -35,11 +35,62 @@
             <div class="form" v-show="step === 4">
                 <rental-entity-picture-input @updated="picturesUpdated"/>
             </div>
+
             <!-- The rest of the steps can be decided using v-if on type of logged in user -->
             <!-- VACATION HOUSE STEPS -->
             <!-- STEP 5: ROOMS INPUT -->
             <div class="form" v-show="step === 5" v-if="user.userRole === 'HOUSE_OWNER'">
                 <rooms-input @updated:rooms="roomsUpdated" @updated:beds="bedsUpdated" ref="roomsInput"/>
+            </div>
+
+            <!-- STEP 5: SHIP INPUT -->
+            <div class="form ship-form" v-show="step === 5" v-if="user.userRole === 'SHIP_OWNER'">
+                <h1>Ship information</h1>
+                <div class="form-control">
+                    <label for="ship-type">Ship Type</label>
+                    <input type="text" v-model="form.shipType" name="ship-type" @focus="inFocus('shipType')" @blur="outFocus('shipType')" :class="getClass('shipType')" :placeholder="getPlaceholder('shipType')">
+                    <div class="alert-info" 
+                    v-if="!this.infocus['shipType'] && !($v.form.shipType.minLength && $v.form.shipType.maxLength)">
+                    Must be between 5 and 50 characters.
+                    </div>
+                </div>
+                <div class="number-input">
+                    <div>
+                        <number-input @updated="shipLengthUpdated" placeholder="" label="Ship Length (meters)" :increment="1" :minValue="1" :maxValue="50" />
+                        <number-input @updated="capacityUpdated" placeholder="" label="Capacity" :increment="2" :minValue="1" :maxValue="100" />
+                    </div>
+                    <div>
+                        <number-input @updated="engineCountUpdated" placeholder="" label="Number of Engines" :increment="1" :minValue="1" :maxValue="5" />
+                        <number-input @updated="enginePowerUpdated" placeholder="" label="Engine Power (kw)" :increment="5" :minValue="1" :maxValue="10000" />
+                    </div>
+                    <div>
+                        <number-input @updated="maxSpeedUpdated" placeholder="" label="Max Speed (km/h)" :increment="5" :minValue="1" :maxValue="200" />
+                    </div>
+                </div>
+                
+                <div class="form-control">
+                    <label for="navigation-equipment" class="block-label">Navigation Equipment</label>
+                    <textarea v-model="form.navigationEquipment" name="navigation-equipment" id="navigation-equipment" cols="30" rows="4" @focus="inFocus('navigationEquipment')" @blur="outFocus('navigationEquipment')" :class="getClass('navigationEquipment')" :placeholder="getPlaceholder('navigationEquipment', 'GPS, radar, VHS radio, fishfinder...')"></textarea>
+                    <div class="alert-info alert-textarea" 
+                    v-if="!this.infocus['navigationEquipment'] && !($v.form.navigationEquipment.minLength && $v.form.navigationEquipment.maxLength)">
+                    Must be between 5 and 500 characters.
+                    </div>
+                </div>
+                <div class="form-control">
+                    <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
+                    <textarea v-model="form.fishingEquipment" name="fishing-equipment" id="fishing-equipment" cols="30" rows="4" @focus="inFocus('fishingEquipment')" @blur="outFocus('fishingEquipment')" :class="getClass('fishingEquipment')" :placeholder="getPlaceholder('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"></textarea>
+                    <div class="alert-info alert-textarea" 
+                    v-if="!this.infocus['fishingEquipment'] && !($v.form.fishingEquipment.minLength && $v.form.fishingEquipment.maxLength)">
+                    Must be between 5 and 500 characters.
+                    </div>
+                </div>
+                 <div class="form-control">
+                    <label for="cancelation" class="block-label">Cancelation</label>
+                    <select name="cancelation" id="cancelation" v-model="form.cancelation">
+                        <option value="true">Free cancelation</option>
+                        <option value="false">Owner keeps a percentage</option>
+                    </select>
+                </div>
             </div>
 
             <div class="bottom">
@@ -64,7 +115,9 @@ import AddressInput from '../components/AddressInput.vue'
 import PriceInput from '../components/PriceInput.vue'
 import RentalEntityPictureInput from '../components/RentalEntityPictureInput.vue'
 import RoomsInput from '../components/RoomsInput.vue'
+import NumberInput from '../components/NumberInput.vue'
 import axios from 'axios';
+import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
 export default {
     name: 'AddRentalEntity',
@@ -73,6 +126,7 @@ export default {
         PriceInput,
         RentalEntityPictureInput,
         RoomsInput,
+        NumberInput,
     },
     data() {
         return {
@@ -88,18 +142,48 @@ export default {
                 pictures: [],
                 rooms: 0,
                 beds: 0,
+                shipType: '',
+                shipLength: '',
+                engineCount: 0,
+                enginePower: 0,
+                maxSpeed: 0,
+                navigationEquipment: '',
+                fishingEquipment: '',
+                capacity: 0,
+                cancelation: true,
+
             },
-            step: 1,
+            step: 5,
             numSteps: 5,
             user: {
-                userRole: 'HOUSE_OWNER'
+                userRole: 'SHIP_OWNER'
+            },
+            infocus: {
+                shipType: true,
+                navigationEquipment: true,
+                fishingEquipment: true,
             }
         }
     },
     validations: {
         form: {
-            
+            shipType: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(50),
+            },
+            navigationEquipment: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(500),
+            },
+            fishingEquipment: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(500),
+            }
         }
+       
     },
     methods: {
         addressUpdated(address) {
@@ -123,11 +207,28 @@ export default {
         bedsUpdated(beds) {
             this.form.beds = beds;
         },
+        shipLengthUpdated(length) {
+            this.shipLength = length;
+        },
+        engineCountUpdated(engineCount) {
+            this.form.engineCount = engineCount;
+        },
+        enginePowerUpdated(enginePower) {
+            this.form.enginePower = enginePower;
+        },
+        capacityUpdated(capacity) {
+            this.form.capacity = capacity;
+        },
+        maxSpeedUpdated(maxSpeed) {
+            this.form.maxSpeed = maxSpeed;
+        },
         nextDisabled() {
             return false;
         },
         finishDisabled() {
-            return this.$refs.roomsInput.$v.$invalid;
+            if (this.user.userRole === 'HOUSE_OWNER')
+                return this.$refs.roomsInput.$v.$invalid;
+            return false;
         },
         next() {
             // add check if step is == maxSteps
@@ -179,6 +280,23 @@ export default {
             .catch(function(error) {
                 console.log(error);
             })          
+        },
+        isFocused(field) {
+            return this.infocus[field]
+        },
+        inFocus(field) {
+            this.infocus[field] = true
+        },
+        outFocus(field) {
+            this.infocus[field] = false
+        },
+        getClass(field) {
+            let cls = !this.isFocused(field) && this.$v.form[field].$invalid ? 'alert' : '';
+            return cls;
+        },
+        getPlaceholder(field, defaultPlaceholder='') {
+            let placeholder = !this.isFocused(field) && this.$v.form[field].$invalid ? 'Required' : defaultPlaceholder;
+            return placeholder;
         }
     },
 }
@@ -261,4 +379,36 @@ export default {
     background-position: center; 
     background-size: cover;
 }
+
+.ship-length {
+    justify-self: center;
+}
+
+.ship-form .number-input {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.number-input div {
+    margin-right: auto;
+    margin-bottom: 15px;
+}
+
+
+.number-input :last-child {
+    margin-bottom: 0 !important;
+}
+
+.alert-info {
+    position: absolute;
+    transition: 0.05s;
+    color: red !important;
+    font-size: 0.9rem;
+    margin-top: 67px;
+}
+
+.alert-textarea {
+    margin-top: 110px;
+}
+
 </style>
