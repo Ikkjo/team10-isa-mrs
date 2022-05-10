@@ -93,7 +93,7 @@
                         </select>
                     </div>
                 </div>
-
+                
                 <!-- STEP 5: ADVENTURE INPUT -->
                 <div class="form adventure-form" v-show="step === 5" v-if="user.userRole === 'FISHING_INSTRUCTOR'">
                     <h1>Adventure information</h1>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="form-control">
-                        <label for="cancelation" class="block-label">Cancellation</label>
+                        <label for="cancelation" class="block-label">Cancelation</label>
                         <select name="cancelation" id="cancelation" v-model="form.cancelation">
                             <option value="true">Free cancelation</option>
                             <option value="false">Owner keeps a percentage</option>
