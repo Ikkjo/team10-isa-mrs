@@ -37,6 +37,10 @@ public class Client extends User{
 
     }
 
+    public Client(User user) {
+        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), user.getUserRole());
+    }
+
     public Client(String firstName, String lastName, String email, String password, String phoneNumber) {
         super(firstName, lastName, email, password, UserRole.CLIENT, phoneNumber);
 

@@ -17,10 +17,13 @@ public class UserRepository {
 
     private final VacationHomeOwnerRepository vacationHomeOwnerRepository;
     private final ShipOwnerRepository shipOwnerRepository;
+    private final ClientRepository clientRepository;
+
 
     public boolean userExists(String email) {
         return vacationHomeOwnerRepository.findByEmail(email).isPresent()
-                || shipOwnerRepository.findByEmail(email).isPresent();
+                || shipOwnerRepository.findByEmail(email).isPresent()
+                || clientRepository.findByEmail(email).isPresent();
     }
 
 }

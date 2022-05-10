@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import team10.app.dto.ClientRegistrationRequestDto;
 import team10.app.model.User;
 import team10.app.security.auth.ConfirmationToken;
+import team10.app.security.config.EmailSender;
 import team10.app.util.EmailValidator;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ public class ClientRegistrationService {
     private final EmailValidator emailValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
-    private final EmailSender emailSender;
+    private final EmailService emailSender;
 
     public String register(ClientRegistrationRequestDto request) {
         if (!emailValidator.test(request.getEmail())) {
@@ -54,7 +55,6 @@ public class ClientRegistrationService {
         emailSender.send(
                 request.getEmail(),
                 buildEmail(request.getFirstName(), link));
-
         return token;
     }
 
