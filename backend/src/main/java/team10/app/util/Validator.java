@@ -85,6 +85,4 @@ public class Validator {
     private boolean inRange(double min, double max, double num) {
         return num >= min && num <= max;
     }
-
-
 }
