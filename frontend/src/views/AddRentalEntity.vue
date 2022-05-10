@@ -153,7 +153,7 @@ export default {
                 cancelation: true,
 
             },
-            step: 5,
+            step: 1,
             numSteps: 5,
             user: {
                 userRole: 'SHIP_OWNER'
