@@ -346,6 +346,7 @@ export default {
     width: 100%;
     display: flex;
     align-items: center;  
+    overflow: hidden;
 }
 
 .inner-container {
@@ -355,6 +356,9 @@ export default {
     flex-direction: column;
     justify-content: center;
     height: 100vh;
+}
+.form {
+    overflow-y: auto;
 }
 
 .form > * {
@@ -376,6 +380,7 @@ export default {
     position: absolute;
     bottom: 0;
     width: 50%;
+    background-color: white;
 }
 
 .progress-bar {
