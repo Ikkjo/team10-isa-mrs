@@ -17,14 +17,14 @@ public class ShipDto extends RentalEntityDto {
     private int engineCount;
     private int enginePower;
     private int maxSpeed;
-    private List<String> navigationEquipment;
-    private List<String> fishingEquipment;
+    private String navigationEquipment;
+    private String fishingEquipment;
     private int capacity;
     private boolean freeCancellation;
 
     public ShipDto(String title, Address address, String description, String rulesOfConduct, String additionalServices,
                    int price, List<String> pictures, String type, double length, int engineCount, int enginePower,
-                   int maxSpeed, List<String> navigationEquipment, List<String> fishingEquipment, int capacity,
+                   int maxSpeed, String navigationEquipment, String fishingEquipment, int capacity,
                    boolean freeCancellation) {
         super(title, address, description, rulesOfConduct, additionalServices, price, pictures);
         this.type = type;

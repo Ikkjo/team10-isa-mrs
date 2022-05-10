@@ -58,16 +58,19 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    width:50%;
+    width:100%;
     max-width: 700px;
     min-height: 80px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     padding: 20px;
-    border: 1px solid black;
+    box-shadow: 5px 5px 15px 0px rgba(0,0,0,0.8);
     border-radius: 10px;
+    background-color: white;
+    transition: 0.3s;
+    cursor: pointer;
 }
 
 .registration-request:hover {
-    background-color: whitesmoke
+    background-color: whitesmoke;
 }
 </style>

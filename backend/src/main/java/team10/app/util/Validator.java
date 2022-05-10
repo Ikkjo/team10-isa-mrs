@@ -38,12 +38,12 @@ public class Validator {
     private static final int MAX_ENGINE_COUNT = 5;
     private static final int MIN_POWER = 1;
     private static final int MAX_POWER = 10000;
-    private static final int MIN_SPEED = 5;
+    private static final int MIN_SPEED = 1;
     private static final int MAX_SPEED = 200;
-    private static final int MIN_NAVIGATION_EQUIPMENT_LENGTH = 0;
-    private static final int MAX_NAVIGATION_EQUIPMENT_LENGTH = 20;
+    private static final int MIN_NAVIGATION_EQUIPMENT_LENGTH = 3;
+    private static final int MAX_NAVIGATION_EQUIPMENT_LENGTH = 500;
     private static final int MIN_FISHING_EQUIPMENT_LENGTH = 0;
-    private static final int MAX_FISHING_EQUIPMENT_LENGTH = 100;
+    private static final int MAX_FISHING_EQUIPMENT_LENGTH = 500;
     private static final int MIN_CAPACITY = 1;
     private static final int MAX_CAPACITY = 100;
 
@@ -70,9 +70,11 @@ public class Validator {
         return validateRentalEntity(shipDto)
                 && inRange(TYPE_MIN_LENGTH, TYPE_MAX_LENGTH, shipDto.getType().length())
                 && inRange(MIN_LENGTH, MAX_LENGTH, shipDto.getLength())
+                && inRange(MIN_ENGINE_COUNT, MAX_ENGINE_COUNT, shipDto.getEngineCount())
                 && inRange(MIN_POWER, MAX_POWER, shipDto.getEnginePower())
                 && inRange(MIN_SPEED, MAX_SPEED, shipDto.getEngineCount())
-                && inRange(MIN_NAVIGATION_EQUIPMENT_LENGTH, MAX_NAVIGATION_EQUIPMENT_LENGTH, shipDto.getNavigationEquipment().size())
+                && inRange(MIN_NAVIGATION_EQUIPMENT_LENGTH, MAX_NAVIGATION_EQUIPMENT_LENGTH, shipDto.getNavigationEquipment().length())
+                && inRange(MIN_FISHING_EQUIPMENT_LENGTH, MAX_FISHING_EQUIPMENT_LENGTH, shipDto.getFishingEquipment().length())
                 && inRange(MIN_CAPACITY, MAX_CAPACITY, shipDto.getCapacity());
 
     }
@@ -83,6 +85,4 @@ public class Validator {
     private boolean inRange(double min, double max, double num) {
         return num >= min && num <= max;
     }
-
-
 }

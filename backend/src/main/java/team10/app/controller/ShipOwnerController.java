@@ -8,7 +8,7 @@ import team10.app.dto.ShipDto;
 import team10.app.service.ShipOwnerService;
 
 @RestController
-@RequestMapping(path = "/api/v1/vacation-home-owner")
+@RequestMapping(path = "/api/v1/ship-owner")
 @AllArgsConstructor
 public class ShipOwnerController {
 

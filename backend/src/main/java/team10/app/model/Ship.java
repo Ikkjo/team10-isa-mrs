@@ -22,14 +22,9 @@ public class Ship extends RentalEntity {
     private int enginePower;
     @Column(nullable = false)
     private int maxSpeed;
-    @ElementCollection
-    @CollectionTable(name = "my_navigation_equipment", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "navigation_equipment", nullable = false)
-    private Set<String> navigationEquipment;
-    @ElementCollection
-    @CollectionTable(name = "my_fishing_equipment", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "fishing_equipment", nullable = false)
-    private Set<String> fishingEquipment;
+    @Column(nullable = false)
+    private String navigationEquipment;
+    private String fishingEquipment;
     @Column(nullable = false)
     private int capacity;
     @Column(nullable = false)
@@ -37,7 +32,7 @@ public class Ship extends RentalEntity {
 
     public Ship(String title, Address address, String description, String rulesOfConduct, String additionalServices,
                 int price, Set<Picture> pictures, String type, double length, int engineCount, int enginePower,
-                int maxSpeed, Set<String> navigationEquipment, Set<String> fishingEquipment, int capacity,
+                int maxSpeed, String navigationEquipment, String fishingEquipment, int capacity,
                 boolean freeCancellation) {
         this.title = title;
         this.address = address;

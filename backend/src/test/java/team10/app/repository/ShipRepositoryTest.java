@@ -37,22 +37,22 @@ class ShipRepositoryTest {
     void itShouldFindShipByAddress() {
         Address address = new Address("Bulevar Oslobodjena", "Novi Sad", "Serbia");
         Ship ship = new Ship(
-                Mockito.anyString(),
+                "Fishinig ship",
                 address,
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyInt(),
-                Mockito.anySet(),
-                Mockito.anyString(),
-                Mockito.anyDouble(),
-                Mockito.anyInt(),
-                Mockito.anyInt(),
-                Mockito.anyInt(),
-                Mockito.anySet(),
-                Mockito.anySet(),
-                Mockito.anyInt(),
-                Mockito.anyBoolean()
+                "Some description",
+                "Rules",
+                "Services",
+                12,
+                new HashSet<>(Arrays.asList(new Picture(), new Picture())),
+                "Type",
+                12.1,
+                2,
+                100,
+                50,
+                "gps, radar",
+                "bait, rods",
+                10,
+                false
         );
         addressRepository.save(ship.getAddress());
         shipRepository.save(ship);

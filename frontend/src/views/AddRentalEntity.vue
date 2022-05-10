@@ -74,7 +74,7 @@
                         <textarea v-model="form.navigationEquipment" name="navigation-equipment" id="navigation-equipment" cols="30" rows="4" @focus="inFocus('navigationEquipment')" @blur="outFocus('navigationEquipment')" :class="getClass('navigationEquipment')" :placeholder="getPlaceholder('navigationEquipment', 'GPS, radar, VHS radio, fishfinder...')"></textarea>
                         <div class="alert-info alert-textarea" 
                         v-if="!this.infocus['navigationEquipment'] && !($v.form.navigationEquipment.minLength && $v.form.navigationEquipment.maxLength)">
-                        Must be between 5 and 500 characters.
+                        Must be between 3 and 500 characters.
                         </div>
                     </div>
                     <div class="form-control">
@@ -82,6 +82,37 @@
                         <textarea v-model="form.fishingEquipment" name="fishing-equipment" id="fishing-equipment" cols="30" rows="4" @focus="inFocus('fishingEquipment')" @blur="outFocus('fishingEquipment')" :class="getClass('fishingEquipment')" :placeholder="getPlaceholder('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"></textarea>
                         <div class="alert-info alert-textarea" 
                         v-if="!this.infocus['fishingEquipment'] && !$v.form.fishingEquipment.maxLength">
+                        Max 500 characters.
+                        </div>
+                    </div>
+                    <div class="form-control">
+                        <label for="cancelation" class="block-label">Cancellation</label>
+                        <select name="cancelation" id="cancelation" v-model="form.freeCancellation">
+                            <option :value="true" selected>Free cancellation</option>
+                            <option :value="false">Owner keeps a percentage</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- STEP 5: ADVENTURE INPUT -->
+                <div class="form adventure-form" v-show="step === 5" v-if="user.userRole === 'FISHING_INSTRUCTOR'">
+                    <h1>Adventure information</h1>
+                    <div class="form-control">
+                        <label for="fishing-instructor-bio">Short Biography</label>
+                        <textarea v-model="form.adventure.fishingInstructorBio" name="fishing-instructor-bio" id="fishing-instructor-bio" cols="30" rows="3" @focus="inFocus('fishingInstructorBio')" @blur="outFocus('fishingInstructorBio')" :class="getClassInstructor('fishingInstructorBio')" :placeholder="getPlaceholderInstructor('fishingInstructorBio', 'Something about yourself.')"></textarea>
+                        <div class="alert-info alert-textarea"
+                        v-if="!this.infocus['fishingInstructorBio'] && !($v.form.adventure.fishingInstructorBio.minLength && $v.form.adventure.fishingInstructorBio.maxLength)">
+                        Max 200 characters.
+                        </div>
+                    </div> 
+                    <div class="number-input">
+                        <number-input @updated="maxPeopleAdvenuture" placeholder="" label="Maximum number of people" :increment="1" :minValue="1" :maxValue="20"/>
+                    </div>
+                    <div class="form-control">
+                        <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
+                        <textarea v-model="form.adventure.fishingEquipment" name="fishing-equipment" id="fishing-equipment" cols="30" rows="4" @focus="inFocus('fishingEquipment')" @blur="outFocus('fishingEquipment')" :class="getClassInstructor('fishingEquipment')" :placeholder="getPlaceholderInstructor('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"></textarea>
+                        <div class="alert-info alert-textarea" 
+                        v-if="!this.infocus['fishingEquipment'] && !($v.form.adventure.fishingEquipment.maxLength && $v.form.adventure.fishingEquipment.minLength)">
                         Max 500 characters.
                         </div>
                     </div>
@@ -143,15 +174,19 @@ export default {
                 rooms: 0,
                 beds: 0,
                 shipType: '',
-                shipLength: '',
-                engineCount: 0,
-                enginePower: 0,
-                maxSpeed: 0,
+                shipLength: 1,
+                engineCount: 1,
+                enginePower: 1,
+                maxSpeed: 1,
                 navigationEquipment: '',
                 fishingEquipment: '',
                 capacity: 0,
                 cancelation: true,
-
+                adventure: {
+                    fishingEquipment: '',
+                    fishingInstructorBio: '',
+                    maxPeople: 1,
+                }
             },
             step: 1,
             numSteps: 5,
@@ -162,6 +197,7 @@ export default {
                 shipType: true,
                 navigationEquipment: true,
                 fishingEquipment: true,
+                fishingInstructorBio: true,
             }
         }
     },
@@ -174,14 +210,25 @@ export default {
             },
             navigationEquipment: {
                 required,
-                minLength: minLength(5),
+                minLength: minLength(3),
                 maxLength: maxLength(500),
             },
             fishingEquipment: {
                 maxLength: maxLength(500),
+            },
+            adventure: {
+                fishingEquipment: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(500)
+                },
+                fishingInstructorBio: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(200)
+                }
             }
         }
-       
     },
     methods: {
         addressUpdated(address) {
@@ -220,6 +267,9 @@ export default {
         maxSpeedUpdated(maxSpeed) {
             this.form.maxSpeed = maxSpeed;
         },
+        maxPeopleAdvenuture(maxPeople){
+            this.form.adventure.maxPeople = maxPeople;
+        },        
         nextDisabled() {
             // TODO: Napraviti proveru po koracima 
             return false;
@@ -291,15 +341,15 @@ export default {
                 additionalServices: this.form.additionalServices,
                 price: this.form.price,
                 pictures: this.form.pictures,
-                shipType: this.form.shipType,
-                shipLength: this.form.shipLength,
+                type: this.form.shipType,
+                length: this.form.shipLength,
                 engineCount: this.form.engineCount,
                 enginePower: this.form.enginePower,
                 maxSpeed: this.form.maxSpeed,
                 navigationEquipment: this.form.navigationEquipment,
                 fishingEquipment: this.form.fishingEquipment,
                 capacity: this.form.capacity,
-                cancelation: this.form.cancelation,
+                freeCancellation: this.form.freeCancellation,
             }
 
             axios({
@@ -316,7 +366,6 @@ export default {
             .catch(function(error) {
                 console.log(error);
             }) 
-
         },
         isFocused(field) {
             return this.infocus[field]
@@ -333,6 +382,14 @@ export default {
         },
         getPlaceholder(field, defaultPlaceholder='') {
             let placeholder = !this.isFocused(field) && this.$v.form[field].$invalid ? 'Required' : defaultPlaceholder;
+            return placeholder;
+        },
+        getClassInstructor(field) {
+            let cls = !this.isFocused(field) && this.$v.form.adventure[field].$invalid ? 'alert' : '';
+            return cls;
+        },
+        getPlaceholderInstructor(field, defaultPlaceholder='') {
+            let placeholder = !this.isFocused(field) && this.$v.form.adventure[field].$invalid ? 'Required' : defaultPlaceholder;
             return placeholder;
         }
     },
@@ -441,7 +498,6 @@ export default {
     margin-bottom: 15px;
 }
 
-
 .number-input :last-child {
     margin-bottom: 0 !important;
 }
@@ -457,5 +513,4 @@ export default {
 .alert-textarea {
     margin-top: 110px;
 }
-
 </style>
