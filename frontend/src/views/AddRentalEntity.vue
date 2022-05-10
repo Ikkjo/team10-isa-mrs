@@ -181,7 +181,6 @@ export default {
                 maxLength: maxLength(500),
             }
         }
-       
     },
     methods: {
         addressUpdated(address) {
@@ -316,7 +315,6 @@ export default {
             .catch(function(error) {
                 console.log(error);
             }) 
-
         },
         isFocused(field) {
             return this.infocus[field]
@@ -441,7 +439,6 @@ export default {
     margin-bottom: 15px;
 }
 
-
 .number-input :last-child {
     margin-bottom: 0 !important;
 }
@@ -457,5 +454,4 @@ export default {
 .alert-textarea {
     margin-top: 110px;
 }
-
 </style>
