@@ -1,34 +1,30 @@
 <template>
     <form id="login-form" @submit.prevent="logInPressed">
-        <div class="wrapper">
-            <div class="form-control">
-                <label for="email">Email</label>
-                <input type="text" 
-                    v-model="email" 
-                    name="email" 
-                    @focus="inFocus('email')" 
-                    @blur="outFocus('email')" 
-                    :class="getClass('email')" 
-                    :placeholder="getPlaceholder('email', 'example@rentr.com')">
-                <div class="alert-info" 
-                    v-if="!this.infocus['email'] && !$v.email.email">
-                    Incorrect email format.
-                </div>
+        <div class="form-control">
+            <label for="email">Email</label>
+            <input type="text" 
+                v-model="email" 
+                name="email" 
+                @focus="inFocus('email')" 
+                @blur="outFocus('email')" 
+                :class="getClass('email')" 
+                :placeholder="getPlaceholder('email', 'example@rentr.com')">
+            <div class="alert-info" 
+                v-if="!this.infocus['email'] && !$v.email.email">
+                Incorrect email format.
             </div>
         </div>
-        <div class="wrapper">
-            <div class="form-control">
-                <label for="password">Password</label>
-                <input type="password" 
-                    v-model="password" 
-                    name="password"  
-                    @focus="inFocus('password')"
-                    @blur="outFocus('password')" 
-                    :class="getClass('password')"
-                    :placeholder="getPlaceholder('password', 'Password')">
-                <div class="alert-info" 
-                    v-if="!this.infocus['password'] && !( $v.password.length > 0)">
-                </div>
+        <div class="form-control">
+            <label for="password">Password</label>
+            <input type="password" 
+                v-model="password" 
+                name="password"  
+                @focus="inFocus('password')"
+                @blur="outFocus('password')" 
+                :class="getClass('password')"
+                :placeholder="getPlaceholder('password', 'Password')">
+            <div class="alert-info" 
+                v-if="!this.infocus['password'] && !( $v.password.length > 0)">
             </div>
         </div>
         <div class="btn-div">
@@ -111,6 +107,10 @@ export default {
 </script>
 
 <style scoped>
+#login-form {
+    display: flex;
+    flex-direction: column;
+}
 
 .form-control {
     margin: 15px 10px 15px 0px;
