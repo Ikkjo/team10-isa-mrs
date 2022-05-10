@@ -23,7 +23,12 @@ const routes = [
       path: '/client/register',
       name: 'client-registration',
       component: () => import('../views/ClientRegistration.vue')
-    }
+    },
+    {
+      path: '/admin/panel/',
+      name: 'admin-panel',
+      component: () => import('../views/AdminPanel.vue')
+    },
 ]
 
 const router = new VueRouter({
