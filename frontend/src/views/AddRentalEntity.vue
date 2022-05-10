@@ -223,12 +223,15 @@ export default {
             this.form.maxSpeed = maxSpeed;
         },
         nextDisabled() {
+            // TODO: Napraviti proveru po koracima 
             return false;
         },
         finishDisabled() {
             if (this.user.userRole === 'HOUSE_OWNER')
-                return this.$refs.roomsInput.$v.$invalid;
-            return false;
+                return (this.$refs.roomsInput.$v.$invalid || this.$v.form.$invalid);
+            if (this.user.userRole === 'SHIP_OWNER') {
+                return this.$v.form.$invalid;
+            }
         },
         next() {
             // add check if step is == maxSteps
@@ -245,12 +248,13 @@ export default {
             // add router.route to main page 
         },
         finish() {
-            if (this.user.userRole === 'HOUSE_OWNER') {
-                this.sendVacationHome();
-            }  
+            if (this.user.userRole === 'HOUSE_OWNER')
+                this.postVacationHome();
+            else if (this.user.userRole === 'SHIP_OWNER')
+                this.postShip();
         },
-        sendVacationHome() {
-            let vacationHomeDTO = {
+        postVacationHome() {
+            let vacationHomeDto = {
                 title: this.form.title,
                 address: {'address': this.form.address, 'city': this.form.city, 'country': this.form.country},
                 description: this.form.description,
@@ -261,15 +265,14 @@ export default {
                 rooms: this.form.rooms,
                 beds: this.form.beds,
             }
-
             // username = JSON.parse(window.sessionStorage.getItem("user")).username;
             // token = JSON.parse(window.sessionStorage.getItem("user")).jwt
-            // console.log(vacationHomeDTO);
+            // console.log(vacationHomeDto);
             
             axios({
                 method: 'post',
                 url: 'http://localhost:8888/api/v1/vacation-home-owner/vacation-homes',
-                data: vacationHomeDTO,
+                data: vacationHomeDto,
                 // headers: {
                 //     Authorization: 'Bearer ' + token,
                 // },
@@ -280,6 +283,42 @@ export default {
             .catch(function(error) {
                 console.log(error);
             })          
+        },
+        postShip() {
+            let shipDto = {
+                title: this.form.title,
+                address: {'address': this.form.address, 'city': this.form.city, 'country': this.form.country},
+                description: this.form.description,
+                rulesOfConduct: this.form.rulesOfConduct,
+                additionalServices: this.form.additionalServices,
+                price: this.form.price,
+                pictures: this.form.pictures,
+                shipType: this.form.shipType,
+                shipLength: this.form.shipLength,
+                engineCount: this.form.engineCount,
+                enginePower: this.form.enginePower,
+                maxSpeed: this.form.maxSpeed,
+                navigationEquipment: this.form.navigationEquipment,
+                fishingEquipment: this.form.fishingEquipment,
+                capacity: this.form.capacity,
+                cancelation: this.form.cancelation,
+            }
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:8888/api/v1/ship-owner/ships',
+                data: shipDto,
+                // headers: {
+                //     Authorization: 'Bearer ' + token,
+                // },
+            }).then(function(response) {
+                console.log(response);
+                // notify that awaiting accept
+            })
+            .catch(function(error) {
+                console.log(error);
+            }) 
+
         },
         isFocused(field) {
             return this.infocus[field]
