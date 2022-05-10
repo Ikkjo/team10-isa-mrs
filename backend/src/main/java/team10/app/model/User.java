@@ -77,12 +77,14 @@ public abstract class User implements UserDetails {
                 String lastName,
                 String email,
                 String password,
-                UserRole appUserRole) {
+                UserRole appUserRole,
+                String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.userRole = appUserRole;
+        this.phoneNumber = phoneNumber;
     }
 
     @Override

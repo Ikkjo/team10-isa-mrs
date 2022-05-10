@@ -2,6 +2,7 @@ package team10.app.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import team10.app.dto.BusinessUserRegistrationRequestDto;
 import team10.app.dto.RegistrationRequestDto;
 import team10.app.model.*;
 import team10.app.repository.FishingInstructorRepository;
@@ -26,18 +27,17 @@ public class UserService {
         return userRepository.userExists(email);
     }
 
-    public User buildUser(RegistrationRequestDto rr) {
+    public User buildUser(RegistrationRequestDto rr) throws IllegalArgumentException {
             if (rr.getRole().equals(HOUSE_OWNER))
                 return new VacationHomeOwner(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword());
             else if (rr.getRole().equals(SHIP_OWNER))
                 return new ShipOwner(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword());
             else if (rr.getRole().equals(FISHING_INSTRUCTOR))
                 return new FishingInstructor(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword());
-            // TODO: Add Client builder
-            // TODO: Add exception
+            else if (rr.getRole().equals(CLIENT))
+                return new Client(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword(), rr.getPhoneNumber());
             else
-                return null;
-
+                throw new IllegalArgumentException();
     }
 
     public void saveUser(User user) throws IllegalStateException {
