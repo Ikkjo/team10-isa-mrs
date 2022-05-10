@@ -81,8 +81,8 @@
                         <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
                         <textarea v-model="form.fishingEquipment" name="fishing-equipment" id="fishing-equipment" cols="30" rows="4" @focus="inFocus('fishingEquipment')" @blur="outFocus('fishingEquipment')" :class="getClass('fishingEquipment')" :placeholder="getPlaceholder('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"></textarea>
                         <div class="alert-info alert-textarea" 
-                        v-if="!this.infocus['fishingEquipment'] && !($v.form.fishingEquipment.minLength && $v.form.fishingEquipment.maxLength)">
-                        Must be between 5 and 500 characters.
+                        v-if="!this.infocus['fishingEquipment'] && !$v.form.fishingEquipment.maxLength">
+                        Max 500 characters.
                         </div>
                     </div>
                     <div class="form-control">
@@ -178,8 +178,6 @@ export default {
                 maxLength: maxLength(500),
             },
             fishingEquipment: {
-                required,
-                minLength: minLength(5),
                 maxLength: maxLength(500),
             }
         }
@@ -356,6 +354,7 @@ export default {
     flex-direction: column;
     align-items: flex-start;
 }
+
 .form-container {
     overflow-y: auto;
     overflow-x: hidden;
