@@ -5,8 +5,8 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-      path: '/register',
-      name: 'register',
+      path: '/business-user/register',
+      name: 'business-partner-register',
       component: () => import('../views/Registration.vue')
     },
     {
@@ -14,6 +14,16 @@ const routes = [
       name: 'add-rental-entity',
       component: () => import('../views/AddRentalEntity.vue')
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/Login.vue')
+    },
+    {
+      path: '/client/register',
+      name: 'client-registration',
+      component: () => import('../views/ClientRegistration.vue')
+    }
 ]
 
 const router = new VueRouter({
