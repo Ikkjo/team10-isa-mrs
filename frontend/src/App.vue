@@ -81,6 +81,11 @@ a:hover {
   width: 100%;
 }
 
+button:disabled {
+    pointer-events: none;
+    background-color: lightgray;
+}
+
 .form-control {
   display: flex;
   flex-direction: column;

@@ -4,8 +4,14 @@ import router from './router'
 import App from './App.vue'
 import VuePhoneNumberInput from 'vue-phone-number-input'
 import 'vue-phone-number-input/dist/vue-phone-number-input.css'
+import VuePortal from '@linusborg/vue-simple-portal'
+
+Vue.use(VuePortal, {
+  name: 'portal', // optional, use to rename component
+})
 import vueCountryRegionSelect from 'vue-country-region-select'
 import 'material-icons/iconfont/material-icons.css'
+
 
 Vue.component('vue-phone-number-input', VuePhoneNumberInput)
 
