@@ -23,6 +23,16 @@ const routes = [
       path: '/client/register',
       name: 'client-registration',
       component: () => import('../views/ClientRegistration.vue')
+    },
+    {
+      path: '/admin/panel',
+      name: 'admin-panel',
+      component: () => import('../views/AdminPanel.vue')
+    },
+    {
+      path: '/admin/registration-requests',
+      name: 'registration-requests',
+      component: () => import('../views/RegistrationRequestList.vue')
     }
 ]
 

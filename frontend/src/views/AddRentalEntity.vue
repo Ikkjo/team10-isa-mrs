@@ -93,6 +93,37 @@
                         </select>
                     </div>
                 </div>
+                
+                <!-- STEP 5: ADVENTURE INPUT -->
+                <div class="form adventure-form" v-show="step === 5" v-if="user.userRole === 'FISHING_INSTRUCTOR'">
+                    <h1>Adventure information</h1>
+                    <div class="form-control">
+                        <label for="fishing-instructor-bio">Short Biography</label>
+                        <textarea v-model="form.adventure.fishingInstructorBio" name="fishing-instructor-bio" id="fishing-instructor-bio" cols="30" rows="3" @focus="inFocus('fishingInstructorBio')" @blur="outFocus('fishingInstructorBio')" :class="getClassInstructor('fishingInstructorBio')" :placeholder="getPlaceholderInstructor('fishingInstructorBio', 'Something about yourself.')"></textarea>
+                        <div class="alert-info alert-textarea"
+                        v-if="!this.infocus['fishingInstructorBio'] && !($v.form.adventure.fishingInstructorBio.minLength && $v.form.adventure.fishingInstructorBio.maxLength)">
+                        Max 200 characters.
+                        </div>
+                    </div> 
+                    <div class="number-input">
+                        <number-input @updated="maxPeopleAdvenuture" placeholder="" label="Maximum number of people" :increment="1" :minValue="1" :maxValue="20"/>
+                    </div>
+                    <div class="form-control">
+                        <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
+                        <textarea v-model="form.adventure.fishingEquipment" name="fishing-equipment" id="fishing-equipment" cols="30" rows="4" @focus="inFocus('fishingEquipment')" @blur="outFocus('fishingEquipment')" :class="getClassInstructor('fishingEquipment')" :placeholder="getPlaceholderInstructor('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"></textarea>
+                        <div class="alert-info alert-textarea" 
+                        v-if="!this.infocus['fishingEquipment'] && !($v.form.adventure.fishingEquipment.maxLength && $v.form.adventure.fishingEquipment.minLength)">
+                        Max 500 characters.
+                        </div>
+                    </div>
+                    <div class="form-control">
+                        <label for="cancelation" class="block-label">Cancelation</label>
+                        <select name="cancelation" id="cancelation" v-model="form.cancelation">
+                            <option value="true">Free cancelation</option>
+                            <option value="false">Owner keeps a percentage</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="bottom">
                 <div class="progress-bar">
@@ -149,9 +180,13 @@ export default {
                 maxSpeed: 1,
                 navigationEquipment: '',
                 fishingEquipment: '',
-                capacity: 1,
-                freeCancellation: true,
-
+                capacity: 0,
+                cancelation: true,
+                adventure: {
+                    fishingEquipment: '',
+                    fishingInstructorBio: '',
+                    maxPeople: 1,
+                }
             },
             step: 1,
             numSteps: 5,
@@ -162,6 +197,7 @@ export default {
                 shipType: true,
                 navigationEquipment: true,
                 fishingEquipment: true,
+                fishingInstructorBio: true,
             }
         }
     },
@@ -179,6 +215,18 @@ export default {
             },
             fishingEquipment: {
                 maxLength: maxLength(500),
+            },
+            adventure: {
+                fishingEquipment: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(500)
+                },
+                fishingInstructorBio: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(200)
+                }
             }
         }
     },
@@ -219,6 +267,9 @@ export default {
         maxSpeedUpdated(maxSpeed) {
             this.form.maxSpeed = maxSpeed;
         },
+        maxPeopleAdvenuture(maxPeople){
+            this.form.adventure.maxPeople = maxPeople;
+        },        
         nextDisabled() {
             // TODO: Napraviti proveru po koracima 
             return false;
@@ -331,6 +382,14 @@ export default {
         },
         getPlaceholder(field, defaultPlaceholder='') {
             let placeholder = !this.isFocused(field) && this.$v.form[field].$invalid ? 'Required' : defaultPlaceholder;
+            return placeholder;
+        },
+        getClassInstructor(field) {
+            let cls = !this.isFocused(field) && this.$v.form.adventure[field].$invalid ? 'alert' : '';
+            return cls;
+        },
+        getPlaceholderInstructor(field, defaultPlaceholder='') {
+            let placeholder = !this.isFocused(field) && this.$v.form.adventure[field].$invalid ? 'Required' : defaultPlaceholder;
             return placeholder;
         }
     },
