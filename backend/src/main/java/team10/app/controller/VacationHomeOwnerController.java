@@ -14,7 +14,6 @@ public class VacationHomeOwnerController {
 
     private final VacationHomeOwnerService vacationHomeOwnerService;
 
-    @CrossOrigin(origins = "*")
     @PostMapping("/vacation-homes")
     public ResponseEntity<VacationHomeDto> addVacationHome(@RequestBody VacationHomeDto request) {
         try {

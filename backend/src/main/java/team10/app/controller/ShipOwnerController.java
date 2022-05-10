@@ -14,7 +14,6 @@ public class ShipOwnerController {
 
     private final ShipOwnerService shipOwnerService;
 
-    @CrossOrigin(origins = "*")
     @PostMapping("/ships")
     public ResponseEntity<ShipDto> addShip(@RequestBody ShipDto request) {
         try {
