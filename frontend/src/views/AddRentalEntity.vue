@@ -74,7 +74,7 @@
                         <textarea v-model="form.navigationEquipment" name="navigation-equipment" id="navigation-equipment" cols="30" rows="4" @focus="inFocus('navigationEquipment')" @blur="outFocus('navigationEquipment')" :class="getClass('navigationEquipment')" :placeholder="getPlaceholder('navigationEquipment', 'GPS, radar, VHS radio, fishfinder...')"></textarea>
                         <div class="alert-info alert-textarea" 
                         v-if="!this.infocus['navigationEquipment'] && !($v.form.navigationEquipment.minLength && $v.form.navigationEquipment.maxLength)">
-                        Must be between 5 and 500 characters.
+                        Must be between 3 and 500 characters.
                         </div>
                     </div>
                     <div class="form-control">
@@ -86,10 +86,10 @@
                         </div>
                     </div>
                     <div class="form-control">
-                        <label for="cancelation" class="block-label">Cancelation</label>
-                        <select name="cancelation" id="cancelation" v-model="form.cancelation">
-                            <option value="true">Free cancelation</option>
-                            <option value="false">Owner keeps a percentage</option>
+                        <label for="cancelation" class="block-label">Cancellation</label>
+                        <select name="cancelation" id="cancelation" v-model="form.freeCancellation">
+                            <option :value="true" selected>Free cancellation</option>
+                            <option :value="false">Owner keeps a percentage</option>
                         </select>
                     </div>
                 </div>
@@ -143,14 +143,14 @@ export default {
                 rooms: 0,
                 beds: 0,
                 shipType: '',
-                shipLength: '',
-                engineCount: 0,
-                enginePower: 0,
-                maxSpeed: 0,
+                shipLength: 1,
+                engineCount: 1,
+                enginePower: 1,
+                maxSpeed: 1,
                 navigationEquipment: '',
                 fishingEquipment: '',
-                capacity: 0,
-                cancelation: true,
+                capacity: 1,
+                freeCancellation: true,
 
             },
             step: 1,
@@ -174,14 +174,13 @@ export default {
             },
             navigationEquipment: {
                 required,
-                minLength: minLength(5),
+                minLength: minLength(3),
                 maxLength: maxLength(500),
             },
             fishingEquipment: {
                 maxLength: maxLength(500),
             }
         }
-       
     },
     methods: {
         addressUpdated(address) {
@@ -291,15 +290,15 @@ export default {
                 additionalServices: this.form.additionalServices,
                 price: this.form.price,
                 pictures: this.form.pictures,
-                shipType: this.form.shipType,
-                shipLength: this.form.shipLength,
+                type: this.form.shipType,
+                length: this.form.shipLength,
                 engineCount: this.form.engineCount,
                 enginePower: this.form.enginePower,
                 maxSpeed: this.form.maxSpeed,
                 navigationEquipment: this.form.navigationEquipment,
                 fishingEquipment: this.form.fishingEquipment,
                 capacity: this.form.capacity,
-                cancelation: this.form.cancelation,
+                freeCancellation: this.form.freeCancellation,
             }
 
             axios({
@@ -316,7 +315,6 @@ export default {
             .catch(function(error) {
                 console.log(error);
             }) 
-
         },
         isFocused(field) {
             return this.infocus[field]
@@ -441,7 +439,6 @@ export default {
     margin-bottom: 15px;
 }
 
-
 .number-input :last-child {
     margin-bottom: 0 !important;
 }
@@ -457,5 +454,4 @@ export default {
 .alert-textarea {
     margin-top: 110px;
 }
-
 </style>
