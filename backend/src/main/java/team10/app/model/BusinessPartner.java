@@ -11,8 +11,12 @@ import lombok.Setter;
 public class BusinessPartner extends User {
     private Loyalty loyalty;
 
+    public BusinessPartner(String firstName, String lastName, String email, String password, UserRole appUserRole, String phoneNumber) {
+        super(firstName, lastName, email, password, appUserRole, phoneNumber);
+        this.loyalty = new Loyalty();
+    }
+
     public BusinessPartner(String firstName, String lastName, String email, String password, UserRole appUserRole) {
         super(firstName, lastName, email, password, appUserRole);
-        this.loyalty = new Loyalty();
     }
 }

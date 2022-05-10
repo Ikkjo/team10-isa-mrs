@@ -87,6 +87,14 @@ public abstract class User implements UserDetails {
         this.phoneNumber = phoneNumber;
     }
 
+    public User(String firstName, String lastName, String email, String password, UserRole appUserRole) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.userRole = appUserRole;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =
