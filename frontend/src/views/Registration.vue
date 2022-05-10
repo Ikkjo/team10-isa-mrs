@@ -12,8 +12,7 @@
             <RegistrationForm />
         </div>
     </div>
-    <div class="inner-container picture-container">
-    </div>
+    <div class="inner-container picture-container"></div>
 </div>
 </template>
 
@@ -37,7 +36,7 @@ export default {
 }
 
 .inner-container {
-    flex: 1;
+    width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;

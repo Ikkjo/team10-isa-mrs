@@ -1,20 +1,15 @@
 <template>
   <div id="app">
-    <RegistrationRequest/>
-    <RegistrationRequest/>
-    <RegistrationRequest/>
+    <!-- <RegistrationPage/> -->
+    <router-view/>
   </div>
 </template>
 
 <script>
-// import RegistrationPage from './views/Registration.vue'
-import RegistrationRequest from './components/RegistrationRequest.vue'
-
 export default {
   name: 'App',
   components: {
-    // RegistrationPage,
-    RegistrationRequest,
+
   }
 }
 </script>
@@ -43,6 +38,10 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: #fff;
     color: var(--black, #000);
+}
+
+#app {
+  height: 100%;
 }
 
 a {
@@ -78,5 +77,51 @@ a:hover {
   transform: scale(0.98);
 }
 
+button:disabled {
+    pointer-events: none;
+    background-color: lightgray;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control input, select, textarea {
+    padding: 3px 7px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    transition: 0.5s;
+    outline-color: lightgrey;
+    background-color: #fff;
+    font-family: inherit;
+}
+
+.form-control input, select {
+   height: 48px;
+}
+
+.form-control input:hover, textarea:hover, select:hover {
+    border-color: var(--orange-primary, #f0a500);
+}
+
+.form-control input:focus, textarea:focus, select:focus {
+    outline-color: var(--orange-primary, #f0a500);
+}
+
+.block-label {
+  display: block;
+}
+
+textarea {
+  resize: none;
+}
+
+.alert {
+    transition: 0.5s;
+    border-color: red !important;
+    border-width: 2px !important;
+}
 
 </style>
