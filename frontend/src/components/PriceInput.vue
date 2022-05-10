@@ -7,7 +7,7 @@
                 <input v-model.number="price" :v-bind="checkPrice()" @keyup="$emit('updated', price);" type="text" placeholder="$00" name="price"/>
                 <button @click="increase()" :disabled="price >= 10000" class="btn-circle"><span class="material-icons-round">add</span></button>
             </div>
-            <label for="price">per night</label>
+            <!-- <label for="price">per night</label> -->
         </div>
     </div>
 </template>
