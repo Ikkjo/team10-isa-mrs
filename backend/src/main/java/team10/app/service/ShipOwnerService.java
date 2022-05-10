@@ -47,8 +47,8 @@ public class ShipOwnerService {
                shipDto.getEngineCount(),
                shipDto.getEnginePower(),
                shipDto.getMaxSpeed(),
-               new HashSet<>(shipDto.getNavigationEquipment()),
-               new HashSet<>(shipDto.getFishingEquipment()),
+               shipDto.getNavigationEquipment(),
+               shipDto.getFishingEquipment(),
                shipDto.getCapacity(),
                shipDto.isFreeCancellation()
        );
