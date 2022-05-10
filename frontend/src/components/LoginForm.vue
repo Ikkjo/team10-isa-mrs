@@ -32,7 +32,7 @@
                 :disabled="true">
                 Log In
             </button>
-            <div class="not-registered">Don't have an account yet? <router-link to="/register">Register an account</router-link></div>
+            <div class="not-registered">Don't have an account yet? <router-link to="/client/register">Register an account</router-link></div>
         </div>
     </form>
 </template>
@@ -113,12 +113,13 @@ export default {
 }
 
 .form-control {
-    margin: 15px 10px 15px 0px;
+    margin: 15px 0px;
 }
 
 .wrapper {
     display: grid;
     grid-template-columns: 50% 50%;
+    
 }
 
 .address-wrapper {
@@ -161,7 +162,10 @@ textarea {
 }
 
 .btn {
-    width: 40%;
+    width: 100%;
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .btn-div p {
@@ -181,7 +185,7 @@ textarea {
     font-size: 0.9rem;
 }
 
-.already-registered {
+.not-registered {
     font-size: 0.9rem !important;
     margin-top: 5px;
 }
