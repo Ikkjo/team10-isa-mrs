@@ -37,8 +37,8 @@ public class Client extends User{
 
     }
 
-    public Client(String firstName, String lastName, String email, String password, UserRole appUserRole) {
-        super(firstName, lastName, email, password, UserRole.CLIENT);
+    public Client(String firstName, String lastName, String email, String password, String phoneNumber) {
+        super(firstName, lastName, email, password, UserRole.CLIENT, phoneNumber);
 
     }
 }

@@ -3,7 +3,7 @@ package team10.app.service;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import team10.app.dto.RegistrationRequestDto;
+import team10.app.dto.BusinessUserRegistrationRequestDto;
 import team10.app.model.User;
 import team10.app.security.auth.ConfirmationToken;
 import team10.app.util.EmailValidator;
@@ -21,7 +21,7 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
 
 
-    public String register(RegistrationRequestDto request) {
+    public String register(BusinessUserRegistrationRequestDto request) {
 
 
         if (!emailValidator.test(request.getEmail())) {
