@@ -79,8 +79,8 @@ class ShipOwnerServiceTest {
                 2,
                 100,
                 50,
-                Arrays.asList("gps", "radar"),
-                Arrays.asList("bait", "rods"),
+                "gps, radar",
+                "bait, rods",
                 10,
                 false
         );
@@ -91,14 +91,14 @@ class ShipOwnerServiceTest {
                 "Rules",
                 "Services",
                 12,
-                new HashSet<Picture>(Arrays.asList(new Picture(), new Picture())),
+                new HashSet<>(Arrays.asList(new Picture(), new Picture())),
                 "Type",
                 12.1,
                 2,
                 100,
                 50,
-                new HashSet<String>(Arrays.asList("gps", "radar")),
-                new HashSet<String>(Arrays.asList("bait", "rods")),
+                "gps, radar",
+                "bait, rods",
                 10,
                 false
         );
@@ -128,8 +128,8 @@ class ShipOwnerServiceTest {
                 2,
                 100,
                 50,
-                Arrays.asList("gps"),
-                Arrays.asList("bait", "rods"),
+                "gps, radar",
+                "bait, rods",
                 10,
                 false
         );
@@ -158,8 +158,8 @@ class ShipOwnerServiceTest {
                 2,
                 100,
                 50,
-                Arrays.asList("gps"),
-                Arrays.asList("bait", "rods"),
+                "gps, radar",
+                "bait, rods",
                 10,
                 false
         );
@@ -170,14 +170,14 @@ class ShipOwnerServiceTest {
                 "Rules",
                 "Services",
                 12,
-                new HashSet<Picture>(Arrays.asList(new Picture(), new Picture())),
+                new HashSet<>(Arrays.asList(new Picture(), new Picture())),
                 "Type",
                 12.1,
                 2,
                 100,
                 50,
-                new HashSet<String>(Arrays.asList("gps", "radar")),
-                new HashSet<String>(Arrays.asList("bait", "rods")),
+                "gps, radar",
+                "bait, rods",
                 10,
                 false
         );
