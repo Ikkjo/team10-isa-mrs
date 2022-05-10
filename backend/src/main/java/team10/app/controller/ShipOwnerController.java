@@ -4,20 +4,20 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team10.app.dto.VacationHomeDto;
-import team10.app.service.VacationHomeOwnerService;
+import team10.app.dto.ShipDto;
+import team10.app.service.ShipOwnerService;
 
 @RestController
 @RequestMapping(path = "/api/v1/vacation-home-owner")
 @AllArgsConstructor
-public class VacationHomeOwnerController {
+public class ShipOwnerController {
 
-    private final VacationHomeOwnerService vacationHomeOwnerService;
+    private final ShipOwnerService shipOwnerService;
 
-    @PostMapping("/vacation-homes")
-    public ResponseEntity<VacationHomeDto> addVacationHome(@RequestBody VacationHomeDto request) {
+    @PostMapping("/ships")
+    public ResponseEntity<ShipDto> addShip(@RequestBody ShipDto request) {
         try {
-             vacationHomeOwnerService.addVacationHome(request);
+            shipOwnerService.addShip(request);
         }
         catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

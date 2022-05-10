@@ -77,6 +77,10 @@ a:hover {
   transform: scale(0.98);
 }
 
+.form {
+  width: 100%;
+}
+
 button:disabled {
     pointer-events: none;
     background-color: lightgray;
