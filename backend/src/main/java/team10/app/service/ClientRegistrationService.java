@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import team10.app.dto.ClientRegistrationRequestDto;
 import team10.app.model.User;
 import team10.app.security.auth.ConfirmationToken;
-import team10.app.security.config.EmailSender;
 import team10.app.util.EmailValidator;
 
 import java.time.LocalDateTime;
