@@ -21,6 +21,8 @@ export default {
   border-radius: 8px;
   transition: background 500ms;
   padding: 0.5rem;
+  color: black;
+
 }
 
 .menu-item .icon-button {
@@ -32,7 +34,10 @@ export default {
 }
 
 .menu-item:hover {
-  background-color: #525357;
+  background-color: rgb(236, 236, 236);
+  color: var(--orange-primary);
+  /* color: black; */
+
 }
 
 .icon-right {

@@ -7,13 +7,10 @@
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">
                         <dropdown-item link="nav" text="Manage account" iconClass="material-icons" icon="account_circle"></dropdown-item>
-                        <div class="line"></div>
                         <dropdown-item link="nav" text="Your listings" iconClass="material-icons" icon="house"></dropdown-item>
                         <dropdown-item link="nav" text="Reservations" iconClass="material-icons" icon="calendar_month"></dropdown-item>
-                        <div class="line"></div>
                         <dropdown-item link="nav" text="Reviews" iconClass="material-icons" icon="reviews"></dropdown-item>
                         <dropdown-item link="nav" text="Statistics" iconClass="material-icons" icon="query_stats"></dropdown-item>
-                        <div class="line"></div>
                         <dropdown-item link="logout" text="Logout" iconClass="material-icons" icon="logout"></dropdown-item>
                     </template>
                 </dropdown-menu>
@@ -50,12 +47,5 @@ export default {
 </script>
 
 <style>
-
-.line {
-    position: absolute;
-    width: 300px;
-    height: 1px;
-    background-color: black;
-}
 
 </style>

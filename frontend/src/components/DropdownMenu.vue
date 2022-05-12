@@ -16,8 +16,8 @@ export default {
   top: 52px;
   width: 250px;
   transform: translateX(-40%);
-  background-color: #242526;
-  border: 1px solid #474a4d;
+  background-color: white;
+  box-shadow: 0px 1px 8px lightgrey;
   border-radius: 8px;
   padding: 1rem;
   overflow: hidden;

@@ -16,9 +16,9 @@ export default {
 <style>
 .navbar {
   height: var(--nav-height);
-  border-bottom: 1px solid lightgrey;
+  border-bottom: 1px solid rgb(236, 236, 236);
   padding: 0 5%;
-  background-color: #242526;
+  background-color: white;
 }
 
 .navbar-nav {
@@ -37,7 +37,7 @@ export default {
 
 .logo:hover {
   color: var(--orange-primary);
-  
+
 }
 
 </style>

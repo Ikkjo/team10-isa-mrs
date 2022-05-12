@@ -13,11 +13,23 @@ export default {
 </script>
 
 <style>
-
 .nav-item {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 5px;
+
 }
+.nav-link {
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+
+}
+
+.nav-link:hover {
+    background-color: rgb(236, 236, 236);
+    color: black;
+}
+
 </style>
