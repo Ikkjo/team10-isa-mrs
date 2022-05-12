@@ -18,10 +18,13 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
 :root {
     /* variables */
+    /* colors */
     --orange-primary: #f0a500;
     --orange-secondary: #cf7500;
     --white: #f4f4f4;
     --black: #1a1c20;
+    /* sizing */
+    --nav-height: 60px;
 }
 
 * {
@@ -126,6 +129,10 @@ textarea {
     transition: 0.5s;
     border-color: red !important;
     border-width: 2px !important;
+}
+
+ul {
+  list-style: none;
 }
 
 </style>
