@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import team10.app.dto.BusinessUserRegistrationRequestDto;
 import team10.app.dto.RegistrationRequestDto;
 import team10.app.model.*;
-import team10.app.repository.FishingInstructorRepository;
-import team10.app.repository.ShipOwnerRepository;
-import team10.app.repository.UserRepository;
-import team10.app.repository.VacationHomeOwnerRepository;
+import team10.app.repository.*;
 
 import java.util.Optional;
 
@@ -22,6 +19,7 @@ public class UserService {
     private final VacationHomeOwnerRepository vacationHomeOwnerRepository;
     private final ShipOwnerRepository shipOwnerRepository;
     private final FishingInstructorRepository fishingInstructorRepository;
+    private final ClientRepository clientRepository;
 
     public boolean userExists(String email) {
         return userRepository.userExists(email);
@@ -47,6 +45,8 @@ public class UserService {
             shipOwnerRepository.save(new ShipOwner(user));
         else if (user.getUserRole().equals(FISHING_INSTRUCTOR))
             fishingInstructorRepository.save(new FishingInstructor(user));
+        else if (user.getUserRole().equals(CLIENT))
+            clientRepository.save(new Client(user));
         else
             throw new IllegalStateException("Error! User type is not BusinessUser.");
 
@@ -59,6 +59,8 @@ public class UserService {
             return shipOwnerRepository.findByEmail(email);
         else if (userRole.equals(FISHING_INSTRUCTOR))
             return fishingInstructorRepository.findByEmail(email);
+        else if (userRole.equals(CLIENT))
+            return clientRepository.findByEmail(email);
         else
             throw new IllegalStateException("Error! User type is not BusinessUser.");
     }

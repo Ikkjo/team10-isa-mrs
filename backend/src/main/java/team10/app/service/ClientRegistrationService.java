@@ -19,7 +19,7 @@ public class ClientRegistrationService {
     private final EmailValidator emailValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
-    private final EmailSender emailSender;
+    private final EmailService emailSender;
 
     public String register(ClientRegistrationRequestDto request) {
         if (!emailValidator.test(request.getEmail())) {
@@ -54,7 +54,6 @@ public class ClientRegistrationService {
         emailSender.send(
                 request.getEmail(),
                 buildEmail(request.getFirstName(), link));
-
         return token;
     }
 
