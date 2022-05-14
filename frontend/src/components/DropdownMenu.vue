@@ -15,7 +15,7 @@ export default {
   position: absolute;
   top: 52px;
   width: 250px;
-  transform: translateX(-40%);
+  transform: translateX(-33.2%);
   background-color: white;
   box-shadow: 0px 1px 8px lightgrey;
   border-radius: 8px;

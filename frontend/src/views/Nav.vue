@@ -2,7 +2,7 @@
   <NavBar>
       <template slot="nav-right">
         <nav-item link="nav" text="List your property"/>
-        <nav-item link="nav" text="Menu" @click="toggleMenu">
+        <nav-item link="nav" text="Menu" iconClass="material-icons" icon="arrow_drop_down" @click="toggleMenu">
             <template slot="menu">
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">
