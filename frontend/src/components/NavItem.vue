@@ -1,5 +1,5 @@
 <template>
-    <li class="nav-item" @click="$emit('click', event)">
+    <li class="nav-item" @click="$emit('click')">
         <router-link :to="link" class="nav-link">
             {{text}} <span :class="'icon-button' + ' ' + iconClass ">{{icon}}</span>
         </router-link>

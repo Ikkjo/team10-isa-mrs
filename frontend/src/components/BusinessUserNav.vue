@@ -40,8 +40,19 @@ export default {
     },
     methods: {
         toggleMenu() {
-            this.showMenu = !this.showMenu;
-        }
+            this.showMenu = !this.showMenu
+        },
+        close (e) {
+            if (!this.$el.contains(e.target)) {
+                this.showMenu = false
+            }
+        } 
+    },
+    mounted () {
+        document.addEventListener('click', this.close)
+    },
+    beforeDestroy () {
+        document.removeEventListener('click',this.close)
     }
 }
 </script>
