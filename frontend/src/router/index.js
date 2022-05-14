@@ -35,8 +35,8 @@ const routes = [
       component: () => import('../views/RegistrationRequestList.vue')
     },
     {
-      path: '/account-info',
-      name: 'account-info',
+      path: '/manage-account',
+      name: 'manage-account',
       component: () => import('../views/AccountInfo.vue')
     }
 ]
