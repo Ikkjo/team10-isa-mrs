@@ -18,10 +18,13 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
 :root {
     /* variables */
+    /* colors */
     --orange-primary: #f0a500;
     --orange-secondary: #cf7500;
     --white: #f4f4f4;
     --black: #1a1c20;
+    /* sizing */
+    --nav-height: 60px;
 }
 
 * {
@@ -31,13 +34,23 @@ export default {
 }
 
 html, body {
-  height: 100%;
+  /* height: 100%; */
 }
 
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #fff;
     color: var(--black, #000);
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 #app {
@@ -126,6 +139,17 @@ textarea {
     transition: 0.5s;
     border-color: red !important;
     border-width: 2px !important;
+}
+
+ul {
+  list-style: none;
+}
+
+#nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
 }
 
 </style>

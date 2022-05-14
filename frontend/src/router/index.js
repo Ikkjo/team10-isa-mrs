@@ -33,6 +33,11 @@ const routes = [
       path: '/admin/registration-requests',
       name: 'registration-requests',
       component: () => import('../views/RegistrationRequestList.vue')
+    },
+    {
+      path: '/manage-account',
+      name: 'manage-account',
+      component: () => import('../views/AccountInfo.vue')
     }
 ]
 
