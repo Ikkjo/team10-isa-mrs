@@ -1,29 +1,22 @@
 <template>
     <div id="account-info">
-        <business-user-nav></business-user-nav>
+        <business-user-nav id="nav"></business-user-nav>
         <div class="info">
              <div class="info-section">
                 <h2>Personal info</h2>
                 <div class="info-items">
                     <personal-info-item iconClass="material-icons" icon="account_box" label="Account type" text="Rental House Owner" buttonText="Register new account"/>
-                    <hr>
                     <personal-info-item iconClass="material-icons" icon="account_circle" label="Full name" text="Imenko Prezimic" buttonText="Edit"/>
-                    <hr>
                     <personal-info-item iconClass="material-icons" icon="contact_phone" label="Phone number" text="+381 66 127 8217" buttonText="Edit"/>
-                    <hr>
                     <personal-info-item iconClass="material-icons" icon="house" label="Address" text="Ulica b.b., Grad, Drzava" buttonText="Edit"/>
-                    <hr>
                     <personal-info-item iconClass="material-icons" icon="calendar_month" label="Date of birth" text="12.06.1998." buttonText="Edit"/>
-                    <hr>
                 </div>
             </div>
             <div class="info-section">
                 <h2>Login info</h2>
                 <div class="info-items">
                     <personal-info-item iconClass="material-icons" icon="email" label="Email" text="example@rentr.com" buttonText="Change"/>
-                    <hr>
                     <personal-info-item iconClass="material-icons" icon="password" label="Password" text="*********" buttonText="Change"/>
-                    <hr>
                     <personal-info-item iconClass="material-icons" icon="info" label="Account status" text="Active" buttonText="Deactivate" style="color: red;"/>
                 </div>
             </div>
@@ -47,14 +40,15 @@ export default {
 <style>
 #account-info {
     max-width: 100%;
-    height: 100%;
 }
 
 h2 {
-    margin: 15px 0;
+    margin-top: 20px;
 }
 
 .info {
+    margin-top: calc(var(--nav-height) + 40px);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,11 +56,14 @@ h2 {
 }
 
 .info-items > * {
-    padding: 10px 0;
+    padding: 20px 0;
+    border-bottom: 1px solid #EBEBEB;
 }
 
 .info-section {
-    width: 25%;
+    width: 600px;
+    min-width: 300px;
+    max-width: 100%;
 }
 
 hr {

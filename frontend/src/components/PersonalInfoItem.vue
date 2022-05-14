@@ -27,7 +27,7 @@ export default {
 .label-div {
     display: flex;
     align-items: center;
-    color: black !important;
+    color: var(--black) !important;
 }
 
 .icon {

@@ -25,14 +25,14 @@ export default {
 .nav-link {
     padding: 10px;
     border-radius: 5px;
-    color: black;
+    color: var(--black);
     display: flex;
     align-items: center;
 }
 
 .nav-link:hover {
     background-color: rgb(236, 236, 236);
-    color: black;
+    color: var(--black);
 }
 
 </style>

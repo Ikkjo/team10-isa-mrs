@@ -34,7 +34,7 @@ export default {
 }
 
 html, body {
-  height: 100%;
+  /* height: 100%; */
 }
 
 body {
@@ -143,6 +143,13 @@ textarea {
 
 ul {
   list-style: none;
+}
+
+#nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
 }
 
 </style>

@@ -21,7 +21,7 @@ export default {
   border-radius: 8px;
   transition: background 500ms;
   padding: 0.5rem;
-  color: black;
+  color: var(--black);
 
 }
 
