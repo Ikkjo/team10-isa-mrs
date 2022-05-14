@@ -1,5 +1,5 @@
 <template>
-  <router-link to="link" class="menu-item">
+  <router-link :to="link" class="menu-item">
       <span :class="'icon-button' + ' ' + iconClass ">{{icon}}</span>
       {{text}}
   </router-link>
