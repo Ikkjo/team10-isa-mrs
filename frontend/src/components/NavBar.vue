@@ -17,7 +17,7 @@ export default {
 .navbar {
   height: var(--nav-height);
   border-bottom: 1px solid rgb(236, 236, 236);
-  padding: 0 5%;
+  padding: 0 10%;
   background-color: white;
 }
 
