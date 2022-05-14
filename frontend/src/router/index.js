@@ -35,9 +35,9 @@ const routes = [
       component: () => import('../views/RegistrationRequestList.vue')
     },
     {
-      path: '/nav',
-      name: 'nav',
-      component: () => import('../views/Nav.vue')
+      path: '/account-info',
+      name: 'account-info',
+      component: () => import('../views/AccountInfo.vue')
     }
 ]
 
