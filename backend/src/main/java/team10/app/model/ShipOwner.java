@@ -18,8 +18,8 @@ public class ShipOwner extends BusinessPartner {
             inverseJoinColumns = @JoinColumn(name = "ship_id", referencedColumnName = "id"))
     private Set<VacationHome> ships;
 
-    public ShipOwner(String firstName, String lastName, String email, String password, String phoneNumber) {
-        super(firstName, lastName, email, password, SHIP_OWNER, phoneNumber);
+    public ShipOwner(String firstName, String lastName, String email, String password, String phoneNumber, Address address) {
+        super(firstName, lastName, email, password, SHIP_OWNER, phoneNumber, address);
         this.ships = new HashSet<>();
     }
 
