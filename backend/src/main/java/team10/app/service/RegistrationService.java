@@ -34,7 +34,7 @@ public class RegistrationService {
             throw new IllegalStateException(String.format("User with email %s already exists", request.getEmail()));
         }
 
-        User user = userService.buildUser(request);
+        User user = userService.buildBusinessUser(request);
 
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userService.saveUser(user);

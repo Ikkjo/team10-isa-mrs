@@ -32,7 +32,7 @@ public class ClientRegistrationService {
             throw new IllegalStateException(String.format("User with email %s already exists", request.getEmail()));
         }
 
-        User user = userService.buildUser(request);
+        User user = userService.buildClient(request);
 
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userService.saveUser(user);

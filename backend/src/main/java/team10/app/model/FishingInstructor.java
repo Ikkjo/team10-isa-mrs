@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static team10.app.model.UserRole.FISHING_INSTRUCTOR;
 
@@ -16,15 +18,17 @@ import static team10.app.model.UserRole.FISHING_INSTRUCTOR;
 @NoArgsConstructor
 public class FishingInstructor extends BusinessPartner {
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private List<Adventure> adventures;
+    @JoinTable(name = "fishing_instructor_adventures", joinColumns = @JoinColumn(name = "fishing_instructor_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "adventures_id", referencedColumnName = "id"))
+    private Set<Adventure> adventures;
 
-    public FishingInstructor(String firstName, String lastName, String email, String password) {
-        super(firstName, lastName, email, password, FISHING_INSTRUCTOR);
-        adventures = new ArrayList<>();
+    public FishingInstructor(String firstName, String lastName, String email, String password, String phoneNumber) {
+        super(firstName, lastName, email, password, FISHING_INSTRUCTOR, phoneNumber);
+        adventures = new HashSet<>();
     }
 
     public FishingInstructor(User user) {
         super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), FISHING_INSTRUCTOR);
+        adventures = new HashSet<>();
     }
 }
