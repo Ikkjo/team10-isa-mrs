@@ -24,28 +24,28 @@ public class Validator {
     private static final int MAX_PICTURES = 11;
 
     // Vacation home
-    private static final int MIN_ROOMS = 1;
-    private static final int MAX_ROOMS = 20;
-    private static final int MIN_BEDS = 1;
-    private static final int MAX_BEDS = 100;
+    private static final int VACATION_HOME_MIN_ROOMS = 1;
+    private static final int VACATION_HOME_MAX_ROOMS = 20;
+    private static final int VACATION_HOME_MIN_BEDS = 1;
+    private static final int VACATION_HOME_MAX_BEDS = 100;
 
     // Ship
-    private static final int TYPE_MIN_LENGTH = 5;
-    private static final int TYPE_MAX_LENGTH = 50;
-    private static final double MIN_LENGTH = 1;
-    private static final double MAX_LENGTH = 50;
-    private static final int MIN_ENGINE_COUNT = 1;
-    private static final int MAX_ENGINE_COUNT = 5;
-    private static final int MIN_POWER = 1;
-    private static final int MAX_POWER = 10000;
-    private static final int MIN_SPEED = 1;
-    private static final int MAX_SPEED = 200;
-    private static final int MIN_NAVIGATION_EQUIPMENT_LENGTH = 3;
-    private static final int MAX_NAVIGATION_EQUIPMENT_LENGTH = 500;
-    private static final int MIN_FISHING_EQUIPMENT_LENGTH = 0;
-    private static final int MAX_FISHING_EQUIPMENT_LENGTH = 500;
-    private static final int MIN_CAPACITY = 1;
-    private static final int MAX_CAPACITY = 100;
+    private static final int SHIP_TYPE_MIN_LENGTH = 5;
+    private static final int SHIP_TYPE_MAX_LENGTH = 50;
+    private static final double SHIP_MIN_LENGTH = 1;
+    private static final double SHIP_MAX_LENGTH = 50;
+    private static final int SHIP_MIN_ENGINE_COUNT = 1;
+    private static final int SHIP_MAX_ENGINE_COUNT = 5;
+    private static final int SHIP_MIN_POWER = 1;
+    private static final int SHIP_MAX_POWER = 10000;
+    private static final int SHIP_MIN_SPEED = 1;
+    private static final int SHIP_MAX_SPEED = 200;
+    private static final int SHIP_MIN_NAVIGATION_EQUIPMENT_LENGTH = 3;
+    private static final int SHIP_MAX_NAVIGATION_EQUIPMENT_LENGTH = 500;
+    private static final int SHIP_MIN_FISHING_EQUIPMENT_LENGTH = 0;
+    private static final int SHIP_MAX_FISHING_EQUIPMENT_LENGTH = 500;
+    private static final int SHIP_MIN_CAPACITY = 1;
+    private static final int SHIP_MAX_CAPACITY = 100;
 
     private final AddressValidator addressValidator;
 
@@ -62,20 +62,20 @@ public class Validator {
 
     public boolean validateVacationHomeDTO(VacationHomeDto vacationHomeDto) {
         return validateRentalEntity(vacationHomeDto)
-            && inRange(MIN_ROOMS, MAX_ROOMS, vacationHomeDto.getRooms())
-            && inRange(MIN_BEDS, MAX_BEDS, vacationHomeDto.getBeds());
+            && inRange(VACATION_HOME_MIN_ROOMS, VACATION_HOME_MAX_ROOMS, vacationHomeDto.getRooms())
+            && inRange(VACATION_HOME_MIN_BEDS, VACATION_HOME_MAX_BEDS, vacationHomeDto.getBeds());
     }
 
     public boolean validateShipDto(ShipDto shipDto) {
         return validateRentalEntity(shipDto)
-                && inRange(TYPE_MIN_LENGTH, TYPE_MAX_LENGTH, shipDto.getType().length())
-                && inRange(MIN_LENGTH, MAX_LENGTH, shipDto.getLength())
-                && inRange(MIN_ENGINE_COUNT, MAX_ENGINE_COUNT, shipDto.getEngineCount())
-                && inRange(MIN_POWER, MAX_POWER, shipDto.getEnginePower())
-                && inRange(MIN_SPEED, MAX_SPEED, shipDto.getEngineCount())
-                && inRange(MIN_NAVIGATION_EQUIPMENT_LENGTH, MAX_NAVIGATION_EQUIPMENT_LENGTH, shipDto.getNavigationEquipment().length())
-                && inRange(MIN_FISHING_EQUIPMENT_LENGTH, MAX_FISHING_EQUIPMENT_LENGTH, shipDto.getFishingEquipment().length())
-                && inRange(MIN_CAPACITY, MAX_CAPACITY, shipDto.getCapacity());
+                && inRange(SHIP_TYPE_MIN_LENGTH, SHIP_TYPE_MAX_LENGTH, shipDto.getType().length())
+                && inRange(SHIP_MIN_LENGTH, SHIP_MAX_LENGTH, shipDto.getLength())
+                && inRange(SHIP_MIN_ENGINE_COUNT, SHIP_MAX_ENGINE_COUNT, shipDto.getEngineCount())
+                && inRange(SHIP_MIN_POWER, SHIP_MAX_POWER, shipDto.getEnginePower())
+                && inRange(SHIP_MIN_SPEED, SHIP_MAX_SPEED, shipDto.getEngineCount())
+                && inRange(SHIP_MIN_NAVIGATION_EQUIPMENT_LENGTH, SHIP_MAX_NAVIGATION_EQUIPMENT_LENGTH, shipDto.getNavigationEquipment().length())
+                && inRange(SHIP_MIN_FISHING_EQUIPMENT_LENGTH, SHIP_MAX_FISHING_EQUIPMENT_LENGTH, shipDto.getFishingEquipment().length())
+                && inRange(SHIP_MIN_CAPACITY, SHIP_MAX_CAPACITY, shipDto.getCapacity());
 
     }
 
