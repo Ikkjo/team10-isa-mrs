@@ -2,6 +2,7 @@ package team10.app.util;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import team10.app.dto.AdventureDto;
 import team10.app.dto.RentalEntityDto;
 import team10.app.dto.ShipDto;
 import team10.app.dto.VacationHomeDto;
@@ -47,6 +48,15 @@ public class Validator {
     private static final int SHIP_MIN_CAPACITY = 1;
     private static final int SHIP_MAX_CAPACITY = 100;
 
+    // Adventure
+    private static final int ADVENTURE_BIOGRAPHY_MIN_LENGTH = 5;
+    private static final int ADVENTURE_BIOGRAPHY_MAX_LENGTH = 200;
+    private static final int ADVENTURE_MIN_CAPACITY = 1;
+    private static final int ADVENTURE_MAX_CAPACITY = 20;
+    private static final int ADVENTURE_FISHING_EQUIPMENT_MIN_LENGTH = 5;
+    private static final int ADVENTURE_FISHING_EQUIPMENT_MAX_LENGTH = 500;
+
+
     private final AddressValidator addressValidator;
 
     private boolean validateRentalEntity(RentalEntityDto rentalEntityDto) {
@@ -77,6 +87,13 @@ public class Validator {
                 && inRange(SHIP_MIN_FISHING_EQUIPMENT_LENGTH, SHIP_MAX_FISHING_EQUIPMENT_LENGTH, shipDto.getFishingEquipment().length())
                 && inRange(SHIP_MIN_CAPACITY, SHIP_MAX_CAPACITY, shipDto.getCapacity());
 
+    }
+
+    public boolean validateAdventureDto(AdventureDto adventureDto) {
+        return validateRentalEntity(adventureDto)
+                && inRange(ADVENTURE_BIOGRAPHY_MIN_LENGTH, ADVENTURE_BIOGRAPHY_MAX_LENGTH, adventureDto.getBiography().length())
+                && inRange(ADVENTURE_MIN_CAPACITY, ADVENTURE_MAX_CAPACITY, adventureDto.getCapacity())
+                && inRange(ADVENTURE_FISHING_EQUIPMENT_MIN_LENGTH, ADVENTURE_FISHING_EQUIPMENT_MAX_LENGTH, adventureDto.getFishingEquipment().length());
     }
 
     private boolean inRange(int min, int max, int num) {
