@@ -5,7 +5,7 @@
              <div class="info-section">
                 <h2>Personal info</h2>
                 <div class="info-items">
-                    <personal-info-item iconClass="material-icons" icon="account_box" label="Account type" text="Rental House Owner" buttonText="Register new account"/>
+                    <personal-info-item iconClass="material-icons" icon="account_box" label="Account type" text="Vacation Home Owner" buttonText="Register new account"/>
                     <personal-info-item iconClass="material-icons" icon="account_circle" label="Full name" text="Imenko Prezimic" buttonText="Edit"/>
                     <personal-info-item iconClass="material-icons" icon="contact_phone" label="Phone number" text="+381 66 127 8217" buttonText="Edit"/>
                     <personal-info-item iconClass="material-icons" icon="house" label="Address" text="Ulica b.b., Grad, Drzava" buttonText="Edit"/>

@@ -38,7 +38,12 @@ const routes = [
       path: '/manage-account',
       name: 'manage-account',
       component: () => import('../views/AccountInfo.vue')
-    }
+    },
+    {
+      path: '/vacation-homes',
+      name: 'vacation-homes',
+      component: () => import('../views/VacationHomeView.vue')
+    },
 ]
 
 const router = new VueRouter({
