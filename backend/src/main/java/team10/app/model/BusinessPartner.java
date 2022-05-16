@@ -13,8 +13,7 @@ import javax.persistence.*;
 public class BusinessPartner extends User {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "business_partner_addresses", joinColumns = @JoinColumn(name = "business_partner_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"))
+    @JoinColumn(name = "address_id")
     private Address address; // TODO: Skontati kako cuvati adresu u bazi
     private Loyalty loyalty;
 

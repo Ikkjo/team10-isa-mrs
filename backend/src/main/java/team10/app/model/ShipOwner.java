@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static team10.app.model.UserRole.HOUSE_OWNER;
 import static team10.app.model.UserRole.SHIP_OWNER;
 
 @Entity
@@ -23,8 +24,8 @@ public class ShipOwner extends BusinessPartner {
         this.ships = new HashSet<>();
     }
 
-    public ShipOwner(User user) {
-        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), SHIP_OWNER);
+    public ShipOwner(BusinessPartner user) {
+        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), SHIP_OWNER, user.getPhoneNumber(), user.getAddress());
         this.ships = new HashSet<>();
     }
 }

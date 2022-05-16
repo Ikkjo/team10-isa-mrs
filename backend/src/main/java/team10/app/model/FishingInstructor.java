@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static team10.app.model.UserRole.FISHING_INSTRUCTOR;
+import static team10.app.model.UserRole.HOUSE_OWNER;
 
 @Getter
 @Setter
@@ -25,8 +26,8 @@ public class FishingInstructor extends BusinessPartner {
         adventures = new HashSet<>();
     }
 
-    public FishingInstructor(User user) {
-        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), FISHING_INSTRUCTOR);
+    public FishingInstructor(BusinessPartner user) {
+        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), FISHING_INSTRUCTOR, user.getPhoneNumber(), user.getAddress());
         adventures = new HashSet<>();
     }
 }

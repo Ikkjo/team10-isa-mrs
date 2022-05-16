@@ -23,8 +23,8 @@ public class VacationHomeOwner extends BusinessPartner {
         this.vacationHomes = new HashSet<>();
     }
 
-    public VacationHomeOwner(User user) {
-        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), HOUSE_OWNER);
+    public VacationHomeOwner(BusinessPartner user) {
+        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), HOUSE_OWNER, user.getPhoneNumber(), user.getAddress());
         this.vacationHomes = new HashSet<>();
     }
 }

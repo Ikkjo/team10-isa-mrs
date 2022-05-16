@@ -5,7 +5,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import team10.app.dto.BusinessUserRegistrationRequestDto;
 import team10.app.model.BusinessPartner;
-import team10.app.model.User;
 import team10.app.security.auth.ConfirmationToken;
 import team10.app.util.EmailValidator;
 
@@ -38,7 +37,7 @@ public class RegistrationService {
         BusinessPartner user = userService.buildBusinessUser(request);
 
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-        userService.saveUser(user);
+        userService.saveBusinessUser(user);
 
         user = userService.getBusinessPartnerByEmail(user.getEmail(), user.getUserRole()).orElseThrow();
 

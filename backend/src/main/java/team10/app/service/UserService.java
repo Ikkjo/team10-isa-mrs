@@ -44,7 +44,7 @@ public class UserService {
         return new Client(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(), dto.getPhoneNumber());
     }
 
-    public void saveUser(BusinessPartner user) throws IllegalStateException {
+    public void saveBusinessUser(BusinessPartner user) throws IllegalStateException {
         if (user.getUserRole().equals(HOUSE_OWNER)) {
             addressRepository.save(user.getAddress());
             vacationHomeOwnerRepository.save(new VacationHomeOwner(user));
