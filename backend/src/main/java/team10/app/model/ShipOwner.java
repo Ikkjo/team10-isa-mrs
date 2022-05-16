@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static team10.app.model.UserRole.HOUSE_OWNER;
 import static team10.app.model.UserRole.SHIP_OWNER;
 
 @Entity
@@ -18,13 +19,13 @@ public class ShipOwner extends BusinessPartner {
             inverseJoinColumns = @JoinColumn(name = "ship_id", referencedColumnName = "id"))
     private Set<VacationHome> ships;
 
-    public ShipOwner(String firstName, String lastName, String email, String password, String phoneNumber) {
-        super(firstName, lastName, email, password, SHIP_OWNER, phoneNumber);
+    public ShipOwner(String firstName, String lastName, String email, String password, String phoneNumber, Address address) {
+        super(firstName, lastName, email, password, SHIP_OWNER, phoneNumber, address);
         this.ships = new HashSet<>();
     }
 
-    public ShipOwner(User user) {
-        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), SHIP_OWNER);
+    public ShipOwner(BusinessPartner user) {
+        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), SHIP_OWNER, user.getPhoneNumber(), user.getAddress());
         this.ships = new HashSet<>();
     }
 }

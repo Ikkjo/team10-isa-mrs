@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import team10.app.dto.ClientRegistrationRequestDto;
+import team10.app.model.Client;
 import team10.app.model.User;
 import team10.app.security.auth.ConfirmationToken;
 import team10.app.util.EmailValidator;
@@ -32,12 +33,12 @@ public class ClientRegistrationService {
             throw new IllegalStateException(String.format("User with email %s already exists", request.getEmail()));
         }
 
-        User user = userService.buildClient(request);
+        Client user = userService.buildClient(request);
 
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-        userService.saveUser(user);
+        userService.saveClient(user);
 
-        user = userService.getByEmail(user.getEmail(), user.getUserRole()).orElseThrow();
+        user = userService.getClientByEmail(user.getEmail()).orElseThrow();
 
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken(
