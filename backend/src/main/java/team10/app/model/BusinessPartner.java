@@ -15,7 +15,7 @@ public class BusinessPartner extends User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(name = "business_partner_addresses", joinColumns = @JoinColumn(name = "business_partner_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"))
-    private Address address;
+    private Address address; // TODO: Skontati kako cuvati adresu u bazi
     private Loyalty loyalty;
 
     public BusinessPartner(String firstName, String lastName, String email, String password, UserRole appUserRole, String phoneNumber, Address address) {
