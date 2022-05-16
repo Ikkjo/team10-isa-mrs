@@ -17,15 +17,15 @@ public class FishingInstructorController {
 
     private final FishingInstructorService fishingInstructorService;
 
-//    @PostMapping("/add-adventure")
-//    public ResponseEntity<AdventureDto> addAdventure(@RequestBody AdventureDto request) {
-//        try {
-//            fishingInstructorService.addAdventure(request);
-//        }
-//        catch (RuntimeException e) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//        return new ResponseEntity<>(request, HttpStatus.CREATED);
-//    }
+   @PostMapping("/add-adventure")
+   public ResponseEntity<AdventureDto> addAdventure(@RequestBody AdventureDto request) {
+       try {
+           fishingInstructorService.addAdventure(request);
+       }
+       catch (RuntimeException e) {
+           return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+       }
+       return new ResponseEntity<>(request, HttpStatus.CREATED);
+   }
 
 }
