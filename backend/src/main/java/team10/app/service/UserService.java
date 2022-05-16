@@ -3,7 +3,7 @@ package team10.app.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import team10.app.dto.BusinessUserRegistrationRequestDto;
-import team10.app.dto.RegistrationRequestDto;
+import team10.app.dto.ClientRegistrationRequestDto;
 import team10.app.model.*;
 import team10.app.repository.*;
 
@@ -25,17 +25,19 @@ public class UserService {
         return userRepository.userExists(email);
     }
 
-    public User buildUser(RegistrationRequestDto rr) throws IllegalArgumentException {
-            if (rr.getRole().equals(HOUSE_OWNER))
-                return new VacationHomeOwner(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword());
-            else if (rr.getRole().equals(SHIP_OWNER))
-                return new ShipOwner(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword());
-            else if (rr.getRole().equals(FISHING_INSTRUCTOR))
-                return new FishingInstructor(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword());
-            else if (rr.getRole().equals(CLIENT))
-                return new Client(rr.getFirstName(), rr.getLastName(), rr.getEmail(), rr.getPassword(), rr.getPhoneNumber());
+    public User buildBusinessUser(BusinessUserRegistrationRequestDto dto) throws IllegalArgumentException {
+            if (dto.getRole().equals(HOUSE_OWNER))
+                return new VacationHomeOwner(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(), dto.getPhoneNumber());
+            else if (dto.getRole().equals(SHIP_OWNER))
+                return new ShipOwner(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(), dto.getPhoneNumber());
+            else if (dto.getRole().equals(FISHING_INSTRUCTOR))
+                return new FishingInstructor(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(), dto.getPhoneNumber());
             else
                 throw new IllegalArgumentException();
+    }
+
+    public User buildClient(ClientRegistrationRequestDto dto) throws IllegalArgumentException {
+        return new Client(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(), dto.getPhoneNumber());
     }
 
     public void saveUser(User user) throws IllegalStateException {

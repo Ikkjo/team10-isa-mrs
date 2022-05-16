@@ -3,10 +3,8 @@ package team10.app.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -15,11 +13,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class Adventure extends RentalEntity {
     private String instructorBiography;
-    @ElementCollection
-    @CollectionTable(name = "my_fishing", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "fishing", nullable = false)
-    private List<String> fishing;
-    private String cancellationConditions;
+    private String fishing;
+    private boolean freeCancellation;
     private int maxCapacity;
     @Id
     private Long id;
@@ -31,8 +27,8 @@ public class Adventure extends RentalEntity {
                      int price,
                      String instructorBiography,
                      int maxCapacity,
-                     List<String> fishing,
-                     String cancellationConditions) {
+                     String fishing,
+                     boolean freeCancellation) {
         this.title = name;
         this.description = description;
         this.pictures = pictures;
@@ -42,7 +38,7 @@ public class Adventure extends RentalEntity {
         this.instructorBiography = instructorBiography;
         this.maxCapacity = maxCapacity;
         this.fishing = fishing;
-        this.cancellationConditions = cancellationConditions;
+        this.freeCancellation = freeCancellation;
     }
 
     public void setId(Long id) {
