@@ -9,7 +9,7 @@ import team10.app.dto.ClientRegistrationRequestDto;
 import team10.app.service.ClientRegistrationService;
 
 @RestController
-@RequestMapping(path = "api/client/registration")
+@RequestMapping(path = "api/v1/client/registration")
 @AllArgsConstructor
 public class ClientRegistrationController {
 

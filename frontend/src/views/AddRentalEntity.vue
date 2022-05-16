@@ -191,7 +191,7 @@ export default {
             step: 1,
             numSteps: 5,
             user: {
-                userRole: 'SHIP_OWNER'
+                userRole: 'FISHING_INSTRUCTOR'
             },
             infocus: {
                 shipType: true,
