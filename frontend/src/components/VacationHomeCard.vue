@@ -19,13 +19,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #vacation-home-card {
-    max-width: 270px;
-    height: 350px;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     cursor: pointer;
+    max-width: 100%;
 }
 
 
