@@ -1,18 +1,41 @@
 <template>
   <div>
-    <vacation-home-card class="vacation-home-card" v-for="(vHome, index) in vacationHomes" :key="index" :vacationHome="vHome"/>
+    <business-user-nav id="nav"></business-user-nav>
+    <div class="container">
+      <div class="cover">
+        <img src="https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg" alt="" srcset="">
+        <div class="title">
+          <h1>{{user.name}} {{user.lastname}}</h1>
+          <div class="rating">
+            Avarage rating: {{rating}}
+            <span class="material-icons">star</span>
+          </div>
+        </div>
+      </div>
+      <div class="vacation-homes">
+        <vacation-home-card class="vacation-home-card" v-for="(vHome, index) in vacationHomes" :key="index" :vacationHome="vHome"/>
+      </div>
+    </div>
+ 
   </div>
 </template>
 
 <script>
+import BusinessUserNav from "@/components/BusinessUserNav.vue"
 import VacationHomeCard from "@/components/VacationHomeCard.vue"
 export default {
     name: 'VacationHomeView',
     components: {
+        BusinessUserNav,
         VacationHomeCard,
     },
     data() {
       return {
+        rating: 4.5,
+        user: {
+          name: 'Imenko',
+          lastname: 'Prezimic',
+        },
         vacationHomes: [
           {
             image: "https://a0.muscache.com/im/pictures/miso/Hosting-604726298950758799/original/78d55499-cb48-4e83-a75f-faa42dd7d1ff.jpeg?im_w=720",
@@ -53,14 +76,60 @@ export default {
 </script>
 
 <style>
-div {
+.container {
   max-width: 100%;
+}
+
+.cover {
+  width: 100%;
+  position: relative;
+}
+
+.cover img {
+  width: 100%;
+  max-height: 350px;
+  background-repeat: no-repeat;
+  background-position: center;
+  object-fit: cover;
+}
+
+.cover .title {
+  position: absolute;
+  top: 89%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.rating {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.vacation-homes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 20rem);
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
 }
 
 .vacation-home-card {
-  margin: 10px;
+}
+
+
+@media screen and (max-width: 669px) {
+  .vacation-homes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 15px;
+  }
+  
+  .vacation-home-card {
+    margin-bottom: 5px;
+  }
 }
 
 
