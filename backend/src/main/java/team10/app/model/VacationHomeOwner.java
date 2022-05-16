@@ -1,7 +1,9 @@
 package team10.app.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import team10.app.model.VacationHome;
 
 import javax.persistence.*;
@@ -12,6 +14,8 @@ import static team10.app.model.UserRole.HOUSE_OWNER;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@Setter
 public class VacationHomeOwner extends BusinessPartner {
 
     @OneToMany(fetch = FetchType.LAZY)
