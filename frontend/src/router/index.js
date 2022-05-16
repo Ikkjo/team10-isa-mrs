@@ -35,13 +35,13 @@ const routes = [
       component: () => import('../views/RegistrationRequestList.vue')
     },
     {
-      path: '/manage-account',
+      path: '/account/manage-account',
       name: 'manage-account',
       component: () => import('../views/AccountInfo.vue')
     },
     {
-      path: '/vacation-homes',
-      name: 'vacation-homes',
+      path: '/account/my-listings',
+      name: 'my-listings',
       component: () => import('../views/VacationHomeView.vue')
     },
 ]
