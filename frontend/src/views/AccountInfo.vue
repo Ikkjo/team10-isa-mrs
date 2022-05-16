@@ -66,12 +66,4 @@ h2 {
     max-width: 100%;
 }
 
-hr {
-    padding: 0 !important;
-    display: block;
-    margin: 0.5em auto;
-    background-color: #EBEBEB;
-    border: 1px solid #EBEBEB;
-}
-
 </style>
