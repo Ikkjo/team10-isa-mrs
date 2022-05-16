@@ -6,9 +6,9 @@
             <template slot="menu">
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">
-                        <dropdown-item link="manage-account" text="Manage account" iconClass="material-icons" icon="account_circle"></dropdown-item>
-                        <dropdown-item link="nav" text="Your listings" iconClass="material-icons" icon="house"></dropdown-item>
-                        <dropdown-item link="nav" text="Reservations" iconClass="material-icons" icon="calendar_month"></dropdown-item>
+                        <dropdown-item link="/account/manage-account" text="Manage account" iconClass="material-icons" icon="account_circle"></dropdown-item>
+                        <dropdown-item link="/account/my-listings" text="Your listings" iconClass="material-icons" icon="house"></dropdown-item>
+                        <dropdown-item link="/reservations" text="Reservations" iconClass="material-icons" icon="calendar_month"></dropdown-item>
                         <dropdown-item link="nav" text="Reviews" iconClass="material-icons" icon="reviews"></dropdown-item>
                         <dropdown-item link="nav" text="Statistics" iconClass="material-icons" icon="query_stats"></dropdown-item>
                         <dropdown-item link="logout" text="Logout" iconClass="material-icons" icon="logout"></dropdown-item>
