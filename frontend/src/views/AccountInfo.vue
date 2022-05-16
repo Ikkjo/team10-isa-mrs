@@ -5,19 +5,19 @@
              <div class="info-section">
                 <h2>Personal info</h2>
                 <div class="info-items">
-                    <personal-info-item iconClass="material-icons" icon="account_box" label="Account type" text="Rental House Owner" buttonText="Register new account"/>
-                    <personal-info-item iconClass="material-icons" icon="account_circle" label="Full name" text="Imenko Prezimic" buttonText="Edit"/>
-                    <personal-info-item iconClass="material-icons" icon="contact_phone" label="Phone number" text="+381 66 127 8217" buttonText="Edit"/>
-                    <personal-info-item iconClass="material-icons" icon="house" label="Address" text="Ulica b.b., Grad, Drzava" buttonText="Edit"/>
-                    <personal-info-item iconClass="material-icons" icon="calendar_month" label="Date of birth" text="12.06.1998." buttonText="Edit"/>
+                    <personal-info-item iconClass="material-icons" icon="account_box" label="Account type" :text="user.role" buttonText="Register new account"/>
+                    <personal-info-item iconClass="material-icons" icon="account_circle" label="Full name" :text="user.name+' '+user.lastname" buttonText="Edit"/>
+                    <personal-info-item iconClass="material-icons" icon="contact_phone" label="Phone number" :text="user.phoneNumber" buttonText="Edit"/>
+                    <personal-info-item iconClass="material-icons" icon="house" label="Address" :text="user.address" buttonText="Edit"/>
+                    <personal-info-item iconClass="material-icons" icon="calendar_month" label="Date of birth" :text="user.dateOfBirth" buttonText="Edit"/>
                 </div>
             </div>
             <div class="info-section">
                 <h2>Login info</h2>
                 <div class="info-items">
-                    <personal-info-item iconClass="material-icons" icon="email" label="Email" text="example@rentr.com" buttonText="Change"/>
+                    <personal-info-item iconClass="material-icons" icon="email" label="Email" :text="user.email" buttonText="Change"/>
                     <personal-info-item iconClass="material-icons" icon="password" label="Password" text="*********" buttonText="Change"/>
-                    <personal-info-item iconClass="material-icons" icon="info" label="Account status" text="Active" buttonText="Deactivate" style="color: red;"/>
+                    <personal-info-item iconClass="material-icons" icon="info" label="Account status" :text="user.status" buttonText="Deactivate" style="color: red;"/>
                 </div>
             </div>
         </div>
@@ -32,6 +32,14 @@ export default {
     components: {
         BusinessUserNav,
         PersonalInfoItem
+    },
+    data() {
+        return {
+            user: null,
+        }
+    },
+    mounted() {
+        this.user = localStorage.getItem('user')
     }
 
 }
