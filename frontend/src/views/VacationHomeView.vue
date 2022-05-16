@@ -23,6 +23,7 @@
 <script>
 import BusinessUserNav from "@/components/BusinessUserNav.vue"
 import VacationHomeCard from "@/components/VacationHomeCard.vue"
+import axios from 'axios';
 export default {
     name: 'VacationHomeView',
     components: {
@@ -35,6 +36,7 @@ export default {
         user: {
           name: 'Imenko',
           lastname: 'Prezimic',
+          uuid: '123'
         },
         vacationHomes: [
           {
@@ -71,6 +73,19 @@ export default {
           },
         ]
       }
+    },
+    mounted() {
+      axios
+          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-homes/"+this.user.uuid)
+          .then(function(response) {
+            this.vacationHomes = response
+              console.log(response)
+          })
+          .catch(function(error) {
+              console.log(error);
+              // is email taken
+              // is phone taken
+          })
     }
   }
 </script>
