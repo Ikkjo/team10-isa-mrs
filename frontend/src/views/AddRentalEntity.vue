@@ -106,7 +106,7 @@
                         </div>
                     </div> 
                     <div class="number-input">
-                        <number-input @updated="maxPeopleAdvenuture" placeholder="" label="Maximum number of people" :increment="1" :minValue="1" :maxValue="20"/>
+                        <number-input @updated="maxCapacityAdvenuture" placeholder="" label="Maximum number of people" :increment="1" :minValue="1" :maxValue="20"/>
                     </div>
                     <div class="form-control">
                         <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
@@ -185,7 +185,7 @@ export default {
                 adventure: {
                     fishingEquipment: '',
                     fishingInstructorBio: '',
-                    maxPeople: 1,
+                    capacity: 1,
                 }
             },
             step: 1,
@@ -267,8 +267,8 @@ export default {
         maxSpeedUpdated(maxSpeed) {
             this.form.maxSpeed = maxSpeed;
         },
-        maxPeopleAdvenuture(maxPeople){
-            this.form.adventure.maxPeople = maxPeople;
+        maxCapacityAdvenuture(capacity){
+            this.form.adventure.capacity = capacity;
         },        
         nextDisabled() {
             // TODO: Napraviti proveru po koracima 
@@ -300,6 +300,8 @@ export default {
                 this.postVacationHome();
             else if (this.user.userRole === 'SHIP_OWNER')
                 this.postShip();
+            else if (this.user.userRole === 'FISHING_INSTRUCTOR')
+                this.postAdventure();
         },
         postVacationHome() {
             let vacationHomeDto = {
@@ -356,6 +358,35 @@ export default {
                 method: 'post',
                 url: 'http://localhost:8888/api/v1/ship-owner/ships',
                 data: shipDto,
+                // headers: {
+                //     Authorization: 'Bearer ' + token,
+                // },
+            }).then(function(response) {
+                console.log(response);
+                // notify that awaiting accept
+            })
+            .catch(function(error) {
+                console.log(error);
+            }) 
+        },
+        postAdventure(){
+            let adventureDto = {
+                title: this.form.title,
+                address: {'address': this.form.address, 'city': this.form.city, 'country': this.form.country},
+                description: this.form.description,
+                rulesOfConduct: this.form.rulesOfConduct,
+                additionalServices: this.form.additionalServices,
+                price: this.form.price,
+                pictures: this.form.pictures,
+                fishingEquipment: this.form.adventure.fishingEquipment,
+                capacity: this.form.adventure.capacity,
+                freeCancellation: this.form.freeCancellation,
+            }
+
+            axios({
+                method: 'post',
+                url: 'http://localhost:8888/api/v1/fishing-instructor/add-adventure',
+                data: adventureDto,
                 // headers: {
                 //     Authorization: 'Bearer ' + token,
                 // },

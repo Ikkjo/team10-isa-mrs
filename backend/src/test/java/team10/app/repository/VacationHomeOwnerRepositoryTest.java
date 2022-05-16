@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import team10.app.model.Address;
 import team10.app.model.VacationHomeOwner;
 
 import java.util.Optional;
@@ -28,8 +29,8 @@ class VacationHomeOwnerRepositoryTest {
                 "Jack",
                 "Jackson",
                 email,
-                "password123"
-        );
+                "password123",
+                "+381651726152", new Address("123", "123", "123"));
         repo.save(user);
 
         Optional<VacationHomeOwner> expected = repo.findByEmail(email);
@@ -49,8 +50,8 @@ class VacationHomeOwnerRepositoryTest {
                 "Jack",
                 "Jackson",
                 email,
-                "password123"
-        );
+                "password123",
+                "+381651726152", new Address("123", "123", "123"));
         repo.save(user);
 
         assertThat(repo.enableVacationHomeOwner(email)).isEqualTo(1);
