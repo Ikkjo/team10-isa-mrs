@@ -7,12 +7,23 @@
                     <h1>Basic information</h1>
                     <div class="form-control">
                         <label for="title">Title</label>
-                        <input type="text" v-model="form.title" name="title">
+                        <input type="text" v-model="baseInfo.title" name="title">
                     </div>
-                    <AddressInput @update:address="addressUpdated" @update:city="cityUpdated" @update:country="countryUpdated"/>
+                    <AddressInput 
+                        @update:address="addressUpdated" 
+                        @update:city="cityUpdated" 
+                        @update:country="countryUpdated"
+                        :validate="true"
+                        />
                     <div class="form-control">
                         <label for="description" class="block-label">Description</label>
-                        <textarea name="description" id="description" cols="30" rows="4" v-model="form.description" placeholder=""></textarea>
+                        <textarea 
+                            name="description" 
+                            id="description" 
+                            cols="30" rows="4" 
+                            v-model="baseInfo.description" 
+                            placeholder=""
+                            />
                     </div>
                 </div>
                 <!-- STEP 2: ADDITIONAL INFORMATION -->
@@ -20,11 +31,23 @@
                     <h1>Additional information</h1>
                     <div class="form-control">
                         <label for="rules-of-conduct">Rules of conduct</label>
-                        <textarea v-model="form.rulesOfConduct" name="rules-of-conduct" id="rules-of-conduct" cols="30" rows="4" placeholder=""></textarea>
+                        <textarea 
+                            v-model="baseInfo.rulesOfConduct" 
+                            name="rules-of-conduct" 
+                            id="rules-of-conduct" 
+                            cols="30" rows="4" 
+                            placeholder=""
+                            />
                     </div>
                     <div class="form-control">
                         <label for="additional-services" class="block-label">Additional Services</label>
-                        <textarea v-model="form.additionalServices" name="additional-services" id="additional-services" cols="30" rows="4" placeholder="Some things you offer like: wifi, free parking, air conditioning..."></textarea>
+                        <textarea 
+                            v-model="baseInfo.additionalServices" 
+                            name="additional-services" 
+                            id="additional-services" 
+                            cols="30" rows="4" 
+                            placeholder="Some things you offer like: wifi, free parking, air conditioning..."
+                            />
                     </div>
                 </div>
                 <!-- STEP 3: PRICE -->
@@ -40,7 +63,11 @@
                 <!-- The rest of the steps can be decided using v-if on type of logged in user -->
                 <!-- STEP 5: VACATION HOME INPUT -->
                 <div class="form" v-show="step === 5" v-if="user.userRole === 'HOUSE_OWNER'">
-                    <RoomsInput @updated:rooms="roomsUpdated" @updated:beds="bedsUpdated" ref="roomsInput"/>
+                    <RoomsInput 
+                        @updated:rooms="roomsUpdated" 
+                        @updated:beds="bedsUpdated" 
+                        ref="roomsInput"
+                        />
                 </div>
 
                 <!-- STEP 5: SHIP INPUT -->
@@ -48,40 +75,108 @@
                     <h1>Ship information</h1>
                     <div class="form-control">
                         <label for="ship-type">Ship Type</label>
-                        <input type="text" v-model="form.shipType" name="ship-type" @focus="inFocus('shipType')" @blur="outFocus('shipType')" :class="getClass('shipType')" :placeholder="getPlaceholder('shipType')">
+                        <input type="text" 
+                            v-model="baseInfo.shipType" 
+                            name="ship-type" 
+                            @focus="inFocus('shipType')" 
+                            @blur="outFocus('shipType')" 
+                            :class="getClass('shipType')" 
+                            :placeholder="getPlaceholder('shipType')"
+                            >
                         <div class="alert-info" 
-                        v-if="!this.infocus['shipType'] && !($v.form.shipType.minLength && $v.form.shipType.maxLength)">
-                        Must be between 5 and 50 characters.
+                            v-if="!this.infocus['shipType'] 
+                            && !($v.baseInfo.shipType.minLength 
+                            && $v.baseInfo.shipType.maxLength)"
+                            >
+                            Must be between 5 and 50 characters.
                         </div>
                     </div>
                     <div class="number-input">
                         <div>
-                            <NumberInput @updated="shipLengthUpdated" placeholder="" label="Ship Length (meters)" :increment="1" :minValue="1" :maxValue="50" />
-                            <NumberInput @updated="capacityUpdated" placeholder="" label="Capacity" :increment="2" :minValue="1" :maxValue="100" />
+                            <NumberInput 
+                                @updated="shipLengthUpdated" 
+                                placeholder="" 
+                                label="Ship Length (meters)" 
+                                :increment="1" 
+                                :minValue="1" 
+                                :maxValue="50"
+                                />
+                            <NumberInput 
+                                @updated="capacityUpdated" 
+                                placeholder="" 
+                                label="Capacity" 
+                                :increment="2" 
+                                :minValue="1" 
+                                :maxValue="100"
+                                />
                         </div>
                         <div>
-                            <NumberInput @updated="engineCountUpdated" placeholder="" label="Number of Engines" :increment="1" :minValue="1" :maxValue="5" />
-                            <NumberInput @updated="enginePowerUpdated" placeholder="" label="Engine Power (kw)" :increment="5" :minValue="1" :maxValue="10000" />
+                            <NumberInput 
+                                @updated="engineCountUpdated" 
+                                placeholder="" 
+                                label="Number of Engines" 
+                                :increment="1" 
+                                :minValue="1" 
+                                :maxValue="5"
+                                />
+                            <NumberInput 
+                                @updated="enginePowerUpdated" 
+                                placeholder="" 
+                                label="Engine Power (kw)" 
+                                :increment="5" 
+                                :minValue="1" 
+                                :maxValue="10000"
+                                />
                         </div>
                         <div>
-                            <NumberInput @updated="maxSpeedUpdated" placeholder="" label="Max Speed (km/h)" :increment="5" :minValue="1" :maxValue="200" />
+                            <NumberInput
+                                @updated="maxSpeedUpdated" 
+                                placeholder="" 
+                                label="Max Speed (km/h)" 
+                                :increment="5" 
+                                :minValue="1" 
+                                :maxValue="200"
+                                />
                         </div>
                     </div>
                     
                     <div class="form-control">
                         <label for="navigation-equipment" class="block-label">Navigation Equipment</label>
-                        <textarea v-model="form.navigationEquipment" name="navigation-equipment" id="navigation-equipment" cols="30" rows="4" @focus="inFocus('navigationEquipment')" @blur="outFocus('navigationEquipment')" :class="getClass('navigationEquipment')" :placeholder="getPlaceholder('navigationEquipment', 'GPS, radar, VHS radio, fishfinder...')"></textarea>
+                        <textarea 
+                            v-model="form.navigationEquipment" 
+                            name="navigation-equipment" 
+                            id="navigation-equipment" 
+                            cols="30" rows="4" 
+                            @focus="inFocus('navigationEquipment')" 
+                            @blur="outFocus('navigationEquipment')" 
+                            :class="getClass('navigationEquipment')" 
+                            :placeholder="getPlaceholder('navigationEquipment', 'GPS, radar, VHS radio, fishfinder...')"
+                            />
                         <div class="alert-info alert-textarea" 
-                        v-if="!this.infocus['navigationEquipment'] && !($v.form.navigationEquipment.minLength && $v.form.navigationEquipment.maxLength)">
-                        Must be between 3 and 500 characters.
+                            v-if="!this.infocus['navigationEquipment'] 
+                            && !($v.form.navigationEquipment.minLength 
+                            && $v.form.navigationEquipment.maxLength)"
+                            >
+                            Must be between 3 and 500 characters.
                         </div>
                     </div>
                     <div class="form-control">
                         <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
-                        <textarea v-model="form.fishingEquipment" name="fishing-equipment" id="fishing-equipment" cols="30" rows="4" @focus="inFocus('fishingEquipment')" @blur="outFocus('fishingEquipment')" :class="getClass('fishingEquipment')" :placeholder="getPlaceholder('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"></textarea>
+                        <textarea 
+                            v-model="form.fishingEquipment" 
+                            name="fishing-equipment" 
+                            id="fishing-equipment" 
+                            cols="30" rows="4" 
+                            @focus="inFocus('fishingEquipment')" 
+                            @blur="outFocus('fishingEquipment')" 
+                            :class="getClass('fishingEquipment')" 
+                            :placeholder="getPlaceholder('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"
+                            />
                         <div class="alert-info alert-textarea" 
-                        v-if="!this.infocus['fishingEquipment'] && !$v.form.fishingEquipment.maxLength">
-                        Max 500 characters.
+                            v-if="!this.infocus['fishingEquipment'] 
+                            && !$v.form.fishingEquipment.maxLength"
+                            >
+                            Max 500 characters.
                         </div>
                     </div>
                     <div class="form-control">
@@ -98,21 +193,50 @@
                     <h1>Adventure information</h1>
                     <div class="form-control">
                         <label for="fishing-instructor-bio">Short Biography</label>
-                        <textarea v-model="form.adventure.fishingInstructorBio" name="fishing-instructor-bio" id="fishing-instructor-bio" cols="30" rows="3" @focus="inFocus('fishingInstructorBio')" @blur="outFocus('fishingInstructorBio')" :class="getClassInstructor('fishingInstructorBio')" :placeholder="getPlaceholderInstructor('fishingInstructorBio', 'Something about yourself.')"></textarea>
+                        <textarea 
+                            v-model="form.adventure.fishingInstructorBio" 
+                            name="fishing-instructor-bio" 
+                            id="fishing-instructor-bio" 
+                            cols="30" rows="3" 
+                            @focus="inFocus('fishingInstructorBio')" 
+                            @blur="outFocus('fishingInstructorBio')" 
+                            :class="getClassInstructor('fishingInstructorBio')" 
+                            :placeholder="getPlaceholderInstructor('fishingInstructorBio', 'Something about yourself.')"
+                            />
                         <div class="alert-info alert-textarea"
-                        v-if="!this.infocus['fishingInstructorBio'] && !($v.form.adventure.fishingInstructorBio.minLength && $v.form.adventure.fishingInstructorBio.maxLength)">
-                        Max 200 characters.
+                            v-if="!this.infocus['fishingInstructorBio'] 
+                            && !($v.form.adventure.fishingInstructorBio.minLength 
+                            && $v.form.adventure.fishingInstructorBio.maxLength)">
+                            Max 200 characters.
                         </div>
                     </div> 
                     <div class="number-input">
-                        <NumberInput @updated="maxCapacityAdvenuture" placeholder="" label="Maximum number of people" :increment="1" :minValue="1" :maxValue="20"/>
+                        <NumberInput 
+                            @updated="maxCapacityAdvenuture" 
+                            placeholder="" 
+                            label="Maximum number of people" 
+                            :increment="1" 
+                            :minValue="1" 
+                            :maxValue="20"
+                            />
                     </div>
                     <div class="form-control">
                         <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
-                        <textarea v-model="form.adventure.fishingEquipment" name="fishing-equipment" id="fishing-equipment" cols="30" rows="4" @focus="inFocus('fishingEquipment')" @blur="outFocus('fishingEquipment')" :class="getClassInstructor('fishingEquipment')" :placeholder="getPlaceholderInstructor('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"></textarea>
+                        <textarea 
+                            v-model="form.adventure.fishingEquipment" 
+                            name="fishing-equipment" 
+                            id="fishing-equipment" 
+                            cols="30" rows="4" 
+                            @focus="inFocus('fishingEquipment')" 
+                            @blur="outFocus('fishingEquipment')" 
+                            :class="getClassInstructor('fishingEquipment')" 
+                            :placeholder="getPlaceholderInstructor('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"
+                            />
                         <div class="alert-info alert-textarea" 
-                        v-if="!this.infocus['fishingEquipment'] && !($v.form.adventure.fishingEquipment.maxLength && $v.form.adventure.fishingEquipment.minLength)">
-                        Max 500 characters.
+                            v-if="!this.infocus['fishingEquipment'] 
+                            && !($v.form.adventure.fishingEquipment.maxLength 
+                            && $v.form.adventure.fishingEquipment.minLength)">
+                            Max 500 characters.
                         </div>
                     </div>
                     <div class="form-control">
@@ -126,12 +250,28 @@
             </div>
             <div class="bottom">
                 <div class="progress-bar">
-                    <div class="bar" :style="step === 1 ? {width: 5 + '%'} : {width: 100/numSteps * (step-1) + '%'}"></div>
+                    <div class="bar" 
+                        :style="step === 1 ? {width: 5 + '%'} : {width: 100/numSteps * (step-1) + '%'}"
+                        />
                 </div>
                 <div class="btn-div">
                     <button @click="back" class="btn btn-back">Back</button> 
-                    <button v-if="step < numSteps" @click="next" :disabled="nextDisabled()" class="btn">Next</button>
-                    <button v-if="step === numSteps" @click="finish" :disabled="finishDisabled()" class="btn">Finish</button>
+                    <button 
+                        v-if="step < numSteps" 
+                        @click="next" 
+                        :disabled="nextDisabled()" 
+                        class="btn"
+                        >
+                        Next
+                        </button>
+                    <button 
+                        v-if="step === numSteps" 
+                        @click="finish" 
+                        :disabled="finishDisabled()" 
+                        class="btn"
+                        >
+                        Finish
+                        </button>
                 </div>
             </div>
         </div>
@@ -170,8 +310,12 @@ export default {
                 additionalServices: '',
                 price: '',
                 pictures: [],
-                rooms: 0,
-                beds: 0,
+            },
+            vacationHome:{
+                rooms: 1,
+                beds: 1,
+            },
+            ship: {
                 shipType: '',
                 shipLength: 1,
                 engineCount: 1,
@@ -179,28 +323,62 @@ export default {
                 maxSpeed: 1,
                 navigationEquipment: '',
                 fishingEquipment: '',
-                capacity: 0,
+                capacity: 1,
                 cancelation: true,
-                adventure: {
-                    fishingEquipment: '',
-                    fishingInstructorBio: '',
-                    capacity: 1,
-                }
             },
-            step: 1,
-            numSteps: 5,
-            user: {
-                userRole: 'HOUSE_OWNER'
+            adventure: {
+                fishingEquipment: '',
+                fishingInstructorBio: '',
+                capacity: 1,
             },
+
             infocus: {
                 shipType: true,
                 navigationEquipment: true,
                 fishingEquipment: true,
                 fishingInstructorBio: true,
-            }
+            },
+            step: 1,
+            numSteps: 5,
+
+            user: {
+                userRole: 'HOUSE_OWNER'
+            },
         }
     },
     validations: {
+        baseInfo: {
+            title: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(50),
+            },
+            address: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(40),
+            },
+            city: {
+                required,
+                minLength: minLength(2),
+                maxLength: maxLength(40),
+            },
+            description: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(200),
+            },
+            rulesOfConduct: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(200),
+            },
+            additionalServices: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(200),
+            },
+        },
         form: {
             shipType: {
                 required,
@@ -231,19 +409,19 @@ export default {
     },
     methods: {
         addressUpdated(address) {
-            this.form.address = address;
+            this.baseInfo.address = address;
         },
         cityUpdated(city) {
-            this.form.city = city;
+            this.baseInfo.city = city;
         },
         countryUpdated(country) {
-            this.form.country = country;
+            this.baseInfo.country = country;
         },
         priceUpdated(price) {
-				this.form.price = price;
+				this.baseInfo.price = price;
 		},
         picturesUpdated(pictures) {
-            this.form.pictures = pictures;
+            this.baseInfo.pictures = pictures;
         },
         roomsUpdated(rooms) {
             this.form.rooms = rooms;

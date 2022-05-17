@@ -15,7 +15,7 @@
 import BusinessClientRegistrationForm from '../components/BusinessClientRegistrationForm.vue'
 
 export default {
-    name: 'RegistrationPage',
+    name: 'BusinessClientRegistrationPage',
     components: {
         BusinessClientRegistrationForm,
   }

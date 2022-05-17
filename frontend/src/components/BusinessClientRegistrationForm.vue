@@ -99,7 +99,7 @@
             :validate="true"/>
         <div class="wrapper">
             <div class="form-control">
-                <label for="datepicker">Date of Birth</label>
+                <label for="datepicker">Date of Birth (Min. Age: 18)</label>
                 <DropdownDatepicker
                     id="datepicker" 
                     name="datepicker" 
@@ -111,20 +111,20 @@
                     :onYearChange="updateYear"
                     />
                 <div class="alert-info"
-                    v-if="this.dateOfBirth.focused && !this.dateOfBirth.isValid">
+                    v-if="this.infocus.dateOfBirth && !this.dateOfBirth.isValid">
                     Select a valid date.
                 </div>
             </div>
             <div class="form-control">
                 <label for="role" class="block-label">Account Type</label>
-                <select name="role" id="role" @click="roleFocused = true;" v-model="role">
-                    <option value="">Choose account type</option>
+                <select name="role" id="role" @click="infocus.role = true;" v-model="role">
+                    <option value="" selected disabled hidden>Choose account type</option>
                     <option value="HOUSE_OWNER">Vacation Home Owner</option>
                     <option value="SHIP_OWNER">Ship Owner</option>
                     <option value="FISHING_INSTRUCTOR">Fishing Instructor</option>
                 </select>
                 <div class="alert-info"
-                    v-if="this.roleFocused && this.role === ''">
+                    v-if="this.infocus.role && this.role === ''">
                     Select an account type.
                 </div>
             </div>
@@ -147,8 +147,7 @@
         </div>
         <div class="btn-div">
             <button class="btn"
-                :disabled="$v.$invalid || (!phone || !phone.isValid) 
-                    || !dateOfBirth.isValid || role==='' || country===''">
+                :disabled="$v.$invalid || (!phone || !phone.isValid) || !dateOfBirth.isValid">
                 Create Account
             </button>
             <div class="already-registered">Already have an account? <router-link to="/login">Log in</router-link></div>
@@ -182,7 +181,6 @@ export default {
             country: '',
             registrationReason: '',
             role: '',
-            roleFocused: false,
             phoneTmp: '',
             dateOfBirth:{
                 day: null,
@@ -190,7 +188,6 @@ export default {
                 year: null,
                 isValid: false,
                 updatingDay: false,
-                focused: false,
             },
             infocus: {
                 firstName: true,
@@ -200,6 +197,8 @@ export default {
                 password: true,
                 confirmPassword: true,
                 registrationReason: true,
+                role: false,
+                dateOfBirth: false,
             }
         }
     },
@@ -231,7 +230,23 @@ export default {
             required,
             minLength: minLength(20),
             maxLength: maxLength(200),
-        }
+        },
+        address: {
+            required,
+            minLength: minLength(5),
+            maxLength: maxLength(40)
+        },
+        city: {
+            required,
+            minLength: minLength(2),
+            maxLength: maxLength(40)
+        },
+        country: {
+            required
+        },
+        role: {
+            required,
+        },
     },
     methods: {
         signUpPressed(){
@@ -280,7 +295,7 @@ export default {
         updateYear(event){
             this.dateOfBirth.year = event;
             this.isDateValid();
-            this.dateOfBirth.focused = true;
+            this.infocus.dateOfBirth = true;
         },
         updateDate(day){
             if(this.dateOfBirth.updatingDay){
