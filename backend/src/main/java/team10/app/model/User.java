@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 
@@ -24,50 +25,18 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 public abstract class User implements UserDetails {
 
 
-    @SequenceGenerator(
-            name = "user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
-    )
-    @Column(
-            name = "id",
-            updatable = false
-    )
-    private Long id;
-    @Column(
-            name = "first_name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
     private String firstName;
-    @Column(
-            name = "last_name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
-    @Column(
-            name = "email",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
-    @Column(
-            name = "password",
-            nullable = false,
-            columnDefinition = "TEXT",
-            unique = true
-    )
+    @Column(name = "password", nullable = false, columnDefinition = "TEXT", unique = true)
     private String password;
-    @Column(
-            name = "phone_number",
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "phone_number", columnDefinition = "TEXT")
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;

@@ -1,15 +1,14 @@
 package team10.app.model;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 public class Rating {
 
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private Double userRating;
     private Double serviceRating;
 

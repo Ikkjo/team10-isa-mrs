@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -11,18 +12,9 @@ import javax.persistence.*;
 @Table(name = "loyalty")
 public class Loyalty {
 
-    @SequenceGenerator(
-            name = "loyalty_sequence",
-            sequenceName = "loyalty_sequence",
-            allocationSize = 1
-    )
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "loyalty_sequence"
-    )
-
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private int loyaltyPoints = 0;
     private LoyaltyStatus loyaltyStatus = LoyaltyStatus.REGULAR;
 

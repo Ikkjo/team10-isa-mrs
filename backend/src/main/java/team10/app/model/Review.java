@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,13 +13,13 @@ import java.time.LocalDate;
 public class Review {
 
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private String review;
     private ReviewStatus status;
     private LocalDate createdAt;
     private LocalDate approvedAt;
     private LocalDate answeredAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
 

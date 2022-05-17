@@ -12,13 +12,12 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 public class Adventure extends RentalEntity {
+
     private String instructorBiography;
     @Column(name = "fishing", nullable = false)
     private String fishing;
     private boolean freeCancellation;
     private int maxCapacity;
-    @Id
-    private Long id;
 
     public Adventure(String name,
                      String description,
@@ -39,13 +38,5 @@ public class Adventure extends RentalEntity {
         this.maxCapacity = maxCapacity;
         this.fishing = fishing;
         this.freeCancellation = freeCancellation;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 }
