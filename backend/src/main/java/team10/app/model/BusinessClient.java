@@ -13,10 +13,10 @@ import javax.persistence.*;
 @Entity
 public abstract class BusinessClient extends User {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
-    private Address address; // TODO: Skontati kako cuvati adresu u bazi
-    @OneToOne(fetch = FetchType.LAZY)
+    private Address address;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "loyalty_id")
     private Loyalty loyalty;
 
