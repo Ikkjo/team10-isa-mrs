@@ -7,7 +7,21 @@
                     <h1>Basic information</h1>
                     <div class="form-control">
                         <label for="title">Title</label>
-                        <input type="text" v-model="baseInfo.title" name="title">
+                        <input type="text" 
+                            v-model="baseInfo.first.title"
+                            name="title"
+                            @focus="inFocus('title')" 
+                            @blur="outFocus('title')" 
+                            :class="getClassFirst('title')" 
+                            :placeholder="getPlaceholderFirst('title')"
+                            >
+                        <div class="alert-info" 
+                            v-if="!isFocused('title') 
+                            && !($v.baseInfo.first.title.minLength 
+                            && $v.baseInfo.first.title.maxLength)"
+                            >
+                            First name must be 5 to 50 characters long.
+                        </div>
                     </div>
                     <AddressInput 
                         @update:address="addressUpdated" 
@@ -21,9 +35,19 @@
                             name="description" 
                             id="description" 
                             cols="30" rows="4" 
-                            v-model="baseInfo.description" 
-                            placeholder=""
+                            v-model="baseInfo.first.description"
+                            @focus="inFocus('description')" 
+                            @blur="outFocus('description')" 
+                            :class="getClassFirst('description')" 
+                            :placeholder="getPlaceholderFirst('description')"
                             />
+                        <div class="alert-info" 
+                            v-if="!isFocused('description') 
+                            && !($v.baseInfo.first.description.minLength 
+                            && $v.baseInfo.first.description.maxLength)"
+                            >
+                            Enter a description.
+                        </div>
                     </div>
                 </div>
                 <!-- STEP 2: ADDITIONAL INFORMATION -->
@@ -32,22 +56,43 @@
                     <div class="form-control">
                         <label for="rules-of-conduct">Rules of conduct</label>
                         <textarea 
-                            v-model="baseInfo.rulesOfConduct" 
+                            v-model="baseInfo.second.rulesOfConduct" 
                             name="rules-of-conduct" 
                             id="rules-of-conduct" 
                             cols="30" rows="4" 
-                            placeholder=""
+                            @focus="inFocus('rulesOfConduct')" 
+                            @blur="outFocus('rulesOfConduct')" 
+                            :class="getClassSecond('rulesOfConduct')" 
+                            :placeholder="getPlaceholderSecond('rulesOfConduct')"
                             />
+                        <div class="alert-info" 
+                            v-if="!isFocused('rulesOfConduct') 
+                            && !($v.baseInfo.second.rulesOfConduct.minLength 
+                            && $v.baseInfo.second.rulesOfConduct.maxLength)"
+                            >
+                            Enter rules of conduct.
+                        </div>
                     </div>
                     <div class="form-control">
                         <label for="additional-services" class="block-label">Additional Services</label>
                         <textarea 
-                            v-model="baseInfo.additionalServices" 
+                            v-model="baseInfo.second.additionalServices" 
                             name="additional-services" 
                             id="additional-services" 
                             cols="30" rows="4" 
-                            placeholder="Some things you offer like: wifi, free parking, air conditioning..."
+                            @focus="inFocus('additionalServices')" 
+                            @blur="outFocus('additionalServices')" 
+                            :class="getClassSecond('additionalServices')" 
+                            :placeholder="getPlaceholderSecond('additionalServices', 
+                            'Some things you offer like: wifi, free parking, air conditioning...')"
                             />
+                        <div class="alert-info" 
+                            v-if="!isFocused('additionalServices') 
+                            && !($v.baseInfo.second.additionalServices.minLength 
+                            && $v.baseInfo.second.additionalServices.maxLength)"
+                            >
+                            Enter additional services.
+                        </div>
                     </div>
                 </div>
                 <!-- STEP 3: PRICE -->
@@ -62,7 +107,7 @@
 
                 <!-- The rest of the steps can be decided using v-if on type of logged in user -->
                 <!-- STEP 5: VACATION HOME INPUT -->
-                <div class="form" v-show="step === 5" v-if="user.userRole === 'HOUSE_OWNER'">
+                <div class="form" v-show="step === 5" v-if="user.role === 'HOUSE_OWNER'">
                     <RoomsInput 
                         @updated:rooms="roomsUpdated" 
                         @updated:beds="bedsUpdated" 
@@ -71,22 +116,22 @@
                 </div>
 
                 <!-- STEP 5: SHIP INPUT -->
-                <div class="form ship-form" v-show="step === 5" v-if="user.userRole === 'SHIP_OWNER'">
+                <div class="form ship-form" v-show="step === 5" v-if="user.role === 'SHIP_OWNER'">
                     <h1>Ship information</h1>
                     <div class="form-control">
                         <label for="ship-type">Ship Type</label>
                         <input type="text" 
-                            v-model="baseInfo.shipType" 
+                            v-model="ship.type" 
                             name="ship-type" 
-                            @focus="inFocus('shipType')" 
-                            @blur="outFocus('shipType')" 
-                            :class="getClass('shipType')" 
-                            :placeholder="getPlaceholder('shipType')"
+                            @focus="inFocusShip('type')" 
+                            @blur="outFocusShip('type')" 
+                            :class="getClassShip('type')" 
+                            :placeholder="getPlaceholderShip('type')"
                             >
                         <div class="alert-info" 
-                            v-if="!this.infocus['shipType'] 
-                            && !($v.baseInfo.shipType.minLength 
-                            && $v.baseInfo.shipType.maxLength)"
+                            v-if="!isFocusedShip('type') 
+                            && !($v.ship.type.minLength 
+                            && $v.ship.type.maxLength)"
                             >
                             Must be between 5 and 50 characters.
                         </div>
@@ -102,7 +147,7 @@
                                 :maxValue="50"
                                 />
                             <NumberInput 
-                                @updated="capacityUpdated" 
+                                @updated="shipCapacityUpdated" 
                                 placeholder="" 
                                 label="Capacity" 
                                 :increment="2" 
@@ -112,7 +157,7 @@
                         </div>
                         <div>
                             <NumberInput 
-                                @updated="engineCountUpdated" 
+                                @updated="shipEngineCountUpdated" 
                                 placeholder="" 
                                 label="Number of Engines" 
                                 :increment="1" 
@@ -120,7 +165,7 @@
                                 :maxValue="5"
                                 />
                             <NumberInput 
-                                @updated="enginePowerUpdated" 
+                                @updated="shipEnginePowerUpdated" 
                                 placeholder="" 
                                 label="Engine Power (kw)" 
                                 :increment="5" 
@@ -130,7 +175,7 @@
                         </div>
                         <div>
                             <NumberInput
-                                @updated="maxSpeedUpdated" 
+                                @updated="shipMaxSpeedUpdated" 
                                 placeholder="" 
                                 label="Max Speed (km/h)" 
                                 :increment="5" 
@@ -143,19 +188,19 @@
                     <div class="form-control">
                         <label for="navigation-equipment" class="block-label">Navigation Equipment</label>
                         <textarea 
-                            v-model="form.navigationEquipment" 
+                            v-model="ship.navigationEquipment" 
                             name="navigation-equipment" 
                             id="navigation-equipment" 
                             cols="30" rows="4" 
-                            @focus="inFocus('navigationEquipment')" 
-                            @blur="outFocus('navigationEquipment')" 
-                            :class="getClass('navigationEquipment')" 
-                            :placeholder="getPlaceholder('navigationEquipment', 'GPS, radar, VHS radio, fishfinder...')"
+                            @focus="inFocusShip('navigationEquipment')" 
+                            @blur="outFocusShip('navigationEquipment')" 
+                            :class="getClassShip('navigationEquipment')" 
+                            :placeholder="getPlaceholderShip('navigationEquipment', 'GPS, radar, VHS radio, fishfinder...')"
                             />
                         <div class="alert-info alert-textarea" 
-                            v-if="!this.infocus['navigationEquipment'] 
-                            && !($v.form.navigationEquipment.minLength 
-                            && $v.form.navigationEquipment.maxLength)"
+                            v-if="!isFocusedShip('navigationEquipment') 
+                            && !($v.ship.navigationEquipment.minLength 
+                            && $v.ship.navigationEquipment.maxLength)"
                             >
                             Must be between 3 and 500 characters.
                         </div>
@@ -163,56 +208,58 @@
                     <div class="form-control">
                         <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
                         <textarea 
-                            v-model="form.fishingEquipment" 
+                            v-model="adventure.fishingEquipment" 
                             name="fishing-equipment" 
                             id="fishing-equipment" 
                             cols="30" rows="4" 
-                            @focus="inFocus('fishingEquipment')" 
-                            @blur="outFocus('fishingEquipment')" 
-                            :class="getClass('fishingEquipment')" 
-                            :placeholder="getPlaceholder('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"
+                            @focus="inFocusShip('fishingEquipment')" 
+                            @blur="outFocusShip('fishingEquipment')" 
+                            :class="getClassShip('fishingEquipment')" 
+                            :placeholder="getPlaceholderShip('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"
                             />
                         <div class="alert-info alert-textarea" 
-                            v-if="!this.infocus['fishingEquipment'] 
-                            && !$v.form.fishingEquipment.maxLength"
+                            v-if="!isFocusedShip('fishingEquipment')
+                            && !$v.ship.fishingEquipment.maxLength"
                             >
                             Max 500 characters.
                         </div>
                     </div>
                     <div class="form-control">
-                        <label for="cancelation" class="block-label">Cancellation</label>
-                        <select name="cancelation" id="cancelation" v-model="form.freeCancellation">
-                            <option :value="true" selected>Free cancellation</option>
+                        <label for="cancellation" class="block-label">Cancellation</label>
+                        <select name="cancellation" id="cancellation" v-model="ship.cancellation">
+                            <option :value="null" selected disabled hidden>Choose an option</option>
+                            <option :value="true">Free cancellation</option>
                             <option :value="false">Owner keeps a percentage</option>
                         </select>
                     </div>
                 </div>
                 
                 <!-- STEP 5: ADVENTURE INPUT -->
-                <div class="form adventure-form" v-show="step === 5" v-if="user.userRole === 'FISHING_INSTRUCTOR'">
+                <div class="form adventure-form" v-show="step === 5" v-if="user.role === 'FISHING_INSTRUCTOR'">
                     <h1>Adventure information</h1>
                     <div class="form-control">
                         <label for="fishing-instructor-bio">Short Biography</label>
                         <textarea 
-                            v-model="form.adventure.fishingInstructorBio" 
+                            v-model="adventure.fishingInstructorBio" 
                             name="fishing-instructor-bio" 
                             id="fishing-instructor-bio" 
                             cols="30" rows="3" 
-                            @focus="inFocus('fishingInstructorBio')" 
-                            @blur="outFocus('fishingInstructorBio')" 
-                            :class="getClassInstructor('fishingInstructorBio')" 
-                            :placeholder="getPlaceholderInstructor('fishingInstructorBio', 'Something about yourself.')"
+                            @focus="inFocusAdventure('fishingInstructorBio')" 
+                            @blur="outFocusAdventure('fishingInstructorBio')" 
+                            :class="getClassAdventure('fishingInstructorBio')" 
+                            :placeholder="getPlaceholderAdventure('fishingInstructorBio', 'Something about yourself.')"
                             />
                         <div class="alert-info alert-textarea"
-                            v-if="!this.infocus['fishingInstructorBio'] 
-                            && !($v.form.adventure.fishingInstructorBio.minLength 
-                            && $v.form.adventure.fishingInstructorBio.maxLength)">
+                            v-if="!isFocusedAdventure('fishingInstructorBio') 
+                            && !($v.adventure.fishingInstructorBio.minLength 
+                            && $v.adventure.fishingInstructorBio.maxLength)"
+                            >
                             Max 200 characters.
                         </div>
                     </div> 
                     <div class="number-input">
                         <NumberInput 
-                            @updated="maxCapacityAdvenuture" 
+                            @updated="adventureMaxCapacityUpdated" 
                             placeholder="" 
                             label="Maximum number of people" 
                             :increment="1" 
@@ -223,27 +270,29 @@
                     <div class="form-control">
                         <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
                         <textarea 
-                            v-model="form.adventure.fishingEquipment" 
+                            v-model="adventure.fishingEquipment" 
                             name="fishing-equipment" 
                             id="fishing-equipment" 
                             cols="30" rows="4" 
-                            @focus="inFocus('fishingEquipment')" 
-                            @blur="outFocus('fishingEquipment')" 
-                            :class="getClassInstructor('fishingEquipment')" 
-                            :placeholder="getPlaceholderInstructor('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"
+                            @focus="inFocusAdventure('fishingEquipment')" 
+                            @blur="outFocusAdventure('fishingEquipment')" 
+                            :class="getClassAdventure('fishingEquipment')" 
+                            :placeholder="getPlaceholderAdventure('fishingEquipment', 'Fishing rods, baits, hooks, weights...')"
                             />
                         <div class="alert-info alert-textarea" 
-                            v-if="!this.infocus['fishingEquipment'] 
-                            && !($v.form.adventure.fishingEquipment.maxLength 
-                            && $v.form.adventure.fishingEquipment.minLength)">
-                            Max 500 characters.
+                            v-if="!isFocusedAdventure('fishingEquipment')
+                            && !($v.adventure.fishingEquipment.maxLength 
+                            && $v.adventure.fishingEquipment.minLength)"
+                            >
+                            Between 5 and 500 characters.
                         </div>
                     </div>
                     <div class="form-control">
-                        <label for="cancelation" class="block-label">Cancelation</label>
-                        <select name="cancelation" id="cancelation" v-model="form.cancelation">
-                            <option value="true">Free cancelation</option>
-                            <option value="false">Owner keeps a percentage</option>
+                        <label for="cancellation" class="block-label">Cancellation</label>
+                        <select name="cancellation" id="cancellation" v-model="adventure.cancellation">
+                            <option :value="null" selected disabled hidden>Choose an option</option>
+                            <option :value="true">Free cancellation</option>
+                            <option :value="false">Owner keeps a percentage</option>
                         </select>
                     </div>
                 </div>
@@ -301,86 +350,122 @@ export default {
     data() {
         return {
             baseInfo: {
-                title: '',
-                address: '',
-                city: '',
-                country: '',
-                description: '',
-                rulesOfConduct: '',
-                additionalServices: '',
-                price: '',
-                pictures: [],
+                first: {
+                    title: '',
+                    address: '',
+                    city: '',
+                    country: '',
+                    description: '',
+                },
+                second: {
+                    rulesOfConduct: '',
+                    additionalServices: '',
+                },
+                third: {
+                    price: '',
+                },
+                fourth: {
+                    pictures: [],
+                }
             },
             vacationHome:{
                 rooms: 1,
                 beds: 1,
             },
             ship: {
-                shipType: '',
-                shipLength: 1,
+                type: '',
+                length: 1,
                 engineCount: 1,
                 enginePower: 1,
                 maxSpeed: 1,
                 navigationEquipment: '',
                 fishingEquipment: '',
                 capacity: 1,
-                cancelation: true,
+                cancellation: null,
             },
             adventure: {
                 fishingEquipment: '',
                 fishingInstructorBio: '',
                 capacity: 1,
+                cancellation: null,
             },
 
             infocus: {
-                shipType: true,
-                navigationEquipment: true,
-                fishingEquipment: true,
-                fishingInstructorBio: true,
+                // baseInfo
+                title: true,
+                address: true,
+                city: true,
+                country: true,
+                description: true,
+                rulesOfConduct: true,
+                additionalServices: true,
+                price: true,
+                pictures: true,
+                ship: {
+                    type: true,
+                    navigationEquipment: true,
+                    fishingEquipment: true,
+                },
+                adventure: {
+                    fishingEquipment: true,
+                    fishingInstructorBio: true,
+                }
             },
             step: 1,
             numSteps: 5,
 
             user: {
-                userRole: 'HOUSE_OWNER'
+                role: 'FISHING_INSTRUCTOR'
             },
         }
     },
     validations: {
         baseInfo: {
-            title: {
-                required,
-                minLength: minLength(5),
-                maxLength: maxLength(50),
+            first: {
+                title: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(50),
+                },
+                address: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(40),
+                },
+                city: {
+                    required,
+                    minLength: minLength(2),
+                    maxLength: maxLength(40),
+                },
+                country: {
+                    required
+                },
+                description: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(200),
+                },
             },
-            address: {
-                required,
-                minLength: minLength(5),
-                maxLength: maxLength(40),
+            second: {
+                rulesOfConduct: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(200),
+                },
+                additionalServices: {
+                    required,
+                    minLength: minLength(2),
+                    maxLength: maxLength(200),
+                },
             },
-            city: {
-                required,
-                minLength: minLength(2),
-                maxLength: maxLength(40),
-            },
-            description: {
-                required,
-                minLength: minLength(5),
-                maxLength: maxLength(200),
-            },
-            rulesOfConduct: {
-                required,
-                minLength: minLength(5),
-                maxLength: maxLength(200),
-            },
-            additionalServices: {
-                required,
-                minLength: minLength(5),
-                maxLength: maxLength(200),
-            },
+            third: {
+                price: {
+                    required
+                }
+            }
         },
-        form: {
-            shipType: {
+        ship: {
+            type: {
                 required,
                 minLength: minLength(5),
                 maxLength: maxLength(50),
@@ -393,70 +478,83 @@ export default {
             fishingEquipment: {
                 maxLength: maxLength(500),
             },
-            adventure: {
-                fishingEquipment: {
-                    required,
-                    minLength: minLength(5),
-                    maxLength: maxLength(500)
-                },
-                fishingInstructorBio: {
-                    required,
-                    minLength: minLength(5),
-                    maxLength: maxLength(200)
-                }
+        },
+        adventure: {
+            fishingEquipment: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(500)
+            },
+            fishingInstructorBio: {
+                required,
+                minLength: minLength(5),
+                maxLength: maxLength(200)
             }
         }
     },
     methods: {
         addressUpdated(address) {
-            this.baseInfo.address = address;
+            this.baseInfo.first.address = address;
         },
         cityUpdated(city) {
-            this.baseInfo.city = city;
+            this.baseInfo.first.city = city;
         },
         countryUpdated(country) {
-            this.baseInfo.country = country;
+            this.baseInfo.first.country = country;
         },
         priceUpdated(price) {
-				this.baseInfo.price = price;
+            this.baseInfo.third.price = price;
+            this.infocus.price = false;
 		},
         picturesUpdated(pictures) {
-            this.baseInfo.pictures = pictures;
+            this.baseInfo.fourth.pictures = pictures;
         },
         roomsUpdated(rooms) {
-            this.form.rooms = rooms;
+            this.vacationHome.rooms = rooms;
         },
         bedsUpdated(beds) {
-            this.form.beds = beds;
+            this.vacationHome.beds = beds;
         },
         shipLengthUpdated(length) {
-            this.shipLength = length;
+            this.ship.shipLength = length;
         },
-        engineCountUpdated(engineCount) {
-            this.form.engineCount = engineCount;
+        shipEngineCountUpdated(engineCount) {
+            this.ship.engineCount = engineCount;
         },
-        enginePowerUpdated(enginePower) {
-            this.form.enginePower = enginePower;
+        shipEnginePowerUpdated(enginePower) {
+            this.ship.enginePower = enginePower;
         },
-        capacityUpdated(capacity) {
-            this.form.capacity = capacity;
+        shipCapacityUpdated(capacity) {
+            this.ship.capacity = capacity;
         },
-        maxSpeedUpdated(maxSpeed) {
-            this.form.maxSpeed = maxSpeed;
+        shipMaxSpeedUpdated(maxSpeed) {
+            this.ship.maxSpeed = maxSpeed;
         },
-        maxCapacityAdvenuture(capacity){
-            this.form.adventure.capacity = capacity;
+        adventureMaxCapacityUpdated(capacity){
+            this.adventure.capacity = capacity;
         },        
         nextDisabled() {
-            // TODO: Napraviti proveru po koracima 
+            if (this.step === 1 && this.$v.baseInfo.first.$invalid)
+                return true;
+            if (this.step === 2 && this.$v.baseInfo.second.$invalid)
+                return true;
+            if (this.step === 3 && this.$v.baseInfo.third.$invalid)
+                return true;
+            if (this.step === 4 
+                && this.baseInfo.fourth.pictures.length < 5)
+                return true;
             return false;
         },
         finishDisabled() {
-            if (this.user.userRole === 'HOUSE_OWNER')
-                return (this.$refs.roomsInput.$v.$invalid || !this.$v.form.$invalid);
-            if (this.user.userRole === 'SHIP_OWNER') {
-                return this.$v.form.$invalid;
-            }
+            if (this.user.role === 'HOUSE_OWNER')
+                return this.$refs.roomsInput.$v.$invalid 
+                    || this.$v.baseInfo.$invalid;
+            if (this.user.role === 'SHIP_OWNER')
+                return this.$v.ship.$invalid
+                    || this.$v.baseInfo.$invalid;
+            if (this.user.role === 'FISHING_INSTRUCTOR')
+                return this.$v.adventure.$invalid
+                    || this.$v.baseInfo.$invalid;
         },
         next() {
             // add check if step is == maxSteps
@@ -473,24 +571,28 @@ export default {
             // add router.route to main page 
         },
         finish() {
-            if (this.user.userRole === 'HOUSE_OWNER')
+            if (this.user.role === 'HOUSE_OWNER')
                 this.postVacationHome();
-            else if (this.user.userRole === 'SHIP_OWNER')
+            else if (this.user.role === 'SHIP_OWNER')
                 this.postShip();
-            else if (this.user.userRole === 'FISHING_INSTRUCTOR')
+            else if (this.user.role === 'FISHING_INSTRUCTOR')
                 this.postAdventure();
         },
         postVacationHome() {
             let vacationHomeDto = {
-                title: this.form.title,
-                address: {'address': this.form.address, 'city': this.form.city, 'country': this.form.country},
-                description: this.form.description,
-                rulesOfConduct: this.form.rulesOfConduct,
-                additionalServices: this.form.additionalServices,
-                price: this.form.price,
-                pictures: this.form.pictures,
-                rooms: this.form.rooms,
-                beds: this.form.beds,
+                title: this.baseInfo.first.title,
+                address: {
+                    'address': this.baseInfo.first.address, 
+                    'city': this.baseInfo.first.city, 
+                    'country': this.baseInfo.first.country
+                    },
+                description: this.baseInfo.first.description,
+                rulesOfConduct: this.baseInfo.second.rulesOfConduct,
+                additionalServices: this.baseInfo.second.additionalServices,
+                price: this.baseInfo.third.price,
+                pictures: this.baseInfo.fourth.pictures,
+                rooms: this.vacationHome.rooms,
+                beds: this.vacationHome.beds,
             }
             // username = JSON.parse(window.sessionStorage.getItem("user")).username;
             // token = JSON.parse(window.sessionStorage.getItem("user")).jwt
@@ -513,22 +615,26 @@ export default {
         },
         postShip() {
             let shipDto = {
-                title: this.form.title,
-                address: {'address': this.form.address, 'city': this.form.city, 'country': this.form.country},
-                description: this.form.description,
-                rulesOfConduct: this.form.rulesOfConduct,
-                additionalServices: this.form.additionalServices,
-                price: this.form.price,
-                pictures: this.form.pictures,
-                type: this.form.shipType,
-                length: this.form.shipLength,
-                engineCount: this.form.engineCount,
-                enginePower: this.form.enginePower,
-                maxSpeed: this.form.maxSpeed,
-                navigationEquipment: this.form.navigationEquipment,
-                fishingEquipment: this.form.fishingEquipment,
-                capacity: this.form.capacity,
-                freeCancellation: this.form.freeCancellation,
+                title: this.baseInfo.first.title,
+                address: {
+                    'address': this.baseInfo.first.address, 
+                    'city': this.baseInfo.first.city, 
+                    'country': this.baseInfo.first.country
+                    },
+                description: this.baseInfo.first.description,
+                rulesOfConduct: this.baseInfo.second.rulesOfConduct,
+                additionalServices: this.baseInfo.second.additionalServices,
+                price: this.baseInfo.third.price,
+                pictures: this.baseInfo.fourth.pictures,
+                type: this.ship.type,
+                length: this.ship.length,
+                engineCount: this.ship.engineCount,
+                enginePower: this.ship.enginePower,
+                maxSpeed: this.ship.maxSpeed,
+                navigationEquipment: this.ship.navigationEquipment,
+                fishingEquipment: this.ship.fishingEquipment,
+                capacity: this.ship.capacity,
+                freeCancellation: this.ship.cancellation,
             }
 
             axios({
@@ -541,23 +647,27 @@ export default {
             }).then(function(response) {
                 console.log(response);
                 // notify that awaiting accept
-            })
-            .catch(function(error) {
+            }).catch(function(error) {
                 console.log(error);
             }) 
         },
         postAdventure(){
             let adventureDto = {
-                title: this.form.title,
-                address: {'address': this.form.address, 'city': this.form.city, 'country': this.form.country},
-                description: this.form.description,
-                rulesOfConduct: this.form.rulesOfConduct,
-                additionalServices: this.form.additionalServices,
-                price: this.form.price,
-                pictures: this.form.pictures,
-                fishingEquipment: this.form.adventure.fishingEquipment,
-                capacity: this.form.adventure.capacity,
-                freeCancellation: this.form.freeCancellation,
+                title: this.baseInfo.first.title,
+                address: {
+                    'address': this.baseInfo.first.address, 
+                    'city': this.baseInfo.first.city, 
+                    'country': this.baseInfo.first.country
+                    },
+                description: this.baseInfo.first.description,
+                rulesOfConduct: this.baseInfo.second.rulesOfConduct,
+                additionalServices: this.baseInfo.second.additionalServices,
+                price: this.baseInfo.third.price,
+                pictures: this.baseInfo.fourth.pictures,
+                fishingEquipment: this.adventure.fishingEquipment,
+                instructorBiography: this.adventure.fishingInstructorBio,
+                capacity: this.adventure.capacity,
+                freeCancellation: this.cancellation,
             }
 
             axios({
@@ -570,34 +680,75 @@ export default {
             }).then(function(response) {
                 console.log(response);
                 // notify that awaiting accept
-            })
-            .catch(function(error) {
+            }).catch(function(error) {
                 console.log(error);
             }) 
         },
         isFocused(field) {
             return this.infocus[field]
         },
+        isFocusedShip(field) {
+            return this.infocus.ship[field]
+        },
+        isFocusedAdventure(field) {
+            return this.infocus.adventure[field]
+        },
         inFocus(field) {
             this.infocus[field] = true
+        },
+        inFocusShip(field) {
+            this.infocus.ship[field] = true
+        },
+        inFocusAdventure(field) {
+            this.infocus.adventure[field] = true
         },
         outFocus(field) {
             this.infocus[field] = false
         },
-        getClass(field) {
-            let cls = !this.isFocused(field) && this.$v.form[field].$invalid ? 'alert' : '';
+        outFocusShip(field) {
+            this.infocus.ship[field] = false
+        },
+        outFocusAdventure(field) {
+            this.infocus.adventure[field] = false
+        },
+        getClassFirst(field) {
+            let cls = !this.isFocused(field) 
+                && this.$v.baseInfo.first[field].$invalid ? 'alert' : '';
             return cls;
         },
-        getPlaceholder(field, defaultPlaceholder='') {
-            let placeholder = !this.isFocused(field) && this.$v.form[field].$invalid ? 'Required' : defaultPlaceholder;
+        getClassSecond(field) {
+            let cls = !this.isFocused(field) 
+                && this.$v.baseInfo.second[field].$invalid ? 'alert' : '';
+            return cls;
+        },
+        getPlaceholderFirst(field, defaultPlaceholder='') {
+            let placeholder = !this.isFocused(field) 
+                && this.$v.baseInfo.first[field].$invalid ? 'Required' : defaultPlaceholder;
             return placeholder;
         },
-        getClassInstructor(field) {
-            let cls = !this.isFocused(field) && this.$v.form.adventure[field].$invalid ? 'alert' : '';
+        getPlaceholderSecond(field, defaultPlaceholder='') {
+            let placeholder = !this.isFocused(field) 
+                && this.$v.baseInfo.second[field].$invalid ? 'Required' : defaultPlaceholder;
+            return placeholder;
+        },
+        getClassAdventure(field) {
+            let cls = !this.isFocusedAdventure(field) 
+                && this.$v.adventure[field].$invalid ? 'alert' : '';
             return cls;
         },
-        getPlaceholderInstructor(field, defaultPlaceholder='') {
-            let placeholder = !this.isFocused(field) && this.$v.form.adventure[field].$invalid ? 'Required' : defaultPlaceholder;
+        getPlaceholderAdventure(field, defaultPlaceholder='') {
+            let placeholder = !this.isFocusedAdventure(field) 
+                && this.$v.adventure[field].$invalid ? 'Required' : defaultPlaceholder;
+            return placeholder;
+        },
+        getClassShip(field) {
+            let cls = !this.isFocusedShip(field) 
+                && this.$v.ship[field].$invalid ? 'alert' : '';
+            return cls;
+        },
+        getPlaceholderShip(field, defaultPlaceholder='') {
+            let placeholder = !this.isFocusedShip(field) 
+                && this.$v.ship[field].$invalid ? 'Required' : defaultPlaceholder;
             return placeholder;
         }
     },
@@ -631,9 +782,10 @@ export default {
 
 .form > * {
     margin: 15px 0;
-    padding: 0 100px 0 100px;
 }
-
+.form {
+    padding: 5%;
+}
 .price-div {
     display: flex;
     flex-direction: column;
@@ -710,15 +862,22 @@ export default {
     margin-bottom: 0 !important;
 }
 
+.alert {
+    transition: 0.5s;
+    border-color: red !important;
+    border-width: 2px;
+}
+
 .alert-info {
     position: absolute;
     transition: 0.05s;
     color: red !important;
     font-size: 0.9rem;
-    margin-top: 67px;
 }
 
 .alert-textarea {
     margin-top: 110px;
 }
+
+
 </style>
