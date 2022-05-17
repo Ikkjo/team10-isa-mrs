@@ -10,7 +10,24 @@
 <script>
 export default {
     name: 'NavItem',
-    props: ['link', 'text', 'iconClass', 'icon']
+    props: {
+        iconClass: {
+            type: String,
+            default: "material-icons"
+        },
+        icon: {
+            type: String,
+            default: "disabled_by_default",
+        },
+        link: {
+            type: String,
+            default: "",
+        },
+        text: {
+            type: String,
+            default: "",
+        },
+    },
 }
 </script>
 

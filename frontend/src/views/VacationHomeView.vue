@@ -21,13 +21,13 @@
 </template>
 
 <script>
-import BusinessUserNav from "@/components/BusinessUserNav.vue"
+import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import VacationHomeCard from "@/components/VacationHomeCard.vue"
 import axios from 'axios';
 export default {
     name: 'VacationHomeView',
     components: {
-        BusinessUserNav,
+        BusinessClientNavBar,
         VacationHomeCard,
     },
     data() {

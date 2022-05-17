@@ -1,45 +1,45 @@
 <template>
-   <div id="address-input">
-            <div class="form-control">
-                <label for="address">Address</label>
-                <input type="text" 
-                    @keyup="$emit('update:address', address);" 
-                    v-model="address" 
-                    name="address"
-                    @focus="validate? inFocus('address') : null" 
-                    @blur="validate? outFocus('address') : null" 
-                    :class="getClass('address')" 
-                    :placeholder="getPlaceholder('address', 'e.g. Groove Street 20')">
-                <div class="alert-info" 
-                    v-if="!this.infocus['address'] && !($v.address.minLength && $v.address.maxLength)">
-                    Enter a valid address.
-                </div>
-            </div>
-            <div class="form-control">
-                <label for="city">City</label>
-                <input type="text" 
-                    v-model="city" 
-                    @keyup="$emit('update:city', city);" 
-                    name="city"
-                    @focus="validate? inFocus('city') : null" 
-                    @blur="validate? outFocus('city') : null" 
-                    :class="getClass('city')" 
-                    :placeholder="getPlaceholder('city', 'e.g. Los Santos')"
-                    >
-                <div class="alert-info" 
-                    v-if="!this.infocus['city'] && !($v.city.minLength && $v.city.maxLength)">
-                    Enter a valid city.
-                </div>
-            </div>
-             <div class="form-control">
-                <label for="country" class="block-label">Country</label>
-                <country-select v-model="country" :value="country" :countryName="true" topCountry="US"/>
+    <div id="address-input">
+        <div class="form-control">
+            <label for="address">Address</label>
+            <input type="text" 
+                @keyup="$emit('update:address', address);" 
+                v-model="address" 
+                name="address"
+                @focus="validate? inFocus('address') : null" 
+                @blur="validate? outFocus('address') : null" 
+                :class="getClass('address')" 
+                :placeholder="getPlaceholder('address', 'e.g. Groove Street 20')">
+            <div class="alert-info" 
+                v-if="!this.infocus['address'] && !($v.address.minLength && $v.address.maxLength)">
+                Enter a valid address.
             </div>
         </div>
+        <div class="form-control">
+            <label for="city">City</label>
+            <input type="text" 
+                v-model="city" 
+                @keyup="$emit('update:city', city);" 
+                name="city"
+                @focus="validate? inFocus('city') : null" 
+                @blur="validate? outFocus('city') : null" 
+                :class="getClass('city')" 
+                :placeholder="getPlaceholder('city', 'e.g. Los Santos')"
+                >
+            <div class="alert-info" 
+                v-if="!this.infocus['city'] && !($v.city.minLength && $v.city.maxLength)">
+                Enter a valid city.
+            </div>
+        </div>
+            <div class="form-control">
+            <label for="country" class="block-label">Country</label>
+            <country-select v-model="country" :value="country" :countryName="true" topCountry="US"/>
+        </div>
+    </div>
 </template>
 
 <script>
-import { required, minLength, maxLength} from 'vuelidate/lib/validators'
+import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
 export default {
     props: {

@@ -9,7 +9,7 @@
                         <label for="title">Title</label>
                         <input type="text" v-model="form.title" name="title">
                     </div>
-                    <address-input @update:address="addressUpdated" @update:city="cityUpdated" @update:country="countryUpdated"/>
+                    <AddressInput @update:address="addressUpdated" @update:city="cityUpdated" @update:country="countryUpdated"/>
                     <div class="form-control">
                         <label for="description" class="block-label">Description</label>
                         <textarea name="description" id="description" cols="30" rows="4" v-model="form.description" placeholder=""></textarea>
@@ -30,18 +30,17 @@
                 <!-- STEP 3: PRICE -->
                 <div class="form price-div" v-show="step === 3">
                     <h1>Price</h1>
-                    <price-input @updated="priceUpdated" class="form-control pricing"/>
+                    <PriceInput @updated="priceUpdated" class="form-control pricing"/>
                 </div>
                 <!-- STEP 4: PHOTOS -->
                 <div class="form" v-show="step === 4">
-                    <rental-entity-picture-input @updated="picturesUpdated"/>
+                    <RentalEntityPictureInput @updated="picturesUpdated"/>
                 </div>
 
                 <!-- The rest of the steps can be decided using v-if on type of logged in user -->
-                <!-- VACATION HOUSE STEPS -->
-                <!-- STEP 5: ROOMS INPUT -->
+                <!-- STEP 5: VACATION HOME INPUT -->
                 <div class="form" v-show="step === 5" v-if="user.userRole === 'HOUSE_OWNER'">
-                    <rooms-input @updated:rooms="roomsUpdated" @updated:beds="bedsUpdated" ref="roomsInput"/>
+                    <RoomsInput @updated:rooms="roomsUpdated" @updated:beds="bedsUpdated" ref="roomsInput"/>
                 </div>
 
                 <!-- STEP 5: SHIP INPUT -->
@@ -57,15 +56,15 @@
                     </div>
                     <div class="number-input">
                         <div>
-                            <number-input @updated="shipLengthUpdated" placeholder="" label="Ship Length (meters)" :increment="1" :minValue="1" :maxValue="50" />
-                            <number-input @updated="capacityUpdated" placeholder="" label="Capacity" :increment="2" :minValue="1" :maxValue="100" />
+                            <NumberInput @updated="shipLengthUpdated" placeholder="" label="Ship Length (meters)" :increment="1" :minValue="1" :maxValue="50" />
+                            <NumberInput @updated="capacityUpdated" placeholder="" label="Capacity" :increment="2" :minValue="1" :maxValue="100" />
                         </div>
                         <div>
-                            <number-input @updated="engineCountUpdated" placeholder="" label="Number of Engines" :increment="1" :minValue="1" :maxValue="5" />
-                            <number-input @updated="enginePowerUpdated" placeholder="" label="Engine Power (kw)" :increment="5" :minValue="1" :maxValue="10000" />
+                            <NumberInput @updated="engineCountUpdated" placeholder="" label="Number of Engines" :increment="1" :minValue="1" :maxValue="5" />
+                            <NumberInput @updated="enginePowerUpdated" placeholder="" label="Engine Power (kw)" :increment="5" :minValue="1" :maxValue="10000" />
                         </div>
                         <div>
-                            <number-input @updated="maxSpeedUpdated" placeholder="" label="Max Speed (km/h)" :increment="5" :minValue="1" :maxValue="200" />
+                            <NumberInput @updated="maxSpeedUpdated" placeholder="" label="Max Speed (km/h)" :increment="5" :minValue="1" :maxValue="200" />
                         </div>
                     </div>
                     
@@ -106,7 +105,7 @@
                         </div>
                     </div> 
                     <div class="number-input">
-                        <number-input @updated="maxCapacityAdvenuture" placeholder="" label="Maximum number of people" :increment="1" :minValue="1" :maxValue="20"/>
+                        <NumberInput @updated="maxCapacityAdvenuture" placeholder="" label="Maximum number of people" :increment="1" :minValue="1" :maxValue="20"/>
                     </div>
                     <div class="form-control">
                         <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
@@ -161,7 +160,7 @@ export default {
     },
     data() {
         return {
-            form: {
+            baseInfo: {
                 title: '',
                 address: '',
                 city: '',

@@ -109,8 +109,6 @@ import axios from 'axios';
 
 export default {
     name: 'ClientRegistrationForm',
-    components: {
-    },
     data() {
         return {
             firstName: '',

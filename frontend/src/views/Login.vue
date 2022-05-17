@@ -1,10 +1,5 @@
 <template>
 <div class="container">
-    <!-- <div class="text">
-        <h1>Sing up.</h1>
-        <p>Let's get you all setup so you can verify your personal account and begin setting up your profile.</p>
-    </div> -->
-
     <div class="inner-container">
         <div class="login-container">
             <h1>Log in.</h1>

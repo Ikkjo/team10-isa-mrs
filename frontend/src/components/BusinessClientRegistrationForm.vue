@@ -47,7 +47,7 @@
             </div>
             <div class="form-control">
                 <label for="phone-number">Phone Number</label>
-                <vue-phone-number-input
+                <PhoneNumberInput
                     class="phone-number" 
                     v-model="phoneTmp" 
                     default-country-code="RS" 
@@ -158,6 +158,7 @@
 <script>
 import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
 import DropdownDatepicker from 'vue-dropdown-datepicker/src/dropdown-datepicker.vue';
+import PhoneNumberInput from 'vue-phone-number-input';
 import AddressInput from './AddressInput.vue';
 import axios from 'axios';
 
@@ -165,6 +166,7 @@ export default {
     name: 'RegistrationFrom',
     components: {
         DropdownDatepicker,
+        PhoneNumberInput,
         AddressInput,
     },
     data() {

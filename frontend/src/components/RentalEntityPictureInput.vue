@@ -1,6 +1,6 @@
 <template>
     <div class="picture-div">
-        <picture-input 
+        <PictureInput
         ref="pictureInput"
         width="500" 
         height="300" 
@@ -12,7 +12,7 @@
             drag: 'Drag your 🏡 cover photo here'
         }"
         @change="onChange"/>
-        <picture-input v-for="i in 10" :key="i" v-show="i <= 4 ? true : Number(pictures.length) >= i ? true : false"
+        <PictureInput v-for="i in 10" :key="i" v-show="i <= 4 ? true : Number(pictures.length) >= i ? true : false"
         ref="pictureInput"
         width="250" 
         height="150" 

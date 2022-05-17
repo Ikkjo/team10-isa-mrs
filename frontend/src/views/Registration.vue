@@ -1,15 +1,10 @@
 <template>
 <div class="container">
-    <!-- <div class="text">
-        <h1>Sing up.</h1>
-        <p>Let's get you all setup so you can verify your personal account and begin setting up your profile.</p>
-    </div> -->
-
     <div class="inner-container">
         <div class="registration-container">
             <h1>Sign up.</h1>
             <p>Let's get you all set up so you can verify your personal account and begin setting up your profile.</p>
-            <RegistrationForm />
+            <BusinessClientRegistrationForm />
         </div>
     </div>
     <div class="inner-container picture-container"></div>
@@ -17,12 +12,12 @@
 </template>
 
 <script>
-import RegistrationForm from '../components/RegistrationForm.vue'
+import BusinessClientRegistrationForm from '../components/BusinessClientRegistrationForm.vue'
 
 export default {
     name: 'RegistrationPage',
     components: {
-        RegistrationForm,
+        BusinessClientRegistrationForm,
   }
 }
 </script>
