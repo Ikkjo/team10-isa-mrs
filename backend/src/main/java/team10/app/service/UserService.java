@@ -46,8 +46,6 @@ public class UserService {
     }
 
     public void saveBusinessUser(BusinessClient user) {
-        addressRepository.save(user.getAddress());
-        loyaltyRepository.save(user.getLoyalty());
         if (user.getUserRole().equals(HOUSE_OWNER))
             vacationHomeOwnerRepository.save(new VacationHomeOwner(user));
         else if (user.getUserRole().equals(SHIP_OWNER))
