@@ -33,14 +33,14 @@ public class UserRepository {
     }
 
     private Set<User> getAll() {
-    Set<User> ret = new HashSet<>();
+    Set<User> users = new HashSet<>();
 
-    ret.addAll(vacationHomeOwnerRepository.findAll());
-    ret.addAll(shipOwnerRepository.findAll());
-    ret.addAll(fishingInstructorRepository.findAll());
-    ret.addAll(clientRepository.findAll());
+    users.addAll(vacationHomeOwnerRepository.findAll());
+    users.addAll(shipOwnerRepository.findAll());
+    users.addAll(fishingInstructorRepository.findAll());
+    users.addAll(clientRepository.findAll());
 
-    return ret;
+    return users;
     }
 
     public boolean userExists(String email) {

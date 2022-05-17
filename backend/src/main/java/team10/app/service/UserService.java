@@ -1,6 +1,7 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,8 @@ import team10.app.dto.ClientRegistrationRequestDto;
 import team10.app.model.*;
 import team10.app.repository.*;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -28,6 +31,25 @@ public class UserService implements UserDetailsService {
 
     public boolean userExists(String email) {
         return userRepository.userExists(email);
+    }
+
+    // Ovaj override je neophodan kod autentifikacije za login
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {
+            User user = userRepository.findByEmail(username).orElseThrow();
+
+            Collection<SimpleGrantedAuthority> authorities = new HashSet<>();
+            authorities.add(new SimpleGrantedAuthority(user.getUserRole().name()));
+
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(),
+                    user.getPassword(),
+                    authorities);
+        }
+        catch (NoSuchElementException e) {
+            throw new UsernameNotFoundException("No such user");
+        }
     }
 
     public BusinessPartner buildBusinessUser(BusinessUserRegistrationRequestDto dto) throws IllegalArgumentException {
@@ -95,19 +117,5 @@ public class UserService implements UserDetailsService {
             return clientRepository.findByEmail(email);
         else
             throw new IllegalStateException("Error! User type is not BusinessUser.");
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            User user = userRepository.findByEmail(username).orElseThrow();
-            return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
-                    user.getPassword(),
-                    user.getAuthorities());
-        }
-        catch (NoSuchElementException e) {
-            throw new UsernameNotFoundException("No such user");
-        }
     }
 }
