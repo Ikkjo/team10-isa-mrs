@@ -113,7 +113,7 @@ export default {
 }
 
 .alert-label {
-    color: gray;
+    color: red;
     margin-top: 5px;
 }
 

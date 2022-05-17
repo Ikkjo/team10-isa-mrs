@@ -415,7 +415,7 @@ export default {
             numSteps: 5,
 
             user: {
-                role: 'FISHING_INSTRUCTOR'
+                role: 'SHIP_OWNER'
             },
         }
     },
@@ -783,9 +783,20 @@ export default {
 .form > * {
     margin: 15px 0;
 }
+
 .form {
     padding: 5%;
 }
+
+.form-control {
+    display: block !important;
+}
+
+.form-control input, textarea {
+    width: 100% !important; 
+}
+
+
 .price-div {
     display: flex;
     flex-direction: column;
@@ -874,10 +885,5 @@ export default {
     color: red !important;
     font-size: 0.9rem;
 }
-
-.alert-textarea {
-    margin-top: 110px;
-}
-
 
 </style>

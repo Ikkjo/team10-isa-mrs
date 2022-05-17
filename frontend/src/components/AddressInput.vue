@@ -103,11 +103,11 @@ export default {
 <style scoped>
 #address-input {
     display: flex;
-    margin: 15px 10px 15px 0px;
+    margin: 15px 0px;
 }
 
-#address-input :last-child {
-    margin-right: 0;
+#address-input .form-control:last-child {
+    margin-right: 0 !important;
 }
 
 .form-control {
