@@ -21,6 +21,7 @@ public class UserService {
     private final FishingInstructorRepository fishingInstructorRepository;
     private final ClientRepository clientRepository;
     private final AddressRepository addressRepository;
+    private final LoyaltyRepository loyaltyRepository;
 
     public boolean userExists(String email) {
         return userRepository.userExists(email);
@@ -44,21 +45,15 @@ public class UserService {
         return new Client(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(), dto.getPhoneNumber());
     }
 
-    public void saveBusinessUser(BusinessClient user) throws IllegalStateException {
-        if (user.getUserRole().equals(HOUSE_OWNER)) {
-            addressRepository.save(user.getAddress());
+    public void saveBusinessUser(BusinessClient user) {
+        addressRepository.save(user.getAddress());
+        loyaltyRepository.save(user.getLoyalty());
+        if (user.getUserRole().equals(HOUSE_OWNER))
             vacationHomeOwnerRepository.save(new VacationHomeOwner(user));
-        }
-        else if (user.getUserRole().equals(SHIP_OWNER)) {
-            addressRepository.save(user.getAddress());
+        else if (user.getUserRole().equals(SHIP_OWNER))
             shipOwnerRepository.save(new ShipOwner(user));
-        }
-        else if (user.getUserRole().equals(FISHING_INSTRUCTOR)){
-            addressRepository.save(user.getAddress());
+        else if (user.getUserRole().equals(FISHING_INSTRUCTOR))
             fishingInstructorRepository.save(new FishingInstructor(user));
-        }
-        else
-            throw new IllegalStateException("Error! User type is not BusinessUser.");
     }
 
     public void saveClient(User user) {
