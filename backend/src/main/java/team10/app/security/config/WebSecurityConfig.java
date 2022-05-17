@@ -2,8 +2,10 @@ package team10.app.security.config;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,15 +24,22 @@ import team10.app.security.filter.UserAuthentificationFilter;
 import java.util.Arrays;
 
 @Configuration
-@AllArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    public WebSecurityConfig(@Qualifier("userService") UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userDetailsService = userDetailsService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        UserAuthentificationFilter userAuthentificationFilter = new UserAuthentificationFilter(authenticationManagerBean());
+        userAuthentificationFilter.setFilterProcessesUrl("/api/v1/login");
+
         http
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //                .csrf().disable()
@@ -55,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .cors().and()
-                .addFilter(new UserAuthentificationFilter(authenticationManagerBean()));
+                .addFilter(userAuthentificationFilter);
     }
 
     @Override
@@ -64,6 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    @Primary
     protected CorsConfigurationSource corsConfigurationSource() {
         // https://docs.spring.io/spring-security/site/docs/4.2.x/reference/html/cors.html
         CorsConfiguration configuration = new CorsConfiguration();

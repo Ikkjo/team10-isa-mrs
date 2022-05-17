@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 import team10.app.service.UserService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/login")
 @RequiredArgsConstructor
 public class LoginController {
 
     private final UserService userService;
 
-    @GetMapping("/login")
+    @GetMapping
     public String login() {
         return "login";
     }
