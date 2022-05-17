@@ -1,11 +1,9 @@
 package team10.app.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import team10.app.model.VacationHome;
-import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +14,7 @@ import static team10.app.model.UserRole.HOUSE_OWNER;
 @NoArgsConstructor
 @Getter
 @Setter
-public class VacationHomeOwner extends BusinessPartner {
+public class VacationHomeOwner extends BusinessClient {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "vacation_home_owner_homes", joinColumns = @JoinColumn(name = "vacation_home_owner_id", referencedColumnName = "id"),
@@ -28,7 +26,7 @@ public class VacationHomeOwner extends BusinessPartner {
         this.vacationHomes = new HashSet<>();
     }
 
-    public VacationHomeOwner(BusinessPartner user) {
+    public VacationHomeOwner(BusinessClient user) {
         super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), HOUSE_OWNER, user.getPhoneNumber(), user.getAddress());
         this.vacationHomes = new HashSet<>();
     }

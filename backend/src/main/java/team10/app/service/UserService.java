@@ -26,7 +26,7 @@ public class UserService {
         return userRepository.userExists(email);
     }
 
-    public BusinessPartner buildBusinessUser(BusinessUserRegistrationRequestDto dto) throws IllegalArgumentException {
+    public BusinessClient buildBusinessUser(BusinessUserRegistrationRequestDto dto) throws IllegalArgumentException {
             if (dto.getRole().equals(HOUSE_OWNER))
                 return new VacationHomeOwner(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(),
                         dto.getPhoneNumber(), new Address(dto.getAddress(), dto.getCity(), dto.getCountry()));
@@ -44,7 +44,7 @@ public class UserService {
         return new Client(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(), dto.getPhoneNumber());
     }
 
-    public void saveBusinessUser(BusinessPartner user) throws IllegalStateException {
+    public void saveBusinessUser(BusinessClient user) throws IllegalStateException {
         if (user.getUserRole().equals(HOUSE_OWNER)) {
             addressRepository.save(user.getAddress());
             vacationHomeOwnerRepository.save(new VacationHomeOwner(user));
@@ -65,7 +65,7 @@ public class UserService {
         clientRepository.save(new Client(user));
     }
 
-    public Optional<? extends BusinessPartner> getBusinessPartnerByEmail(String email, UserRole userRole) {
+    public Optional<? extends BusinessClient> getBusinessPartnerByEmail(String email, UserRole userRole) {
         if (userRole.equals(HOUSE_OWNER))
             return vacationHomeOwnerRepository.findByEmail(email);
         else if (userRole.equals(SHIP_OWNER))

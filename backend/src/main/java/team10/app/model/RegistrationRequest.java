@@ -10,6 +10,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class RegistrationRequest {
-    private final BusinessPartner user;
+    private final BusinessClient user;
     private final String description;
 }
