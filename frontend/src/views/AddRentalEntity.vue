@@ -101,7 +101,7 @@
                     <PriceInput @updated="priceUpdated" class="form-control pricing"/>
                 </div>
                 <!-- STEP 4: PHOTOS -->
-                <div class="form" v-show="step === 4">
+                <div class="form picture-form" v-show="step === 4">
                     <RentalEntityPictureInput @updated="picturesUpdated"/>
                 </div>
 
@@ -772,12 +772,9 @@ export default {
 }
 
 .form-container {
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    align-items: center;
     height: calc(100% - 80px);
     width: 100%;
+    position: relative;
 }
 
 .form > * {
@@ -786,6 +783,16 @@ export default {
 
 .form {
     padding: 5%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.picture-form {
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .form-control {
