@@ -1,19 +1,23 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.BusinessUserRegistrationRequestDto;
 import team10.app.dto.ClientRegistrationRequestDto;
 import team10.app.model.*;
 import team10.app.repository.*;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static team10.app.model.UserRole.*;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final VacationHomeOwnerRepository vacationHomeOwnerRepository;
@@ -91,5 +95,19 @@ public class UserService {
             return clientRepository.findByEmail(email);
         else
             throw new IllegalStateException("Error! User type is not BusinessUser.");
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {
+            User user = userRepository.findByEmail(username).orElseThrow();
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(),
+                    user.getPassword(),
+                    user.getAuthorities());
+        }
+        catch (NoSuchElementException e) {
+            throw new UsernameNotFoundException("No such user");
+        }
     }
 }

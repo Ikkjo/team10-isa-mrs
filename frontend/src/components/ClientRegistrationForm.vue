@@ -1,5 +1,5 @@
 <template>
-    <form id="registration-form" @submit.prevent="signUpPressed">
+    <form id="registration-form" @submit="signUpPressed">
         <div class="wrapper">
             <div class="form-control">
                 <label for="first-name">First Name</label>
@@ -94,8 +94,7 @@
         </div>
         <div class="btn-div">
             <button class="btn"
-                :disabled="$v.$invalid || (!phone || !phone.isValid) 
-                    || !dateOfBirth.isValid || role==='' || country===''">
+                :disabled="$v.$invalid">
                 Create Account
             </button>
             <div class="already-registered">Already have an account? <router-link to="/login">Log in</router-link></div>

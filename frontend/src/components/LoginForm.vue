@@ -28,8 +28,7 @@
             </div>
         </div>
         <div class="btn-div">
-            <button class="btn"
-                :disabled="true">
+            <button class="btn" @click="login">
                 Log In
             </button>
             <div class="not-registered">Don't have an account yet? <router-link to="/client/register">Register an account</router-link></div>
@@ -39,6 +38,7 @@
 <script>
 import { required, maxLength, email } from 'vuelidate/lib/validators'
 import axios from 'axios';
+import router from '@/router'
 
 export default {
     name: 'LoginFrom',
@@ -63,27 +63,30 @@ export default {
         },
     },
     methods: {
-        signUpPressed(){
+        login(){
             let loginDTO = {
                     email: this.email,
                     password: this.password
                 }
             console.log(loginDTO)
             axios
-                .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDTO)
+                .post(process.env.VUE_APP_BASE_URL+"/login", loginDTO)
                 .then(function(response) {
                     console.log(response)
                     // notify that awaiting accept
+                })
+                .then(function (res){
+                router.push({
+                    name:"index",
+                    params:{
+                        val:res.data.code === 1
+                    }
+                })
                 })
                 .catch(function(error) {
                     console.log(error);
                     // is email or password invalid
                 })
-        },
-        updateYear(event){
-            this.dateOfBirth.year = event;
-            this.isDateValid();
-            this.dateOfBirth.focused = true;
         },
         isFocused(field) {
             return this.infocus[field]
