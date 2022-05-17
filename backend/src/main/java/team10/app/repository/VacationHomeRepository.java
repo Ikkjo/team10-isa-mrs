@@ -8,9 +8,10 @@ import team10.app.model.VacationHome;
 import team10.app.model.VacationHomeOwner;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface VacationHomeRepository extends JpaRepository<VacationHome, Long> {
+public interface VacationHomeRepository extends JpaRepository<VacationHome, UUID> {
 
     @Query("select vH from VacationHome vH where vH.address = ?1")
     Optional<VacationHome> findByAddress(Address address);

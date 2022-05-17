@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import team10.app.model.Client;
 import team10.app.model.Review;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+import java.util.UUID;
 
-    Review findReviewById(Long id);
+public interface ReviewRepository extends JpaRepository<Review, UUID> {
+
+    Review findReviewById(UUID id);
 
 
     Page<Review> findAll(Pageable pageable);

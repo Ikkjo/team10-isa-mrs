@@ -7,10 +7,11 @@ import team10.app.model.Client;
 import team10.app.model.Reservation;
 
 import java.util.Set;
+import java.util.UUID;
 
-public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
 
-    Reservation findReservationById(Long id);
+    Reservation findReservationById(UUID id);
 
     Page<Reservation> findAll(Pageable pageable);
 

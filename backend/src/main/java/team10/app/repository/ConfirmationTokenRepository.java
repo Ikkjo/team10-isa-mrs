@@ -9,11 +9,12 @@ import team10.app.security.auth.ConfirmationToken;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @Transactional(readOnly = true)
 public interface ConfirmationTokenRepository
-        extends JpaRepository<ConfirmationToken, Long> {
+        extends JpaRepository<ConfirmationToken, UUID> {
 
     Optional<ConfirmationToken> findByToken(String token);
 

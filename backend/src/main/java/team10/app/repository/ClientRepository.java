@@ -9,12 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import team10.app.model.Client;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 //@Transactional(readOnly = true)
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface ClientRepository extends JpaRepository<Client, UUID> {
 
-    Optional<Client> findClientById(Long id);
+    Optional<Client> findClientById(UUID id);
 
     Page<Client> findAll(Pageable pageable);
 
