@@ -11,7 +11,7 @@ import team10.app.dto.VacationHomeDto;
 @AllArgsConstructor
 public class Validator {
     // Rental entity
-    private static final int TITLE_MIN_LENGTH = 10;
+    private static final int TITLE_MIN_LENGTH = 5;
     private static final int TITLE_MAX_LENGTH = 50;
     private static final int DESCRIPTION_MIN_LENGTH = 5;
     private static final int DESCRIPTION_MAX_LENGTH = 500;
