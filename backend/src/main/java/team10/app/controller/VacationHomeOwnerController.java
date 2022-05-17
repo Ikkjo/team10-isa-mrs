@@ -14,7 +14,7 @@ public class VacationHomeOwnerController {
 
     private final VacationHomeOwnerService vacationHomeOwnerService;
 
-    @PostMapping("/vacation-homes")
+    @PostMapping("/add-vacation-home")
     public ResponseEntity<VacationHomeDto> addVacationHome(@RequestBody VacationHomeDto request) {
         try {
              vacationHomeOwnerService.addVacationHome(request);
