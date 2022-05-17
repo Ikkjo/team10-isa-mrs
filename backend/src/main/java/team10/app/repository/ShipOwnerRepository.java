@@ -9,10 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import team10.app.model.ShipOwner;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @Transactional(readOnly = true) // provjeriti da li treba
-public interface ShipOwnerRepository extends JpaRepository<ShipOwner, Long> {
+public interface ShipOwnerRepository extends JpaRepository<ShipOwner, UUID> {
 
     Optional<ShipOwner> findByEmail(String email);
 
