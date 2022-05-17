@@ -191,7 +191,7 @@ export default {
             step: 1,
             numSteps: 5,
             user: {
-                userRole: 'SHIP_OWNER'
+                userRole: 'HOUSE_OWNER'
             },
             infocus: {
                 shipType: true,
@@ -276,7 +276,7 @@ export default {
         },
         finishDisabled() {
             if (this.user.userRole === 'HOUSE_OWNER')
-                return (this.$refs.roomsInput.$v.$invalid || this.$v.form.$invalid);
+                return (this.$refs.roomsInput.$v.$invalid || !this.$v.form.$invalid);
             if (this.user.userRole === 'SHIP_OWNER') {
                 return this.$v.form.$invalid;
             }
