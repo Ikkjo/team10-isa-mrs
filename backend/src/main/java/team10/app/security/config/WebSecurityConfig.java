@@ -1,7 +1,5 @@
 package team10.app.security.config;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +14,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import team10.app.security.filter.UserAuthentificationFilter;
+import team10.app.security.filter.UserAuthenticationFilter;
+import team10.app.security.filter.UserAuthorizationFilter;
 
 import java.util.Arrays;
 
@@ -37,8 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        UserAuthentificationFilter userAuthentificationFilter = new UserAuthentificationFilter(authenticationManagerBean());
-        userAuthentificationFilter.setFilterProcessesUrl("/api/v1/login");
+        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(authenticationManagerBean());
+        userAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
 
         http
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -64,7 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .cors().and()
-                .addFilter(userAuthentificationFilter);
+                .addFilter(userAuthenticationFilter)
+                .addFilterBefore(new UserAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
