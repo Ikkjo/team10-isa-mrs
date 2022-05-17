@@ -26,14 +26,7 @@ public class VacationHomeOwnerService {
             throw new RuntimeException();
         }
         VacationHome vacationHome = this.buildVacationHome(request);
-        saveVacationHome(vacationHome);
-    }
-
-    public void saveVacationHome(VacationHome vacationHome) {
-        addressRepository.save(vacationHome.getAddress());
-        pictureRepository.saveAll(vacationHome.getPictures());
         vacationHomeRepository.save(vacationHome);
-
     }
 
     public VacationHome buildVacationHome(VacationHomeDto vacationHomeDto) {
