@@ -535,7 +535,7 @@ export default {
         },
         getPictures() {
             return this.baseInfo.fourth.pictures.map(picture => 
-                picture.getFileEncodeBase64String()
+                picture.getFileEncodeDataURL()
             );
         },
         encodeToBase64(file) {
