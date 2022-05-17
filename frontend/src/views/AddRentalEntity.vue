@@ -46,7 +46,7 @@
                             && !($v.baseInfo.first.description.minLength 
                             && $v.baseInfo.first.description.maxLength)"
                             >
-                            Must be between 5 to 200 characters.
+                            Must be between 5 to 500 characters.
                         </div>
                     </div>
                 </div>
@@ -443,7 +443,7 @@ export default {
                 description: {
                     required,
                     minLength: minLength(5),
-                    maxLength: maxLength(200),
+                    maxLength: maxLength(500),
                 },
             },
             second: {

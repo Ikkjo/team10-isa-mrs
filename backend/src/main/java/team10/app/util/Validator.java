@@ -17,12 +17,12 @@ public class Validator {
     private static final int DESCRIPTION_MAX_LENGTH = 500;
     private static final int RULES_OF_CONDUCT_MIN_LENGTH = 5;
     private static final int RULES_OF_CONDUCT_MAX_LENGTH = 200;
-    private static final int ADDITIONAL_SERVICES_MIN_LENGTH = 4;
+    private static final int ADDITIONAL_SERVICES_MIN_LENGTH = 2;
     private static final int ADDITIONAL_SERVICES_MAX_LENGTH = 200;
     private static final int MIN_PRICE = 5;
     private static final int MAX_PRICE = 10000;
     private static final int MIN_PICTURES = 5;
-    private static final int MAX_PICTURES = 11;
+    private static final int MAX_PICTURES = 10;
 
     // Vacation home
     private static final int VACATION_HOME_MIN_ROOMS = 1;
