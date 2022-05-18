@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import RegistrationRequest from "../components/RegistrationRequest.vue"
+import RegistrationRequest from "./RegistrationRequest.vue"
 
 export default {
     name: "RegistrationRequestList",
@@ -56,7 +56,7 @@ h1 {
     padding: 20px;
     flex-direction: column;
     margin-top: 20px;
-    max-width: 720px;
+    width: 720px;
     min-height: 90px;
     border-radius: 10px;
     background-color: var(--orange-primary,orange);
