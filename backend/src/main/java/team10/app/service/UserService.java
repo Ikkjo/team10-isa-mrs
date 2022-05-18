@@ -26,10 +26,6 @@ public class UserService implements UserDetailsService {
     private final AddressRepository addressRepository;
     private final LoyaltyRepository loyaltyRepository;
 
-    public boolean userExists(String email) {
-        return userRepository.userExists(email);
-    }
-
     public BusinessClient buildBusinessUser(BusinessClientRegistrationRequestDto dto) throws IllegalArgumentException {
             if (dto.getRole().equals(HOUSE_OWNER))
                 return new VacationHomeOwner(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(),
@@ -76,25 +72,12 @@ public class UserService implements UserDetailsService {
         return clientRepository.findByEmail(email);
     }
 
-    public Optional<? extends User> getByEmail(String email, UserRole userRole) {
-        if (userRole.equals(HOUSE_OWNER))
-            return vacationHomeOwnerRepository.findByEmail(email);
-        else if (userRole.equals(SHIP_OWNER))
-            return shipOwnerRepository.findByEmail(email);
-        else if (userRole.equals(FISHING_INSTRUCTOR))
-            return fishingInstructorRepository.findByEmail(email);
-        else if (userRole.equals(CLIENT))
-            return clientRepository.findByEmail(email);
-        else
-            throw new IllegalStateException("Error! User type is not BusinessUser.");
+    @Override
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.getByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        return user;
+    public boolean userExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 }
