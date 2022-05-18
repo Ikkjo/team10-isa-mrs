@@ -20,7 +20,7 @@
                             && !($v.baseInfo.first.title.minLength 
                             && $v.baseInfo.first.title.maxLength)"
                             >
-                            First name must be 5 to 50 characters long.
+                            Must be between 5 to 50 characters.
                         </div>
                     </div>
                     <AddressInput 
@@ -46,7 +46,7 @@
                             && !($v.baseInfo.first.description.minLength 
                             && $v.baseInfo.first.description.maxLength)"
                             >
-                            Enter a description.
+                            Must be between 5 to 500 characters.
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                             && !($v.baseInfo.second.rulesOfConduct.minLength 
                             && $v.baseInfo.second.rulesOfConduct.maxLength)"
                             >
-                            Enter rules of conduct.
+                            Must be between 5 to 200 characters.
                         </div>
                     </div>
                     <div class="form-control">
@@ -91,7 +91,7 @@
                             && !($v.baseInfo.second.additionalServices.minLength 
                             && $v.baseInfo.second.additionalServices.maxLength)"
                             >
-                            Enter additional services.
+                            Must be between 2 to 200 characters.
                         </div>
                     </div>
                 </div>
@@ -254,7 +254,7 @@
                             && !($v.adventure.fishingInstructorBio.minLength 
                             && $v.adventure.fishingInstructorBio.maxLength)"
                             >
-                            Max 200 characters.
+                            Must be between 5 to 200 characters.
                         </div>
                     </div> 
                     <div class="number-input">
@@ -284,7 +284,7 @@
                             && !($v.adventure.fishingEquipment.maxLength 
                             && $v.adventure.fishingEquipment.minLength)"
                             >
-                            Between 5 and 500 characters.
+                            Must be between 5 and 500 characters.
                         </div>
                     </div>
                     <div class="form-control">
@@ -415,7 +415,7 @@ export default {
             numSteps: 5,
 
             user: {
-                role: 'SHIP_OWNER'
+                role: 'HOUSE_OWNER'
             },
         }
     },
@@ -443,7 +443,7 @@ export default {
                 description: {
                     required,
                     minLength: minLength(5),
-                    maxLength: maxLength(200),
+                    maxLength: maxLength(500),
                 },
             },
             second: {
@@ -532,7 +532,26 @@ export default {
         },
         adventureMaxCapacityUpdated(capacity){
             this.adventure.capacity = capacity;
-        },        
+        },
+        getPictures() {
+            return this.baseInfo.fourth.pictures.map(picture => 
+                picture.getFileEncodeDataURL()
+            );
+        },
+        encodeToBase64(file) {
+            // Encode the file using the FileReader API
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                // Use a regex to remove data url part
+                const base64String = reader.result
+                    .replace('data:', '')
+                    .replace(/^.+,/, '');
+
+                console.log(base64String);
+                // Logs wL2dvYWwgbW9yZ...
+            };
+            return reader.readAsDataURL(file);
+        },
         nextDisabled() {
             if (this.step === 1 && this.$v.baseInfo.first.$invalid)
                 return true;
@@ -590,7 +609,7 @@ export default {
                 rulesOfConduct: this.baseInfo.second.rulesOfConduct,
                 additionalServices: this.baseInfo.second.additionalServices,
                 price: this.baseInfo.third.price,
-                pictures: this.baseInfo.fourth.pictures,
+                pictures: this.getPictures(),
                 rooms: this.vacationHome.rooms,
                 beds: this.vacationHome.beds,
             }
@@ -600,7 +619,7 @@ export default {
             
             axios({
                 method: 'post',
-                url: 'http://localhost:8888/api/v1/vacation-home-owner/vacation-homes',
+                url: 'http://localhost:8888/api/v1/vacation-home-owner/add-vacation-home',
                 data: vacationHomeDto,
                 // headers: {
                 //     Authorization: 'Bearer ' + token,
@@ -625,7 +644,7 @@ export default {
                 rulesOfConduct: this.baseInfo.second.rulesOfConduct,
                 additionalServices: this.baseInfo.second.additionalServices,
                 price: this.baseInfo.third.price,
-                pictures: this.baseInfo.fourth.pictures,
+                pictures: this.getPictures(),
                 type: this.ship.type,
                 length: this.ship.length,
                 engineCount: this.ship.engineCount,
@@ -663,7 +682,7 @@ export default {
                 rulesOfConduct: this.baseInfo.second.rulesOfConduct,
                 additionalServices: this.baseInfo.second.additionalServices,
                 price: this.baseInfo.third.price,
-                pictures: this.baseInfo.fourth.pictures,
+                pictures: this.getPictures(),
                 fishingEquipment: this.adventure.fishingEquipment,
                 instructorBiography: this.adventure.fishingInstructorBio,
                 capacity: this.adventure.capacity,
