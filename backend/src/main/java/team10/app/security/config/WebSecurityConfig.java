@@ -65,7 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // default /login is public
         // Authorization for login and register not needed because they are public
         http.authorizeRequests()
-                .antMatchers("/api/v1/login","/api/token/refresh").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
+                .antMatchers("/api/token/refresh").permitAll()
                 .antMatchers("/api/v1/registration").permitAll()
                 .antMatchers("api/v1/client/registration").permitAll();
         // Authorization for user specific api calls
@@ -90,7 +91,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @Primary
     protected CorsConfigurationSource corsConfigurationSource() {
         // https://docs.spring.io/spring-security/site/docs/4.2.x/reference/html/cors.html
         CorsConfiguration configuration = new CorsConfiguration();

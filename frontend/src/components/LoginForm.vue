@@ -70,7 +70,7 @@ export default {
                 }
             console.log(loginDTO)
             axios
-                .post(process.env.VUE_APP_BASE_URL+"/login", loginDTO)
+                .post("localhost:8888/api/v1/login", loginDTO)
                 .then(function(response) {
                     console.log(response)
                     // notify that awaiting accept
