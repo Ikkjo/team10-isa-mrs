@@ -21,7 +21,7 @@ import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 @NoArgsConstructor
 @Entity
 @Table(name="users")
-@Inheritance(strategy=TABLE_PER_CLASS)
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class User implements UserDetails {
 
 
