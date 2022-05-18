@@ -35,7 +35,7 @@ public class JWTProvider implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         // The token must be encoded in Base64 with a minimum of 88 bits
-        String secret = "The token must be encoded in Base64 with a minimum of 88 bits, typically configured in application.yml, and needs to be pre-defined.";
+        String secret = "ThetokenmustbeencodedinBase64withaminimumof88bitstypicallyconfiguredinapplicationymlandneedstobepredefined";
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         Key key = Keys.hmacShaKeyFor(keyBytes);
         jwtParser = Jwts.parserBuilder().setSigningKey(key).build();
