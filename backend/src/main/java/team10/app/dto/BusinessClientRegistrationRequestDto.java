@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BusinessUserRegistrationRequestDto extends RegistrationRequestDto {
+public class BusinessClientRegistrationRequestDto extends RegistrationRequestDto {
     private String dateOfBirth;
     private String address;
     private String city;

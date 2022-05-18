@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import team10.app.dto.BusinessUserRegistrationRequestDto;
+import team10.app.dto.BusinessClientRegistrationRequestDto;
 import team10.app.dto.ClientRegistrationRequestDto;
 import team10.app.model.*;
 import team10.app.repository.*;
@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
         return userRepository.userExists(email);
     }
 
-    public BusinessClient buildBusinessUser(BusinessUserRegistrationRequestDto dto) throws IllegalArgumentException {
+    public BusinessClient buildBusinessUser(BusinessClientRegistrationRequestDto dto) throws IllegalArgumentException {
             if (dto.getRole().equals(HOUSE_OWNER))
                 return new VacationHomeOwner(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(),
                         dto.getPhoneNumber(), new Address(dto.getAddress(), dto.getCity(), dto.getCountry()));
