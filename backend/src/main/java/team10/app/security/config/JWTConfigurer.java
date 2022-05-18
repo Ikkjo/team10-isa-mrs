@@ -13,6 +13,10 @@ public class JWTConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilt
 
     private JWTProvider jwtProvider;
 
+    public JWTConfigurer(JWTProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
+    }
+
     @Override
     public void configure(HttpSecurity http) {
         JWTFilter customFilter = new JWTFilter(jwtProvider);
