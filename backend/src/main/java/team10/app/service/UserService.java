@@ -89,6 +89,16 @@ public class UserService implements UserDetailsService {
             throw new IllegalStateException("Error! User type is not BusinessUser.");
     }
 
+    public Optional<? extends User> loadUserByEmail(String username) throws UsernameNotFoundException {
+        User user = userRepository.getByEmail(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found!");
+        }
+
+        return Optional.of(user);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.getByEmail(username);
