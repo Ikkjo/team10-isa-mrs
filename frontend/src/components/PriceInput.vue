@@ -1,13 +1,11 @@
 <template>
     <div id="pricing">
         <div class="form-control">
-            <!-- <label for="price">Pricing</label> -->
             <div class="price-input">
                 <button @click="decrease()" :disabled="price <= 0" class="btn-circle"><span class="material-icons-round">remove</span></button>
                 <input v-model.number="price" :v-bind="checkPrice()" @keyup="$emit('updated', price);" type="text" placeholder="$00" name="price"/>
                 <button @click="increase()" :disabled="price >= 10000" class="btn-circle"><span class="material-icons-round">add</span></button>
             </div>
-            <!-- <label for="price">per night</label> -->
         </div>
     </div>
 </template>

@@ -9,13 +9,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static team10.app.model.UserRole.FISHING_INSTRUCTOR;
-import static team10.app.model.UserRole.HOUSE_OWNER;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
-public class FishingInstructor extends BusinessPartner {
+public class FishingInstructor extends BusinessClient {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "fishing_instructor_adventures", joinColumns = @JoinColumn(name = "fishing_instructor_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "adventures_id", referencedColumnName = "id"))
@@ -26,7 +25,7 @@ public class FishingInstructor extends BusinessPartner {
         adventures = new HashSet<>();
     }
 
-    public FishingInstructor(BusinessPartner user) {
+    public FishingInstructor(BusinessClient user) {
         super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), FISHING_INSTRUCTOR, user.getPhoneNumber(), user.getAddress());
         adventures = new HashSet<>();
     }

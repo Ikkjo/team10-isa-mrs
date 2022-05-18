@@ -8,10 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import team10.app.model.FishingInstructor;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @Transactional(readOnly = true) // provjeriti da li treba
-public interface FishingInstructorRepository extends JpaRepository<FishingInstructor, Long> {
+public interface FishingInstructorRepository extends JpaRepository<FishingInstructor, UUID> {
 
         Optional<FishingInstructor> findByEmail(String email);
 

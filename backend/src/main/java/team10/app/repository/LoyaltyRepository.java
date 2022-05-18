@@ -5,9 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import team10.app.model.Loyalty;
 
-public interface LoyaltyRepository extends JpaRepository<Loyalty, Long> {
+import java.util.UUID;
 
-    Loyalty findLoyaltyById(Long id);
+public interface LoyaltyRepository extends JpaRepository<Loyalty, UUID> {
+
+    Loyalty findLoyaltyById(UUID id);
 
     Page<Loyalty> findAll(Pageable pageable);
 

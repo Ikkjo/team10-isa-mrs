@@ -11,7 +11,10 @@
                     :class="getClass('firstName')" 
                     :placeholder="getPlaceholder('firstName')">
                 <div class="alert-info" 
-                    v-if="!this.infocus['firstName'] && !($v.firstName.minLength && $v.firstName.maxLength)">
+                    v-if="!isFocused('firstName') 
+                    && !($v.firstName.minLength 
+                    && $v.firstName.maxLength)"
+                    >
                     First name must be 2 to 20 characters long.
                 </div>
             </div>
@@ -25,7 +28,10 @@
                     :class="getClass('lastName')" 
                     :placeholder="getPlaceholder('lastName')">
                 <div class="alert-info" 
-                    v-if="!this.infocus['lastName'] && !($v.lastName.minLength && $v.lastName.maxLength)">
+                    v-if="!isFocused('lastName') && 
+                    !($v.lastName.minLength 
+                    && $v.lastName.maxLength)"
+                    >
                     Last name must be 2 to 20 characters long.
                 </div>
             </div>
@@ -39,15 +45,17 @@
                     @focus="inFocus('email')" 
                     @blur="outFocus('email')" 
                     :class="getClass('email')" 
-                    :placeholder="getPlaceholder('email', 'example@rentr.com')">
+                    :placeholder="getPlaceholder('email','example@rentr.com')">
                 <div class="alert-info" 
-                    v-if="!this.infocus['email'] && !$v.email.email">
+                    v-if="!isFocused('email') 
+                    && !$v.email.email"
+                    >
                     Incorrect email format.
                 </div>
             </div>
             <div class="form-control">
                 <label for="phone-number">Phone Number</label>
-                <vue-phone-number-input
+                <PhoneNumberInput
                     class="phone-number" 
                     v-model="phoneTmp" 
                     default-country-code="RS" 
@@ -73,7 +81,10 @@
                     :class="getClass('password')"
                     :placeholder="getPlaceholder('password', 'At least 8 characters')">
                 <div class="alert-info" 
-                    v-if="!this.infocus['password'] && !($v.password.minLength && $v.password.maxLength)">
+                    v-if="!isFocused('password') 
+                    && !($v.password.minLength 
+                    && $v.password.maxLength)"
+                    >
                     Password must be 8 to 30 characters long.
                 </div>
             </div>
@@ -87,7 +98,9 @@
                     :class="getClass('confirmPassword')" 
                     :placeholder="getPlaceholder('confirmPassword')">
                 <div class="alert-info" 
-                    v-if="!this.infocus['confirmPassword'] && !$v.confirmPassword.sameAsPassword">
+                    v-if="!isFocused('confirmPassword') 
+                    && !$v.confirmPassword.sameAsPassword"
+                    >
                     Passwords don't match.
                 </div>
             </div>
@@ -99,7 +112,7 @@
             :validate="true"/>
         <div class="wrapper">
             <div class="form-control">
-                <label for="datepicker">Date of Birth</label>
+                <label for="datepicker">Date of Birth (Min. Age: 18)</label>
                 <DropdownDatepicker
                     id="datepicker" 
                     name="datepicker" 
@@ -111,20 +124,22 @@
                     :onYearChange="updateYear"
                     />
                 <div class="alert-info"
-                    v-if="this.dateOfBirth.focused && !this.dateOfBirth.isValid">
+                    v-if="!isFocused('dateOfBirth') 
+                    && !this.dateOfBirth.isValid"
+                    >
                     Select a valid date.
                 </div>
             </div>
             <div class="form-control">
                 <label for="role" class="block-label">Account Type</label>
-                <select name="role" id="role" @click="roleFocused = true;" v-model="role">
-                    <option value="">Choose account type</option>
+                <select name="role" id="role" @click="infocus.role = false;" v-model="role">
+                    <option value="" selected disabled hidden>Choose account type</option>
                     <option value="HOUSE_OWNER">Vacation Home Owner</option>
                     <option value="SHIP_OWNER">Ship Owner</option>
                     <option value="FISHING_INSTRUCTOR">Fishing Instructor</option>
                 </select>
                 <div class="alert-info"
-                    v-if="this.roleFocused && this.role === ''">
+                    v-if="!isFocused('role') && this.role === ''">
                     Select an account type.
                 </div>
             </div>
@@ -140,24 +155,35 @@
                     :class="getClass('registrationReason')" 
                     :placeholder="getPlaceholder('registrationReason', 'Tell us a few reasons why you want to join...')"/>
                 <div class="alert-info" 
-                    v-if="!this.infocus['registrationReason'] && !($v.registrationReason.minLength && $v.registrationReason.maxLength)">
+                    v-if="!isFocused('registrationReason') 
+                    && !($v.registrationReason.minLength 
+                    && $v.registrationReason.maxLength)"
+                    >
                     Enter a registration reason.
                 </div>
             </div>
         </div>
         <div class="btn-div">
             <button class="btn"
-                :disabled="$v.$invalid || (!phone || !phone.isValid) 
-                    || !dateOfBirth.isValid || role==='' || country===''">
+                :disabled="$v.$invalid 
+                || (!phone || !phone.isValid) 
+                || !dateOfBirth.isValid"
+                >
                 Create Account
             </button>
-            <div class="already-registered">Already have an account? <router-link to="/login">Log in</router-link></div>
+            <div class="already-registered">
+                Already have an account? 
+                <router-link to="/login">
+                    Log in
+                </router-link>
+            </div>
         </div>
     </form>
 </template>
 <script>
 import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
 import DropdownDatepicker from 'vue-dropdown-datepicker/src/dropdown-datepicker.vue';
+import PhoneNumberInput from 'vue-phone-number-input';
 import AddressInput from './AddressInput.vue';
 import axios from 'axios';
 
@@ -165,6 +191,7 @@ export default {
     name: 'RegistrationFrom',
     components: {
         DropdownDatepicker,
+        PhoneNumberInput,
         AddressInput,
     },
     data() {
@@ -180,7 +207,6 @@ export default {
             country: '',
             registrationReason: '',
             role: '',
-            roleFocused: false,
             phoneTmp: '',
             dateOfBirth:{
                 day: null,
@@ -188,7 +214,6 @@ export default {
                 year: null,
                 isValid: false,
                 updatingDay: false,
-                focused: false,
             },
             infocus: {
                 firstName: true,
@@ -198,6 +223,8 @@ export default {
                 password: true,
                 confirmPassword: true,
                 registrationReason: true,
+                role: true,
+                dateOfBirth: true,
             }
         }
     },
@@ -229,7 +256,23 @@ export default {
             required,
             minLength: minLength(20),
             maxLength: maxLength(200),
-        }
+        },
+        address: {
+            required,
+            minLength: minLength(5),
+            maxLength: maxLength(40)
+        },
+        city: {
+            required,
+            minLength: minLength(2),
+            maxLength: maxLength(40)
+        },
+        country: {
+            required
+        },
+        role: {
+            required,
+        },
     },
     methods: {
         signUpPressed(){
@@ -278,7 +321,7 @@ export default {
         updateYear(event){
             this.dateOfBirth.year = event;
             this.isDateValid();
-            this.dateOfBirth.focused = true;
+            this.infocus.dateOfBirth = false;
         },
         updateDate(day){
             if(this.dateOfBirth.updatingDay){

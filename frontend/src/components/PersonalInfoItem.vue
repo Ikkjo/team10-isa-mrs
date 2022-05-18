@@ -14,7 +14,28 @@
 <script>
 export default {
     name: 'PersonalAccountInfo',
-    props: ['iconClass', 'icon', 'label', 'text', 'buttonText']
+    props: {
+        iconClass: {
+            type: String,
+            default: "material-icons"
+        },
+        icon: {
+            type: String,
+            default: "disabled_by_default",
+        },
+        label: {
+            type: String,
+            default: "",
+        },
+        text: {
+            type: String,
+            default: "",
+        },
+        buttonText: {
+            type: String,
+            default: "Edit"
+        }
+    },
 }
 </script>
 

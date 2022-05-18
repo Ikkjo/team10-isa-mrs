@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import team10.app.dto.BusinessUserRegistrationRequestDto;
-import team10.app.model.BusinessPartner;
+import team10.app.model.BusinessClient;
 import team10.app.security.auth.ConfirmationToken;
 import team10.app.util.EmailValidator;
 
@@ -34,7 +34,7 @@ public class RegistrationService {
             throw new IllegalStateException(String.format("User with email %s already exists", request.getEmail()));
         }
 
-        BusinessPartner user = userService.buildBusinessUser(request);
+        BusinessClient user = userService.buildBusinessUser(request);
 
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userService.saveBusinessUser(user);

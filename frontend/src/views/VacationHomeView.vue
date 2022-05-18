@@ -1,6 +1,6 @@
 <template>
   <div>
-    <business-user-nav id="nav"></business-user-nav>
+    <BusinessClientNavBar id="nav"/>
     <div class="container">
       <div class="cover">
         <img src="https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg" alt="" srcset="">
@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="vacation-homes">
-        <vacation-home-card class="vacation-home-card" v-for="(vHome, index) in vacationHomes" :key="index" :vacationHome="vHome"/>
+        <VacationHomeCard class="vacation-home-card" v-for="(vHome, index) in vacationHomes" :key="index" :vacationHome="vHome"/>
       </div>
     </div>
  
@@ -21,13 +21,13 @@
 </template>
 
 <script>
-import BusinessUserNav from "@/components/BusinessUserNav.vue"
+import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import VacationHomeCard from "@/components/VacationHomeCard.vue"
 import axios from 'axios';
 export default {
     name: 'VacationHomeView',
     components: {
-        BusinessUserNav,
+        BusinessClientNavBar,
         VacationHomeCard,
     },
     data() {

@@ -33,75 +33,9 @@ export default {
                 country: "Serbia", 
                 registrationReason: "Imam lepu vikendicu koja nicemu ne sluzi pa reko da je stavim na izdavanje."
                 },
-                {
-                firstName: "Teodor",
-                lastName: "Teodoric",
-                email: "teodor@gmail.com",
-                password: "HiHiHiHa",
-                role: "FISHING_INSTRUCTOR",
-                phone: "+0493284239",
-                dateOfBirth: "04.07.2000.",
-                address: "Puskinova 222",
-                city: "Novi Sad",
-                country: "Serbia", 
-                registrationReason: "Pecam od malena i voleo bih da imam mogucnost da lakse ucim ostale kako da pecaju. :)"
-                },
-                {
-                firstName: "Ilija",
-                lastName: "Kalinic",
-                email: "ikkjo@polywhy.com",
-                password: "HiHiHiHa",
-                role: "SHIP_OWNER",
-                phone: "+0493284239",
-                dateOfBirth: "10.10.2000.",
-                address: "Somborski put 33",
-                city: "Subotica",
-                country: "Serbia", 
-                registrationReason: "Rokeri s moravu :DDDDDDDD"
-                },
-                {
-                firstName: "Janko",
-                lastName: "Janic",
-                email: "jasnko@gmail.com",
-                password: "HiHiHiHa",
-                role: "HOUSE_OWNER",
-                phone: "+3813284239",
-                dateOfBirth: "26.4.1985.",
-                address: "Slavija 49",
-                city: "Beograd",
-                country: "Serbia", 
-                registrationReason: "Imam lepu vikendicu koja nicemu ne sluzi pa reko da je stavim na izdavanje."
-                },
-                {
-                firstName: "Teodor",
-                lastName: "Teodoric",
-                email: "tesodor@gmail.com",
-                password: "HiHiHiHa",
-                role: "FISHING_INSTRUCTOR",
-                phone: "+0493284239",
-                dateOfBirth: "04.07.2000.",
-                address: "Puskinova 222",
-                city: "Novi Sad",
-                country: "Serbia", 
-                registrationReason: "Pecam od malena i voleo bih da imam mogucnost da lakse ucim ostale kako da pecaju. :)"
-                },
-                {
-                firstName: "Ilija",
-                lastName: "Kalinic",
-                email: "ikdkjo@polywhy.com",
-                password: "HiHiHiHa",
-                role: "SHIP_OWNER",
-                phone: "+0493284239",
-                dateOfBirth: "10.10.2000.",
-                address: "Somborski put 33",
-                city: "Subotica",
-                country: "Serbia", 
-                registrationReason: "Rokeri s moravu :DDDDDDDD"
-                },
             ]
         }
     },
-
 }
 </script>
 

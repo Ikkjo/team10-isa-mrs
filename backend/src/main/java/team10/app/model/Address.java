@@ -3,6 +3,7 @@ package team10.app.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -11,10 +12,10 @@ import javax.persistence.*;
 @Entity
 @Table(name="addresses")
 public class Address {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     @Column(nullable = false, unique = true)
     private String address;
     @Column(nullable = false)

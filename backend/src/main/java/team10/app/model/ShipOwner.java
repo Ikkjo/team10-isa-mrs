@@ -7,12 +7,11 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import static team10.app.model.UserRole.HOUSE_OWNER;
 import static team10.app.model.UserRole.SHIP_OWNER;
 
 @Entity
 @NoArgsConstructor
-public class ShipOwner extends BusinessPartner {
+public class ShipOwner extends BusinessClient {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "ship_owner_ships", joinColumns = @JoinColumn(name = "ship_owner_id", referencedColumnName = "id"),
@@ -24,7 +23,7 @@ public class ShipOwner extends BusinessPartner {
         this.ships = new HashSet<>();
     }
 
-    public ShipOwner(BusinessPartner user) {
+    public ShipOwner(BusinessClient user) {
         super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), SHIP_OWNER, user.getPhoneNumber(), user.getAddress());
         this.ships = new HashSet<>();
     }

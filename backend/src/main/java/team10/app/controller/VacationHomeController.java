@@ -13,9 +13,10 @@ import team10.app.repository.VacationHomeRepository;
 import team10.app.util.exceptions.UserNotFoundException;
 
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "api/v1/vacation-homes")
+@RequestMapping(path = "/api/v1/vacation-homes")
 @AllArgsConstructor
 public class VacationHomeController {
 
@@ -24,8 +25,8 @@ public class VacationHomeController {
     private final VacationHomeOwnerRepository vacationHomeOwnerRepository;
 
 
-    @GetMapping("/{id}")
-    Set<VacationHome> getVacationHomesByUserId(@PathVariable Long id) {
+    @GetMapping(value = "/{id}")
+    Set<VacationHome> getVacationHomesByUserId(@PathVariable("id") UUID id) {
         VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findById(id).orElseThrow(
                 () -> new UserNotFoundException(id)
         );

@@ -8,10 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import team10.app.model.VacationHomeOwner;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @Transactional
-public interface VacationHomeOwnerRepository extends JpaRepository<VacationHomeOwner, Long> {
+public interface VacationHomeOwnerRepository extends JpaRepository<VacationHomeOwner, UUID> {
 
     Optional<VacationHomeOwner> findByEmail(String email);
 
