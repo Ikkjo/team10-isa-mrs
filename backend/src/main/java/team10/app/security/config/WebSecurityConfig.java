@@ -1,7 +1,5 @@
 package team10.app.security.config;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import team10.app.security.auth.JWTAuthenticationEntryPoint;
 import team10.app.security.filter.UserAuthenticationFilter;
 import team10.app.security.filter.UserAuthorizationFilter;
 
