@@ -30,11 +30,11 @@ public class JWTFilter extends GenericFilterBean {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String bearerToken = httpServletRequest.getHeader("Authorization");
         String token = null;
-        if(! bearerToken.isEmpty() && bearerToken.startsWith("Bearer")) {
+        if(bearerToken != null && bearerToken.startsWith("Bearer")) {
             token = bearerToken.replace("Bearer","");
         }
 
-        if (!(Objects.requireNonNull(token).isEmpty())) {
+        if (token != null) {
             Authentication authentication = jwtProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

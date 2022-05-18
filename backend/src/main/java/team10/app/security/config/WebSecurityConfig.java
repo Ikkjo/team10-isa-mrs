@@ -91,7 +91,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Allow the OPTIONS request
                 .antMatchers(HttpMethod.OPTIONS, "/ * *").permitAll()
                 // Interface that does not require authentication
-                .antMatchers("/auth/login").permitAll()
+                .antMatchers("/api/v1/login").permitAll()
+                .antMatchers("/api/v1/registration").permitAll()
                 // All requests require authentication
                 .anyRequest().authenticated()
                 .and().apply(securityConfigurerAdapter());
