@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -22,6 +25,7 @@ import org.springframework.web.filter.CorsFilter;
 import team10.app.security.auth.JWTAccessDeniedHandler;
 import team10.app.security.auth.JWTAuthenticationEntryPoint;
 import team10.app.security.auth.JWTProvider;
+import team10.app.service.UserService;
 
 import java.util.Arrays;
 
@@ -31,25 +35,28 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private final CorsFilter corsFilter;
-
-    @Autowired
     private final JWTProvider jwtProvider;
-
-    @Autowired
     private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    @Autowired
     private final JWTAccessDeniedHandler jwtAccessDeniedHandler;
-
-    @Autowired
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserService userService;
 
     @Bean
     public GrantedAuthorityDefaults grantedAuthorityDefaults() {
         // Removes the ROLE_ prefix
         return new GrantedAuthorityDefaults("");
+    }
+
+    @Override
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override
