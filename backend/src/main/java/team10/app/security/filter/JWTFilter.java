@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class JWTFilter extends GenericFilterBean {
 
     private final JWTProvider jwtProvider;
