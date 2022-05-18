@@ -1,5 +1,7 @@
 package team10.app.security.config;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import team10.app.security.auth.JWTAuthenticationEntryPoint;
 import team10.app.security.filter.UserAuthenticationFilter;
 import team10.app.security.filter.UserAuthorizationFilter;
 
@@ -40,32 +43,48 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(authenticationManagerBean());
         userAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
 
-        http
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//        http
+//
+//                // Disable CSRF
 //                .csrf().disable()
-//                .authorizeRequests()
-//                .anyRequest().authenticated()
+//                // Disabling session authentication
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .and()
-//                .formLogin()
-//                .loginPage("/login")
+//                // Enable public api calls
+//                .authorizeRequests()
+//                .antMatchers("/api/v1/**")
 //                .permitAll()
+//                .antMatchers("api/v1/login")
+//                .permitAll()
+//                .anyRequest()
+//                .authenticated()
 //                .and()
 //                .cors().and();
+//                .addFilter(userAuthenticationFilter)
+//                .addFilterBefore(new UserAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .csrf().disable()
-                .authorizeRequests()
-                    .antMatchers("/api/v1/**")
-                    .permitAll()
+        http.csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // default /login is public
+        // Authorization for login and register not needed because they are public
+        http.authorizeRequests()
+                .antMatchers("/api/v1/login","/api/token/refresh").permitAll()
+                .antMatchers("/api/v1/registration").permitAll()
+                .antMatchers("api/v1/client/registration").permitAll();
+        // Authorization for user specific api calls
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/v1/client/**").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST, "/api/v1/admin/**").hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/v1/vacation-home-owner/**").hasAnyAuthority("HOUSE_OWNER")
+                .antMatchers(HttpMethod.POST, "/api/v1/fishing-instructor/**").hasAnyAuthority("FISHING_INSTRUCTOR")
+                .antMatchers(HttpMethod.POST, "/api/v1/ship-owner/**").hasAnyAuthority("SHIP_OWNER")
                 .anyRequest()
-                    .authenticated().and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .cors().and()
-                .addFilter(userAuthenticationFilter)
-                .addFilterBefore(new UserAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .authenticated()
+                .and().cors().and();
+
+        //filter
+        http.addFilter(userAuthenticationFilter);
+        http.addFilterBefore(new UserAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

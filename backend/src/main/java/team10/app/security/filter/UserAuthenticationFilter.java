@@ -22,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -45,6 +46,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
         User user = (User) authResult.getPrincipal();
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
         String access_token = JWT.create()
+                .withJWTId(UUID.randomUUID().toString())
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) // 10 mins
                 .withIssuer(request.getRequestURL().toString())
@@ -52,6 +54,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
                 .sign(algorithm);
 
         String refresh_token = JWT.create()
+                .withJWTId(UUID.randomUUID().toString())
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 5 * 24 *60 * 60 * 1000)) // 5 days
                 .withIssuer(request.getRequestURL().toString())
