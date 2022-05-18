@@ -87,6 +87,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/registration").permitAll()
                 // All requests require authentication
                 .anyRequest().authenticated()
+                .and()
+                .cors()
+                .and()
+                .requiresChannel()
+                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+                .requiresSecure()
                 .and().apply(securityConfigurerAdapter());
     }
 
