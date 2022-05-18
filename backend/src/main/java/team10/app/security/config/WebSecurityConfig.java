@@ -80,23 +80,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                // Static resources, etc
-                .antMatchers(
-                        HttpMethod.GET,
-                        "/*.html","/**/*.html","/**/*.css","/**/*.js","/webSocket/**"
-                ).permitAll()
-                // swagger document
-                .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/*/api-docs").permitAll()
-                // file
-                .antMatchers("/avatar/**").permitAll()
-                .antMatchers("/file/**").permitAll()
-                // Alibaba druid
-                .antMatchers("/druid/**").permitAll()
                 // Allow the OPTIONS request
-                .antMatchers(HttpMethod.OPTIONS, "/ * *").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // Interface that does not require authentication
                 .antMatchers("/api/v1/login").permitAll()
                 .antMatchers("/api/v1/registration").permitAll()
