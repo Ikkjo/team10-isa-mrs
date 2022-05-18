@@ -21,13 +21,13 @@ public class VacationHomeOwner extends BusinessClient {
             inverseJoinColumns = @JoinColumn(name = "vacation_home_id", referencedColumnName = "id"))
     private Set<VacationHome> vacationHomes;
 
-    public VacationHomeOwner(String firstName, String lastName, String email, String password, String phoneNumber, Address address) {
-        super(firstName, lastName, email, password, HOUSE_OWNER, phoneNumber, address);
+    public VacationHomeOwner(String firstName, String lastName, String email, String password, String phoneNumber, Address address, String dateOfBirth) {
+        super(firstName, lastName, email, password, HOUSE_OWNER, phoneNumber, address, dateOfBirth);
         this.vacationHomes = new HashSet<>();
     }
 
     public VacationHomeOwner(BusinessClient user) {
-        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), HOUSE_OWNER, user.getPhoneNumber(), user.getAddress());
+        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), HOUSE_OWNER, user.getPhoneNumber(), user.getAddress(), user.getDateOfBirth());
         this.vacationHomes = new HashSet<>();
     }
 }

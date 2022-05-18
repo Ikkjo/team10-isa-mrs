@@ -30,7 +30,7 @@ class VacationHomeOwnerRepositoryTest {
                 "Jackson",
                 email,
                 "password123",
-                "+381651726152", new Address("123", "123", "123"));
+                "+381651726152", new Address("123", "123", "123"), "12.12.1999.");
         repo.save(user);
 
         Optional<VacationHomeOwner> expected = repo.findByEmail(email);
@@ -51,7 +51,7 @@ class VacationHomeOwnerRepositoryTest {
                 "Jackson",
                 email,
                 "password123",
-                "+381651726152", new Address("123", "123", "123"));
+                "+381651726152", new Address("123", "123", "123"), "12.12.1999.");
         repo.save(user);
 
         assertThat(repo.enableVacationHomeOwner(email)).isEqualTo(1);

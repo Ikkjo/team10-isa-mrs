@@ -16,14 +16,18 @@ public abstract class BusinessClient extends User {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
+    @Column(nullable = false)
+    private String dateOfBirth;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "loyalty_id")
     private Loyalty loyalty;
 
-    protected BusinessClient(String firstName, String lastName, String email, String password, UserRole appUserRole, String phoneNumber, Address address) {
+
+    protected BusinessClient(String firstName, String lastName, String email, String password, UserRole appUserRole, String phoneNumber, Address address, String dateOfBirth) {
         super(firstName, lastName, email, password, appUserRole, phoneNumber);
-        this.loyalty = new Loyalty();
         this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.loyalty = new Loyalty();
     }
 
     protected BusinessClient(String firstName, String lastName, String email, String password, UserRole appUserRole) {
