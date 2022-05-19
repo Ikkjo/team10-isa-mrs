@@ -29,7 +29,7 @@
         </div>
         <div class="btn-div">
             <button class="btn"
-                :disabled="true">
+                :disabled="$v.invalid">
                 Log In
             </button>
             <div class="not-registered">Don't have an account yet? <router-link to="/client/register">Register an account</router-link></div>
@@ -63,9 +63,9 @@ export default {
         },
     },
     methods: {
-        signUpPressed(){
+        logInPressed(){
             let loginDTO = {
-                    email: this.email,
+                    username: this.email,
                     password: this.password
                 }
             console.log(loginDTO)
@@ -73,6 +73,7 @@ export default {
                 .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDTO)
                 .then(function(response) {
                     console.log(response)
+                    localStorage.setItem("jwt", response.data)
                     // notify that awaiting accept
                 })
                 .catch(function(error) {
