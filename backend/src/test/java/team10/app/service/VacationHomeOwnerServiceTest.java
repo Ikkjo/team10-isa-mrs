@@ -138,9 +138,7 @@ class VacationHomeOwnerServiceTest {
                 20
         );
         VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
-        vacationHomeOwnerService.saveVacationHome(vacationHome);
-
-        verify(addressRepository).save(vacationHome.getAddress());
+        vacationHomeRepository.save(vacationHome);
         verify(vacationHomeRepository).save(vacationHome);
     }
 }
