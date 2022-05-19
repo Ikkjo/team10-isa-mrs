@@ -1,40 +1,103 @@
 package team10.app.security.config;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import team10.app.security.auth.JWTAccessDeniedHandler;
+import team10.app.security.auth.JWTAuthenticationEntryPoint;
+import team10.app.security.auth.JWTProvider;
+import team10.app.service.UserService;
 
 import java.util.Arrays;
 
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final CorsFilter corsFilter;
+    private final JWTProvider jwtProvider;
+    private final JWTAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JWTAccessDeniedHandler jwtAccessDeniedHandler;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserService userService;
+
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        // Removes the ROLE_ prefix
+        return new GrantedAuthorityDefaults("");
+    }
+
+    @Override
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                // disable CSRF
                 .csrf().disable()
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                // Authorization is abnormal
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+                // Prevent iframe from crossing domains
+                .and()
+                .headers()
+                .frameOptions()
+                .disable()
+                // No session is created
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
-                    .antMatchers("/api/v1/**")
-                    .permitAll()
-                .anyRequest()
-                    .authenticated().and()
-                .cors().and()
+                // Allow the OPTIONS request
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // Interface that does not require authentication
+                .antMatchers("/api/v1/login").permitAll()
+                .antMatchers("/api/v1/registration").permitAll()
+                // All requests require authentication
+                .anyRequest().authenticated()
+                .and()
+                .cors()
+                .and()
                 .requiresChannel()
                 .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
-                .requiresSecure();
+                .requiresSecure()
+                .and().apply(securityConfigurerAdapter());
+    }
+
+    private JWTConfigurer securityConfigurerAdapter() {
+        return new JWTConfigurer(jwtProvider);
     }
 
     @Bean

@@ -282,7 +282,7 @@ export default {
                     email: this.email,
                     password: this.password,
                     role: this.role,
-                    phone: this.phone.formattedNumber,
+                    phoneNumber: this.phone.formattedNumber,
                     dateOfBirth: ""+this.dateOfBirth.day+"."+this.dateOfBirth.month+"."+this.dateOfBirth.year+".",
                     address: this.address,
                     city: this.city,

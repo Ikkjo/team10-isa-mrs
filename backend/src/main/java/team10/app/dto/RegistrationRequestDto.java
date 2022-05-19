@@ -1,5 +1,6 @@
 package team10.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import team10.app.model.UserRole;
 

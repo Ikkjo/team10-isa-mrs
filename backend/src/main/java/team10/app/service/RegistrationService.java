@@ -1,9 +1,10 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import team10.app.dto.BusinessUserRegistrationRequestDto;
+import team10.app.dto.BusinessClientRegistrationRequestDto;
 import team10.app.model.BusinessClient;
 import team10.app.security.auth.ConfirmationToken;
 import team10.app.util.EmailValidator;
@@ -21,7 +22,7 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
 
 
-    public String register(BusinessUserRegistrationRequestDto request) {
+    public String register(BusinessClientRegistrationRequestDto request) {
 
 
         if (!emailValidator.test(request.getEmail())) {
@@ -39,7 +40,8 @@ public class RegistrationService {
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userService.saveBusinessUser(user);
 
-        user = userService.getBusinessPartnerByEmail(user.getEmail(), user.getUserRole()).orElseThrow();
+        user = userService.getBusinessPartnerByEmail(user.getEmail(), user.getUserRole())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken(

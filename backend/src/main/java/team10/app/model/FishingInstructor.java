@@ -20,13 +20,13 @@ public class FishingInstructor extends BusinessClient {
             inverseJoinColumns = @JoinColumn(name = "adventures_id", referencedColumnName = "id"))
     private Set<Adventure> adventures;
 
-    public FishingInstructor(String firstName, String lastName, String email, String password, String phoneNumber, Address address) {
-        super(firstName, lastName, email, password, FISHING_INSTRUCTOR, phoneNumber, address);
+    public FishingInstructor(String firstName, String lastName, String email, String password, String phoneNumber, Address address, String dateOfBirth) {
+        super(firstName, lastName, email, password, FISHING_INSTRUCTOR, phoneNumber, address, dateOfBirth);
         adventures = new HashSet<>();
     }
 
     public FishingInstructor(BusinessClient user) {
-        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), FISHING_INSTRUCTOR, user.getPhoneNumber(), user.getAddress());
+        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), FISHING_INSTRUCTOR, user.getPhoneNumber(), user.getAddress(), user.getDateOfBirth());
         adventures = new HashSet<>();
     }
 }
