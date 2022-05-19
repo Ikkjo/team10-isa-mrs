@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Picture;
+import team10.app.model.RentalEntity;
 import team10.app.model.VacationHome;
 import team10.app.model.VacationHomeOwner;
 import team10.app.repository.*;
@@ -54,7 +55,8 @@ public class VacationHomeOwnerService {
         VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("VacationHomeOwner not found!"));
 
-        return vacationHomeOwner.getVacationHomes().stream().map((vacationHome) ->
+        return vacationHomeOwner.getVacationHomes().stream().filter(RentalEntity::isDeleted)
+                .map((vacationHome) ->
                 {
                     vacationHome.setPictures(decompressPictures(vacationHome.getPictures()));
                     return new VacationHomeDto(vacationHome);
