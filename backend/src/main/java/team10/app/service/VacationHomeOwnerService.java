@@ -5,16 +5,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Picture;
-import team10.app.model.RentalEntity;
 import team10.app.model.VacationHome;
 import team10.app.model.VacationHomeOwner;
 import team10.app.repository.*;
 import team10.app.util.Validator;
-import team10.app.util.exceptions.UserNotFoundException;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,11 +24,14 @@ public class VacationHomeOwnerService {
     private final PictureRepository pictureRepository;
     private final Validator validator;
 
-    public void addVacationHome(VacationHomeDto request) throws RuntimeException { // TODO: Add custom exception
+    public void addVacationHome(VacationHomeDto request, String email) throws RuntimeException { // TODO: Add custom exception
         if (!validator.validateVacationHomeDTO(request)) {
             throw new RuntimeException();
         }
+        VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("VacationHomeOwner not found!"));
         VacationHome vacationHome = this.buildVacationHome(request);
+        vacationHome.setOwner(vacationHomeOwner);
         vacationHomeRepository.save(vacationHome);
     }
 
