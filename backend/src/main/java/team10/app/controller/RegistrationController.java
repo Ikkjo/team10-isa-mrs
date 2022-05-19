@@ -3,6 +3,8 @@ package team10.app.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.BusinessClientRegistrationRequestDto;
+import team10.app.dto.ClientRegistrationRequestDto;
+import team10.app.service.ClientRegistrationService;
 import team10.app.service.RegistrationService;
 
 @RestController
@@ -11,16 +13,17 @@ import team10.app.service.RegistrationService;
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+    private ClientRegistrationService clientRegistrationService;
 
-    @PostMapping
-    public String register(@RequestBody BusinessClientRegistrationRequestDto request) {
+
+    @PostMapping("/business-client")
+    public String registerBusinessClient(@RequestBody BusinessClientRegistrationRequestDto request) {
         return registrationService.register(request);
     }
 
-    @GetMapping(path = "confirm")
-    public String confirm(@RequestParam("token") String token) {
-//        return registrationService.confirmToken(token);
-        return null;
+    @PostMapping(path = "/client")
+    public String registerClient(@RequestBody ClientRegistrationRequestDto request) {
+        return clientRegistrationService.register(request);
     }
 
 }
