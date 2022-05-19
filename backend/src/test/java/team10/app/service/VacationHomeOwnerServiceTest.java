@@ -24,7 +24,6 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,10 +68,12 @@ class VacationHomeOwnerServiceTest {
                 10,
                 20
         );
+        VacationHomeOwner vacationHomeOwner = new VacationHomeOwner();
         VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
+        when(vacationHomeOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(vacationHomeOwner));
         // when
-        vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
+        vacationHomeOwnerService.addVacationHome(vacationHomeDTO, "test@gmail.com");
         // then
         ArgumentCaptor<VacationHome> argumentCaptor = ArgumentCaptor.forClass(VacationHome.class);
         verify(vacationHomeRepository).save(argumentCaptor.capture());
@@ -99,7 +100,7 @@ class VacationHomeOwnerServiceTest {
         given(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).willReturn(false);
         // when
         //then
-        assertThatThrownBy(() -> vacationHomeOwnerService.addVacationHome(vacationHomeDTO)).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(() -> vacationHomeOwnerService.addVacationHome(vacationHomeDTO, "test@gmail.com")).isInstanceOf(RuntimeException.class);
 
         verify(vacationHomeRepository, never()).save(any());
     }
@@ -122,8 +123,10 @@ class VacationHomeOwnerServiceTest {
         );
         VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
+        VacationHomeOwner vacationHomeOwner = new VacationHomeOwner();
+        when(vacationHomeOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(vacationHomeOwner));
         // when
-        vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
+        vacationHomeOwnerService.addVacationHome(vacationHomeDTO, "test@gmail.com");
         //then
 
     }
