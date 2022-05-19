@@ -64,13 +64,13 @@ export default {
     },
     methods: {
         logInPressed(){
-            let loginDTO = {
+            let loginDto = {
                     username: this.email,
                     password: this.password
                 }
-            console.log(loginDTO)
+            console.log(loginDto)
             axios
-                .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDTO)
+                .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDto)
                 .then(function(response) {
                     console.log(response)
                     localStorage.setItem("jwt", response.data)
