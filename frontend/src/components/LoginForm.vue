@@ -29,7 +29,7 @@
         </div>
         <div class="btn-div">
             <button class="btn"
-                :disabled="true">
+                :disabled="$v.invalid">
                 Log In
             </button>
             <div class="not-registered">Don't have an account yet? <router-link to="/client/register">Register an account</router-link></div>
@@ -63,16 +63,17 @@ export default {
         },
     },
     methods: {
-        signUpPressed(){
-            let loginDTO = {
-                    email: this.email,
+        logInPressed(){
+            let loginDto = {
+                    username: this.email,
                     password: this.password
                 }
-            console.log(loginDTO)
+            console.log(loginDto)
             axios
-                .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDTO)
+                .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDto)
                 .then(function(response) {
                     console.log(response)
+                    localStorage.setItem("jwt", response.data)
                     // notify that awaiting accept
                 })
                 .catch(function(error) {

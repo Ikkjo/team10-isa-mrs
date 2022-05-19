@@ -6,10 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import team10.app.dto.LoginDto;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.UserService;
 
@@ -25,9 +23,9 @@ public class LoginController {
 
 
     @PostMapping
-    public String login(@RequestParam("username") String username, @RequestParam("password") String password) {
+    public String login(@RequestBody LoginDto dto) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(username, password);
+                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword());
         // is called UserDetailsService.LoadUserByUsername
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
