@@ -55,7 +55,7 @@ public class VacationHomeOwnerService {
         VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("VacationHomeOwner not found!"));
 
-        return vacationHomeOwner.getVacationHomes().stream().filter(RentalEntity::isDeleted)
+        return vacationHomeOwner.getVacationHomes().stream().filter(vacationHome -> !vacationHome.isDeleted())
                 .map((vacationHome) ->
                 {
                     vacationHome.setPictures(decompressPictures(vacationHome.getPictures()));
@@ -64,7 +64,7 @@ public class VacationHomeOwnerService {
 
     }
 
-    public Set<Picture> decompressPictures(Set<Picture> pictures) {
+    private Set<Picture> decompressPictures(Set<Picture> pictures) {
         return pictures.stream().map(
                 picture -> new Picture(picture.getType(), PictureService.decompressBytes(picture.getPicByte()))
         ).collect(Collectors.toSet());
