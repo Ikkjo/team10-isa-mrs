@@ -10,7 +10,7 @@ import team10.app.service.RegistrationService;
 @RestController
 @RequestMapping(path = "/api/v1/registration")
 @AllArgsConstructor
-public class BusinessClientRegistrationController {
+public class RegistrationController {
 
     private final RegistrationService registrationService;
     private ClientRegistrationService clientRegistrationService;
