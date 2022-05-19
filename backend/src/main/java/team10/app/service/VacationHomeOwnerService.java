@@ -1,14 +1,21 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.VacationHomeDto;
+import team10.app.model.Picture;
 import team10.app.model.VacationHome;
+import team10.app.model.VacationHomeOwner;
 import team10.app.repository.*;
 import team10.app.util.Validator;
+import team10.app.util.exceptions.UserNotFoundException;
 
-import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -41,5 +48,23 @@ public class VacationHomeOwnerService {
                 vacationHomeDto.getRooms(),
                 vacationHomeDto.getBeds()
         );
+    }
+
+    public Set<VacationHomeDto> getAllActiveVacationHomesByOwnerEmail(String email) throws UsernameNotFoundException{
+        VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("VacationHomeOwner not found!"));
+
+        return vacationHomeOwner.getVacationHomes().stream().map((vacationHome) ->
+                {
+                    vacationHome.setPictures(decompressPictures(vacationHome.getPictures()));
+                    return new VacationHomeDto(vacationHome);
+                }).collect(Collectors.toSet());
+
+    }
+
+    public Set<Picture> decompressPictures(Set<Picture> pictures) {
+        return pictures.stream().map(
+                picture -> new Picture(picture.getType(), PictureService.decompressBytes(picture.getPicByte()))
+        ).collect(Collectors.toSet());
     }
 }
