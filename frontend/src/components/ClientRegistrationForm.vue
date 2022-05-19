@@ -166,7 +166,7 @@ export default {
                 }
             console.log(clientRegistrationRequestDTO)
             axios
-                .post(process.env.VUE_APP_BASE_URL+"/api/v1/client/registration", clientRegistrationRequestDTO)
+                .post(process.env.VUE_APP_BASE_URL+"/api/v1/registration/client", clientRegistrationRequestDTO)
                 .then(function(response) {
                     console.log(response)
                     // notify that awaiting accept

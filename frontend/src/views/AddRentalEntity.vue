@@ -619,7 +619,7 @@ export default {
             
             axios({
                 method: 'post',
-                url: 'http://localhost:8888/api/v1/vacation-home-owner/add-vacation-home',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-home-owner/add-vacation-home',
                 data: vacationHomeDto,
                 // headers: {
                 //     Authorization: 'Bearer ' + token,
@@ -658,7 +658,7 @@ export default {
 
             axios({
                 method: 'post',
-                url: 'http://localhost:8888/api/v1/ship-owner/ships',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship-owner/ships',
                 data: shipDto,
                 // headers: {
                 //     Authorization: 'Bearer ' + token,
@@ -691,7 +691,7 @@ export default {
 
             axios({
                 method: 'post',
-                url: 'http://localhost:8888/api/v1/fishing-instructor/add-adventure',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/fishing-instructor/add-adventure',
                 data: adventureDto,
                 // headers: {
                 //     Authorization: 'Bearer ' + token,
