@@ -5,8 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team10.app.model.Address;
+import team10.app.model.Picture;
+import team10.app.model.VacationHome;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -19,5 +23,20 @@ public class VacationHomeDto extends RentalEntityDto {
         super(title, address, description, rulesOfConduct, additionalServices, price, pictures);
         this.rooms = rooms;
         this.beds = beds;
+    }
+
+
+    public VacationHomeDto(VacationHome vacationHome) {
+        super(
+                vacationHome.getTitle(),
+                vacationHome.getAddress(),
+                vacationHome.getDescription(),
+                vacationHome.getRulesOfConduct(),
+                vacationHome.getAdditionalServices(),
+                vacationHome.getPrice(),
+                vacationHome.getPictures().stream().map(Picture::asString).collect(Collectors.toList())
+        );
+        this.rooms = vacationHome.getRooms();
+        this.beds = vacationHome.getBeds();
     }
 }
