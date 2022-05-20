@@ -16,4 +16,9 @@ public interface VacationHomeRepository extends JpaRepository<VacationHome, UUID
     @Query("select vH from VacationHome vH where vH.address = ?1")
     Optional<VacationHome> findByAddress(Address address);
 
+    @Query("select vH from VacationHome vH where vH.address.address = ?1 and vH.address.city = ?2 and vH.address.country = ?3")
+    Optional<VacationHome> findByAddress(String address, String city, String country);
+
+    @Query("select vH from VacationHome vH where vH.owner = ?1 and vH.deleted = false")
+    Optional<VacationHome>  findAllByOwner(VacationHomeOwner owner);
 }

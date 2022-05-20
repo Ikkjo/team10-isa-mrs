@@ -38,48 +38,16 @@ export default {
           lastname: 'Prezimic',
           uuid: '123'
         },
-        vacationHomes: [
-          {
-            image: "https://a0.muscache.com/im/pictures/miso/Hosting-604726298950758799/original/78d55499-cb48-4e83-a75f-faa42dd7d1ff.jpeg?im_w=720",
-            title: 'Fina kucica',
-            address: 'Bulevar Oslobodjenja, Novi Sad, Srbija',
-            rooms: 3,
-            beds: 3,
-            price: 100,
-          },
-           {
-            image: "https://a0.muscache.com/im/pictures/miso/Hosting-604726298950758799/original/78d55499-cb48-4e83-a75f-faa42dd7d1ff.jpeg?im_w=720",
-            title: 'Fina kucica',
-            address: 'Bulevar Oslobodjenja, Novi Sad, Srbija',
-            rooms: 3,
-            beds: 3,
-            price: 100,
-          },
-           {
-            image: "https://a0.muscache.com/im/pictures/miso/Hosting-604726298950758799/original/78d55499-cb48-4e83-a75f-faa42dd7d1ff.jpeg?im_w=720",
-            title: 'Fina kucica',
-            address: 'Bulevar Oslobodjenja, Novi Sad, Srbija',
-            rooms: 3,
-            beds: 3,
-            price: 100,
-          },
-           {
-            image: "https://a0.muscache.com/im/pictures/miso/Hosting-604726298950758799/original/78d55499-cb48-4e83-a75f-faa42dd7d1ff.jpeg?im_w=720",
-            title: 'Fina kucica',
-            address: 'Bulevar Oslobodjenja, Novi Sad, Srbija',
-            rooms: 3,
-            beds: 3,
-            price: 100,
-          },
-        ]
+        vacationHomes: [],
+        
       }
     },
     mounted() {
       axios
-          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-homes",
+          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-home-owner/vacation-homes",
           { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
           })
-          .then(function(response) {
+          .then((response) => {
             console.log(response.data);
             this.vacationHomes = response.data
           })

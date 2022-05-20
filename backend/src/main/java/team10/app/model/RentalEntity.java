@@ -20,7 +20,7 @@ public abstract class RentalEntity {
     private UUID id;
     @Column(nullable = false)
     protected String title;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     protected Address address;
     @Column(nullable = false)
