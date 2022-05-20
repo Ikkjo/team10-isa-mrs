@@ -618,9 +618,10 @@ export default {
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-home-owner/add-vacation-home',
                 data: vacationHomeDto,
                 headers: {
-                    Authorization: 'Bearer ' + window.sessionStorage.getItem("accessToken"),
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
-            }).then(function(response) {
+            })
+            .then(function(response) {
                 console.log(response);
                 // notify that awaiting accept
             })
@@ -651,15 +652,15 @@ export default {
                 capacity: this.ship.capacity,
                 freeCancellation: this.ship.cancellation,
             }
-
             axios({
                 method: 'post',
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/ship-owner/ships',
                 data: shipDto,
                 headers: {
-                    Authorization: 'Bearer ' + window.sessionStorage.getItem("accessToken"),
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
-            }).then(function(response) {
+            })
+            .then(function(response) {
                 console.log(response);
                 // notify that awaiting accept
             }).catch(function(error) {
@@ -690,7 +691,7 @@ export default {
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/fishing-instructor/add-adventure',
                 data: adventureDto,
                 headers: {
-                    Authorization: 'Bearer ' + window.sessionStorage.getItem("accessToken"),
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
             }).then(function(response) {
                 console.log(response);

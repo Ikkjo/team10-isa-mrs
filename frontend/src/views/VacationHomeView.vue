@@ -77,7 +77,7 @@ export default {
     mounted() {
       axios
           .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-homes",
-          { headers: { Authorization: 'Bearer ' + window.sessionStorage.getItem("accessToken") }
+          { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
           })
           .then(function(response) {
             console.log(response.data);
