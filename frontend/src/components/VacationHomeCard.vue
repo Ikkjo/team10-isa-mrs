@@ -1,10 +1,10 @@
 <template>
     <div id="vacation-home-card">
-        <img class="cover-photo" :src="vacationHome.image" alt="" srcset="">
+        <img class="cover-photo" :src="vacationHome.pictures[0]" alt="" srcset="">
         <div class="container">
             <div class="main-text">{{vacationHome.title}}</div>
             <div class="desc">
-                <div>{{vacationHome.address}}</div>
+                <div>{{vacationHome.address.address}} {{vacationHome.address.city}} {{vacationHome.address.country}}</div>
                 <div>{{vacationHome.rooms}} rooms, {{vacationHome.beds}} beds</div>
             </div>
             <div class="main-text">${{vacationHome.price}} night</div>
@@ -32,8 +32,9 @@ export default {
     object-fit: cover;
     background-repeat: no-repeat;
     background-position: center; 
-    max-width: 100%;
-    min-height: 220px;
+    background-size: cover;
+    width: 100%;
+    height: 250px;
     border-radius: 5px 5px 0px 0px;
 }
 

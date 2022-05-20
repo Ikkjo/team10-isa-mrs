@@ -100,10 +100,6 @@ export default {
     margin-top: 15px;
 }
 
-.vacation-home-card {
-}
-
-
 @media screen and (max-width: 669px) {
   .vacation-homes {
     display: flex;
@@ -114,6 +110,10 @@ export default {
   
   .vacation-home-card {
     margin-bottom: 5px;
+    width: 100%;
+  }
+
+  .vacation-home-card .cover-photo {
   }
 }
 
