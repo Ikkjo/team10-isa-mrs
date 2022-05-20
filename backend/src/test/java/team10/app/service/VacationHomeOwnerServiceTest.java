@@ -9,14 +9,17 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
+import team10.app.model.Picture;
 import team10.app.model.VacationHome;
+import team10.app.model.VacationHomeOwner;
 import team10.app.repository.AddressRepository;
 import team10.app.repository.PictureRepository;
 import team10.app.repository.VacationHomeOwnerRepository;
 import team10.app.repository.VacationHomeRepository;
 import team10.app.util.Validator;
 
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -65,10 +68,12 @@ class VacationHomeOwnerServiceTest {
                 10,
                 20
         );
+        VacationHomeOwner vacationHomeOwner = new VacationHomeOwner();
         VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
+        when(vacationHomeOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(vacationHomeOwner));
         // when
-        vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
+        vacationHomeOwnerService.addVacationHome(vacationHomeDTO, "test@gmail.com");
         // then
         ArgumentCaptor<VacationHome> argumentCaptor = ArgumentCaptor.forClass(VacationHome.class);
         verify(vacationHomeRepository).save(argumentCaptor.capture());
@@ -95,7 +100,7 @@ class VacationHomeOwnerServiceTest {
         given(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).willReturn(false);
         // when
         //then
-        assertThatThrownBy(() -> vacationHomeOwnerService.addVacationHome(vacationHomeDTO)).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(() -> vacationHomeOwnerService.addVacationHome(vacationHomeDTO, "test@gmail.com")).isInstanceOf(RuntimeException.class);
 
         verify(vacationHomeRepository, never()).save(any());
     }
@@ -118,8 +123,10 @@ class VacationHomeOwnerServiceTest {
         );
         VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
+        VacationHomeOwner vacationHomeOwner = new VacationHomeOwner();
+        when(vacationHomeOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(vacationHomeOwner));
         // when
-        vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
+        vacationHomeOwnerService.addVacationHome(vacationHomeDTO, "test@gmail.com");
         //then
 
     }
@@ -138,9 +145,34 @@ class VacationHomeOwnerServiceTest {
                 20
         );
         VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
-        vacationHomeOwnerService.saveVacationHome(vacationHome);
-
-        verify(addressRepository).save(vacationHome.getAddress());
+        vacationHomeRepository.save(vacationHome);
         verify(vacationHomeRepository).save(vacationHome);
     }
+
+    @Test
+    void getAllActiveVacationHomesByOwnerEmail_returnsNonEmptyList() {
+        // given
+        VacationHomeOwner vacationHomeOwner = new VacationHomeOwner();
+        Picture pictureCompressed = new Picture("jpeg",
+                PictureService.compressBytes("123asdasdasdasdasdasddasdasdaa".getBytes(StandardCharsets.UTF_8)));
+        Set<Picture> pictureSet = new HashSet<>(List.of(pictureCompressed));
+        VacationHome vacationHome = new VacationHome();
+        vacationHome.setTitle("Some title");
+        vacationHome.setAddress(new Address("Strt", "Cityyy", "Westeros"));
+        vacationHome.setDescription("Some long description");
+        vacationHome.setRulesOfConduct("All is allowed");
+        vacationHome.setAdditionalServices("24/7 massage");
+        vacationHome.setPrice(1000);
+        vacationHome.setPictures(pictureSet);
+        vacationHome.setRooms(3);
+        vacationHome.setBeds(3);
+        vacationHomeOwner.setVacationHomes(new HashSet<>(Collections.singleton(vacationHome)));
+
+        when(vacationHomeOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(vacationHomeOwner));
+
+        Set<VacationHomeDto> vacationHomeDtos = vacationHomeOwnerService.getAllActiveVacationHomesByOwnerEmail("test@gmail.com");
+        assertThat(vacationHomeDtos.isEmpty()).isFalse();
+    }
+
+
 }

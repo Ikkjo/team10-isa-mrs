@@ -76,10 +76,12 @@ export default {
     },
     mounted() {
       axios
-          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-homes/"+this.user.uuid)
+          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-homes",
+          { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
+          })
           .then(function(response) {
-            this.vacationHomes = response
-              console.log(response)
+            console.log(response.data);
+            this.vacationHomes = response.data
           })
           .catch(function(error) {
               console.log(error);

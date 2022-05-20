@@ -73,7 +73,7 @@ export default {
                 .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDto)
                 .then(function(response) {
                     console.log(response)
-                    localStorage.setItem("jwt", response.data)
+                    window.localStorage.setItem("jwt", response.data)
                     // notify that awaiting accept
                 })
                 .catch(function(error) {

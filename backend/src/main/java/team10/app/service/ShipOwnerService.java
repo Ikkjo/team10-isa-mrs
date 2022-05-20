@@ -1,9 +1,11 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.ShipDto;
 import team10.app.model.Ship;
+import team10.app.model.ShipOwner;
 import team10.app.repository.AddressRepository;
 import team10.app.repository.PictureRepository;
 import team10.app.repository.ShipOwnerRepository;
@@ -25,12 +27,15 @@ public class ShipOwnerService {
 
 
 
-    public void addShip(ShipDto request) throws RuntimeException {
+    public void addShip(ShipDto request, String email) throws RuntimeException {
         if (!validator.validateShipDto(request)) {
             throw new RuntimeException();
         }
+        ShipOwner shipOwner = shipOwnerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("Ship owner: %s, not found!", email)));
         Ship ship = this.buildShip(request);
-        saveShip(ship);
+        ship.setOwner(shipOwner);
+        shipRepository.save(ship);
     }
 
     private Ship buildShip(ShipDto shipDto) {
@@ -53,12 +58,4 @@ public class ShipOwnerService {
                shipDto.isFreeCancellation()
        );
     }
-
-    private void saveShip(Ship ship) {
-        addressRepository.save(ship.getAddress());
-        pictureRepository.saveAll(ship.getPictures());
-        shipRepository.save(ship);
-    }
-
-
 }

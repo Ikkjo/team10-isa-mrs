@@ -13,11 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class RentalEntityDto {
-    private String title;
-    private Address address;
-    private String description;
-    private String rulesOfConduct;
-    private String additionalServices;
-    private int price;
-    private List<String> pictures;
+    protected String title;
+    protected Address address;
+    protected String description;
+    protected String rulesOfConduct;
+    protected String additionalServices;
+    protected int price;
+    protected List<String> pictures;
 }

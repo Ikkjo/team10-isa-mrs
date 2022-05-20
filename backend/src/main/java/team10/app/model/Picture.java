@@ -1,14 +1,17 @@
 package team10.app.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Picture {
     @Column(name = "id")
     @Id
@@ -22,5 +25,9 @@ public class Picture {
     public Picture(String type, byte[] bytes) {
         this.type = type;
         this.picByte = bytes;
+    }
+
+    public String asString() {
+        return this.type + "," + Arrays.toString(this.picByte);
     }
 }

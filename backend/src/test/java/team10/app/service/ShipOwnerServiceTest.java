@@ -10,10 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import team10.app.dto.ShipDto;
 import team10.app.dto.VacationHomeDto;
-import team10.app.model.Address;
-import team10.app.model.Picture;
-import team10.app.model.Ship;
-import team10.app.model.VacationHome;
+import team10.app.model.*;
 import team10.app.repository.AddressRepository;
 import team10.app.repository.PictureRepository;
 import team10.app.repository.ShipOwnerRepository;
@@ -23,6 +20,7 @@ import team10.app.util.Validator;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -103,8 +101,10 @@ class ShipOwnerServiceTest {
                 false
         );
         when(validator.validateShipDto(Mockito.any(ShipDto.class))).thenReturn(true);
+        ShipOwner shipOwner = new ShipOwner();
+        when(shipOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(shipOwner));
         // when
-        shipOwnerService.addShip(shipDto);
+        shipOwnerService.addShip(shipDto, "test@gmail.com");
         // then
         ArgumentCaptor<Ship> argumentCaptor = ArgumentCaptor.forClass(Ship.class);
         verify(shipRepository).save(argumentCaptor.capture());
@@ -135,7 +135,7 @@ class ShipOwnerServiceTest {
         );
         given(validator.validateShipDto(Mockito.any(ShipDto.class))).willReturn(false);
         //then
-        assertThatThrownBy(() -> shipOwnerService.addShip(shipDto)).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(() -> shipOwnerService.addShip(shipDto, "test@gmail.com")).isInstanceOf(RuntimeException.class);
 
         verify(shipRepository, never()).save(any());
     }
@@ -182,7 +182,9 @@ class ShipOwnerServiceTest {
                 false
         );
         when(validator.validateShipDto(Mockito.any(ShipDto.class))).thenReturn(true);
+        ShipOwner shipOwner = new ShipOwner();
+        when(shipOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(shipOwner));
         // when
-        shipOwnerService.addShip(shipDto);
+        shipOwnerService.addShip(shipDto, "test@gmail.com");
     }
 }
