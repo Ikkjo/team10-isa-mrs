@@ -8,6 +8,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name="ships")
 public class Ship extends RentalEntity {
@@ -24,6 +25,7 @@ public class Ship extends RentalEntity {
     private int maxSpeed;
     @Column(nullable = false)
     private String navigationEquipment;
+    @Column(nullable = false)
     private String fishingEquipment;
     @Column(nullable = false)
     private int capacity;

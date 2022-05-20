@@ -35,7 +35,7 @@ public class ShipOwnerService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Ship owner: %s, not found!", email)));
         Ship ship = this.buildShip(request);
         ship.setOwner(shipOwner);
-        saveShip(ship);
+        shipRepository.save(ship);
     }
 
     private Ship buildShip(ShipDto shipDto) {
@@ -58,12 +58,4 @@ public class ShipOwnerService {
                shipDto.isFreeCancellation()
        );
     }
-
-    private void saveShip(Ship ship) {
-        addressRepository.save(ship.getAddress());
-        pictureRepository.saveAll(ship.getPictures());
-        shipRepository.save(ship);
-    }
-
-
 }
