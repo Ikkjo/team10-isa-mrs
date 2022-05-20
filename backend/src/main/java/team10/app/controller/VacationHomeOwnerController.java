@@ -31,7 +31,7 @@ public class VacationHomeOwnerController {
              vacationHomeOwnerService.addVacationHome(request, jwtProvider.getAuthentication(token.substring(7)).getName());
         }
         catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(request, HttpStatus.CREATED);
     }
