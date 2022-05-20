@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.ShipDto;
+import team10.app.security.auth.JWTProvider;
 import team10.app.service.ShipOwnerService;
 
 @RestController
@@ -13,11 +14,12 @@ import team10.app.service.ShipOwnerService;
 public class ShipOwnerController {
 
     private final ShipOwnerService shipOwnerService;
+    private final JWTProvider jwtProvider;
 
-    @PostMapping("/ships")
-    public ResponseEntity<ShipDto> addShip(@RequestBody ShipDto request) {
+    @PostMapping("/add-ship")
+    public ResponseEntity<ShipDto> addShip(@RequestBody ShipDto request, @RequestHeader(name = "Authorization") String token) {
         try {
-            shipOwnerService.addShip(request);
+            shipOwnerService.addShip(request, jwtProvider.getAuthentication(token.substring(7)).getName());
         }
         catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
