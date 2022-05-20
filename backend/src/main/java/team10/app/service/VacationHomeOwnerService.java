@@ -32,6 +32,7 @@ public class VacationHomeOwnerService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Vacation home owner: %s, not found!", email)));
         VacationHome vacationHome = this.buildVacationHome(request);
         vacationHome.setOwner(vacationHomeOwner);
+        vacationHomeOwner.addVacationHome(vacationHome);
         vacationHomeRepository.save(vacationHome);
     }
 

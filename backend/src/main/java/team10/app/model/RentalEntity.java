@@ -36,7 +36,7 @@ public abstract class RentalEntity {
     protected Set<Picture> pictures;
     protected boolean deleted = false;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     protected BusinessClient owner;
 
 }
