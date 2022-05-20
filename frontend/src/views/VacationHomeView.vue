@@ -5,7 +5,7 @@
       <div class="cover">
         <img src="https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg" alt="" srcset="">
         <div class="title">
-          <h1>{{user.name}} {{user.lastname}}</h1>
+          <h1>{{user.firstName}} {{user.lastName}}</h1>
           <div class="rating">
             Avarage rating: {{rating}}
             <span class="material-icons">star</span>
@@ -33,11 +33,7 @@ export default {
     data() {
       return {
         rating: 4.5,
-        user: {
-          name: 'Imenko',
-          lastname: 'Prezimic',
-          uuid: '123'
-        },
+        user: {},
         vacationHomes: [],
         
       }
@@ -48,13 +44,22 @@ export default {
           { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
           })
           .then((response) => {
-            console.log(response.data);
+            console.log(response.data)
             this.vacationHomes = response.data
           })
           .catch(function(error) {
-              console.log(error);
-              // is email taken
-              // is phone taken
+              console.log(error)
+          })
+       axios
+          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-home-owner/",
+          { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
+          })
+          .then((response) => {
+            console.log(response.data)
+            this.user = response.data
+          })
+          .catch(function(error) {
+              console.log(error)
           })
     }
   }

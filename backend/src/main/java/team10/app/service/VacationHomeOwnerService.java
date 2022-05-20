@@ -3,6 +3,7 @@ package team10.app.service;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import team10.app.dto.BusinessClientDto;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Picture;
 import team10.app.model.VacationHome;
@@ -61,9 +62,17 @@ public class VacationHomeOwnerService {
 
     }
 
+    public BusinessClientDto getUserDetails(String email) throws UsernameNotFoundException {
+        VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("VacationHomeOwner not found!"));
+        BusinessClientDto dto = new BusinessClientDto(vacationHomeOwner);
+        return new BusinessClientDto(vacationHomeOwner);
+    }
+
     private Set<Picture> decompressPictures(Set<Picture> pictures) {
         return pictures.stream().map(
                 picture -> new Picture(picture.getType(), PictureService.decompressBytes(picture.getBytes()))
         ).collect(Collectors.toSet());
     }
+
 }
