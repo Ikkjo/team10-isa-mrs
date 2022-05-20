@@ -29,7 +29,7 @@ public class VacationHomeOwnerService {
             throw new RuntimeException();
         }
         VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("VacationHomeOwner not found!"));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("Vacation home owner: %s, not found!", email)));
         VacationHome vacationHome = this.buildVacationHome(request);
         vacationHome.setOwner(vacationHomeOwner);
         vacationHomeRepository.save(vacationHome);
