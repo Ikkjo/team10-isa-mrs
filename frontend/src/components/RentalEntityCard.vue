@@ -1,26 +1,26 @@
 <template>
-    <div id="vacation-home-card">
-        <img class="cover-photo" :src="vacationHome.pictures[0]" alt="" srcset="">
+    <div id="rental-entity-card">
+        <img class="cover-photo" :src="rentalEntity.pictures[0]" alt="" srcset="">
         <div class="container">
-            <div class="main-text">{{vacationHome.title}}</div>
+            <div class="main-text">{{rentalEntity.title}}</div>
             <div class="desc">
-                <div>{{vacationHome.address.address}} {{vacationHome.address.city}} {{vacationHome.address.country}}</div>
-                <div>{{vacationHome.rooms}} rooms, {{vacationHome.beds}} beds</div>
+                <div>{{rentalEntity.address.address}} {{rentalEntity.address.city}} {{rentalEntity.address.country}}</div>
+                <div>{{rentalEntity.rooms}} rooms, {{rentalEntity.beds}} beds</div>
             </div>
-            <div class="main-text">${{vacationHome.price}} night</div>
+            <div class="main-text">${{rentalEntity.price}} night</div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'VacationHomeCard',
-    props: ['vacationHome']
+    name: 'RentalEntityCard',
+    props: ['rentalEntity']
 }
 </script>
 
 <style scoped>
-#vacation-home-card {
+#rental-entity-card {
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     cursor: pointer;

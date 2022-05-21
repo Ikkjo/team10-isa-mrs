@@ -42,7 +42,7 @@ const routes = [
     {
       path: '/account/my-listings',
       name: 'my-listings',
-      component: () => import('../views/VacationHomeView.vue')
+      component: () => import('../views/MyListingsView.vue')
     },
 ]
 

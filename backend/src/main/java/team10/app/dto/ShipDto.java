@@ -4,8 +4,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team10.app.model.Address;
+import team10.app.model.Picture;
+import team10.app.model.Ship;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -36,5 +39,26 @@ public class ShipDto extends RentalEntityDto {
         this.fishingEquipment = fishingEquipment;
         this.capacity = capacity;
         this.freeCancellation = freeCancellation;
+    }
+
+    public ShipDto(Ship ship) {
+        super(
+                ship.getTitle(),
+                new AddressDto(ship.getAddress()),
+                ship.getDescription(),
+                ship.getRulesOfConduct(),
+                ship.getAdditionalServices(),
+                ship.getPrice(),
+                ship.getPictures().stream().map(Picture::asString).collect(Collectors.toList())
+        );
+        this.type = ship.getType();
+        this.length = ship.getLength();
+        this.engineCount = ship.getEngineCount();
+        this.enginePower = ship.getEnginePower();
+        this.maxSpeed = ship.getMaxSpeed();
+        this.navigationEquipment = ship.getNavigationEquipment();
+        this.fishingEquipment = ship.getFishingEquipment();
+        this.capacity = ship.getCapacity();
+        this.freeCancellation = ship.isFreeCancellation();
     }
 }

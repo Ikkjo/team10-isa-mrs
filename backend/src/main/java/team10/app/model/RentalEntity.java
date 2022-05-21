@@ -23,11 +23,11 @@ public abstract class RentalEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     protected Address address;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     protected String description;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     protected String rulesOfConduct;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     protected String additionalServices;
     @Column(nullable = false)
     protected int price;

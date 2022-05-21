@@ -23,9 +23,9 @@ public class Ship extends RentalEntity {
     private int enginePower;
     @Column(nullable = false)
     private int maxSpeed;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String navigationEquipment;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String fishingEquipment;
     @Column(nullable = false)
     private int capacity;

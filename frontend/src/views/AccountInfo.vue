@@ -39,8 +39,7 @@ export default {
             user: {},
         }
     },
-    mounted() {
-        this.user = localStorage.getItem('user')
+    created() {
         axios
           .get(process.env.VUE_APP_BASE_URL+"/api/v1/business-client",
           { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
