@@ -3,7 +3,9 @@ package team10.app.service;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import team10.app.dto.AddressDto;
 import team10.app.dto.ShipDto;
+import team10.app.model.Address;
 import team10.app.model.Ship;
 import team10.app.model.ShipOwner;
 import team10.app.repository.AddressRepository;
@@ -41,7 +43,7 @@ public class ShipOwnerService {
     private Ship buildShip(ShipDto shipDto) {
        return new Ship(
                shipDto.getTitle(),
-               shipDto.getAddress(),
+               new Address(shipDto.getAddress()),
                shipDto.getDescription(),
                shipDto.getRulesOfConduct(),
                shipDto.getAdditionalServices(),

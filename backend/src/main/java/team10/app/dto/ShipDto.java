@@ -22,7 +22,7 @@ public class ShipDto extends RentalEntityDto {
     private int capacity;
     private boolean freeCancellation;
 
-    public ShipDto(String title, Address address, String description, String rulesOfConduct, String additionalServices,
+    public ShipDto(String title, AddressDto address, String description, String rulesOfConduct, String additionalServices,
                    int price, List<String> pictures, String type, double length, int engineCount, int enginePower,
                    int maxSpeed, String navigationEquipment, String fishingEquipment, int capacity,
                    boolean freeCancellation) {
