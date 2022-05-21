@@ -22,17 +22,6 @@ public class VacationHomeOwnerController {
     private final VacationHomeOwnerService vacationHomeOwnerService;
     private final JWTProvider jwtProvider;
 
-    @GetMapping
-    @PreAuthorize("hasRole('HOUSE_OWNER')")
-    public ResponseEntity<BusinessClientDto> getUserDetails(Principal principal) {
-        try {
-            return new ResponseEntity<>(vacationHomeOwnerService.getUserDetails(principal.getName()), HttpStatus.OK);
-        }
-        catch (UsernameNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @PostMapping("/add-vacation-home")
     @PreAuthorize("hasRole('HOUSE_OWNER')")
     public ResponseEntity<VacationHomeDto> addVacationHome(@RequestBody VacationHomeDto request, @RequestHeader(name = "Authorization") String token) {
