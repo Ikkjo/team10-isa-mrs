@@ -36,7 +36,7 @@ public class ShipOwnerController {
 
     @GetMapping("/ships")
     @PreAuthorize("hasRole('SHIP_OWNER')")
-    public ResponseEntity<Set<ShipDto>> getAllVacationHomes(Principal principal) {
+    public ResponseEntity<Set<ShipDto>> getAllShips(Principal principal) {
         try {
             return new ResponseEntity<>(shipOwnerService.getAllActiveShipsByOwnerEmail(principal.getName()), HttpStatus.OK);
         }
