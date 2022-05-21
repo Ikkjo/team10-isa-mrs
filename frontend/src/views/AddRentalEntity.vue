@@ -107,7 +107,7 @@
 
                 <!-- The rest of the steps can be decided using v-if on type of logged in user -->
                 <!-- STEP 5: VACATION HOME INPUT -->
-                <div class="form" v-show="step === 5" v-if="user.role === 'HOUSE_OWNER'">
+                <div class="form" v-show="step === 5" v-if="userRole === 'HOUSE_OWNER'">
                     <RoomsInput 
                         @updated:rooms="roomsUpdated" 
                         @updated:beds="bedsUpdated" 
@@ -116,7 +116,7 @@
                 </div>
 
                 <!-- STEP 5: SHIP INPUT -->
-                <div class="form ship-form" v-show="step === 5" v-if="user.role === 'SHIP_OWNER'">
+                <div class="form ship-form" v-show="step === 5" v-if="userRole === 'SHIP_OWNER'">
                     <h1>Ship information</h1>
                     <div class="form-control">
                         <label for="ship-type">Ship Type</label>
@@ -235,7 +235,7 @@
                 </div>
                 
                 <!-- STEP 5: ADVENTURE INPUT -->
-                <div class="form adventure-form" v-show="step === 5" v-if="user.role === 'FISHING_INSTRUCTOR'">
+                <div class="form adventure-form" v-show="step === 5" v-if="userRole === 'FISHING_INSTRUCTOR'">
                     <h1>Adventure information</h1>
                     <div class="form-control">
                         <label for="fishing-instructor-bio">Short Biography</label>
@@ -413,10 +413,7 @@ export default {
             },
             step: 1,
             numSteps: 5,
-
-            user: {
-                role: 'HOUSE_OWNER'
-            },
+            userRole: '',
         }
     },
     validations: {
@@ -565,13 +562,13 @@ export default {
             return false;
         },
         finishDisabled() {
-            if (this.user.role === 'HOUSE_OWNER')
+            if (this.userRole === 'HOUSE_OWNER')
                 return this.$refs.roomsInput.$v.$invalid 
                     || this.$v.baseInfo.$invalid;
-            if (this.user.role === 'SHIP_OWNER')
+            if (this.userRole === 'SHIP_OWNER')
                 return this.$v.ship.$invalid
                     || this.$v.baseInfo.$invalid;
-            if (this.user.role === 'FISHING_INSTRUCTOR')
+            if (this.userRole === 'FISHING_INSTRUCTOR')
                 return this.$v.adventure.$invalid
                     || this.$v.baseInfo.$invalid;
         },
@@ -590,11 +587,11 @@ export default {
             // add router.route to main page 
         },
         finish() {
-            if (this.user.role === 'HOUSE_OWNER')
+            if (this.userRole === 'HOUSE_OWNER')
                 this.postVacationHome();
-            else if (this.user.role === 'SHIP_OWNER')
+            else if (this.userRole === 'SHIP_OWNER')
                 this.postShip();
-            else if (this.user.role === 'FISHING_INSTRUCTOR')
+            else if (this.userRole === 'FISHING_INSTRUCTOR')
                 this.postAdventure();
         },
         postVacationHome() {
@@ -654,7 +651,7 @@ export default {
             }
             axios({
                 method: 'post',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship-owner/ships',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship-owner/add-ship',
                 data: shipDto,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -768,6 +765,9 @@ export default {
             return placeholder;
         }
     },
+    created() {
+        this.userRole = window.localStorage.getItem('userRole')
+    }
 }
 </script>
 

@@ -74,6 +74,10 @@ export default {
                 .then(function(response) {
                     console.log(response)
                     window.localStorage.setItem("jwt", response.data)
+                    let jwtData = response.data.split('.')[1]
+                    let decodedJwtJsonData = window.atob(jwtData)
+                    let decodedJwtData = JSON.parse(decodedJwtJsonData)
+                    window.localStorage.setItem("userRole", decodedJwtData.auth)
                     // notify that awaiting accept
                 })
                 .catch(function(error) {

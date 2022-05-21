@@ -56,23 +56,17 @@ public class VacationHomeOwnerService {
 
     public Set<VacationHomeDto> getAllActiveVacationHomesByOwnerEmail(String email) throws UsernameNotFoundException{
         VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("VacationHomeOwner not found!"));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("VacationHomeOwner: %s, not found!", email)));
 
         List<VacationHome> vacationHomes = vacationHomeRepository.findAllByOwner(vacationHomeOwner);
         Set<VacationHomeDto> vacationHomeDtos = new HashSet<>();
         if (!vacationHomes.isEmpty())
             vacationHomeDtos = vacationHomes.stream().map((vacationHome) ->
             {
-                vacationHome.setPictures(decompressPictures(vacationHome.getPictures()));
+                vacationHome.setPictures(pictureService.decompressPictures(vacationHome.getPictures()));
                 return new VacationHomeDto(vacationHome);
             }).collect(Collectors.toSet());
         return vacationHomeDtos;
-    }
-
-    private Set<Picture> decompressPictures(Set<Picture> pictures) {
-        return pictures.stream().map(
-                picture -> new Picture(picture.getType(), PictureService.decompressBytes(picture.getBytes()))
-        ).collect(Collectors.toSet());
     }
 
 }
