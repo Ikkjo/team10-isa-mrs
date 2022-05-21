@@ -5,19 +5,19 @@
              <div class="info-section">
                 <h2>Personal info</h2>
                 <div class="info-items">
-                    <PersonalInfoItem iconClass="material-icons" icon="account_box" label="Account type" :text="user.userRole" buttonText="Register new account"/>
-                    <PersonalInfoItem iconClass="material-icons" icon="account_circle" label="Full name" :text="user.firstName+' '+user.lastName" buttonText="Edit"/>
-                    <PersonalInfoItem iconClass="material-icons" icon="contact_phone" label="Phone number" :text="user.phoneNumber" buttonText="Edit"/>
-                    <PersonalInfoItem iconClass="material-icons" icon="house" label="Address" :text="user.address.address+', '+user.address.city+', '+user.address.country" buttonText="Edit"/>
-                    <PersonalInfoItem iconClass="material-icons" icon="calendar_month" label="Date of birth" :text="user.dateOfBirth" buttonText="Edit"/>
+                    <InfoItem iconClass="material-icons" icon="account_box" label="Account type" :text="user.userRole" buttonText="Register new account"/>
+                    <InfoItem iconClass="material-icons" icon="account_circle" label="Full name" :text="user.firstName+' '+user.lastName" buttonText="Edit"/>
+                    <InfoItem iconClass="material-icons" icon="contact_phone" label="Phone number" :text="user.phoneNumber" buttonText="Edit"/>
+                    <InfoItem iconClass="material-icons" icon="house" label="Address" :text="user.address.address+', '+user.address.city+', '+user.address.country" buttonText="Edit"/>
+                    <InfoItem iconClass="material-icons" icon="calendar_month" label="Date of birth" :text="user.dateOfBirth" buttonText="Edit"/>
                 </div>
             </div>
             <div class="info-section">
                 <h2>Login info</h2>
                 <div class="info-items">
-                    <PersonalInfoItem iconClass="material-icons" icon="email" label="Email" :text="user.email" buttonText="Change"/>
-                    <PersonalInfoItem iconClass="material-icons" icon="password" label="Password" text="*********" buttonText="Change"/>
-                    <PersonalInfoItem iconClass="material-icons" icon="info" label="Account status" text="Active" buttonText="Deactivate" style="color: red;"/>
+                    <InfoItem iconClass="material-icons" icon="email" label="Email" :text="user.email" buttonText="Change"/>
+                    <InfoItem iconClass="material-icons" icon="password" label="Password" text="*********" buttonText="Change"/>
+                    <InfoItem iconClass="material-icons" icon="info" label="Account status" text="Active" buttonText="Deactivate" style="color: red;"/>
                 </div>
             </div>
         </div>
@@ -26,13 +26,13 @@
 
 <script>
 import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
-import PersonalInfoItem from "@/components/PersonalInfoItem.vue"
+import InfoItem from "@/components/InfoItem.vue"
 import axios from "axios"
 export default {
     name: 'AccountInfo',
     components: {
         BusinessClientNavBar,
-        PersonalInfoItem
+        InfoItem
     },
     data() {
         return {
