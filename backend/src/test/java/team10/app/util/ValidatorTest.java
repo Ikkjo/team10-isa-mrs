@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import team10.app.dto.AddressDto;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
 
@@ -34,7 +35,7 @@ class ValidatorTest {
     void shouldValidateVacationHomeDTOAsTrue() {
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                new Address("Ulica b.b.", "Grad", "Drzava"),
+                new AddressDto("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
@@ -43,7 +44,7 @@ class ValidatorTest {
                 10,
                 20
         );
-        when(addressValidator.test(Mockito.any(Address.class))).thenReturn(true);
+        when(addressValidator.test(Mockito.any(AddressDto.class))).thenReturn(true);
         assertTrue(validator.validateVacationHomeDTO(vacationHomeDTO));
     }
 
@@ -51,7 +52,7 @@ class ValidatorTest {
     void shouldValidateVacationHomeDTOAsFalse() {
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan",
-                new Address("Ulica b.b.", "Grad", "Drzava"),
+                new AddressDto("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponas",
                 "Svasta nesto nudimo",
@@ -60,7 +61,7 @@ class ValidatorTest {
                 1,
                 20
         );
-        when(addressValidator.test(Mockito.any(Address.class))).thenReturn(false);
+        when(addressValidator.test(Mockito.any(AddressDto.class))).thenReturn(false);
         assertFalse(validator.validateVacationHomeDTO(vacationHomeDTO));
     }
 }

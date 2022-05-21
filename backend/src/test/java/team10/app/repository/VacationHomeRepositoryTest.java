@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import team10.app.dto.AddressDto;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
 import team10.app.model.Picture;
@@ -39,7 +40,7 @@ class VacationHomeRepositoryTest {
 
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                new Address("Ulica b.b.", "Grad", "Drzava"),
+                new AddressDto("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
@@ -51,7 +52,7 @@ class VacationHomeRepositoryTest {
 
         VacationHome vacationHome = new VacationHome(
                 vacationHomeDTO.getTitle(),
-                vacationHomeDTO.getAddress(),
+                new Address(vacationHomeDTO.getAddress()),
                 vacationHomeDTO.getDescription(),
                 vacationHomeDTO.getRulesOfConduct(),
                 vacationHomeDTO.getAdditionalServices(),

@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import team10.app.dto.AddressDto;
 import team10.app.model.Address;
 import team10.app.model.VacationHome;
 import team10.app.repository.AddressRepository;
@@ -46,32 +47,31 @@ class AddressValidatorTest {
 
     @Test
     void shouldReturnDoesntContainAddress() {
-        assertTrue(addressValidator.test(new Address("123", "123", "123")));
+        assertTrue(addressValidator.test(new AddressDto("123", "123", "123")));
     }
 
     @Test
     void shouldReturnContainsAddress() {
         when(addressRepository.getAddressByAddressCityCountry(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(Optional.of(new Address("123", "123", "123")));
-        assertThat(addressValidator.test(new Address("123", "123", "123"))).isTrue();
+        assertThat(addressValidator.test(new AddressDto("123", "123", "123"))).isTrue();
     }
 
     @Test
     void testVacationHome_AddressNotTaken() {
-        assertThat(addressValidator.testVacationHome(new Address("123", "123", "123"))).isFalse();
+        assertThat(addressValidator.testVacationHome(new AddressDto("123", "123", "123"))).isFalse();
     }
 
     @Test
     void testVacationHome_AddressTaken1() {
-        Address address = new Address("123", "123", "123");
         VacationHome vacationHome = new VacationHome();
         when(vacationHomeRepository.findByAddress(Mockito.any(Address.class))).thenReturn(Optional.of(vacationHome));
-        assertThat(addressValidator.testVacationHome(address)).isFalse();
+        assertThat(addressValidator.testVacationHome(new AddressDto("123", "123", "123"))).isFalse();
     }
 
     @Test
     void testVacationHome_AddressTaken2() {
         VacationHome vacationHome = new VacationHome();
         when(vacationHomeRepository.findByAddress(Mockito.any(Address.class))).thenReturn(Optional.of(vacationHome));
-        assertThat(addressValidator.testVacationHome(new Address("123", "123", "123"))).isFalse();
+        assertThat(addressValidator.testVacationHome(new AddressDto("123", "123", "123"))).isFalse();
     }
 }

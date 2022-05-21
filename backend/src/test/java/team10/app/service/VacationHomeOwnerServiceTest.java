@@ -7,6 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import team10.app.dto.AddressDto;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
 import team10.app.model.Picture;
@@ -59,7 +60,7 @@ class VacationHomeOwnerServiceTest {
         // given
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                new Address("Ulica b.b.", "Grad", "Drzava"),
+                new AddressDto("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
@@ -84,10 +85,10 @@ class VacationHomeOwnerServiceTest {
     @Test
     void shouldNotAddVacationHomeAndShouldThrowRuntimeException() {
         // given
-        Address address = new Address("Ulica b.b.", "Grad", "Drzava");
+        AddressDto addressDto = new AddressDto("Ulica b.b.", "Grad", "Drzava");
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                address,
+                addressDto,
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
@@ -109,10 +110,12 @@ class VacationHomeOwnerServiceTest {
     void shouldNotAddVacationHome() {
         // given
         Address address = new Address("Ulica b.b.", "Grad", "Drzava");
+        AddressDto addressDto = new AddressDto("Ulica b.b.", "Grad", "Drzava");
+
         addressRepository.save(address);
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                address,
+                addressDto,
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
@@ -135,7 +138,7 @@ class VacationHomeOwnerServiceTest {
     void saveVacationHome() {
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                new Address("Ulica b.b.", "Grad", "Drzava"),
+                new AddressDto("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
