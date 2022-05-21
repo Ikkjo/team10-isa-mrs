@@ -53,25 +53,25 @@ class AddressValidatorTest {
     @Test
     void shouldReturnContainsAddress() {
         when(addressRepository.getAddressByAddressCityCountry(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(Optional.of(new Address("123", "123", "123")));
-        assertThat(addressValidator.test(new AddressDto("123", "123", "123"))).isTrue();
+        assertThat(addressValidator.test(new AddressDto("123", "123", "123"))).isFalse();
     }
 
     @Test
     void testVacationHome_AddressNotTaken() {
-        assertThat(addressValidator.testVacationHome(new AddressDto("123", "123", "123"))).isFalse();
+        assertThat(addressValidator.testVacationHome(new AddressDto("123", "123", "123"))).isTrue();
     }
 
     @Test
     void testVacationHome_AddressTaken1() {
         VacationHome vacationHome = new VacationHome();
-        when(vacationHomeRepository.findByAddress(Mockito.any(Address.class))).thenReturn(Optional.of(vacationHome));
+        when(vacationHomeRepository.findByAddress(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(Optional.of(vacationHome));
         assertThat(addressValidator.testVacationHome(new AddressDto("123", "123", "123"))).isFalse();
     }
 
     @Test
     void testVacationHome_AddressTaken2() {
         VacationHome vacationHome = new VacationHome();
-        when(vacationHomeRepository.findByAddress(Mockito.any(Address.class))).thenReturn(Optional.of(vacationHome));
+        when(vacationHomeRepository.findByAddress(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(Optional.of(vacationHome));
         assertThat(addressValidator.testVacationHome(new AddressDto("123", "123", "123"))).isFalse();
     }
 }

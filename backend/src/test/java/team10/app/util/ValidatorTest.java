@@ -16,6 +16,7 @@ import team10.app.model.Address;
 import java.util.Arrays;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -44,8 +45,8 @@ class ValidatorTest {
                 10,
                 20
         );
-        when(addressValidator.test(Mockito.any(AddressDto.class))).thenReturn(true);
-        assertTrue(validator.validateVacationHomeDTO(vacationHomeDTO));
+        when(addressValidator.testVacationHome(Mockito.any(AddressDto.class))).thenReturn(true);
+        assertThat(validator.validateVacationHomeDTO(vacationHomeDTO)).isTrue();
     }
 
     @Test
@@ -61,7 +62,6 @@ class ValidatorTest {
                 1,
                 20
         );
-        when(addressValidator.test(Mockito.any(AddressDto.class))).thenReturn(false);
-        assertFalse(validator.validateVacationHomeDTO(vacationHomeDTO));
+        assertThat(validator.validateVacationHomeDTO(vacationHomeDTO)).isFalse();
     }
 }

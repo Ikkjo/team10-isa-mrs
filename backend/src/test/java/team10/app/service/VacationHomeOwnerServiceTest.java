@@ -170,8 +170,10 @@ class VacationHomeOwnerServiceTest {
         vacationHome.setRooms(3);
         vacationHome.setBeds(3);
         vacationHomeOwner.setVacationHomes(new HashSet<>(Collections.singleton(vacationHome)));
+        vacationHome.setOwner(vacationHomeOwner);
 
         when(vacationHomeOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(vacationHomeOwner));
+        when(vacationHomeRepository.findAllByOwner(Mockito.any())).thenReturn(List.of(vacationHome));
 
         Set<VacationHomeDto> vacationHomeDtos = vacationHomeOwnerService.getAllActiveVacationHomesByOwnerEmail("test@gmail.com");
         assertThat(vacationHomeDtos.isEmpty()).isFalse();
