@@ -1,23 +1,15 @@
 package team10.app.repository;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import team10.app.dto.ShipDto;
-import team10.app.model.Address;
-import team10.app.model.Picture;
-import team10.app.model.Ship;
-import team10.app.model.VacationHome;
+import team10.app.model.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 @DataJpaTest
 class ShipRepositoryTest {
@@ -26,6 +18,8 @@ class ShipRepositoryTest {
     private ShipRepository shipRepository;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private ShipOwnerRepository shipOwnerRepository;
 
     @AfterEach
     void tearDown() {
@@ -36,6 +30,8 @@ class ShipRepositoryTest {
     @Test
     void itShouldFindShipByAddress() {
         Address address = new Address("Bulevar Oslobodjena", "Novi Sad", "Serbia");
+        Picture picture = new Picture("jpeg", "123".getBytes(StandardCharsets.UTF_8));
+        Set<Picture> pictureSet = new HashSet<>(List.of(picture));
         Ship ship = new Ship(
                 "Fishinig ship",
                 address,
@@ -43,7 +39,7 @@ class ShipRepositoryTest {
                 "Rules",
                 "Services",
                 12,
-                new HashSet<>(Arrays.asList(new Picture(), new Picture())),
+                pictureSet,
                 "Type",
                 12.1,
                 2,
@@ -54,7 +50,13 @@ class ShipRepositoryTest {
                 10,
                 false
         );
-        addressRepository.save(ship.getAddress());
+        ShipOwner shipOwner = new ShipOwner("Name", "Surname",
+                "email@gmail.com", "123123123123", "+38166785415",
+                new Address("123", "123", "123"), "12.05.2001.");
+        ship.setOwner(shipOwner);
+        shipOwner.setShips(Set.of(ship));
+        shipOwnerRepository.save(shipOwner);
+        addressRepository.save(address);
         shipRepository.save(ship);
         assertThat(shipRepository.findByAddress(ship.getAddress())).isEqualTo(Optional.of(ship));
 

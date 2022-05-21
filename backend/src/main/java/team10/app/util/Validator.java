@@ -60,8 +60,7 @@ public class Validator {
     private final AddressValidator addressValidator;
 
     private boolean validateRentalEntity(RentalEntityDto rentalEntityDto) {
-        return addressValidator.test(rentalEntityDto.getAddress())
-                && inRange(TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, rentalEntityDto.getTitle().length())
+        return inRange(TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, rentalEntityDto.getTitle().length())
                 && inRange(DESCRIPTION_MIN_LENGTH, DESCRIPTION_MAX_LENGTH, rentalEntityDto.getDescription().length())
                 && inRange(RULES_OF_CONDUCT_MIN_LENGTH, RULES_OF_CONDUCT_MAX_LENGTH, rentalEntityDto.getRulesOfConduct().length())
                 && inRange(ADDITIONAL_SERVICES_MIN_LENGTH, ADDITIONAL_SERVICES_MAX_LENGTH, rentalEntityDto.getAdditionalServices().length())
@@ -72,8 +71,9 @@ public class Validator {
 
     public boolean validateVacationHomeDTO(VacationHomeDto vacationHomeDto) {
         return validateRentalEntity(vacationHomeDto)
-            && inRange(VACATION_HOME_MIN_ROOMS, VACATION_HOME_MAX_ROOMS, vacationHomeDto.getRooms())
-            && inRange(VACATION_HOME_MIN_BEDS, VACATION_HOME_MAX_BEDS, vacationHomeDto.getBeds());
+                && inRange(VACATION_HOME_MIN_ROOMS, VACATION_HOME_MAX_ROOMS, vacationHomeDto.getRooms())
+                && inRange(VACATION_HOME_MIN_BEDS, VACATION_HOME_MAX_BEDS, vacationHomeDto.getBeds())
+                && addressValidator.testVacationHome(vacationHomeDto.getAddress());
     }
 
     public boolean validateShipDto(ShipDto shipDto) {
@@ -85,7 +85,8 @@ public class Validator {
                 && inRange(SHIP_MIN_SPEED, SHIP_MAX_SPEED, shipDto.getEngineCount())
                 && inRange(SHIP_MIN_NAVIGATION_EQUIPMENT_LENGTH, SHIP_MAX_NAVIGATION_EQUIPMENT_LENGTH, shipDto.getNavigationEquipment().length())
                 && inRange(SHIP_MIN_FISHING_EQUIPMENT_LENGTH, SHIP_MAX_FISHING_EQUIPMENT_LENGTH, shipDto.getFishingEquipment().length())
-                && inRange(SHIP_MIN_CAPACITY, SHIP_MAX_CAPACITY, shipDto.getCapacity());
+                && inRange(SHIP_MIN_CAPACITY, SHIP_MAX_CAPACITY, shipDto.getCapacity())
+                && addressValidator.testShip(shipDto.getAddress());
 
     }
 
@@ -93,7 +94,8 @@ public class Validator {
         return validateRentalEntity(adventureDto)
                 && inRange(ADVENTURE_BIOGRAPHY_MIN_LENGTH, ADVENTURE_BIOGRAPHY_MAX_LENGTH, adventureDto.getBiography().length())
                 && inRange(ADVENTURE_MIN_CAPACITY, ADVENTURE_MAX_CAPACITY, adventureDto.getCapacity())
-                && inRange(ADVENTURE_FISHING_EQUIPMENT_MIN_LENGTH, ADVENTURE_FISHING_EQUIPMENT_MAX_LENGTH, adventureDto.getFishingEquipment().length());
+                && inRange(ADVENTURE_FISHING_EQUIPMENT_MIN_LENGTH, ADVENTURE_FISHING_EQUIPMENT_MAX_LENGTH, adventureDto.getFishingEquipment().length())
+                && addressValidator.testVacationHome(adventureDto.getAddress());
     }
 
     private boolean inRange(int min, int max, int num) {

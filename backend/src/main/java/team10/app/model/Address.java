@@ -1,13 +1,14 @@
 package team10.app.model;
 
 import lombok.*;
+import team10.app.dto.AddressDto;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name="addresses")
@@ -27,5 +28,24 @@ public class Address {
         this.address = address;
         this.city = city;
         this.country = country;
+    }
+
+    public Address(AddressDto addressDto) {
+        this.address = addressDto.getAddress();
+        this.city = addressDto.getCity();
+        this.country = addressDto.getCountry();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address1 = (Address) o;
+        return address.equals(address1.address) && city.equals(address1.city) && country.equals(address1.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(address, city, country);
     }
 }

@@ -3,13 +3,18 @@ package team10.app.service;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import team10.app.dto.BusinessClientDto;
 import team10.app.dto.VacationHomeDto;
+import team10.app.model.Address;
 import team10.app.model.Picture;
 import team10.app.model.VacationHome;
 import team10.app.model.VacationHomeOwner;
 import team10.app.repository.*;
 import team10.app.util.Validator;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,7 +43,7 @@ public class VacationHomeOwnerService {
     public VacationHome buildVacationHome(VacationHomeDto vacationHomeDto) {
         return new VacationHome(
                 vacationHomeDto.getTitle(),
-                vacationHomeDto.getAddress(),
+                new Address(vacationHomeDto.getAddress()),
                 vacationHomeDto.getDescription(),
                 vacationHomeDto.getRulesOfConduct(),
                 vacationHomeDto.getAdditionalServices(),
@@ -53,18 +58,28 @@ public class VacationHomeOwnerService {
         VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("VacationHomeOwner not found!"));
 
-        return vacationHomeOwner.getVacationHomes().stream().filter(vacationHome -> !vacationHome.isDeleted())
-                .map((vacationHome) ->
-                {
-                    vacationHome.setPictures(decompressPictures(vacationHome.getPictures()));
-                    return new VacationHomeDto(vacationHome);
-                }).collect(Collectors.toSet());
+        List<VacationHome> vacationHomes = vacationHomeRepository.findAllByOwner(vacationHomeOwner);
+        Set<VacationHomeDto> vacationHomeDtos = new HashSet<>();
+        if (!vacationHomes.isEmpty())
+            vacationHomeDtos = vacationHomes.stream().map((vacationHome) ->
+            {
+                vacationHome.setPictures(decompressPictures(vacationHome.getPictures()));
+                return new VacationHomeDto(vacationHome);
+            }).collect(Collectors.toSet());
+        return vacationHomeDtos;
+    }
 
+    public BusinessClientDto getUserDetails(String email) throws UsernameNotFoundException {
+        VacationHomeOwner vacationHomeOwner = vacationHomeOwnerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("VacationHomeOwner not found!"));
+        BusinessClientDto dto = new BusinessClientDto(vacationHomeOwner);
+        return new BusinessClientDto(vacationHomeOwner);
     }
 
     private Set<Picture> decompressPictures(Set<Picture> pictures) {
         return pictures.stream().map(
-                picture -> new Picture(picture.getType(), PictureService.decompressBytes(picture.getPicByte()))
+                picture -> new Picture(picture.getType(), PictureService.decompressBytes(picture.getBytes()))
         ).collect(Collectors.toSet());
     }
+
 }

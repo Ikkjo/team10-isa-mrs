@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public abstract class RentalEntityDto {
     protected String title;
-    protected Address address;
+    protected AddressDto address;
     protected String description;
     protected String rulesOfConduct;
     protected String additionalServices;

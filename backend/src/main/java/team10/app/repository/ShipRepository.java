@@ -15,4 +15,7 @@ public interface ShipRepository extends JpaRepository<Ship, UUID> {
 
     @Query("select s from Ship s where s.address = ?1")
     Optional<Ship> findByAddress(Address address);
+
+    @Query("select s from Ship s where s.address.address = ?1 and s.address.city = ?2 and s.address.country = ?3")
+    Optional<Ship> findByAddress(String address, String city, String country);
 }

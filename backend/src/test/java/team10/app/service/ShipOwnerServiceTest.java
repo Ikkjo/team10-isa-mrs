@@ -8,6 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import team10.app.dto.AddressDto;
 import team10.app.dto.ShipDto;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.*;
@@ -66,7 +67,7 @@ class ShipOwnerServiceTest {
         // given
         ShipDto shipDto = new ShipDto(
                 "Fishinig ship",
-                new Address("Street", "City", "Country"),
+                new AddressDto("Street", "City", "Country"),
                 "Some description",
                 "Rules",
                 "Services",
@@ -117,7 +118,7 @@ class ShipOwnerServiceTest {
         // given
         ShipDto shipDto = new ShipDto(
                 "Fish",
-                new Address("Street", "City", "Country"),
+                new AddressDto("Street", "City", "Country"),
                 "Some description",
                 "Rules",
                 "Services",
@@ -144,10 +145,11 @@ class ShipOwnerServiceTest {
     void shouldNotAddVacationHome() {
         // given
         Address address = new Address("Street", "City", "Country");
+        AddressDto addressDto = new AddressDto("Street", "City", "Country");
         addressRepository.save(address);
         ShipDto shipDto = new ShipDto(
                 "Fish",
-                address,
+                addressDto,
                 "Some description",
                 "Rules",
                 "Services",

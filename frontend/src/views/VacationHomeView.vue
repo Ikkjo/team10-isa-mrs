@@ -5,7 +5,7 @@
       <div class="cover">
         <img src="https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg" alt="" srcset="">
         <div class="title">
-          <h1>{{user.name}} {{user.lastname}}</h1>
+          <h1>{{user.firstName}} {{user.lastName}}</h1>
           <div class="rating">
             Avarage rating: {{rating}}
             <span class="material-icons">star</span>
@@ -33,60 +33,33 @@ export default {
     data() {
       return {
         rating: 4.5,
-        user: {
-          name: 'Imenko',
-          lastname: 'Prezimic',
-          uuid: '123'
-        },
-        vacationHomes: [
-          {
-            image: "https://a0.muscache.com/im/pictures/miso/Hosting-604726298950758799/original/78d55499-cb48-4e83-a75f-faa42dd7d1ff.jpeg?im_w=720",
-            title: 'Fina kucica',
-            address: 'Bulevar Oslobodjenja, Novi Sad, Srbija',
-            rooms: 3,
-            beds: 3,
-            price: 100,
-          },
-           {
-            image: "https://a0.muscache.com/im/pictures/miso/Hosting-604726298950758799/original/78d55499-cb48-4e83-a75f-faa42dd7d1ff.jpeg?im_w=720",
-            title: 'Fina kucica',
-            address: 'Bulevar Oslobodjenja, Novi Sad, Srbija',
-            rooms: 3,
-            beds: 3,
-            price: 100,
-          },
-           {
-            image: "https://a0.muscache.com/im/pictures/miso/Hosting-604726298950758799/original/78d55499-cb48-4e83-a75f-faa42dd7d1ff.jpeg?im_w=720",
-            title: 'Fina kucica',
-            address: 'Bulevar Oslobodjenja, Novi Sad, Srbija',
-            rooms: 3,
-            beds: 3,
-            price: 100,
-          },
-           {
-            image: "https://a0.muscache.com/im/pictures/miso/Hosting-604726298950758799/original/78d55499-cb48-4e83-a75f-faa42dd7d1ff.jpeg?im_w=720",
-            title: 'Fina kucica',
-            address: 'Bulevar Oslobodjenja, Novi Sad, Srbija',
-            rooms: 3,
-            beds: 3,
-            price: 100,
-          },
-        ]
+        user: {},
+        vacationHomes: [],
+        
       }
     },
     mounted() {
       axios
-          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-homes",
+          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-home-owner/vacation-homes",
           { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
           })
-          .then(function(response) {
-            console.log(response.data);
+          .then((response) => {
+            console.log(response.data)
             this.vacationHomes = response.data
           })
           .catch(function(error) {
-              console.log(error);
-              // is email taken
-              // is phone taken
+              console.log(error)
+          })
+       axios
+          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-home-owner/",
+          { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
+          })
+          .then((response) => {
+            console.log(response.data)
+            this.user = response.data
+          })
+          .catch(function(error) {
+              console.log(error)
           })
     }
   }
@@ -132,10 +105,6 @@ export default {
     margin-top: 15px;
 }
 
-.vacation-home-card {
-}
-
-
 @media screen and (max-width: 669px) {
   .vacation-homes {
     display: flex;
@@ -146,6 +115,10 @@ export default {
   
   .vacation-home-card {
     margin-bottom: 5px;
+    width: 100%;
+  }
+
+  .vacation-home-card .cover-photo {
   }
 }
 

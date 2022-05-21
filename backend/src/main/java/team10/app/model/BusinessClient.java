@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 public abstract class BusinessClient extends User {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
     @Column(nullable = false)

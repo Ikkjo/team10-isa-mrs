@@ -19,8 +19,8 @@ public class VacationHomeDto extends RentalEntityDto {
     private int rooms;
     private int beds;
 
-    public VacationHomeDto(String title, Address address, String description, String rulesOfConduct, String additionalServices, int price, List<String> pictures, int rooms, int beds) {
-        super(title, address, description, rulesOfConduct, additionalServices, price, pictures);
+    public VacationHomeDto(String title, AddressDto addressDto, String description, String rulesOfConduct, String additionalServices, int price, List<String> pictures, int rooms, int beds) {
+        super(title, addressDto, description, rulesOfConduct, additionalServices, price, pictures);
         this.rooms = rooms;
         this.beds = beds;
     }
@@ -29,7 +29,7 @@ public class VacationHomeDto extends RentalEntityDto {
     public VacationHomeDto(VacationHome vacationHome) {
         super(
                 vacationHome.getTitle(),
-                vacationHome.getAddress(),
+                new AddressDto(vacationHome.getAddress()),
                 vacationHome.getDescription(),
                 vacationHome.getRulesOfConduct(),
                 vacationHome.getAdditionalServices(),

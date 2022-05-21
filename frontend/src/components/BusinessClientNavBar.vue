@@ -1,8 +1,8 @@
 <template>
   <NavBar>
       <template slot="nav-right">
-        <nav-item link="nav" text="List your property"/>
-        <nav-item link="" text="Menu" iconClass="material-icons" icon="arrow_drop_down" @click="toggleMenu">
+        <nav-item link="nav" text="List your property" icon=""/>
+        <nav-item link="" text="Menu" icon="arrow_drop_down" @click="toggleMenu">
             <template slot="menu">
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">

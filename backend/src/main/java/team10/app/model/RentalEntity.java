@@ -20,7 +20,7 @@ public abstract class RentalEntity {
     private UUID id;
     @Column(nullable = false)
     protected String title;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     protected Address address;
     @Column(nullable = false)
@@ -36,7 +36,7 @@ public abstract class RentalEntity {
     protected Set<Picture> pictures;
     protected boolean deleted = false;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", nullable = false)
     protected BusinessClient owner;
 
 }
