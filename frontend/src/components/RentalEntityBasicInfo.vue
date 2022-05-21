@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style scoped>
-#rental-entity-details {
+/* #rental-entity-details {
     max-width: 100%;
 }
 
@@ -50,5 +50,5 @@ h2 {
     width: 600px;
     min-width: 300px;
     max-width: 100%;
-}
+} */
 </style>
