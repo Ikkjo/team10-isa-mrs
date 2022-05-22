@@ -19,10 +19,11 @@
                                     :placeholder="getPlaceholder('firstName', user.firstName)">
                                 <div class="alert-info" 
                                     v-if="!isFocused('firstName') 
-                                    && !($v.user.firstName.minLength 
-                                    && $v.user.firstName.maxLength)"
+                                    && !$v.user.firstName.minLength 
+                                    || !$v.user.firstName.maxLength
+                                    || !$v.user.firstName.alpha"
                                     >
-                                    First name must be 2 to 20 characters long.
+                                    Between 2-20 characters, no numbers.
                                 </div>
                             </div>
                             <div class="form-control">
@@ -37,9 +38,10 @@
                                 <div class="alert-info" 
                                     v-if="!isFocused('lastName') && 
                                     !($v.user.lastName.minLength 
-                                    && $v.user.lastName.maxLength)"
+                                    && $v.user.lastName.maxLength
+                                    && $v.user.lastName.alpha)"
                                     >
-                                    Last name must be 2 to 20 characters long.
+                                    Between 2-20 characters, no numbers.
                                 </div>
                             </div>
                         </template>
@@ -65,7 +67,7 @@
 import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import InfoItem from "@/components/InfoItem.vue"
 import axios from "axios"
-import { required, minLength, maxLength, sameAs, email } from 'vuelidate/lib/validators'
+import { required, minLength, maxLength, sameAs, email, alpha } from 'vuelidate/lib/validators'
 export default {
     name: 'AccountInfo',
     components: {
@@ -98,12 +100,14 @@ export default {
             firstName: {
                 required,
                 minLength: minLength(2),
-                maxLength: maxLength(20)
+                maxLength: maxLength(20),
+                alpha
             },
             lastName: {
                 required,
                 minLength: minLength(2),
-                maxLength: maxLength(20)
+                maxLength: maxLength(20),
+                alpha
             },
             email: {
                 required,
