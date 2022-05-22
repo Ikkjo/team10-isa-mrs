@@ -28,6 +28,7 @@ public class VacationHomeDto extends RentalEntityDto {
 
     public VacationHomeDto(VacationHome vacationHome) {
         super(
+                vacationHome.getId(),
                 vacationHome.getTitle(),
                 new AddressDto(vacationHome.getAddress()),
                 vacationHome.getDescription(),

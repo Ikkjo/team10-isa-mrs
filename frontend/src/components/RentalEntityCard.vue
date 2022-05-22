@@ -1,5 +1,5 @@
 <template>
-    <div id="rental-entity-card">
+    <div id="rental-entity-card" @click="detailedView()" >
         <img class="cover-photo" :src="rentalEntity.pictures[0]" alt="" srcset="">
         <div class="container">
             <div class="main-text">{{rentalEntity.title}}</div>
@@ -15,7 +15,18 @@
 <script>
 export default {
     name: 'RentalEntityCard',
-    props: ['rentalEntity']
+    props: ['rentalEntity'],
+    methods: {
+        detailedView() {
+            this.$router.push({
+                name: 'my-listing',
+                params: {
+                    rentalEntity: this.rentalEntity,
+                    id: this.rentalEntity.id,
+                }
+            })
+        }
+    }
 }
 </script>
 

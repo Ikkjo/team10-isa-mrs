@@ -43,6 +43,7 @@ public class ShipDto extends RentalEntityDto {
 
     public ShipDto(Ship ship) {
         super(
+                ship.getId(),
                 ship.getTitle(),
                 new AddressDto(ship.getAddress()),
                 ship.getDescription(),

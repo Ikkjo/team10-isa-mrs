@@ -1,5 +1,5 @@
 <template>
-  <div id="personal-info-item">
+  <div id="info-item">
     <div class="wrapper">
         <div class="label-div">
             <span :class="'icon' + ' ' + iconClass ">{{icon}}</span>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-    name: 'PersonalAccountInfo',
+    name: 'InfoItem',
     props: {
         iconClass: {
             type: String,
@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style>
-#personal-info-item {
+#info-item {
     min-width: 300px;
     width: 100%;
 }

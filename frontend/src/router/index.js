@@ -44,6 +44,15 @@ const routes = [
       name: 'my-listings',
       component: () => import('../views/MyListingsView.vue')
     },
+    {
+      path: '/account/my-listings/:id',
+      name: 'my-listing',
+      component: () => import('../views/RentalEntityInfo.vue'),
+      props: (route) => ({
+        rentalEntity: route.params.rentalEntity,
+      })
+      
+    }
 ]
 
 const router = new VueRouter({
