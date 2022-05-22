@@ -48,8 +48,6 @@ public class RentalEntityService {
                 .orElseThrow(() -> new UsernameNotFoundException(email));
 
         List<RentalEntity> rentalEntities = rentalEntityRepository.findAllByOwner(businessClient);
-
-        List<RentalEntity> vacationHomes = rentalEntityRepository.findAllByOwner(businessClient);
         Set<RentalEntityDto> rentalEntityDtoSet = new HashSet<>();
         if (!rentalEntities.isEmpty())
             rentalEntityDtoSet = rentalEntities.stream().map((rentalEntity) ->
