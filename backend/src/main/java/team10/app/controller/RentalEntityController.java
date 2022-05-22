@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.RentalEntityDto;
-import team10.app.dto.VacationHomeDto;
 import team10.app.service.RentalEntityService;
 
 import java.security.Principal;
