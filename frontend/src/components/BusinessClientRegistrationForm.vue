@@ -420,19 +420,6 @@ textarea {
     margin-top: 0px;
 }
 
-.alert {
-    transition: 0.5s;
-    border-color: red !important;
-    border-width: 2px;
-}
-
-.alert-info {
-    position: absolute;
-    transition: 0.05s;
-    color: red !important;
-    font-size: 0.9rem;
-}
-
 .already-registered {
     font-size: 0.9rem !important;
     margin-top: 5px;
