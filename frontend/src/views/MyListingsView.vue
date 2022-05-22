@@ -15,7 +15,6 @@
       <div class="listings">
         <RentalEntityCard class="listing" v-for="(rentalEntity, index) in listings" :key="index" :rentalEntity="rentalEntity"/>
       </div>
-      <PictureCollage :pictures="listings[0].pictures"/>
     </div>
  
   </div>
@@ -24,14 +23,12 @@
 <script>
 import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import RentalEntityCard from "@/components/RentalEntityCard.vue"
-import PictureCollage from '@/components/PictureCollage.vue'
 import axios from 'axios';
 export default {
     name: 'MyListingsView',
     components: {
         BusinessClientNavBar,
         RentalEntityCard,
-        PictureCollage
     },
     data() {
       return {
@@ -41,47 +38,6 @@ export default {
         coverPhoto: '',
         
       }
-    },
-    methods: {
-      getVacationHomes() {
-         axios
-          .get(process.env.VUE_APP_BASE_URL+"/api/v1/vacation-home-owner/vacation-homes",
-          { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
-          })
-          .then((response) => {
-            console.log(response.data)
-            this.listings = response.data
-          })
-          .catch(function(error) {
-              console.log(error)
-          })
-      },
-      getShips() {
-         axios
-          .get(process.env.VUE_APP_BASE_URL+"/api/v1/ship-owner/ships",
-          { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
-          })
-          .then((response) => {
-            console.log(response.data)
-            this.listings = response.data
-          })
-          .catch(function(error) {
-              console.log(error)
-          })
-      },
-      getAdventures() {
-        axios
-        .get(process.env.VUE_APP_BASE_URL+"/api/v1/fishing-instructor/adventures",
-        { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
-        })
-        .then((response) => {
-          console.log(response.data)
-          this.listings = response.data
-        })
-        .catch(function(error) {
-            console.log(error)
-        })
-      },
     },
     created() {
        axios
@@ -108,18 +64,12 @@ export default {
           })
 
       let userRole = window.localStorage.getItem('userRole')
-      if (userRole === 'HOUSE_OWNER') {
-        // this.getVacationHomes()
+      if (userRole === 'HOUSE_OWNER')
         this.coverPhoto = "https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"
-      }
-      else if (userRole === 'SHIP_OWNER') {
-        // this.getShips()
+      else if (userRole === 'SHIP_OWNER')
         this.coverPhoto = "https://r4.wallpaperflare.com/wallpaper/863/684/864/sea-beach-islands-landscape-wallpaper-44b51eb89a58fdb8ff279415d8952c59.jpg"
-      }
-      else if (userRole === 'FISHING_INSTRUCTOR') {
-        // this.getAdventures()
+      else if (userRole === 'FISHING_INSTRUCTOR')
         this.coverPhoto = "https://s2.best-wallpaper.net/wallpaper/3840x2160/1901/Man-fishing-lake-sunrise-morning_3840x2160.jpg"
-      }
     }
   }
 </script>
