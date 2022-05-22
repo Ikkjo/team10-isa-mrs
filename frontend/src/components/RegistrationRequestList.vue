@@ -144,7 +144,7 @@ export default {
                     password: "HiHiHiHa",
                     role: "FISHING_INSTRUCTOR",
                     phone: "+38654325435",
-                    dateOfBirth: "11.11.2000.",
+                    dateOfBirth: "22.22.2000.",
                     address: {
                         address: "Somborski put 33",
                         city: "Subotica",
@@ -267,8 +267,9 @@ thead tr {
 }
 
 .vuetable-td-dateOfBirth {
-    max-width: 105px;
-    width: 105px;
+    max-width: 110px;
+    width: 110px;
+    text-align: center;
 }
 
 .vuetable-td-role {
