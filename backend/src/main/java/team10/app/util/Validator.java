@@ -104,4 +104,12 @@ public class Validator {
     private boolean inRange(double min, double max, double num) {
         return num >= min && num <= max;
     }
+
+    public boolean validateFirstName(String firstName) {
+        return inRange(2, 20, firstName.length());
+    }
+
+    public boolean validateLastName(String lastName) {
+        return inRange(2, 20, lastName.length());
+    }
 }
