@@ -95,17 +95,29 @@ export default {
           .catch(function(error) {
               console.log(error)
           })
+        axios
+          .get(process.env.VUE_APP_BASE_URL+"/api/v1/rental-entity",
+          { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
+          })
+          .then((response) => {
+            console.log(response.data)
+            this.listings = response.data
+          })
+          .catch(function(error) {
+              console.log(error)
+          })
+
       let userRole = window.localStorage.getItem('userRole')
       if (userRole === 'HOUSE_OWNER') {
-        this.getVacationHomes()
+        // this.getVacationHomes()
         this.coverPhoto = "https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"
       }
       else if (userRole === 'SHIP_OWNER') {
-        this.getShips()
+        // this.getShips()
         this.coverPhoto = "https://r4.wallpaperflare.com/wallpaper/863/684/864/sea-beach-islands-landscape-wallpaper-44b51eb89a58fdb8ff279415d8952c59.jpg"
       }
       else if (userRole === 'FISHING_INSTRUCTOR') {
-        this.getAdventures()
+        // this.getAdventures()
         this.coverPhoto = "https://s2.best-wallpaper.net/wallpaper/3840x2160/1901/Man-fishing-lake-sunrise-morning_3840x2160.jpg"
       }
     }

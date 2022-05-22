@@ -34,16 +34,4 @@ public class VacationHomeOwnerController {
         return new ResponseEntity<>(request, HttpStatus.CREATED);
     }
 
-    @GetMapping("/vacation-homes")
-    @PreAuthorize("hasRole('HOUSE_OWNER')")
-    public ResponseEntity<Set<VacationHomeDto>> getAllVacationHomes(Principal principal) {
-        try {
-            return new ResponseEntity<>(vacationHomeOwnerService.getAllActiveVacationHomesByOwnerEmail(principal.getName()), HttpStatus.OK);
-        }
-        catch (UsernameNotFoundException ex)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
 }
