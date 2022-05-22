@@ -2,11 +2,11 @@
   <div class="info-section">
       <h2>Ship info</h2>
       <div class="info-items">
-        <InfoItem icon="directions_boat" label="Type" :text="rentalEntity.type"/>
-        <InfoItem icon="design_services" label="Lenght" :text="rentalEntity.length.toString()"/>
+        <InfoItem icon="directions_boat" label="Type" :text="rentalEntity.type"/> 
+        <InfoItem icon="design_services" label="Lenght" :text="rentalEntity.length.toString()+' m'"/>
         <InfoItem icon="numbers" label="Engine count" :text="rentalEntity.engineCount.toString()"/>
-        <InfoItem icon="numbers" label="Engine power" :text="rentalEntity.enginePower.toString()"/>
-        <InfoItem icon="speed" label="Max speed" :text="rentalEntity.maxSpeed.toString()"/>
+        <InfoItem icon="numbers" label="Engine power" :text="rentalEntity.enginePower.toString()+' kW'"/>
+        <InfoItem icon="speed" label="Max speed" :text="rentalEntity.maxSpeed.toString()+' km/h'"/>
         <InfoItem icon="gps_fixed" label="Navigation equipment" :text="rentalEntity.navigationEquipment"/>
         <InfoItem icon="phishing" label="Fishing equipment" :text="rentalEntity.fishingEquipment"/>
         <InfoItem icon="people" label="Capacity" :text="rentalEntity.capacity.toString()"/>

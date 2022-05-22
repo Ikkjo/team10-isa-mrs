@@ -15,9 +15,9 @@ import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import RentalEntityBasicInfo from '@/components/RentalEntityBasicInfo.vue'
 import VacationHomeAdditionalInfo from '@/components/VacationHomeAdditionalInfo.vue'
 import ShipAdditionalInfo from '@/components/ShipAdditionalInfo.vue'
+import axios from 'axios'
 export default {
     name: 'RentalEntityInfo',
-    props: ['rentalEntity'],
     components: {
         BusinessClientNavBar,
         RentalEntityBasicInfo,
@@ -27,10 +27,28 @@ export default {
     data() {
         return {
             userRole: '',
+            rentalEntity: {},
         }
     },
     created() {
         this.userRole = window.localStorage.getItem('userRole')
+        let rentalEntity = window.sessionStorage.getItem('rentalEntity')
+        if (rentalEntity === null || rentalEntity.id !== this.$route.params.id) {
+            axios
+                .get(process.env.VUE_APP_BASE_URL+"/api/v1/rental-entity/"+this.$route.params.id,
+                { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
+                })
+                .then((response) => {
+                    console.log(response.data)
+                    this.rentalEntity = response.data
+                    window.sessionStorage.setItem('rentalEntity', this.rentalEntity)
+                })
+                .catch(function(error) {
+                    console.log(error)
+                })
+        }
+        else
+            this.rentalEntity = window.sessionStorage.getItem('rentalEntity')
     }
 
 }

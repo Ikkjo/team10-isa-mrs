@@ -48,10 +48,6 @@ const routes = [
       path: '/account/my-listings/:id',
       name: 'my-listing',
       component: () => import('../views/RentalEntityInfo.vue'),
-      props: (route) => ({
-        rentalEntity: route.params.rentalEntity,
-      })
-      
     }
 ]
 

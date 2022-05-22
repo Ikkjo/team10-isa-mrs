@@ -7,10 +7,7 @@ import team10.app.dto.AddressDto;
 import team10.app.dto.ShipDto;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.*;
-import team10.app.repository.AddressRepository;
-import team10.app.repository.PictureRepository;
-import team10.app.repository.ShipOwnerRepository;
-import team10.app.repository.ShipRepository;
+import team10.app.repository.*;
 import team10.app.util.Validator;
 
 import java.util.HashSet;
@@ -27,6 +24,7 @@ public class ShipOwnerService {
     private final AddressRepository addressRepository;
     private PictureService pictureService;
     private PictureRepository pictureRepository;
+    private BusinessClientRepository businessClientRepository;
     private Validator validator;
 
 
