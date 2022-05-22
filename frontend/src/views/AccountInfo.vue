@@ -6,7 +6,7 @@
                 <h2>Personal info</h2>
                 <div class="info-items">
                     <InfoItem icon="account_box" label="Account type" :text="user.userRole" buttonText="Register new account" @editClicked="registerNewAccountClicked" :useSlot="false"/>
-                    <InfoItem icon="account_circle" label="Full name" :text="user.firstName+' '+user.lastName" buttonText="Edit" @save="saveFullName">
+                    <InfoItem icon="account_circle" label="Full name" :text="user.firstName+' '+user.lastName" buttonText="Edit" @save="saveFullName" :saveDisabled="$v.user.firstName.$invalid || $v.user.lastName.$invalid ">
                         <template slot="edit">
                             <div class="form-control">
                                 <label for="first-name">First Name</label>

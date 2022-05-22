@@ -10,7 +10,7 @@
     <div v-show="!showSlot" class="text">{{text}}</div>
     <div v-if="useSlot" v-show="showSlot" class="edit-slot">
         <slot name="edit"/>
-        <button @click="save" class="btn">Save</button>
+        <button :disabled="saveDisabled" @click="save" class="btn" :class="{'btn-disabled': saveDisabled}">Save</button>
     </div>
   </div>
 </template>
@@ -48,6 +48,9 @@ export default {
         useSlot: {
             type: Boolean,
             default: true,
+        },
+        saveDisabled: {
+            type: Boolean,
         }
     },
     methods: {
