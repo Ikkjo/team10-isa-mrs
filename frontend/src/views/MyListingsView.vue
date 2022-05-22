@@ -1,7 +1,7 @@
 <template>
   <div>
     <BusinessClientNavBar id="nav"/>
-    <div class="container">
+    <div class="listings-container">
       <div class="cover">
         <img :src="coverPhoto" alt="" srcset="">
         <div class="title">
@@ -15,6 +15,7 @@
       <div class="listings">
         <RentalEntityCard class="listing" v-for="(rentalEntity, index) in listings" :key="index" :rentalEntity="rentalEntity"/>
       </div>
+      <PictureCollage :pictures="listings[0].pictures"/>
     </div>
  
   </div>
@@ -23,12 +24,14 @@
 <script>
 import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import RentalEntityCard from "@/components/RentalEntityCard.vue"
+import PictureCollage from '@/components/PictureCollage.vue'
 import axios from 'axios';
 export default {
     name: 'MyListingsView',
     components: {
         BusinessClientNavBar,
         RentalEntityCard,
+        PictureCollage
     },
     data() {
       return {
@@ -110,7 +113,7 @@ export default {
 </script>
 
 <style>
-.container {
+.listings-container {
   max-width: 100%;
 }
 

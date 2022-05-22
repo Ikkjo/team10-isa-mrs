@@ -24,6 +24,7 @@ public class RentalEntityService {
     public RentalEntityDto findById(UUID id) {
         RentalEntity rentalEntity = rentalEntityRepository.findById(id)
                 .orElseThrow(() -> new RentalEntityNotFoundException(id));
+        rentalEntity.setPictures(PictureService.decompressPictures(rentalEntity.getPictures()));
         return buildRentalEntityDto(rentalEntity);
     }
 

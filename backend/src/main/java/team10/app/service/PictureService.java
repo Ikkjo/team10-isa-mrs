@@ -23,7 +23,7 @@ public class PictureService {
 
     private final PictureRepository pictureRepository;
 
-    public Set<Picture> buildPictureSet(List<String> pictures) {
+    public static Set<Picture> buildPictureSet(List<String> pictures) {
         Set<Picture> pictureSet = new HashSet<>();
         for (String file : pictures) {
             String[] tokens = file.split(",");
@@ -73,7 +73,7 @@ public class PictureService {
         return outputStream.toByteArray();
     }
 
-    public Set<Picture> decompressPictures(Set<Picture> pictures) {
+    public static Set<Picture> decompressPictures(Set<Picture> pictures) {
         return pictures.stream().map(
                 picture -> new Picture(picture.getType(), decompressBytes(picture.getBytes()))
         ).collect(Collectors.toSet());
