@@ -4,6 +4,7 @@
         <div class="info">
             <RentalEntityBasicInfo :rentalEntity="rentalEntity" />
             <VacationHomeAdditionalInfo v-if="userRole === 'HOUSE_OWNER'" :rentalEntity="rentalEntity"/>
+            <ShipAdditionalInfo v-if="userRole === 'SHIP_OWNER'" :rentalEntity="rentalEntity"/>
         </div>
 
     </div>
@@ -13,6 +14,7 @@
 import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import RentalEntityBasicInfo from '@/components/RentalEntityBasicInfo.vue'
 import VacationHomeAdditionalInfo from '@/components/VacationHomeAdditionalInfo.vue'
+import ShipAdditionalInfo from '@/components/ShipAdditionalInfo.vue'
 export default {
     name: 'RentalEntityInfo',
     props: ['rentalEntity'],
@@ -20,6 +22,7 @@ export default {
         BusinessClientNavBar,
         RentalEntityBasicInfo,
         VacationHomeAdditionalInfo,
+        ShipAdditionalInfo
     },
     data() {
         return {
