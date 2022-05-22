@@ -5,15 +5,25 @@
             <span :class="'icon' + ' ' + iconClass ">{{icon}}</span>
             <div class="label">{{label}}</div>
         </div>
-        <div class="edit noselect">{{buttonText}}</div>
+        <div @click="editClicked" class="edit noselect">{{buttonText}}</div>
     </div>
-    <div class="text">{{text}}</div>
+    <div v-show="!showSlot" class="text">{{text}}</div>
+    <div v-if="useSlot" v-show="showSlot" class="edit-slot">
+        <slot name="edit"/>
+        <button @click="save" class="btn">Save</button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
     name: 'InfoItem',
+    data() {
+        return {
+            showSlot: false,
+            
+        }
+    },
     props: {
         iconClass: {
             type: String,
@@ -34,8 +44,24 @@ export default {
         buttonText: {
             type: String,
             default: "Edit"
+        },
+        useSlot: {
+            type: Boolean,
+            default: true,
         }
     },
+    methods: {
+        editClicked() {
+            if (this.useSlot)
+                this.showSlot = !this.showSlot
+                this.$emit('editClicked')
+        },
+        save() {
+            console.log("saved")
+            this.showSlot = !this.showSlot
+            this.$emit("save")
+        }
+    }
 }
 </script>
 
@@ -84,6 +110,14 @@ export default {
 
 .edit:active {
     color: var(--orange-secondary);
+}
+
+.edit-slot {
+    padding: 10px 5px 0 5px;
+}
+
+.btn {
+    margin-top: 15px;
 }
 
 </style>

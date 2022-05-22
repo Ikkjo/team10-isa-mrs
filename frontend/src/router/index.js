@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 const routes = [
     {
       path: '/business-user/register',
-      name: 'business-partner-register',
+      name: 'business-client-register',
       component: () => import('../views/BusinessClientRegistration.vue')
     },
     {
