@@ -1,5 +1,6 @@
 <template>
     <div class="info-section">
+        <PictureCollage :pictures="rentalEntity.pictures"/>
         <h2>Basic info</h2>
         <div class="info-items">
             <InfoItem icon="title" label="Title" :text="rentalEntity.title"/>
@@ -14,14 +15,16 @@
 
 <script>
 import InfoItem from '@/components/InfoItem.vue'
+import PictureCollage from '@/components/PictureCollage.vue'
 export default {
     name: 'RentalEntityBasicInfo',
     props: ['rentalEntity'],
     components: {
         InfoItem,
-    }
+        PictureCollage
+    },
 }
 </script>
 
-<style scoped>
+<style>
 </style>

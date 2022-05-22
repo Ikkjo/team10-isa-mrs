@@ -34,17 +34,4 @@ public class ShipOwnerController {
         return new ResponseEntity<>(request, HttpStatus.CREATED);
     }
 
-    @GetMapping("/ships")
-    @PreAuthorize("hasRole('SHIP_OWNER')")
-    public ResponseEntity<Set<ShipDto>> getAllShips(Principal principal) {
-        try {
-            return new ResponseEntity<>(shipOwnerService.getAllActiveShipsByOwnerEmail(principal.getName()), HttpStatus.OK);
-        }
-        catch (UsernameNotFoundException ex)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-
 }
