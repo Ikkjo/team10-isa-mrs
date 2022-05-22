@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import team10.app.dto.BusinessClientDto;
+import team10.app.security.auth.JWTProvider;
 import team10.app.service.BusinessClientService;
 
 import java.security.Principal;
@@ -19,6 +19,7 @@ import java.security.Principal;
 public class BusinessClientController {
 
     private final BusinessClientService businessClientService;
+    private final JWTProvider jwtProvider;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
@@ -29,6 +30,34 @@ public class BusinessClientController {
         catch (UsernameNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Transactional
+    @PutMapping("/update/firstname")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<String> updateFirstName(@RequestBody String firstName, @RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            businessClientService.updateFirstName(firstName, jwtProvider.getAuthentication(token.substring(7)).getName());
+        }
+        catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(firstName, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping("/update/lastname")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<String> updateLastName(@RequestBody String lastName, @RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            businessClientService.updateLastName(lastName, jwtProvider.getAuthentication(token.substring(7)).getName());
+        }
+        catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(lastName, HttpStatus.OK);
     }
 
 }
