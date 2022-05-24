@@ -5,7 +5,8 @@
             <span :class="'icon' + ' ' + iconClass ">{{icon}}</span>
             <div class="label">{{label}}</div>
         </div>
-        <div @click="editClicked" class="edit noselect">{{buttonText}}</div>
+        <div v-show="!showSlot" @click="editClicked" class="edit noselect">{{buttonText}}</div>
+        <div v-if="useSlot" v-show="showSlot" @click="cancelClicked" class="edit cancel noselect">Cancel</div>
     </div>
     <div v-show="!showSlot" class="text">{{text}}</div>
     <div v-if="useSlot" v-show="showSlot" class="edit-slot">
@@ -59,6 +60,10 @@ export default {
                 this.showSlot = !this.showSlot
                 this.$emit('editClicked')
         },
+        cancelClicked() {
+            this.showSlot = !this.showSlot
+                this.$emit('cancelClicked')
+        },
         save() {
             console.log("saved")
             this.showSlot = !this.showSlot
@@ -83,7 +88,6 @@ export default {
 .icon {
     margin-right: 5px;
 }
-
 
 .text {
     margin-top: 5px;
@@ -115,8 +119,16 @@ export default {
     color: var(--orange-secondary);
 }
 
+.cancel {
+    color: red;
+}
+
+.cancel:active, .cancel:hover {
+    color: darkred;
+}
+
 .edit-slot {
-    padding: 10px 5px 0 5px;
+    padding: 0px 5px;
 }
 
 .btn {

@@ -368,6 +368,10 @@ export default {
     margin: 15px 10px 15px 0px;
 }
 
+.form-control:last-child {
+    margin-right: 0px;
+}
+
 .wrapper {
     display: grid;
     grid-template-columns: 50% 50%;

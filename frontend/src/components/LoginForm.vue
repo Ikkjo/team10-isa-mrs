@@ -184,10 +184,7 @@ textarea {
 }
 
 .alert-info {
-    position: absolute;
-    transition: 0.05s;
     color: red !important;
-    font-size: 0.9rem;
 }
 
 .not-registered {

@@ -6,7 +6,7 @@
                 <h2>Personal info</h2>
                 <div class="info-items">
                     <InfoItem icon="account_box" label="Account type" :text="user.userRole" buttonText="Register new account" @editClicked="registerNewAccountClicked" :useSlot="false"/>
-                    <InfoItem icon="account_circle" label="Full name" :text="user.firstName+' '+user.lastName" buttonText="Edit" @save="saveFullName" :saveDisabled="$v.user.firstName.$invalid || $v.user.lastName.$invalid ">
+                    <InfoItem icon="account_circle" label="Full name" :text="user.firstName+' '+user.lastName" buttonText="Edit" @save="saveFullName" @cancelClicked="cancelEdit" :saveDisabled="$v.user.firstName.$invalid || $v.user.lastName.$invalid ">
                         <template slot="edit">
                             <div class="form-control">
                                 <label for="first-name">First Name</label>
@@ -46,16 +46,124 @@
                             </div>
                         </template>
                     </InfoItem>
-                    <InfoItem icon="contact_phone" label="Phone number" :text="user.phoneNumber" buttonText="Edit"/>
-                    <InfoItem icon="house" label="Address" :text="user.address.address+', '+user.address.city+', '+user.address.country" buttonText="Edit"/>
-                    <InfoItem icon="calendar_month" label="Date of birth" :text="user.dateOfBirth" buttonText="Edit"/>
+                    <InfoItem icon="contact_phone" label="Phone number" :text="user.phoneNumber" buttonText="Edit" @cancelClicked="cancelEdit" :saveDisabled="phoneNumberTmp && !phoneNumberTmp.isValid">
+                        <template slot="edit">
+                            <div class="form-control block-form">
+                                <PhoneNumberInput
+                                    class="phone-number" 
+                                    v-model="user.phoneNumber" 
+                                    default-country-code="RS" 
+                                    size="lg"
+                                    color="#f0a500"
+                                    valid-color="green"
+                                    error-color="red"
+                                    @update="updatePhone"/>
+                            </div>
+                        </template>
+                    </InfoItem>
+                    <InfoItem icon="house" label="Address" :text="user.address.address+', '+user.address.city+', '+user.address.country" buttonText="Edit" :saveDisabled="$v.address.$invalid" @cancelClicked="cancelEdit">
+                        <template slot="edit">
+                            <div class="block-form">
+                                <AddressInput
+                                @update:address="updateAddress"
+                                @update:city="updateCity"
+                                @update:country="updateCountry"
+                                :validate="true"/>
+                            </div>
+                        </template>
+                    </InfoItem>
+                    <InfoItem icon="calendar_month" label="Date of birth" :text="user.dateOfBirth" buttonText="Edit" :saveDisabled="!dateOfBirth.isValid">
+                        <template slot="edit">
+                            <div class="form-control block-form">
+                                <label for="datepicker">Minimum Age: 18</label>
+                                <DropdownDatepicker
+                                    id="datepicker" 
+                                    name="datepicker" 
+                                    displayFormat="dmy" 
+                                    :minAge="18"
+                                    :onChange="updateDate"
+                                    :onDayChange="updateDay"
+                                    :onMonthChange="updateMonth"
+                                    :onYearChange="updateYear"
+                                    />
+                                <div class="alert-info"
+                                    v-if="!isFocused('dateOfBirth') 
+                                    && !dateOfBirth.isValid"
+                                    >
+                                    Select a valid date.
+                                </div>
+                            </div>
+                        </template>
+                    </InfoItem>
                 </div>
             </div>
             <div class="info-section">
                 <h2>Login info</h2>
                 <div class="info-items">
-                    <InfoItem icon="email" label="Email" :text="user.email" buttonText="Change"/>
-                    <InfoItem icon="password" label="Password" text="*********" buttonText="Change"/>
+                    <InfoItem icon="email" label="Email" :text="user.email" buttonText="Change" :saveDisabled="$v.user.email.$invalid" @cancelClicked="cancelEdit">
+                        <template slot="edit">
+                            <div class="form-control block-form">
+                                <label for="email">Use an email address you'll always have access to.</label>
+                                <input type="text" 
+                                    v-model="user.email" 
+                                    name="email" 
+                                    @focus="inFocus('email')" 
+                                    @blur="outFocus('email')" 
+                                    :class="getClass('email')" 
+                                    :placeholder="getPlaceholder('email')">
+                                <div class="alert-info" 
+                                    v-if="!isFocused('email') 
+                                    && !$v.user.email.email"
+                                    >
+                                    Incorrect email format.
+                                </div>
+                            </div>
+                        </template>
+                    </InfoItem>
+                    <InfoItem icon="password" label="Password" text="*********" buttonText="Change" :saveDisabled="$v.currentPassword.$invalid || $v.newPassword.$invalid || $v.confirmNewPassword.$invalid">
+                        <template slot="edit">
+                            <div class="wrapper">
+                                <div class="form-control">
+                                    <label for="password">Current Password</label>
+                                    <input type="password" 
+                                        v-model="currentPassword" 
+                                        name="password"  
+                                        @focus="inFocus('currentPassword')"
+                                        @blur="outFocus('currentPassword')" 
+                                        :class="getClass('currentPassword')"
+                                        :placeholder="getPlaceholder('currentPassword')">
+                                </div>
+                                <div class="form-control">
+                                    <label for="password">New Password</label>
+                                    <input type="password" 
+                                        v-model="newPassword" 
+                                        name="password"  
+                                        @focus="inFocus('newPassword')"
+                                        @blur="outFocus('newPassword')" 
+                                        :class="getClass('newPassword')"
+                                        :placeholder="getPlaceholder('newPassword', 'At least 8 characters')">
+                                    <div class="alert-info" 
+                                        v-if="!this.infocus['newPassword'] && !($v.newPassword.minLength && $v.newPassword.maxLength)">
+                                        Must have 8-30 characters.
+                                    </div>
+                                </div>
+                                <div class="form-control">
+                                    <label for="confirm-password">Confirm new password</label>
+                                    <input type="password" 
+                                        v-model="confirmNewPassword" 
+                                        name="confirm-password" 
+                                        @focus="inFocus('confirmNewPassword')" 
+                                        @blur="outFocus('confirmNewPassword')" 
+                                        :class="getClass('confirmNewPassword')" 
+                                        :placeholder="getPlaceholder('confirmNewPassword')">
+                                    <div class="alert-info" 
+                                        v-if="!this.infocus['confirmNewPassword'] && !$v.confirmNewPassword.sameAsPassword">
+                                        Passwords don't match.
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </InfoItem>
                     <InfoItem icon="info" label="Account status" text="Active" buttonText="Deactivate" style="color: red;"/>
                 </div>
             </div>
@@ -66,33 +174,53 @@
 <script>
 import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import InfoItem from "@/components/InfoItem.vue"
+import PhoneNumberInput from 'vue-phone-number-input'
+import AddressInput from '@/components/AddressInput.vue'
+import DropdownDatepicker from 'vue-dropdown-datepicker/src/dropdown-datepicker.vue';
 import axios from "axios"
 import { required, minLength, maxLength, sameAs, email, alpha } from 'vuelidate/lib/validators'
 export default {
     name: 'AccountInfo',
     components: {
         BusinessClientNavBar,
+        PhoneNumberInput,
+        AddressInput,
+        DropdownDatepicker,
         InfoItem
     },
     data() {
         return {
             user: {
                 address: {},
+                phoneNumber: '',
             },
+            phoneNumberTmp: null,
             userCopy: {
                 address: {}
             },
+            address: {address: '', city: '', country: ''},
+            dateOfBirth:{
+                day: null,
+                month: null,
+                year: null,
+                isValid: false,
+                updatingDay: false,
+            },
+            currentPassword: '',
+            newPassword: '',
+            confirmNewPassword: '',
             infocus: {
                 firstName: true,
                 lastName: true,
                 username: true,
                 email: true,
-                password: true,
-                confirmPassword: true,
+                currentPassword: true,
+                newPassword: true,
+                confirmNewPassword: true,
                 registrationReason: true,
                 role: true,
                 dateOfBirth: true,
-            }
+            },
         }
     },
     validations:{
@@ -113,29 +241,34 @@ export default {
                 required,
                 email
             },
-            password: {
-                required,
-                minLength: minLength(8),
-                maxLength: maxLength(30)
+        },
+        address: {
+                address: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(40)
+                },
+                city: {
+                    required,
+                    minLength: minLength(2),
+                    maxLength: maxLength(40)
+                },
+                country: {
+                    required
+                },
             },
-            confirmPassword: {
-                required,
-                sameAsPassword: sameAs("password")
-            },
-            address: {
-                required,
-                minLength: minLength(5),
-                maxLength: maxLength(40)
-            },
-            city: {
-                required,
-                minLength: minLength(2),
-                maxLength: maxLength(40)
-            },
-            country: {
+        currentPassword: {
                 required
             },
-        }
+        newPassword: {
+            required,
+            minLength: minLength(8),
+            maxLength: maxLength(30),
+        },
+        confirmNewPassword: {
+            required,
+            sameAsPassword: sameAs("newPassword")
+        },
         
     },
     methods: {
@@ -188,6 +321,48 @@ export default {
         registerNewAccountClicked() {
             this.$router.push({ name: 'business-client-register' })
         },
+        updatePhone(phoneNumber){
+            this.phoneNumberTmp = phoneNumber
+        },
+        updateAddress(event){
+            this.address.address = event;
+        },
+        updateCity(event){
+            this.address.city = event;
+        },
+        updateCountry(event){
+            this.address.country = event;
+        },
+        isDateValid(){
+            if(this.dateOfBirth.day && this.dateOfBirth.month && this.dateOfBirth.year)
+                this.dateOfBirth.isValid = true;
+        },
+        updateDay(event){
+            this.dateOfBirth.updatingDay = true;
+            this.dateOfBirth.day = event;
+            this.isDateValid();
+        },
+        updateMonth(event){
+            this.dateOfBirth.month = event;
+            this.isDateValid();
+        },
+        updateYear(event){
+            this.dateOfBirth.year = event;
+            this.isDateValid();
+            this.infocus.dateOfBirth = false;
+        },
+        updateDate(day){
+            if(this.dateOfBirth.updatingDay){
+                this.dateOfBirth.updatingDay = false;
+            }
+            else if (day != this.dateOfBirth.day) {
+                this.dateOfBirth.day = null;
+                this.dateOfBirth.isValid = false;
+            }
+        },
+        cancelEdit() {
+            this.user = JSON.parse(JSON.stringify(this.userCopy))
+        },
         isFocused(field) {
             return this.infocus[field]
         },
@@ -198,11 +373,20 @@ export default {
             this.infocus[field] = false
         },
         getClass(field) {
-            let cls = !this.isFocused(field) && this.$v.user[field].$invalid ? 'alert' : '';
+            let cls = ''
+            if (field in this.$v.user)
+                cls = !this.isFocused(field) && this.$v.user[field].$invalid ? 'alert' : '';
+            else
+                cls = !this.isFocused(field) && this.$v[field].$invalid ? 'alert' : '';
             return cls;
         },
         getPlaceholder(field, defaultPlaceholder='') {
-            let placeholder = !this.isFocused(field) && this.$v.user[field].$invalid ? 'Required' : defaultPlaceholder;
+            let placeholder = ''
+            if (field in this.$v.user)
+                placeholder = !this.isFocused(field) && this.$v.user[field].$invalid ? 'Required' : defaultPlaceholder;
+            else
+                placeholder = !this.isFocused(field) && this.$v[field].$invalid ? 'Required' : defaultPlaceholder;
+            
             return placeholder;
         }
     },
@@ -224,7 +408,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #account-info {
     max-width: 100%;
 }
@@ -256,11 +440,37 @@ h2 {
 .form-control {
     display: inline-block;
     max-width: 50%;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 
 .form-control input {
     width: 95% !important;
+}
+
+.phone-form {
+    display: flex;
+}
+
+.date-form {
+    display: block;
+}
+
+label {
+    font-size: 0.9rem;
+    color: grey;
+    display: inline-block;
+}
+
+.block-form {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.wrapper {
+    display: flex;
 }
 
 </style>
