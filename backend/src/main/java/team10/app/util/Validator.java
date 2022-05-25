@@ -64,6 +64,7 @@ public class Validator {
 
 
     private final AddressValidator addressValidator;
+    private final EmailValidator emailValidator;
 
     private boolean validateRentalEntity(RentalEntityDto rentalEntityDto) {
         return inRange(TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, rentalEntityDto.getTitle().length())
@@ -138,9 +139,7 @@ public class Validator {
     }
 
     public boolean validateEmail(String email) {
-        Pattern pattern = Pattern.compile("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$");
-        return email.matches(pattern.pattern());
-
+        return emailValidator.test(email);
     }
 
     public boolean validatePassword(String password) {
