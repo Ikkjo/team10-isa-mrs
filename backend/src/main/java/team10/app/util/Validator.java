@@ -1,13 +1,18 @@
 package team10.app.util;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import team10.app.dto.AdventureDto;
 import team10.app.dto.RentalEntityDto;
 import team10.app.dto.ShipDto;
 import team10.app.dto.VacationHomeDto;
 import team10.app.repository.UserRepository;
+import team10.app.util.exceptions.PasswordInvalidException;
 
+import javax.management.remote.JMXAuthenticator;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -145,4 +150,5 @@ public class Validator {
     public boolean validatePassword(String password) {
         return inRange(8, 30, password.length());
     }
+
 }

@@ -276,7 +276,7 @@ export default {
             if (this.user.firstName !== this.userCopy.firstName) {
                 axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/firstname',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/firstname',
                 data: this.user.firstName,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -299,7 +299,7 @@ export default {
             if (this.user.lastName !== this.userCopy.lastName) {
                 axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/lastname',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/lastname',
                 data: this.user.lastName,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -322,7 +322,7 @@ export default {
             if (this.phoneNumberTmp.formattedNumber !== this.userCopy.phoneNumber) {
                 axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/phone-number',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/phone-number',
                 data: this.phoneNumberTmp.formattedNumber,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -400,7 +400,7 @@ export default {
             if (this.user.email !== this.userCopy.email) {
                 axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/email',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/email',
                 data: this.user.email,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -427,7 +427,7 @@ export default {
             if (this.newPassword !== this.currentPassword) {
                 axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/password',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/password',
                 data: { currentPassword: this.currentPassword, newPassword: this.newPassword },
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),

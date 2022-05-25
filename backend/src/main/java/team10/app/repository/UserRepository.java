@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import team10.app.model.User;
 import team10.app.model.VacationHomeOwner;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
@@ -39,4 +36,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Modifying
     @Query("update User u set u.password = ?1 where u.email = ?2")
     void updatePassword(String password, String email);
+
+    @Query("select u from User u where u.email = ?1")
+    User getByEmail(String email);
 }

@@ -16,7 +16,7 @@ public class AddressService {
 
     public Address getAddress(AddressDto addressDto) {
         Optional<Address> address =  addressRepository.getAddressByAddressCityCountry(addressDto.getAddress(), addressDto.getCity(), addressDto.getCountry());
-        return address.orElseGet(() -> addressRepository.save(new Address(addressDto)));
+        return address.orElseGet(() -> addressRepository.saveAndFlush(new Address(addressDto)));
     }
 
 }
