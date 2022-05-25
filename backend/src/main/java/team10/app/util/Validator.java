@@ -6,6 +6,7 @@ import team10.app.dto.AdventureDto;
 import team10.app.dto.RentalEntityDto;
 import team10.app.dto.ShipDto;
 import team10.app.dto.VacationHomeDto;
+import team10.app.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -134,5 +135,15 @@ public class Validator {
             return false;
         }
         return true;
+    }
+
+    public boolean validateEmail(String email) {
+        Pattern pattern = Pattern.compile("^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$");
+        return email.matches(pattern.pattern());
+
+    }
+
+    public boolean validatePassword(String password) {
+        return inRange(8, 30, password.length());
     }
 }

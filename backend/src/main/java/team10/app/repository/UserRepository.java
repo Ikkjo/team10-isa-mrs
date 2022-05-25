@@ -31,4 +31,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Modifying
     @Query("update User u set u.phoneNumber = ?1 where u.email = ?2")
     void updatePhoneNumber(String phoneNumber, String email);
+
+    @Modifying
+    @Query("update User u set u.email = ?1 where u.email = ?2")
+    void updateEmail(String newEmail, String email);
+
+    @Modifying
+    @Query("update User u set u.password = ?1 where u.email = ?2")
+    void updatePassword(String password, String email);
 }

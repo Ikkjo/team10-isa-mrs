@@ -103,7 +103,7 @@
                     <InfoItem icon="email" label="Email" :text="user.email" buttonText="Change" @save="saveEmail" :saveDisabled="$v.user.email.$invalid" @cancelClicked="cancelEdit">
                         <template slot="edit">
                             <div class="form-control block-form">
-                                <label for="email">Use an email address you'll always have access to.</label>
+                                <label for="email">Changing the email will log you out.<br>Use an email address you'll always have access to.</label>
                                 <input type="text" 
                                     v-model="user.email" 
                                     name="email" 
@@ -396,8 +396,58 @@ export default {
                 }) 
             }
         },
-        saveEmail(){},
-        savePassword(){},
+        saveEmail(){
+            if (this.user.email !== this.userCopy.email) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/email',
+                data: this.user.email,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Email Invalid")
+                    else
+                        this.userCopy.email = response.data
+                        // logout
+
+                })
+                .catch((error) => {
+                    this.user.email = this.userCopy.email
+                    alert("Email Invalid")
+                    console.log(error);
+                }) 
+            }
+
+        },
+        savePassword(){
+            if (this.newPassword !== this.currentPassword) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/password',
+                data: { currentPassword: this.currentPassword, newPassword: this.newPassword },
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Password Invalid")
+                    else
+                        alert("Password changed successfully")
+                })
+                .catch((error) => {
+                    alert("Password Invalid")
+                    console.log(error);
+                }) 
+            }
+            else
+                alert("Current and new password are the same")
+        },
         registerNewAccountClicked() {
             this.$router.push({ name: 'business-client-register' })
         },

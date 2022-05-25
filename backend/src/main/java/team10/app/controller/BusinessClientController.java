@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.AddressDto;
 import team10.app.dto.BusinessClientDto;
+import team10.app.dto.PasswordChangeDto;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.BusinessClientService;
 
@@ -102,6 +103,35 @@ public class BusinessClientController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(dateOfBirth, HttpStatus.OK);
+    }
+
+
+    @Transactional
+    @PutMapping("/update/email")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<String> updateEmail(@RequestBody String email, @RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            businessClientService.updateEmail(email, jwtProvider.getAuthentication(token.substring(7)).getName());
+        }
+        catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(email, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping("/update/password")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<String> updatePassword(@RequestBody PasswordChangeDto passwordChangeDto, @RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            businessClientService.updatePassword(passwordChangeDto, jwtProvider.getAuthentication(token.substring(7)).getName());
+        }
+        catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
