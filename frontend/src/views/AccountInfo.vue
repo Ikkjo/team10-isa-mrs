@@ -368,6 +368,36 @@ export default {
                 }) 
             }
         },
+        saveDateOfBirth() {
+            let day = (""+this.dateOfBirth.day).length === 1 ? "0"+this.dateOfBirth.day : ""+this.dateOfBirth.day
+            let month = (""+this.dateOfBirth.month).length === 1 ? "0"+this.dateOfBirth.month : ""+this.dateOfBirth.month
+            let dob = ""+day+"."+month+"."+this.dateOfBirth.year+"."
+            if (dob !== this.userCopy.dateOfBirth) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/date-of-birth',
+                data: dob,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Date of Birth invalid")
+                    else
+                        this.userCopy.dateOfBirth = response.data
+                        this.user.dateOfBirth = response.data
+
+                })
+                .catch((error) => {
+                    alert("Date of Birth invalid")
+                    console.log(error);
+                }) 
+            }
+        },
+        saveEmail(){},
+        savePassword(){},
         registerNewAccountClicked() {
             this.$router.push({ name: 'business-client-register' })
         },

@@ -90,4 +90,18 @@ public class BusinessClientController {
         return new ResponseEntity<>(addressDto, HttpStatus.OK);
     }
 
+    @Transactional
+    @PutMapping("/update/date-of-birth")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<String> updateDateOfBirth(@RequestBody String dateOfBirth, @RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            businessClientService.updateDateOfBirth(dateOfBirth, jwtProvider.getAuthentication(token.substring(7)).getName());
+        }
+        catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(dateOfBirth, HttpStatus.OK);
+    }
+
 }

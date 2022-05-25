@@ -7,6 +7,9 @@ import team10.app.dto.RentalEntityDto;
 import team10.app.dto.ShipDto;
 import team10.app.dto.VacationHomeDto;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 @Service
@@ -118,5 +121,18 @@ public class Validator {
     public boolean validatePhoneNumber(String phoneNumber) {
         Pattern pattern = Pattern.compile("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$");
         return phoneNumber.matches(pattern.pattern());
+    }
+
+    public boolean validateDateOfBirth(String dateOfBirth) {
+        String europeanDatePattern = "dd.MM.yyyy.";
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(europeanDatePattern);
+        try {
+            LocalDate date = LocalDate.parse(dateOfBirth, dateFormatter);
+            if (date.lengthOfYear() < 18)
+                return false;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+        return true;
     }
 }

@@ -16,4 +16,8 @@ public interface BusinessClientRepository extends JpaRepository<BusinessClient, 
     @Modifying
     @Query("update BusinessClient bC set bC.address = ?1 where bC.email = ?2")
     void updateAddress(Address address, String email);
+
+    @Modifying
+    @Query("update BusinessClient bC set bC.dateOfBirth = ?1 where bC.email = ?2")
+    void updateDateOfBirth(String dateOfBirth, String email);
 }

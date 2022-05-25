@@ -5,11 +5,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.AddressDto;
 import team10.app.dto.BusinessClientDto;
-import team10.app.model.Address;
 import team10.app.model.BusinessClient;
 import team10.app.repository.BusinessClientRepository;
 import team10.app.repository.UserRepository;
 import team10.app.util.Validator;
+import team10.app.util.exceptions.dateOfBirthInvalidException;
 import team10.app.util.exceptions.FirstNameInvalidException;
 import team10.app.util.exceptions.PhoneNumberInvalidException;
 
@@ -49,5 +49,11 @@ public class BusinessClientService {
 
     public void updateAddress(AddressDto addressDto, String email) {
         businessClientRepository.updateAddress(addressService.getAddress(addressDto), email);
+    }
+
+    public void updateDateOfBirth(String dateOfBirth, String email) {
+        if (!validator.validateDateOfBirth(dateOfBirth))
+            throw new dateOfBirthInvalidException(dateOfBirth);
+        businessClientRepository.updateDateOfBirth(dateOfBirth, email);
     }
 }
