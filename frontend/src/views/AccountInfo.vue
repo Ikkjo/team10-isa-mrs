@@ -287,7 +287,7 @@ export default {
                     if (response.status >= 400)
                         alert("First Name Invalid")
                     else
-                        this.userCopy.firstName = this.user.firstName
+                        this.userCopy.firstName = response.data
 
                 })
                 .catch((error) => {
@@ -309,7 +309,7 @@ export default {
                     if (response.status >= 400)
                         alert("Last Name Invalid")
                     else
-                        this.userCopy.lastName = this.user.lastName
+                        this.userCopy.lastName = response.data
                 })
                 .catch((error) => {
                     this.user.lastName = this.userCopy.lastName
@@ -333,12 +333,37 @@ export default {
                     if (response.status >= 400)
                         alert("Phone Number Invalid")
                     else
-                        this.userCopy.phoneNumber = this.phoneNumberTmp.formattedNumber
+                        this.userCopy.phoneNumber = response.data
 
                 })
                 .catch((error) => {
                     this.user.phoneNumber = this.userCopy.phoneNumber
                     alert("Phone Number Invalid")
+                    console.log(error);
+                }) 
+            }
+        },
+        saveAddress() {
+            if (this.address !== this.userCopy.address) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/address',
+                data: this.address,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Address Invalid")
+                    else
+                        this.userCopy.address = response.data
+                        this.user.address = response.data
+
+                })
+                .catch((error) => {
+                    alert("Address Invalid")
                     console.log(error);
                 }) 
             }
