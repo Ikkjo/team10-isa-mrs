@@ -107,7 +107,7 @@ public class UserService implements UserDetailsService {
         userRepository.updatePassword(encodedPassword, email);
     }
 
-    public void updateFirstName(String firstName, String email) throws RuntimeException {
+    public void updateFirstName(String firstName, String email) {
         if (!validator.validateFirstName(firstName))
             throw new FirstNameInvalidException(firstName);
         userRepository.updateFirstName(firstName, email);
