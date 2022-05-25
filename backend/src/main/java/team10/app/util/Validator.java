@@ -126,7 +126,7 @@ public class Validator {
     }
 
     public boolean validatePhoneNumber(String phoneNumber) {
-        Pattern pattern = Pattern.compile("^[+]*[(]?\\d{1,4}[)]?[-\\s./\\d]*$");
+        Pattern pattern = Pattern.compile("^"+"*[(]?\\d{1,4}[)]?[-\\s./\\d]*$");
         return phoneNumber.matches(pattern.pattern());
     }
 
