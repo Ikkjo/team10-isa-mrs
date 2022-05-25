@@ -60,4 +60,18 @@ public class BusinessClientController {
         return new ResponseEntity<>(lastName, HttpStatus.OK);
     }
 
+    @Transactional
+    @PutMapping("/update/phone-number")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<String> updatePhoneNumber(@RequestBody String phoneNumber, @RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            businessClientService.updatePhoneNumber(phoneNumber, jwtProvider.getAuthentication(token.substring(7)).getName());
+        }
+        catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(phoneNumber, HttpStatus.OK);
+    }
+
 }

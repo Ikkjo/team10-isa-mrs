@@ -9,6 +9,7 @@ import team10.app.repository.BusinessClientRepository;
 import team10.app.repository.UserRepository;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.FirstNameInvalidException;
+import team10.app.util.exceptions.PhoneNumberInvalidException;
 
 @Service
 @AllArgsConstructor
@@ -35,5 +36,11 @@ public class BusinessClientService {
             throw new FirstNameInvalidException(lastName);
         userRepository.updateLastName(lastName, email);
 
+    }
+
+    public void updatePhoneNumber(String phoneNumber, String email) {
+        if (!validator.validatePhoneNumber(phoneNumber))
+            throw new PhoneNumberInvalidException(phoneNumber);
+        userRepository.updatePhoneNumber(phoneNumber, email);
     }
 }

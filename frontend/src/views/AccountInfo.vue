@@ -46,7 +46,7 @@
                             </div>
                         </template>
                     </InfoItem>
-                    <InfoItem icon="contact_phone" label="Phone number" :text="user.phoneNumber" buttonText="Edit" @cancelClicked="cancelEdit" :saveDisabled="phoneNumberTmp && !phoneNumberTmp.isValid">
+                    <InfoItem icon="contact_phone" label="Phone number" :text="user.phoneNumber" buttonText="Edit" @save="savePhoneNumber" @cancelClicked="cancelEdit" :saveDisabled="phoneNumberTmp && !phoneNumberTmp.isValid">
                         <template slot="edit">
                             <div class="form-control block-form">
                                 <PhoneNumberInput
@@ -61,7 +61,7 @@
                             </div>
                         </template>
                     </InfoItem>
-                    <InfoItem icon="house" label="Address" :text="user.address.address+', '+user.address.city+', '+user.address.country" buttonText="Edit" :saveDisabled="$v.address.$invalid" @cancelClicked="cancelEdit">
+                    <InfoItem icon="house" label="Address" :text="user.address.address+', '+user.address.city+', '+user.address.country" buttonText="Edit" @save="saveAddress" :saveDisabled="$v.address.$invalid" @cancelClicked="cancelEdit">
                         <template slot="edit">
                             <div class="block-form">
                                 <AddressInput
@@ -72,7 +72,7 @@
                             </div>
                         </template>
                     </InfoItem>
-                    <InfoItem icon="calendar_month" label="Date of birth" :text="user.dateOfBirth" buttonText="Edit" :saveDisabled="!dateOfBirth.isValid">
+                    <InfoItem icon="calendar_month" label="Date of birth" :text="user.dateOfBirth" buttonText="Edit" @save="saveDateOfBirth" :saveDisabled="!dateOfBirth.isValid">
                         <template slot="edit">
                             <div class="form-control block-form">
                                 <label for="datepicker">Minimum Age: 18</label>
@@ -100,7 +100,7 @@
             <div class="info-section">
                 <h2>Login info</h2>
                 <div class="info-items">
-                    <InfoItem icon="email" label="Email" :text="user.email" buttonText="Change" :saveDisabled="$v.user.email.$invalid" @cancelClicked="cancelEdit">
+                    <InfoItem icon="email" label="Email" :text="user.email" buttonText="Change" @save="saveEmail" :saveDisabled="$v.user.email.$invalid" @cancelClicked="cancelEdit">
                         <template slot="edit">
                             <div class="form-control block-form">
                                 <label for="email">Use an email address you'll always have access to.</label>
@@ -120,7 +120,7 @@
                             </div>
                         </template>
                     </InfoItem>
-                    <InfoItem icon="password" label="Password" text="*********" buttonText="Change" :saveDisabled="$v.currentPassword.$invalid || $v.newPassword.$invalid || $v.confirmNewPassword.$invalid">
+                    <InfoItem icon="password" label="Password" text="*********" buttonText="Change" @save="savePassword" :saveDisabled="$v.currentPassword.$invalid || $v.newPassword.$invalid || $v.confirmNewPassword.$invalid">
                         <template slot="edit">
                             <div class="wrapper">
                                 <div class="form-control">
@@ -314,6 +314,31 @@ export default {
                 .catch((error) => {
                     this.user.lastName = this.userCopy.lastName
                     alert("Last Name Invalid")
+                    console.log(error);
+                }) 
+            }
+        },
+        savePhoneNumber() {
+            if (this.phoneNumberTmp.formattedNumber !== this.userCopy.phoneNumber) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/phone-number',
+                data: this.phoneNumberTmp.formattedNumber,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Phone Number Invalid")
+                    else
+                        this.userCopy.phoneNumber = this.phoneNumberTmp.formattedNumber
+
+                })
+                .catch((error) => {
+                    this.user.phoneNumber = this.userCopy.phoneNumber
+                    alert("Phone Number Invalid")
                     console.log(error);
                 }) 
             }

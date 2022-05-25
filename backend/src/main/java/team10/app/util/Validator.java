@@ -7,6 +7,8 @@ import team10.app.dto.RentalEntityDto;
 import team10.app.dto.ShipDto;
 import team10.app.dto.VacationHomeDto;
 
+import java.util.regex.Pattern;
+
 @Service
 @AllArgsConstructor
 public class Validator {
@@ -111,5 +113,10 @@ public class Validator {
 
     public boolean validateLastName(String lastName) {
         return inRange(2, 20, lastName.length());
+    }
+
+    public boolean validatePhoneNumber(String phoneNumber) {
+        Pattern pattern = Pattern.compile("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$");
+        return phoneNumber.matches(pattern.pattern());
     }
 }

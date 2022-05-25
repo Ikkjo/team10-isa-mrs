@@ -27,4 +27,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Modifying
     @Query("update User u set u.lastName = ?1 where u.email = ?2")
     void updateLastName(String firstName, String email);
+
+    @Modifying
+    @Query("update User u set u.phoneNumber = ?1 where u.email = ?2")
+    void updatePhoneNumber(String phoneNumber, String email);
 }
