@@ -152,4 +152,17 @@ ul {
     z-index: 1;
 }
 
+.alert {
+    transition: 0.5s;
+    border-color: red !important;
+    border-width: 2px;
+}
+
+.alert-info {
+    position: absolute;
+    transition: 0.05s;
+    color: red !important;
+    font-size: 0.9rem;
+}
+
 </style>

@@ -1,11 +1,22 @@
 package team10.app.util;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import team10.app.dto.AdventureDto;
 import team10.app.dto.RentalEntityDto;
 import team10.app.dto.ShipDto;
 import team10.app.dto.VacationHomeDto;
+import team10.app.repository.UserRepository;
+import team10.app.util.exceptions.PasswordInvalidException;
+
+import javax.management.remote.JMXAuthenticator;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -58,6 +69,7 @@ public class Validator {
 
 
     private final AddressValidator addressValidator;
+    private final EmailValidator emailValidator;
 
     private boolean validateRentalEntity(RentalEntityDto rentalEntityDto) {
         return inRange(TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, rentalEntityDto.getTitle().length())
@@ -104,4 +116,39 @@ public class Validator {
     private boolean inRange(double min, double max, double num) {
         return num >= min && num <= max;
     }
+
+    public boolean validateFirstName(String firstName) {
+        return inRange(2, 20, firstName.length());
+    }
+
+    public boolean validateLastName(String lastName) {
+        return inRange(2, 20, lastName.length());
+    }
+
+    public boolean validatePhoneNumber(String phoneNumber) {
+        Pattern pattern = Pattern.compile("^[+]*[(]?\\d{1,4}[)]?[-\\s./\\d]*$");
+        return phoneNumber.matches(pattern.pattern());
+    }
+
+    public boolean validateDateOfBirth(String dateOfBirth) {
+        String europeanDatePattern = "dd.MM.yyyy.";
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(europeanDatePattern);
+        try {
+            LocalDate date = LocalDate.parse(dateOfBirth, dateFormatter);
+            if (date.lengthOfYear() < 18)
+                return false;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateEmail(String email) {
+        return emailValidator.test(email);
+    }
+
+    public boolean validatePassword(String password) {
+        return inRange(8, 30, password.length());
+    }
+
 }

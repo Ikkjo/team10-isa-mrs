@@ -5,10 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import team10.app.dto.AddressDto;
 import team10.app.dto.BusinessClientDto;
+import team10.app.security.auth.JWTProvider;
 import team10.app.service.BusinessClientService;
 
 import java.security.Principal;
@@ -19,6 +21,7 @@ import java.security.Principal;
 public class BusinessClientController {
 
     private final BusinessClientService businessClientService;
+    private final JWTProvider jwtProvider;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
@@ -30,5 +33,36 @@ public class BusinessClientController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @PutMapping("/update/address")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<AddressDto> updateAddress(@RequestBody AddressDto addressDto, @RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            businessClientService.updateAddress(addressDto, jwtProvider.getAuthentication(token.substring(7)).getName());
+        }
+        catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(addressDto, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping("/update/date-of-birth")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<String> updateDateOfBirth(@RequestBody String dateOfBirth, @RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            businessClientService.updateDateOfBirth(dateOfBirth, jwtProvider.getAuthentication(token.substring(7)).getName());
+        }
+        catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(dateOfBirth, HttpStatus.OK);
+    }
+
+
+
 
 }

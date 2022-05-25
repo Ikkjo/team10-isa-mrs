@@ -276,6 +276,9 @@ export default {
     },
     methods: {
         signUpPressed(){
+            let day = (""+this.dateOfBirth.day).length === 1 ? "0"+this.dateOfBirth.day : ""+this.dateOfBirth.day
+            let month = (""+this.dateOfBirth.month).length === 1 ? "0"+this.dateOfBirth.month : ""+this.dateOfBirth.month
+            let dob = ""+day+"."+month+"."+this.dateOfBirth.year+"."
             let registrationRequestDTO = {
                     firstName: this.firstName,
                     lastName: this.lastName,
@@ -283,7 +286,7 @@ export default {
                     password: this.password,
                     role: this.role,
                     phoneNumber: this.phone.formattedNumber,
-                    dateOfBirth: ""+this.dateOfBirth.day+"."+this.dateOfBirth.month+"."+this.dateOfBirth.year+".",
+                    dateOfBirth: dob,
                     address: this.address,
                     city: this.city,
                     country: this.country,
@@ -368,6 +371,10 @@ export default {
     margin: 15px 10px 15px 0px;
 }
 
+.form-control:last-child {
+    margin-right: 0px;
+}
+
 .wrapper {
     display: grid;
     grid-template-columns: 50% 50%;
@@ -418,19 +425,6 @@ textarea {
 
 .btn-div p {
     margin-top: 0px;
-}
-
-.alert {
-    transition: 0.5s;
-    border-color: red !important;
-    border-width: 2px;
-}
-
-.alert-info {
-    position: absolute;
-    transition: 0.05s;
-    color: red !important;
-    font-size: 0.9rem;
 }
 
 .already-registered {

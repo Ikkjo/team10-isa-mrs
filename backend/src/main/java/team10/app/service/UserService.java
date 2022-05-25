@@ -1,14 +1,19 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team10.app.dto.BusinessClientRegistrationRequestDto;
 import team10.app.dto.ClientRegistrationRequestDto;
+import team10.app.dto.PasswordChangeDto;
 import team10.app.model.*;
 import team10.app.repository.*;
+import team10.app.util.Validator;
+import team10.app.util.exceptions.*;
 
 import java.util.Optional;
 
@@ -23,8 +28,11 @@ public class UserService implements UserDetailsService {
     private final ShipOwnerRepository shipOwnerRepository;
     private final FishingInstructorRepository fishingInstructorRepository;
     private final ClientRepository clientRepository;
+    private final Validator validator;
     private final AddressRepository addressRepository;
     private final LoyaltyRepository loyaltyRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     public BusinessClient buildBusinessUser(BusinessClientRegistrationRequestDto dto) throws IllegalArgumentException {
             if (dto.getRole().equals(HOUSE_OWNER))
@@ -79,5 +87,42 @@ public class UserService implements UserDetailsService {
 
     public boolean userExists(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    public void updateEmail(String newEmail, String email) {
+        if (!validator.validateEmail(newEmail))
+            throw new EmailInvalidException(newEmail);
+        if (userRepository.findByEmail(newEmail).isPresent())
+            throw new EmailTakenException(newEmail);
+        userRepository.updateEmail(newEmail, email);
+    }
+
+    public void updatePassword(PasswordChangeDto passwordChangeDto, String email) {
+        if (!validator.validatePassword(passwordChangeDto.getNewPassword()))
+            throw new PasswordInvalidException(passwordChangeDto.getNewPassword());
+
+        String encodedPassword = passwordEncoder.encode(passwordChangeDto.getCurrentPassword());
+        if (!passwordEncoder.matches(passwordChangeDto.getCurrentPassword(), userRepository.getByEmail(email).getPassword()))
+            throw new PasswordInvalidException(passwordChangeDto.getCurrentPassword());
+        userRepository.updatePassword(encodedPassword, email);
+    }
+
+    public void updateFirstName(String firstName, String email) {
+        if (!validator.validateFirstName(firstName))
+            throw new FirstNameInvalidException(firstName);
+        userRepository.updateFirstName(firstName, email);
+    }
+
+    public void updateLastName(String lastName, String email) {
+        if (!validator.validateLastName(lastName))
+            throw new FirstNameInvalidException(lastName);
+        userRepository.updateLastName(lastName, email);
+
+    }
+
+    public void updatePhoneNumber(String phoneNumber, String email) {
+        if (!validator.validatePhoneNumber(phoneNumber))
+            throw new PhoneNumberInvalidException(phoneNumber);
+        userRepository.updatePhoneNumber(phoneNumber, email);
     }
 }

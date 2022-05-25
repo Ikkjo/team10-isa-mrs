@@ -5,15 +5,26 @@
             <span :class="'icon' + ' ' + iconClass ">{{icon}}</span>
             <div class="label">{{label}}</div>
         </div>
-        <div class="edit noselect">{{buttonText}}</div>
+        <div v-show="!showSlot" @click="editClicked" class="edit noselect">{{buttonText}}</div>
+        <div v-if="useSlot" v-show="showSlot" @click="cancelClicked" class="edit cancel noselect">Cancel</div>
     </div>
-    <div class="text">{{text}}</div>
+    <div v-show="!showSlot" class="text">{{text}}</div>
+    <div v-if="useSlot" v-show="showSlot" class="edit-slot">
+        <slot name="edit"/>
+        <button :disabled="saveDisabled" @click="save" class="btn" :class="{'btn-disabled': saveDisabled}">Save</button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
     name: 'InfoItem',
+    data() {
+        return {
+            showSlot: false,
+            
+        }
+    },
     props: {
         iconClass: {
             type: String,
@@ -34,8 +45,31 @@ export default {
         buttonText: {
             type: String,
             default: "Edit"
+        },
+        useSlot: {
+            type: Boolean,
+            default: true,
+        },
+        saveDisabled: {
+            type: Boolean,
         }
     },
+    methods: {
+        editClicked() {
+            if (this.useSlot)
+                this.showSlot = !this.showSlot
+                this.$emit('editClicked')
+        },
+        cancelClicked() {
+            this.showSlot = !this.showSlot
+                this.$emit('cancelClicked')
+        },
+        save() {
+            console.log("saved")
+            this.showSlot = !this.showSlot
+            this.$emit("save")
+        }
+    }
 }
 </script>
 
@@ -54,7 +88,6 @@ export default {
 .icon {
     margin-right: 5px;
 }
-
 
 .text {
     margin-top: 5px;
@@ -84,6 +117,22 @@ export default {
 
 .edit:active {
     color: var(--orange-secondary);
+}
+
+.cancel {
+    color: red;
+}
+
+.cancel:active, .cancel:hover {
+    color: darkred;
+}
+
+.edit-slot {
+    padding: 0px 5px;
+}
+
+.btn {
+    margin-top: 15px;
 }
 
 </style>

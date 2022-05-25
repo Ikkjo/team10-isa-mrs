@@ -103,7 +103,6 @@ export default {
 <style scoped>
 #address-input {
     display: flex;
-    margin: 15px 0px;
 }
 
 #address-input .form-control:last-child {
@@ -111,25 +110,18 @@ export default {
 }
 
 .form-control {
-    width: 32%;
-    margin-right: auto; 
+    display: inline-block !important;
+    margin-right: 10px;
 }
 
 .form-control input {
     height: 48px;
+    width: 100%;
 }
 
-.alert {
-    transition: 0.5s;
-    border-color: red !important;
-    border-width: 2px;
+.form-control select {
+    width: 100%;
 }
 
-.alert-info {
-    position: absolute;
-    transition: 0.05s;
-    color: red !important;
-    font-size: 0.9rem;
-    margin-top: 65px;
-}
+
 </style>

@@ -5,19 +5,166 @@
              <div class="info-section">
                 <h2>Personal info</h2>
                 <div class="info-items">
-                    <InfoItem iconClass="material-icons" icon="account_box" label="Account type" :text="user.userRole" buttonText="Register new account"/>
-                    <InfoItem iconClass="material-icons" icon="account_circle" label="Full name" :text="user.firstName+' '+user.lastName" buttonText="Edit"/>
-                    <InfoItem iconClass="material-icons" icon="contact_phone" label="Phone number" :text="user.phoneNumber" buttonText="Edit"/>
-                    <InfoItem iconClass="material-icons" icon="house" label="Address" :text="user.address.address+', '+user.address.city+', '+user.address.country" buttonText="Edit"/>
-                    <InfoItem iconClass="material-icons" icon="calendar_month" label="Date of birth" :text="user.dateOfBirth" buttonText="Edit"/>
+                    <InfoItem icon="account_box" label="Account type" :text="user.userRole" buttonText="Register new account" @editClicked="registerNewAccountClicked" :useSlot="false"/>
+                    <InfoItem icon="account_circle" label="Full name" :text="user.firstName+' '+user.lastName" buttonText="Edit" @save="saveFullName" @cancelClicked="cancelEdit" :saveDisabled="$v.user.firstName.$invalid || $v.user.lastName.$invalid ">
+                        <template slot="edit">
+                            <div class="form-control">
+                                <label for="first-name">First Name</label>
+                                <input type="text"
+                                    v-model="user.firstName"
+                                    name="first-name" 
+                                    @focus="inFocus('firstName')" 
+                                    @blur="outFocus('firstName')" 
+                                    :class="getClass('firstName')" 
+                                    :placeholder="getPlaceholder('firstName', user.firstName)">
+                                <div class="alert-info" 
+                                    v-if="!isFocused('firstName') 
+                                    && !$v.user.firstName.minLength 
+                                    || !$v.user.firstName.maxLength
+                                    || !$v.user.firstName.alpha"
+                                    >
+                                    Between 2-20 characters, no numbers.
+                                </div>
+                            </div>
+                            <div class="form-control">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" 
+                                    v-model="user.lastName" 
+                                    name="last-name" 
+                                    @focus="inFocus('lastName')" 
+                                    @blur="outFocus('lastName')" 
+                                    :class="getClass('lastName')" 
+                                    :placeholder="getPlaceholder('lastName', user.lastName)">
+                                <div class="alert-info" 
+                                    v-if="!isFocused('lastName') && 
+                                    !($v.user.lastName.minLength 
+                                    && $v.user.lastName.maxLength
+                                    && $v.user.lastName.alpha)"
+                                    >
+                                    Between 2-20 characters, no numbers.
+                                </div>
+                            </div>
+                        </template>
+                    </InfoItem>
+                    <InfoItem icon="contact_phone" label="Phone number" :text="user.phoneNumber" buttonText="Edit" @save="savePhoneNumber" @cancelClicked="cancelEdit" :saveDisabled="phoneNumberTmp && !phoneNumberTmp.isValid">
+                        <template slot="edit">
+                            <div class="form-control block-form">
+                                <PhoneNumberInput
+                                    class="phone-number" 
+                                    v-model="user.phoneNumber" 
+                                    default-country-code="RS" 
+                                    size="lg"
+                                    color="#f0a500"
+                                    valid-color="green"
+                                    error-color="red"
+                                    @update="updatePhone"/>
+                            </div>
+                        </template>
+                    </InfoItem>
+                    <InfoItem icon="house" label="Address" :text="user.address.address+', '+user.address.city+', '+user.address.country" buttonText="Edit" @save="saveAddress" :saveDisabled="$v.address.$invalid" @cancelClicked="cancelEdit">
+                        <template slot="edit">
+                            <div class="block-form">
+                                <AddressInput
+                                @update:address="updateAddress"
+                                @update:city="updateCity"
+                                @update:country="updateCountry"
+                                :validate="true"/>
+                            </div>
+                        </template>
+                    </InfoItem>
+                    <InfoItem icon="calendar_month" label="Date of birth" :text="user.dateOfBirth" buttonText="Edit" @save="saveDateOfBirth" :saveDisabled="!dateOfBirth.isValid">
+                        <template slot="edit">
+                            <div class="form-control block-form">
+                                <label for="datepicker">Minimum Age: 18</label>
+                                <DropdownDatepicker
+                                    id="datepicker" 
+                                    name="datepicker" 
+                                    displayFormat="dmy" 
+                                    :minAge="18"
+                                    :onChange="updateDate"
+                                    :onDayChange="updateDay"
+                                    :onMonthChange="updateMonth"
+                                    :onYearChange="updateYear"
+                                    />
+                                <div class="alert-info"
+                                    v-if="!isFocused('dateOfBirth') 
+                                    && !dateOfBirth.isValid"
+                                    >
+                                    Select a valid date.
+                                </div>
+                            </div>
+                        </template>
+                    </InfoItem>
                 </div>
             </div>
             <div class="info-section">
                 <h2>Login info</h2>
                 <div class="info-items">
-                    <InfoItem iconClass="material-icons" icon="email" label="Email" :text="user.email" buttonText="Change"/>
-                    <InfoItem iconClass="material-icons" icon="password" label="Password" text="*********" buttonText="Change"/>
-                    <InfoItem iconClass="material-icons" icon="info" label="Account status" text="Active" buttonText="Deactivate" style="color: red;"/>
+                    <InfoItem icon="email" label="Email" :text="user.email" buttonText="Change" @save="saveEmail" :saveDisabled="$v.user.email.$invalid" @cancelClicked="cancelEdit">
+                        <template slot="edit">
+                            <div class="form-control block-form">
+                                <label for="email">Changing the email will log you out.<br>Use an email address you'll always have access to.</label>
+                                <input type="text" 
+                                    v-model="user.email" 
+                                    name="email" 
+                                    @focus="inFocus('email')" 
+                                    @blur="outFocus('email')" 
+                                    :class="getClass('email')" 
+                                    :placeholder="getPlaceholder('email')">
+                                <div class="alert-info" 
+                                    v-if="!isFocused('email') 
+                                    && !$v.user.email.email"
+                                    >
+                                    Incorrect email format.
+                                </div>
+                            </div>
+                        </template>
+                    </InfoItem>
+                    <InfoItem icon="password" label="Password" text="*********" buttonText="Change" @save="savePassword" :saveDisabled="$v.currentPassword.$invalid || $v.newPassword.$invalid || $v.confirmNewPassword.$invalid">
+                        <template slot="edit">
+                            <div class="wrapper">
+                                <div class="form-control">
+                                    <label for="password">Current Password</label>
+                                    <input type="password" 
+                                        v-model="currentPassword" 
+                                        name="password"  
+                                        @focus="inFocus('currentPassword')"
+                                        @blur="outFocus('currentPassword')" 
+                                        :class="getClass('currentPassword')"
+                                        :placeholder="getPlaceholder('currentPassword')">
+                                </div>
+                                <div class="form-control">
+                                    <label for="password">New Password</label>
+                                    <input type="password" 
+                                        v-model="newPassword" 
+                                        name="password"  
+                                        @focus="inFocus('newPassword')"
+                                        @blur="outFocus('newPassword')" 
+                                        :class="getClass('newPassword')"
+                                        :placeholder="getPlaceholder('newPassword', 'At least 8 characters')">
+                                    <div class="alert-info" 
+                                        v-if="!this.infocus['newPassword'] && !($v.newPassword.minLength && $v.newPassword.maxLength)">
+                                        Must have 8-30 characters.
+                                    </div>
+                                </div>
+                                <div class="form-control">
+                                    <label for="confirm-password">Confirm new password</label>
+                                    <input type="password" 
+                                        v-model="confirmNewPassword" 
+                                        name="confirm-password" 
+                                        @focus="inFocus('confirmNewPassword')" 
+                                        @blur="outFocus('confirmNewPassword')" 
+                                        :class="getClass('confirmNewPassword')" 
+                                        :placeholder="getPlaceholder('confirmNewPassword')">
+                                    <div class="alert-info" 
+                                        v-if="!this.infocus['confirmNewPassword'] && !$v.confirmNewPassword.sameAsPassword">
+                                        Passwords don't match.
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </InfoItem>
+                    <InfoItem icon="info" label="Account status" text="Active" buttonText="Deactivate" style="color: red;"/>
                 </div>
             </div>
         </div>
@@ -27,16 +174,350 @@
 <script>
 import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import InfoItem from "@/components/InfoItem.vue"
+import PhoneNumberInput from 'vue-phone-number-input'
+import AddressInput from '@/components/AddressInput.vue'
+import DropdownDatepicker from 'vue-dropdown-datepicker/src/dropdown-datepicker.vue';
 import axios from "axios"
+import { required, minLength, maxLength, sameAs, email, alpha } from 'vuelidate/lib/validators'
 export default {
     name: 'AccountInfo',
     components: {
         BusinessClientNavBar,
+        PhoneNumberInput,
+        AddressInput,
+        DropdownDatepicker,
         InfoItem
     },
     data() {
         return {
-            user: {},
+            user: {
+                address: {},
+                phoneNumber: '',
+            },
+            phoneNumberTmp: null,
+            userCopy: {
+                address: {}
+            },
+            address: {address: '', city: '', country: ''},
+            dateOfBirth:{
+                day: null,
+                month: null,
+                year: null,
+                isValid: false,
+                updatingDay: false,
+            },
+            currentPassword: '',
+            newPassword: '',
+            confirmNewPassword: '',
+            infocus: {
+                firstName: true,
+                lastName: true,
+                username: true,
+                email: true,
+                currentPassword: true,
+                newPassword: true,
+                confirmNewPassword: true,
+                registrationReason: true,
+                role: true,
+                dateOfBirth: true,
+            },
+        }
+    },
+    validations:{
+        user: {
+            firstName: {
+                required,
+                minLength: minLength(2),
+                maxLength: maxLength(20),
+                alpha
+            },
+            lastName: {
+                required,
+                minLength: minLength(2),
+                maxLength: maxLength(20),
+                alpha
+            },
+            email: {
+                required,
+                email
+            },
+        },
+        address: {
+                address: {
+                    required,
+                    minLength: minLength(5),
+                    maxLength: maxLength(40)
+                },
+                city: {
+                    required,
+                    minLength: minLength(2),
+                    maxLength: maxLength(40)
+                },
+                country: {
+                    required
+                },
+            },
+        currentPassword: {
+                required
+            },
+        newPassword: {
+            required,
+            minLength: minLength(8),
+            maxLength: maxLength(30),
+        },
+        confirmNewPassword: {
+            required,
+            sameAsPassword: sameAs("newPassword")
+        },
+        
+    },
+    methods: {
+        saveFullName() {
+            if (this.user.firstName !== this.userCopy.firstName) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/firstname',
+                data: this.user.firstName,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("First Name Invalid")
+                    else
+                        this.userCopy.firstName = response.data
+
+                })
+                .catch((error) => {
+                    this.user.firstName = this.userCopy.firstName
+                    alert("First Name Invalid")
+                    console.log(error);
+                }) 
+            }
+            if (this.user.lastName !== this.userCopy.lastName) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/lastname',
+                data: this.user.lastName,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    if (response.status >= 400)
+                        alert("Last Name Invalid")
+                    else
+                        this.userCopy.lastName = response.data
+                })
+                .catch((error) => {
+                    this.user.lastName = this.userCopy.lastName
+                    alert("Last Name Invalid")
+                    console.log(error);
+                }) 
+            }
+        },
+        savePhoneNumber() {
+            if (this.phoneNumberTmp.formattedNumber !== this.userCopy.phoneNumber) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/phone-number',
+                data: this.phoneNumberTmp.formattedNumber,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Phone Number Invalid")
+                    else
+                        this.userCopy.phoneNumber = response.data
+
+                })
+                .catch((error) => {
+                    this.user.phoneNumber = this.userCopy.phoneNumber
+                    alert("Phone Number Invalid")
+                    console.log(error);
+                }) 
+            }
+        },
+        saveAddress() {
+            if (this.address !== this.userCopy.address) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/address',
+                data: this.address,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Address Invalid")
+                    else
+                        this.userCopy.address = response.data
+                        this.user.address = response.data
+
+                })
+                .catch((error) => {
+                    alert("Address Invalid")
+                    console.log(error);
+                }) 
+            }
+        },
+        saveDateOfBirth() {
+            let day = (""+this.dateOfBirth.day).length === 1 ? "0"+this.dateOfBirth.day : ""+this.dateOfBirth.day
+            let month = (""+this.dateOfBirth.month).length === 1 ? "0"+this.dateOfBirth.month : ""+this.dateOfBirth.month
+            let dob = ""+day+"."+month+"."+this.dateOfBirth.year+"."
+            if (dob !== this.userCopy.dateOfBirth) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/update/date-of-birth',
+                data: dob,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Date of Birth invalid")
+                    else
+                        this.userCopy.dateOfBirth = response.data
+                        this.user.dateOfBirth = response.data
+
+                })
+                .catch((error) => {
+                    alert("Date of Birth invalid")
+                    console.log(error);
+                }) 
+            }
+        },
+        saveEmail(){
+            if (this.user.email !== this.userCopy.email) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/email',
+                data: this.user.email,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Email Invalid")
+                    else
+                        this.userCopy.email = response.data
+                        // logout
+
+                })
+                .catch((error) => {
+                    this.user.email = this.userCopy.email
+                    alert("Email Invalid")
+                    console.log(error);
+                }) 
+            }
+
+        },
+        savePassword(){
+            if (this.newPassword !== this.currentPassword) {
+                axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/user/update/password',
+                data: { currentPassword: this.currentPassword, newPassword: this.newPassword },
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Password Invalid")
+                    else
+                        alert("Password changed successfully")
+                })
+                .catch((error) => {
+                    alert("Password Invalid")
+                    console.log(error);
+                }) 
+            }
+            else
+                alert("Current and new password are the same")
+        },
+        registerNewAccountClicked() {
+            this.$router.push({ name: 'business-client-register' })
+        },
+        updatePhone(phoneNumber){
+            this.phoneNumberTmp = phoneNumber
+        },
+        updateAddress(event){
+            this.address.address = event;
+        },
+        updateCity(event){
+            this.address.city = event;
+        },
+        updateCountry(event){
+            this.address.country = event;
+        },
+        isDateValid(){
+            if(this.dateOfBirth.day && this.dateOfBirth.month && this.dateOfBirth.year)
+                this.dateOfBirth.isValid = true;
+        },
+        updateDay(event){
+            this.dateOfBirth.updatingDay = true;
+            this.dateOfBirth.day = event;
+            this.isDateValid();
+        },
+        updateMonth(event){
+            this.dateOfBirth.month = event;
+            this.isDateValid();
+        },
+        updateYear(event){
+            this.dateOfBirth.year = event;
+            this.isDateValid();
+            this.infocus.dateOfBirth = false;
+        },
+        updateDate(day){
+            if(this.dateOfBirth.updatingDay){
+                this.dateOfBirth.updatingDay = false;
+            }
+            else if (day != this.dateOfBirth.day) {
+                this.dateOfBirth.day = null;
+                this.dateOfBirth.isValid = false;
+            }
+        },
+        cancelEdit() {
+            this.user = JSON.parse(JSON.stringify(this.userCopy))
+        },
+        isFocused(field) {
+            return this.infocus[field]
+        },
+        inFocus(field) {
+            this.infocus[field] = true
+        },
+        outFocus(field) {
+            this.infocus[field] = false
+        },
+        getClass(field) {
+            let cls = ''
+            if (field in this.$v.user)
+                cls = !this.isFocused(field) && this.$v.user[field].$invalid ? 'alert' : '';
+            else
+                cls = !this.isFocused(field) && this.$v[field].$invalid ? 'alert' : '';
+            return cls;
+        },
+        getPlaceholder(field, defaultPlaceholder='') {
+            let placeholder = ''
+            if (field in this.$v.user)
+                placeholder = !this.isFocused(field) && this.$v.user[field].$invalid ? 'Required' : defaultPlaceholder;
+            else
+                placeholder = !this.isFocused(field) && this.$v[field].$invalid ? 'Required' : defaultPlaceholder;
+            
+            return placeholder;
         }
     },
     created() {
@@ -47,6 +528,7 @@ export default {
           .then((response) => {
             console.log(response.data)
             this.user = response.data
+            this.userCopy = JSON.parse(JSON.stringify(response.data))
           })
           .catch(function(error) {
               console.log(error)
@@ -56,7 +538,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #account-info {
     max-width: 100%;
 }
@@ -83,6 +565,42 @@ h2 {
     width: 600px;
     min-width: 300px;
     max-width: 100%;
+}
+
+.form-control {
+    display: inline-block;
+    max-width: 50%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+
+.form-control input {
+    width: 95% !important;
+}
+
+.phone-form {
+    display: flex;
+}
+
+.date-form {
+    display: block;
+}
+
+label {
+    font-size: 0.9rem;
+    color: grey;
+    display: inline-block;
+}
+
+.block-form {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.wrapper {
+    display: flex;
 }
 
 </style>
