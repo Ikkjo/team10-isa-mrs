@@ -111,13 +111,13 @@ public class RentalEntityController {
     @Transactional
     @PutMapping("/update/price/{id}")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<Integer> updatePrice(@PathVariable UUID id, @RequestBody int price) {
+    public ResponseEntity<Integer> updatePrice(@PathVariable UUID id, @RequestBody String price) {
         try {
             rentalEntityService.updatePrice(price, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(price, HttpStatus.OK);
+        return new ResponseEntity<>(Integer.parseInt(price), HttpStatus.OK);
     }
 
 }
