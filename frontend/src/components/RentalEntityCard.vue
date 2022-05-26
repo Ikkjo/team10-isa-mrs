@@ -18,7 +18,6 @@ export default {
     props: ['rentalEntity'],
     methods: {
         detailedView() {
-            window.sessionStorage.setItem('rentalEntity', this.rentalEntity) 
             this.$router.push({
                 name: 'my-listing',
                 params: {

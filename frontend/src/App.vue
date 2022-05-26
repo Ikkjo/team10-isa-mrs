@@ -165,4 +165,8 @@ ul {
     font-size: 0.9rem;
 }
 
+.block {
+  display: block;
+}
+
 </style>
