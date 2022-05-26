@@ -29,7 +29,7 @@ class ValidatorTest {
 
     @BeforeEach
     void setUp() {
-        validator = new Validator(addressValidator);
+        validator = new Validator(addressValidator, null);
     }
 
     @Test

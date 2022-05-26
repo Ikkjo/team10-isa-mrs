@@ -1,6 +1,8 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.ShipDto;
@@ -13,10 +15,22 @@ import team10.app.util.Validator;
 @AllArgsConstructor
 public class ShipOwnerService {
 
-    private ShipOwnerRepository shipOwnerRepository;
-    private ShipRepository shipRepository;
-    private Validator validator;
+    private final ShipOwnerRepository shipOwnerRepository;
+    private final ShipRepository shipRepository;
+    private final Validator validator;
 
+    @Autowired
+    public ShipOwnerService(ShipOwnerRepository shipOwnerRepository,
+                            ShipRepository shipRepository,
+                            AddressRepository addressRepository,
+                            PictureService pictureService,
+                            PictureRepository pictureRepository,
+                            Validator validator) {
+
+        this.shipOwnerRepository = shipOwnerRepository;
+        this.shipRepository = shipRepository;
+        this.validator = validator;
+    }
 
 
     public void addShip(ShipDto request, String email) throws RuntimeException {
