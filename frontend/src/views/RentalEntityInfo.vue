@@ -49,7 +49,7 @@ export default {
             console.log(title)
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/title',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/title/'+this.rentalEntity.id,
                 data: title,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -71,7 +71,7 @@ export default {
             console.log(address)
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/address',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/address/'+this.rentalEntity.id,
                 data: address,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -93,7 +93,7 @@ export default {
             console.log(description)
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/description',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/description/'+this.rentalEntity.id,
                 data: description,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -115,7 +115,7 @@ export default {
             console.log(rulesOfConduct)
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/rules-of-conduct',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/rules-of-conduct/'+this.rentalEntity.id,
                 data: rulesOfConduct,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -137,7 +137,7 @@ export default {
             console.log(additionalServices)
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/additionalServices',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/additional-services/'+this.rentalEntity.id,
                 data: additionalServices,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -156,11 +156,11 @@ export default {
                 }) 
         },
         updatePrice(price) {
-            console.log(price)
+            console.log(parseInt(price))
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/description',
-                data: price,
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/price/'+this.rentalEntity.id,
+                data: parseInt(price),
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
