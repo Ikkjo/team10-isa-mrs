@@ -108,14 +108,14 @@ public class Validator {
 
     public boolean validateShipDto(ShipDto shipDto) {
         return validateRentalEntity(shipDto)
-                && inRange(SHIP_TYPE_MIN_LENGTH, SHIP_TYPE_MAX_LENGTH, shipDto.getType().length())
-                && inRange(SHIP_MIN_LENGTH, SHIP_MAX_LENGTH, shipDto.getLength())
-                && inRange(SHIP_MIN_ENGINE_COUNT, SHIP_MAX_ENGINE_COUNT, shipDto.getEngineCount())
-                && inRange(SHIP_MIN_POWER, SHIP_MAX_POWER, shipDto.getEnginePower())
-                && inRange(SHIP_MIN_SPEED, SHIP_MAX_SPEED, shipDto.getEngineCount())
-                && inRange(SHIP_MIN_NAVIGATION_EQUIPMENT_LENGTH, SHIP_MAX_NAVIGATION_EQUIPMENT_LENGTH, shipDto.getNavigationEquipment().length())
-                && inRange(SHIP_MIN_FISHING_EQUIPMENT_LENGTH, SHIP_MAX_FISHING_EQUIPMENT_LENGTH, shipDto.getFishingEquipment().length())
-                && inRange(SHIP_MIN_CAPACITY, SHIP_MAX_CAPACITY, shipDto.getCapacity())
+                && this.validateShipType(shipDto.getType())
+                && this.validateShipLength(shipDto.getLength())
+                && this.validateShipEngineCount(shipDto.getEngineCount())
+                && this.validateShipEnginePower(shipDto.getEnginePower())
+                && this.validateShipMaxSpeed(shipDto.getMaxSpeed())
+                && this.validateShipNavigationEquipment(shipDto.getNavigationEquipment())
+                && this.validateShipFishingEquipment(shipDto.getFishingEquipment())
+                && this.validateShipCapacity(shipDto.getCapacity())
                 && addressValidator.testShip(shipDto.getAddress());
 
     }
@@ -179,5 +179,37 @@ public class Validator {
 
     public boolean validateVacationHomeBeds(int beds) {
         return inRange(VACATION_HOME_MIN_BEDS, VACATION_HOME_MAX_BEDS, beds);
+    }
+
+    public boolean validateShipType(String type) {
+        return inRange(SHIP_TYPE_MIN_LENGTH, SHIP_TYPE_MAX_LENGTH, type.length());
+    }
+
+    public boolean validateShipLength(double length) {
+        return inRange(SHIP_MIN_LENGTH, SHIP_MAX_LENGTH, length);
+    }
+
+    public boolean validateShipEngineCount(int engineCount) {
+        return inRange(SHIP_MIN_ENGINE_COUNT, SHIP_MAX_ENGINE_COUNT, engineCount);
+    }
+
+    public boolean validateShipEnginePower(int enginePower) {
+        return inRange(SHIP_MIN_POWER, SHIP_MAX_POWER, enginePower);
+    }
+
+    public boolean validateShipMaxSpeed(int maxSpeed) {
+        return inRange(SHIP_MIN_SPEED, SHIP_MAX_SPEED, maxSpeed);
+    }
+
+    public boolean validateShipNavigationEquipment(String navigationEquipment) {
+        return inRange(SHIP_MIN_NAVIGATION_EQUIPMENT_LENGTH, SHIP_MAX_NAVIGATION_EQUIPMENT_LENGTH, navigationEquipment.length());
+    }
+
+    public boolean validateShipFishingEquipment(String fishingEquipment) {
+        return inRange(SHIP_MIN_FISHING_EQUIPMENT_LENGTH, SHIP_MAX_FISHING_EQUIPMENT_LENGTH, fishingEquipment.length());
+    }
+
+    public boolean validateShipCapacity(int capacity) {
+        return inRange(SHIP_MIN_CAPACITY, SHIP_MAX_CAPACITY, capacity);
     }
 }
