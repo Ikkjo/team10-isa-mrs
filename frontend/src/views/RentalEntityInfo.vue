@@ -19,8 +19,17 @@
                 @update:beds="updateBeds"/>
             <ShipAdditionalInfo
                 v-if="userRole === 'SHIP_OWNER'"
-                :rentalEntity="rentalEntity"
-                ref="shipInfo"/>
+                :ship="rentalEntity"
+                ref="shipInfo"
+                @update:shipType="updateShipType"
+                @update:shipLength="updateShipLength"
+                @update:shipEngineCount="updateShipEngineCount"
+                @update:shipEnginePower="updateShipEnginePower"
+                @update:shipMaxSpeed="updateShipMaxSpeed"
+                @update:shipNavigationEquipment="updateShipNavigationEquipment"
+                @update:shipFishingEquipment="updateShipFishingEquipment"
+                @update:shipCapacity="updateShipCapacity"
+                @update:shipCancellation="updateShipCancellation"/>
         </div>
 
     </div>
@@ -226,7 +235,208 @@ export default {
                     alert("Beds Invalid")
                     console.log(error);
                 }) 
-        }
+        },
+        updateShipType(type) {
+            console.log("updating ship type...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/type/'+this.rentalEntity.id,
+                data: type,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Ship Type Invalid")
+                    else
+                        this.rentalEntity.type = response.data
+                })
+                .catch((error) => {
+                    alert("Ship Type Invalid")
+                    console.log(error);
+                }) 
+
+        },
+        updateShipLength(length) {
+            console.log("updating ship length..")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/length/'+this.rentalEntity.id+'/'+length,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Ship length Invalid")
+                    else
+                        this.rentalEntity.length = response.data
+                })
+                .catch((error) => {
+                    alert("Ship length Invalid")
+                    console.log(error);
+                }) 
+
+        },
+        updateShipEngineCount(engineCount) {
+            console.log("updating ship engine count...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/engine-count/'+this.rentalEntity.id+'/'+engineCount,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Ship Engine Count Invalid")
+                    else
+                        this.rentalEntity.engineCount = response.data
+                })
+                .catch((error) => {
+                    alert("Ship Engine Count Invalid")
+                    console.log(error);
+                }) 
+
+        },
+        updateShipEnginePower(enginePower) {
+            console.log("updating ship engine power...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/engine-power/'+this.rentalEntity.id+'/'+enginePower,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Ship Engine Power Invalid")
+                    else
+                        this.rentalEntity.enginePower = response.data
+                })
+                .catch((error) => {
+                    alert("Ship Engine Power Invalid")
+                    console.log(error);
+                }) 
+
+        },
+        updateShipMaxSpeed(maxSpeed) {
+            console.log("updating ship max speed...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/max-speed/'+this.rentalEntity.id+'/'+maxSpeed,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Ship Max Speed Invalid")
+                    else
+                        this.rentalEntity.maxSpeed = response.data
+                })
+                .catch((error) => {
+                    alert("Ship Max Speed Invalid")
+                    console.log(error);
+                }) 
+
+        },
+        updateShipNavigationEquipment(navigationEquipment) {
+            console.log("updating ship navigation equipment..")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/navigation-equipment/'+this.rentalEntity.id,
+                data: navigationEquipment,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Ship Navigation Equipment Invalid")
+                    else
+                        this.rentalEntity.navigationEquipment = response.data
+                })
+                .catch((error) => {
+                    alert("Ship Navigation Equipment Invalid")
+                    console.log(error);
+                }) 
+
+        },
+        updateShipFishingEquipment(fishingEquipment) {
+            console.log("updating ship fishing equipment..")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/fishing-equipment/'+this.rentalEntity.id,
+                data: fishingEquipment,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Ship Fishing Equipment Invalid")
+                    else
+                        this.rentalEntity.fishingEquipment = response.data
+                })
+                .catch((error) => {
+                    alert("Ship Fishing Equipment Invalid")
+                    console.log(error);
+                }) 
+
+        },
+        updateShipCapacity(capacity) {
+            console.log("updating ship capcity...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/capacity/'+this.rentalEntity.id+'/'+capacity,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Ship Capacity Invalid")
+                    else
+                        this.rentalEntity.capacity = response.data
+                })
+                .catch((error) => {
+                    alert("Ship Capacity Invalid")
+                    console.log(error);
+                }) 
+
+        },
+        updateShipCancellation(cancellation){
+            console.log("updating ship...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/cancellation/'+this.rentalEntity.id+'/'+cancellation,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Ship Cancellation Invalid")
+                    else
+                        this.rentalEntity.cancellation = response.data
+                })
+                .catch((error) => {
+                    alert("Ship Cancellation Invalid")
+                    console.log(error);
+                }) 
+
+        },
     },
     created() {
         this.userRole = window.localStorage.getItem('userRole')
@@ -241,7 +451,7 @@ export default {
                 if (this.userRole === 'HOME_OWNER')
                     this.$refs.vacationHomeInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 else if (this.userRole === 'SHIP_OWNER')
-                    this.$refs.shipInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                    this.$refs.shipInfo.setShipCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 // TODO: FISHING_INSTRUCTOR
             })
             .catch(function(error) {
