@@ -112,7 +112,7 @@
                         @updated:rooms="roomsUpdated" 
                         @updated:beds="bedsUpdated" 
                         ref="roomsInput"
-                        />
+                    />
                 </div>
 
                 <!-- STEP 5: SHIP INPUT -->

@@ -11,8 +11,16 @@
                 @update:additionalServices="updateAdditionalServices"
                 @update:price="updatePrice"
             />
-            <VacationHomeAdditionalInfo v-if="userRole === 'HOUSE_OWNER'" :rentalEntity="rentalEntity"/>
-            <ShipAdditionalInfo v-if="userRole === 'SHIP_OWNER'" :rentalEntity="rentalEntity"/>
+            <VacationHomeAdditionalInfo
+                v-if="userRole === 'HOUSE_OWNER'"
+                :rentalEntity="rentalEntity"
+                ref="vacationHomeInfo"
+                @update:rooms="updateRooms"
+                @update:beds="updateBeds"/>
+            <ShipAdditionalInfo
+                v-if="userRole === 'SHIP_OWNER'"
+                :rentalEntity="rentalEntity"
+                ref="shipInfo"/>
         </div>
 
     </div>
@@ -176,6 +184,46 @@ export default {
                     alert("Price Invalid")
                     console.log(error);
                 }) 
+        },
+        updateRooms(rooms) {
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-home/update/rooms/'+this.rentalEntity.id+'/'+rooms,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Rooms Invalid")
+                    else
+                        this.rentalEntity.rooms = response.data
+                })
+                .catch((error) => {
+                    alert("Rooms Invalid")
+                    console.log(error);
+                }) 
+        },
+          updateBeds(beds) {
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-home/update/beds/'+this.rentalEntity.id+'/'+beds,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Beds Invalid")
+                    else
+                        this.rentalEntity.beds = response.data
+                })
+                .catch((error) => {
+                    alert("Beds Invalid")
+                    console.log(error);
+                }) 
         }
     },
     created() {
@@ -188,6 +236,11 @@ export default {
                 console.log(response.data)
                 this.rentalEntity = response.data
                 this.$refs.basicInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                if (this.userRole === 'HOME_OWNER')
+                    this.$refs.vacationHomeInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                else if (this.userRole === 'SHIP_OWNER')
+                    this.$refs.shipInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                // TODO: FISHING_INSTRUCTOR
             })
             .catch(function(error) {
                 console.log(error)
