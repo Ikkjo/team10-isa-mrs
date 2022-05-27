@@ -120,4 +120,6 @@ public class RentalEntityController {
         return new ResponseEntity<>(Integer.parseInt(price), HttpStatus.OK);
     }
 
+
+
 }
