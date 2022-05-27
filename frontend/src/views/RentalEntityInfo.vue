@@ -419,8 +419,7 @@ export default {
             console.log("updating ship...")
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/free-cancellation/'+this.rentalEntity.id,
-                data: cancellation,
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/free-cancellation/'+this.rentalEntity.id+'/'+cancellation,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
@@ -430,7 +429,7 @@ export default {
                     if (response.status >= 400)
                         alert("Ship Cancellation Invalid")
                     else
-                        this.rentalEntity.cancellation = response.data
+                        this.rentalEntity.freeCancellation = response.data
                 })
                 .catch((error) => {
                     alert("Ship Cancellation Invalid")

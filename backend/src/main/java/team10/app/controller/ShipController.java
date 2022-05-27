@@ -114,9 +114,9 @@ public class ShipController {
     }
 
     @Transactional
-    @PutMapping("/update/free-cancellation/{id}")
+    @PutMapping("/update/free-cancellation/{id}/{is-free-cancellation}")
     @PreAuthorize("hasRole('SHIP_OWNER')")
-    public ResponseEntity<Boolean> updateFreeCancellation(@PathVariable UUID id, @RequestBody Boolean isFreeCancellation) {
+    public ResponseEntity<Boolean> updateFreeCancellation(@PathVariable(name = "id") UUID id, @PathVariable(name = "is-free-cancellation") boolean isFreeCancellation) {
         try {
             shipService.updateFreeCancellation(isFreeCancellation, id);
         } catch (RuntimeException ex) {

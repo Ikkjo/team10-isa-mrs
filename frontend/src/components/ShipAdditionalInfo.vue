@@ -38,6 +38,7 @@
               :increment="1" 
               :minValue="1" 
               :maxValue="50"
+              class="number-input"
               />
           </template>
         </InfoItem>
@@ -53,6 +54,7 @@
               :increment="1" 
               :minValue="1" 
               :maxValue="5"
+              class="number-input"
               />
           </template>
         </InfoItem>
@@ -67,6 +69,7 @@
               :increment="5" 
               :minValue="1" 
               :maxValue="10000"
+              class="number-input"
               />
           </template>
         </InfoItem>
@@ -81,6 +84,7 @@
               :increment="5" 
               :minValue="1" 
               :maxValue="200"
+              class="number-input"
               />
           </template>
         </InfoItem>
@@ -147,22 +151,27 @@
               :increment="2" 
               :minValue="1" 
               :maxValue="100"
+              class="number-input"
               />
           </template>
         </InfoItem>
-        <InfoItem icon="free_cancellation" label="Free cancellation" :text="ship.freeCancellation ? 'Free cancellation' : 'Owner keeps a percentage'"
-        @save="saveShipCancellation">
-		<div class="form-control">
-            <select name="cancellation" id="cancellation" v-model="shipCopy.cancellation">
-                  <option :value="null" selected disabled hidden>Choose an option</option>
-                  <option :value="true">Free cancellation</option>
-                  <option :value="false">Owner keeps a percentage</option>
-              </select>
-          </div>
+        <InfoItem icon="free_cancellation" label="Free cancellation"
+            :text="ship.freeCancellation ? 'Free cancellation' : 'Owner keeps a percentage'"
+            :saveDisabled="shipCopy.cancellation === null"
+            @save="saveShipCancellation">
+            <template slot="edit">
+                <div class="form-control">
+                    <select name="cancellation" id="cancellation" v-model="shipCopy.cancellation">
+                        <option :value="null" selected disabled hidden>Choose an option</option>
+                        <option :value="true">Free cancellation</option>
+                        <option :value="false">Owner keeps a percentage</option>
+                    </select>
+                </div>
+        </template>
         </InfoItem>
-      </div>
-      
-  </div>
+        </div>
+    </div>
+  
 </template>
 
 <script>
@@ -327,5 +336,7 @@ export default {
 
 
 <style scoped>
-
+.number-input {
+    justify-content: center;
+}
 </style>
