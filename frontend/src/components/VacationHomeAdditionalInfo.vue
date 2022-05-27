@@ -5,7 +5,7 @@
             <InfoItem icon="bedroom_parent" label="Rooms"
                 :text="rentalEntity.rooms.toString()"
                 :saveDisabled="isRoomsSaveDisabled"
-                @saveClicked="saveRooms">
+                @save="saveRooms">
                 <template slot="edit">
                     <RoomsInput 
                         @updated:rooms="roomsUpdated" 
@@ -17,7 +17,7 @@
             <InfoItem icon="bed" label="beds"
              :text="rentalEntity.beds.toString()"
              :saveDisabled="isBedsSaveDisabled"
-             @saveClicked="saveBeds">
+             @save="saveBeds">
                  <template slot="edit">
                     <RoomsInput 
                         @updated:beds="bedsUpdated" 
@@ -59,10 +59,12 @@ export default {
             this.rentalEntityCopy = rentalEntity
         },
         saveRooms() {
-            this.$emit('update:rooms', this.rentalEntityCopy.rooms)
+            if (this.rentalEntityCopy.rooms !== this.rentalEntity.rooms)
+                this.$emit('update:rooms', this.rentalEntityCopy.rooms)
         },
         saveBeds() {
-            this.$emit('update:beds', this.rentalEntityCopy.beds)
+            if (this.rentalEntityCopy.beds !== this.rentalEntity.beds)
+                this.$emit('update:beds', this.rentalEntityCopy.beds)
         }
     },
     computed: {

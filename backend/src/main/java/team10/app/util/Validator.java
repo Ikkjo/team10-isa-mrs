@@ -101,8 +101,8 @@ public class Validator {
 
     public boolean validateVacationHomeDTO(VacationHomeDto vacationHomeDto) {
         return validateRentalEntity(vacationHomeDto)
-                && inRange(VACATION_HOME_MIN_ROOMS, VACATION_HOME_MAX_ROOMS, vacationHomeDto.getRooms())
-                && inRange(VACATION_HOME_MIN_BEDS, VACATION_HOME_MAX_BEDS, vacationHomeDto.getBeds())
+                && this.validateVacationHomeRooms(vacationHomeDto.getRooms())
+                && this.validateVacationHomeBeds(vacationHomeDto.getBeds())
                 && addressValidator.testVacationHome(vacationHomeDto.getAddress());
     }
 
@@ -173,4 +173,11 @@ public class Validator {
         return addressValidator.isNotTakenAddress(addressDto, rentalEntity);
     }
 
+    public boolean validateVacationHomeRooms(int rooms) {
+        return inRange(VACATION_HOME_MIN_ROOMS, VACATION_HOME_MAX_ROOMS, rooms);
+    }
+
+    public boolean validateVacationHomeBeds(int beds) {
+        return inRange(VACATION_HOME_MIN_BEDS, VACATION_HOME_MAX_BEDS, beds);
+    }
 }

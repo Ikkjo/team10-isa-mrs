@@ -186,9 +186,10 @@ export default {
                 }) 
         },
         updateRooms(rooms) {
+            console.log("updating rooms...")
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-home/update/rooms/'+this.rentalEntity.id+'/'+rooms,
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-homes/update/rooms/'+this.rentalEntity.id+'/'+rooms,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
@@ -205,10 +206,11 @@ export default {
                     console.log(error);
                 }) 
         },
-          updateBeds(beds) {
+        updateBeds(beds) {
+            console.log("updating beds...")
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-home/update/beds/'+this.rentalEntity.id+'/'+beds,
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-homes/update/beds/'+this.rentalEntity.id+'/'+beds,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
