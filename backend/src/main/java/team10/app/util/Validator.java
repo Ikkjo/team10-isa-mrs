@@ -5,10 +5,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import team10.app.dto.AdventureDto;
-import team10.app.dto.RentalEntityDto;
-import team10.app.dto.ShipDto;
-import team10.app.dto.VacationHomeDto;
+import team10.app.dto.*;
+import team10.app.model.RentalEntity;
 import team10.app.repository.UserRepository;
 import team10.app.util.exceptions.PasswordInvalidException;
 
@@ -71,12 +69,32 @@ public class Validator {
     private final AddressValidator addressValidator;
     private final EmailValidator emailValidator;
 
+    public boolean validateRentalEntityTitle(String title) {
+        return inRange(TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, title.length());
+    }
+
+    public boolean validateRentalEntityDescription(String description) {
+        return inRange(DESCRIPTION_MIN_LENGTH, DESCRIPTION_MAX_LENGTH, description.length());
+    }
+
+    public boolean validateRentalEntityRulesOfConduct(String rulesOfConduct) {
+        return inRange(RULES_OF_CONDUCT_MIN_LENGTH, RULES_OF_CONDUCT_MAX_LENGTH, rulesOfConduct.length());
+    }
+
+    public boolean validateRentalEntityAdditionalServices(String additionalServices) {
+        return inRange(ADDITIONAL_SERVICES_MIN_LENGTH, ADDITIONAL_SERVICES_MAX_LENGTH, additionalServices.length());
+    }
+
+    public boolean validateRentalEntityPrice(int price) {
+        return inRange(MIN_PRICE, MAX_PRICE, price);
+    }
+
     private boolean validateRentalEntity(RentalEntityDto rentalEntityDto) {
-        return inRange(TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, rentalEntityDto.getTitle().length())
-                && inRange(DESCRIPTION_MIN_LENGTH, DESCRIPTION_MAX_LENGTH, rentalEntityDto.getDescription().length())
-                && inRange(RULES_OF_CONDUCT_MIN_LENGTH, RULES_OF_CONDUCT_MAX_LENGTH, rentalEntityDto.getRulesOfConduct().length())
-                && inRange(ADDITIONAL_SERVICES_MIN_LENGTH, ADDITIONAL_SERVICES_MAX_LENGTH, rentalEntityDto.getAdditionalServices().length())
-                && inRange(MIN_PRICE, MAX_PRICE, rentalEntityDto.getPrice())
+        return this.validateRentalEntityTitle(rentalEntityDto.getTitle())
+                && this.validateRentalEntityDescription(rentalEntityDto.getDescription())
+                && this.validateRentalEntityRulesOfConduct(rentalEntityDto.getRulesOfConduct())
+                && this.validateRentalEntityAdditionalServices(rentalEntityDto.getAdditionalServices())
+                && this.validateRentalEntityPrice(rentalEntityDto.getPrice())
                 && inRange(MIN_PICTURES, MAX_PICTURES, rentalEntityDto.getPictures().size());
     }
 
@@ -149,6 +167,10 @@ public class Validator {
 
     public boolean validatePassword(String password) {
         return inRange(8, 30, password.length());
+    }
+
+    public boolean validateRentalEntityAddress(AddressDto addressDto, RentalEntity rentalEntity) {
+        return addressValidator.isNotTakenAddress(addressDto, rentalEntity);
     }
 
 }

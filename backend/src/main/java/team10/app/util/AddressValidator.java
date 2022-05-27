@@ -3,7 +3,7 @@ package team10.app.util;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import team10.app.dto.AddressDto;
-import team10.app.model.Address;
+import team10.app.model.*;
 import team10.app.repository.AddressRepository;
 import team10.app.repository.AdventureRepository;
 import team10.app.repository.ShipRepository;
@@ -40,6 +40,16 @@ public class AddressValidator implements Predicate<AddressDto> {
 
     public boolean testAdventure(AddressDto address) {
         return adventureRepository.findByAddress(address.getAddress(), address.getCity(), address.getCountry()).isEmpty();
+    }
+
+    public boolean isNotTakenAddress(AddressDto addressDto, RentalEntity rentalEntity) {
+        if (rentalEntity instanceof VacationHome)
+            return testVacationHome(addressDto);
+        if (rentalEntity instanceof Ship)
+            return testShip(addressDto);
+        if (rentalEntity instanceof Adventure)
+            return testAdventure(addressDto);
+        else return false;
     }
 
 }
