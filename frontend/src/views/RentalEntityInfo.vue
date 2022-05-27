@@ -419,7 +419,8 @@ export default {
             console.log("updating ship...")
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/cancellation/'+this.rentalEntity.id+'/'+cancellation,
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/ship/update/free-cancellation/'+this.rentalEntity.id,
+                data: cancellation,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
