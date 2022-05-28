@@ -208,7 +208,7 @@
                     <div class="form-control">
                         <label for="fishing-equipment" class="block-label">Fishing Equipment</label>
                         <textarea 
-                            v-model="adventure.fishingEquipment" 
+                            v-model="ship.fishingEquipment" 
                             name="fishing-equipment" 
                             id="fishing-equipment" 
                             cols="30" rows="4" 

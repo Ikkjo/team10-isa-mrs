@@ -49,7 +49,7 @@ public class RentalEntityController {
     }
 
     @Transactional
-    @PutMapping("/update/title/{id}")
+    @PutMapping("/update/{id}/title")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<String> updateTitle(@PathVariable UUID id, @RequestBody String title) {
         try {
@@ -61,7 +61,7 @@ public class RentalEntityController {
     }
 
     @Transactional
-    @PutMapping("/update/address/{id}")
+    @PutMapping("/update/{id}/address")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<AddressDto> updateAddress(@PathVariable UUID id, @RequestBody AddressDto address) {
         try {
@@ -73,7 +73,7 @@ public class RentalEntityController {
     }
 
     @Transactional
-    @PutMapping("/update/description/{id}")
+    @PutMapping("/update/{id}/description")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<String> updateDescription(@PathVariable UUID id, @RequestBody String description) {
         try {
@@ -85,7 +85,7 @@ public class RentalEntityController {
     }
 
     @Transactional
-    @PutMapping("/update/rules-of-conduct/{id}")
+    @PutMapping("/update/{id}/rules-of-conduct")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<String> updateRulesOfConduct(@PathVariable UUID id, @RequestBody String rulesOfConduct) {
         try {
@@ -97,7 +97,7 @@ public class RentalEntityController {
     }
 
     @Transactional
-    @PutMapping("/update/additional-services/{id}")
+    @PutMapping("/update/{id}/additional-services")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<String> updateAdditionalServices(@PathVariable UUID id, @RequestBody String additionalServices) {
         try {
@@ -109,15 +109,15 @@ public class RentalEntityController {
     }
 
     @Transactional
-    @PutMapping("/update/price/{id}")
+    @PutMapping("/update/{id}/price/{price}")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<Integer> updatePrice(@PathVariable UUID id, @RequestBody String price) {
+    public ResponseEntity<Integer> updatePrice(@PathVariable(name = "id") UUID id, @PathVariable(name = "price") int price) {
         try {
             rentalEntityService.updatePrice(price, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(Integer.parseInt(price), HttpStatus.OK);
+        return new ResponseEntity<>(price, HttpStatus.OK);
     }
 
 

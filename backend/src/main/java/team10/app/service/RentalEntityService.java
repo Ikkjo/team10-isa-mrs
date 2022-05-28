@@ -88,15 +88,9 @@ public class RentalEntityService {
         rentalEntityRepository.updateAdditionalServices(additionalServices, id);
     }
 
-    public void updatePrice(String price, UUID id) {
-        int newPrice;
-        try {
-            newPrice = Integer.parseInt(price);
-        } catch (NumberFormatException ex) {
+    public void updatePrice(int price, UUID id) {
+        if (!validator.validateRentalEntityPrice(price))
             throw new RentalEntityPriceInvalidException(price);
-        }
-        if (!validator.validateRentalEntityPrice(newPrice))
-            throw new RentalEntityPriceInvalidException(price);
-        rentalEntityRepository.updatePrice(newPrice, id);
+        rentalEntityRepository.updatePrice(price, id);
     }
 }
