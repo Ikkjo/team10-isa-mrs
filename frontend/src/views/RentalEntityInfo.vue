@@ -197,7 +197,7 @@ export default {
             console.log("updating rooms...")
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-homes/update/'+this.rentalEntity.id+'/rooms/'+rooms,
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-home/update/'+this.rentalEntity.id+'/rooms/'+rooms,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
@@ -218,7 +218,7 @@ export default {
             console.log("updating beds...")
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-homes/update/'+this.rentalEntity.id+'/beds/'+beds,
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/vacation-home/update/'+this.rentalEntity.id+'/beds/'+beds,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },

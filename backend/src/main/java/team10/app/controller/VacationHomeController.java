@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/v1/vacation-homes")
+@RequestMapping(path = "/api/v1/vacation-home")
 @AllArgsConstructor
 public class VacationHomeController {
 
