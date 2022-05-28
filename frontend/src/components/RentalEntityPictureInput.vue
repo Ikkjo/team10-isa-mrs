@@ -54,6 +54,9 @@ export default {
         updatedFiles(files) {
             console.log(files);
             this.$emit('updated', files);
+        },
+        setPictures(pictures) {
+            this.pictures = pictures;
         }
     }
 }
