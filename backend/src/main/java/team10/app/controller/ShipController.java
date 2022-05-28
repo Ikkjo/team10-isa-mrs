@@ -18,7 +18,7 @@ public class ShipController {
     private final ShipService shipService;
 
     @Transactional
-    @PutMapping("/update/type/{id}")
+    @PutMapping("/update/{id}/type")
     @PreAuthorize("hasRole('SHIP_OWNER')")
     public ResponseEntity<String> updateType(@PathVariable UUID id, @RequestBody String type) {
         try {
@@ -30,7 +30,7 @@ public class ShipController {
     }
 
     @Transactional
-    @PutMapping("/update/length/{id}/{length}")
+    @PutMapping("/update/{id}/length/{length}")
     @PreAuthorize("hasRole('SHIP_OWNER')")
     public ResponseEntity<Double> updateLength(@PathVariable(name = "id") UUID id, @PathVariable(name = "length") double length) {
         try {
@@ -42,7 +42,7 @@ public class ShipController {
     }
 
     @Transactional
-    @PutMapping("/update/engine-count/{id}/{engine-count}")
+    @PutMapping("/update/{id}/engine-count/{engine-count}")
     @PreAuthorize("hasRole('SHIP_OWNER')")
     public ResponseEntity<Integer> updateEngineCount(@PathVariable(name = "id") UUID id, @PathVariable(name = "engine-count") int engineCount) {
         try {
@@ -54,7 +54,7 @@ public class ShipController {
     }
 
     @Transactional
-    @PutMapping("/update/engine-power/{id}/{engine-power}")
+    @PutMapping("/update/{id}/engine-power/{engine-power}")
     @PreAuthorize("hasRole('SHIP_OWNER')")
     public ResponseEntity<Integer> updateEnginePower(@PathVariable(name = "id") UUID id, @PathVariable(name = "engine-power") int enginePower) {
         try {
@@ -66,7 +66,7 @@ public class ShipController {
     }
 
     @Transactional
-    @PutMapping("/update/max-speed/{id}/{max-speed}")
+    @PutMapping("/update/{id}/max-speed/{max-speed}")
     @PreAuthorize("hasRole('SHIP_OWNER')")
     public ResponseEntity<Integer> updateMaxSpeed(@PathVariable(name = "id") UUID id, @PathVariable(name = "max-speed") int maxSpeed) {
         try {
@@ -78,7 +78,7 @@ public class ShipController {
     }
 
     @Transactional
-    @PutMapping("/update/navigation-equipment/{id}")
+    @PutMapping("/update/{id}/navigation-equipment")
     @PreAuthorize("hasRole('SHIP_OWNER')")
     public ResponseEntity<String> updateNavigationEquipment(@PathVariable UUID id, @RequestBody String navigationEquipment) {
         try {
@@ -90,7 +90,7 @@ public class ShipController {
     }
 
     @Transactional
-    @PutMapping("/update/fishing-equipment/{id}")
+    @PutMapping("/update/{id}/fishing-equipment")
     @PreAuthorize("hasRole('SHIP_OWNER')")
     public ResponseEntity<String> updateFishingEquipment(@PathVariable UUID id, @RequestBody String fishingEquipment) {
         try {
@@ -102,7 +102,7 @@ public class ShipController {
     }
 
     @Transactional
-    @PutMapping("/update/capacity/{id}/{capacity}")
+    @PutMapping("/update/{id}/capacity/{capacity}")
     @PreAuthorize("hasRole('SHIP_OWNER')")
     public ResponseEntity<Integer> updateCapacity(@PathVariable(name = "id") UUID id, @PathVariable(name = "capacity") int capacity) {
         try {
@@ -114,7 +114,7 @@ public class ShipController {
     }
 
     @Transactional
-    @PutMapping("/update/free-cancellation/{id}/{is-free-cancellation}")
+    @PutMapping("/update/{id}/free-cancellation/{is-free-cancellation}")
     @PreAuthorize("hasRole('SHIP_OWNER')")
     public ResponseEntity<Boolean> updateFreeCancellation(@PathVariable(name = "id") UUID id, @PathVariable(name = "is-free-cancellation") boolean isFreeCancellation) {
         try {

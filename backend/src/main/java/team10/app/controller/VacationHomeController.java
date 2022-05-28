@@ -36,7 +36,7 @@ public class VacationHomeController {
     }
 
     @Transactional
-    @PutMapping("/update/rooms/{id}/{rooms}")
+    @PutMapping("/update/{id}/rooms/{rooms}")
     @PreAuthorize("hasRole('HOUSE_OWNER')")
     public ResponseEntity<Integer> updateRooms(@PathVariable(name = "id") UUID id, @PathVariable(name = "rooms") int rooms) {
         try {
@@ -48,7 +48,7 @@ public class VacationHomeController {
     }
 
     @Transactional
-    @PutMapping("/update/beds/{id}/{beds}")
+    @PutMapping("/update/{id}/beds/{beds}")
     @PreAuthorize("hasRole('HOUSE_OWNER')")
     public ResponseEntity<Integer> updateBeds(@PathVariable(name = "id") UUID id, @PathVariable(name = "beds") int beds) {
         try {
