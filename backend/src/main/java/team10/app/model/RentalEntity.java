@@ -31,7 +31,7 @@ public abstract class RentalEntity {
     protected String additionalServices;
     @Column(nullable = false)
     protected int price;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "picture_id")
     protected Set<Picture> pictures;
     protected boolean deleted = false;
@@ -39,4 +39,10 @@ public abstract class RentalEntity {
     @JoinColumn(name = "owner_id", nullable = false)
     protected BusinessClient owner;
 
+    public void setPictures(Set<Picture> pictures) {
+        this.pictures.clear();
+        if (pictures != null) {
+            this.pictures.addAll(pictures);
+        }
+    }
 }

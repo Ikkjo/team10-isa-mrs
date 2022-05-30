@@ -49,6 +49,9 @@
                             Must be between 5 to 500 characters.
                         </div>
                     </div>
+                    <div class="form-control">
+                        <RentalEntityDatepicker/>
+                    </div>
                 </div>
                 <!-- STEP 2: ADDITIONAL INFORMATION -->
                 <div class="form" v-show="step === 2">
@@ -335,6 +338,7 @@ import PriceInput from '../components/PriceInput.vue'
 import RentalEntityPictureInput from '../components/RentalEntityPictureInput.vue'
 import RoomsInput from '../components/RoomsInput.vue'
 import NumberInput from '../components/NumberInput.vue'
+import RentalEntityDatepicker from '@/components/RentalEntityDatepicker.vue'
 import axios from 'axios';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -346,6 +350,7 @@ export default {
         RentalEntityPictureInput,
         RoomsInput,
         NumberInput,
+        RentalEntityDatepicker
     },
     data() {
         return {
@@ -901,7 +906,4 @@ export default {
     border-color: red !important;
     border-width: 2px;
 }
-
-
-
 </style>

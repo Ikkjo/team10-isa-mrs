@@ -14,6 +14,7 @@ import javax.management.remote.JMXAuthenticator;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
@@ -95,7 +96,7 @@ public class Validator {
                 && this.validateRentalEntityRulesOfConduct(rentalEntityDto.getRulesOfConduct())
                 && this.validateRentalEntityAdditionalServices(rentalEntityDto.getAdditionalServices())
                 && this.validateRentalEntityPrice(rentalEntityDto.getPrice())
-                && inRange(MIN_PICTURES, MAX_PICTURES, rentalEntityDto.getPictures().size());
+                && this.validateRentalEntityPictures(rentalEntityDto.getPictures());
     }
 
 
@@ -211,5 +212,9 @@ public class Validator {
 
     public boolean validateShipCapacity(int capacity) {
         return inRange(SHIP_MIN_CAPACITY, SHIP_MAX_CAPACITY, capacity);
+    }
+
+    public boolean validateRentalEntityPictures(List<String> pictures) {
+        return inRange(MIN_PICTURES, MAX_PICTURES, pictures.size());
     }
 }

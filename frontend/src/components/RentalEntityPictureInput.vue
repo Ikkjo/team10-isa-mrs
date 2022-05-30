@@ -42,6 +42,12 @@ const FilePond = vueFilePond(
 );
 export default {
     name: 'RentalEntityPictureInput',
+    props: {
+        defaultPictures: {
+            Array,
+            default: []
+        }
+    },
     components: {
         FilePond,
     },
@@ -58,6 +64,10 @@ export default {
         setPictures(pictures) {
             this.pictures = pictures;
         }
+    },
+    mounted() {
+        if (this.props !== [])
+            this.pictures = [...this.defaultPictures]
     }
 }
 </script>

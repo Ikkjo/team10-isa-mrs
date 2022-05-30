@@ -1,6 +1,6 @@
 <template>
-    <div class="info-section">
-        <PictureCollage :pictures="rentalEntity.pictures"/>
+    <div v-if="rentalEntityCopy" class="info-section">
+        <PictureCollage :pictures="rentalEntity.pictures" @update="savePictures"/>
         <h2>Basic info</h2>
         <div class="info-items">
             <InfoItem icon="title" label="Title"
@@ -164,14 +164,7 @@ export default {
     },
     data() {
         return {
-            rentalEntityCopy: {
-                pictures: [],
-                address: '',
-                beds: 0,
-                rooms: 0,
-                title: '',
-                price: 0,
-            },
+            rentalEntityCopy: null,
             infocus: {
                 title: true,
                 address: true,
@@ -249,6 +242,10 @@ export default {
             if (this.rentalEntityCopy.price !== this.rentalEntity.price)
                 this.$emit('update:price', this.rentalEntityCopy.price)
         },
+        savePictures(pictures) {
+            console.log("saving pictures..")
+            this.$emit('update:pictures', pictures)
+        },
         updateAddress(event){
             this.rentalEntityCopy.address.address = event;
         },
@@ -294,6 +291,10 @@ export default {
             
             return placeholder;
         },
+        mounted() {
+            console.log("MOUNTED")
+            this.rentalEntityCopy = JSON.parse(JSON.stringify(this.rentalEntity))
+        }
     },
 }
 </script>

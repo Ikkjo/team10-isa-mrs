@@ -73,7 +73,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #info-item {
     min-width: 300px;
     width: 100%;

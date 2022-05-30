@@ -10,10 +10,11 @@
                 @update:rulesOfConduct="updateRulesOfConduct"
                 @update:additionalServices="updateAdditionalServices"
                 @update:price="updatePrice"
+                @update:pictures="updatePictures"
             />
             <VacationHomeAdditionalInfo
                 v-if="userRole === 'HOUSE_OWNER'"
-                :rentalEntity="rentalEntity"
+                :vacationHome="rentalEntity"
                 ref="vacationHomeInfo"
                 @update:rooms="updateRooms"
                 @update:beds="updateBeds"/>
@@ -31,7 +32,6 @@
                 @update:shipCapacity="updateShipCapacity"
                 @update:shipCancellation="updateShipCancellation"/>
         </div>
-
     </div>
 </template>
 
@@ -52,13 +52,7 @@ export default {
     data() {
         return {
             userRole: '',
-            rentalEntity: {
-                pictures: [],
-                address: '',
-                beds: 0,
-                rooms: 0,
-                title: ''
-            },
+            rentalEntity: null,
         }
     },
     methods: {
@@ -190,6 +184,28 @@ export default {
                 })
                 .catch((error) => {
                     alert("Price Invalid")
+                    console.log(error);
+                }) 
+        },
+        updatePictures(pictures) {
+            console.log("updating pictures...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/'+this.rentalEntity.id+'/pictures/',
+                data: pictures.map(picture => picture.getFileEncodeDataURL()),
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Pictures Invalid")
+                    else
+                        this.rentalEntity.pictures = response.data
+                })
+                .catch((error) => {
+                    alert("Pictures Invalid")
                     console.log(error);
                 }) 
         },
@@ -445,20 +461,19 @@ export default {
             })
             .then((response) => {
                 console.log(response.data)
-                this.rentalEntity = response.data
+                this.rentalEntity = response.data;
                 this.$refs.basicInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
-                if (this.userRole === 'HOME_OWNER')
-                    this.$refs.vacationHomeInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                if (this.userRole === 'HOUSE_OWNER')
+                    this.$refs.vacationHomeInfo.setVacationHomeCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 else if (this.userRole === 'SHIP_OWNER')
                     this.$refs.shipInfo.setShipCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 // TODO: FISHING_INSTRUCTOR
+                
             })
             .catch(function(error) {
                 console.log(error)
             })
-        
-    }
-
+    },
 }
 </script>
 

@@ -1,29 +1,50 @@
 <template>
   <div id="picture-collage">
-      <img v-show="!showAll" v-for="(pic, i) in pictures.slice(0, 5)" :key="i" :src="pic" class="photo" :class="i === 0 ? 'cover-picture' : ''">
-      <button class="btn" @click="toggleShowAll">See All & Edit</button>
-      <RentalEntityPictureInput ref="pictureInput" v-show="showAll" class="picture-input"/>
+      <img v-for="(pic, i) in pictures.slice(0, 5)" :key="i" :src="pic" class="photo" :class="i === 0 ? 'cover-picture' : ''">
+      <button class="btn" @click="showAll = !showAll">See All & Edit</button>
+      <portal to="body">
+            <!-- use the modal component, pass in the prop -->
+            <MyModal
+            v-if="showAll"
+            :show="showAll"
+            @close="showAll=false"
+            @save="savePictures"
+            class="modal">
+            <template #body>
+              <RentalEntityPictureInput ref="pictureInput" :defaultPictures="pictures" @updated="updatePictures" v-show="showAll" class="picture-input"/>
+            </template>
+            </MyModal>
+        </portal>
   </div>
 </template>
 
 <script>
 import RentalEntityPictureInput from '@/components/RentalEntityPictureInput.vue'
+import MyModal from '@/components/MyModal.vue'
 export default {
     name: 'PictureCollage',
     components: {
       RentalEntityPictureInput,
+      MyModal,
     },
     props: ['pictures'],
     data() {
       return {
         showAll: false,
+        updatedPictures: []
       }
     },
     methods: {
-        toggleShowAll() {
-          if (!this.showAll) 
-            this.$refs.pictureInput.setPictures(this.pictures)
-          this.showAll = !this.showAll
+        updatePictures(pictures) {
+          this.updatedPictures = pictures
+        },
+        savePictures() {
+            if (this.updatedPictures.length < 5 || this.updatedPictures.length > 10)
+              alert("You need to add between 5 and 10 pictures.")
+            else {
+              this.$emit('update', this.updatedPictures)
+              this.showAll = !this.showAll
+            }
         }
     }
 }
@@ -66,5 +87,6 @@ export default {
   grid-column: span 4;
   grid-row: span 2;
 }
+
 
 </style>

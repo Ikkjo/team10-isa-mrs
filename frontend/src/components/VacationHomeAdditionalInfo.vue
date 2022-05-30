@@ -1,9 +1,9 @@
 <template>
-    <div class="info-section">
+    <div v-if="vacationHomeCopy" class="info-section">
         <h2>Room info</h2>
         <div class="info-items">
             <InfoItem icon="bedroom_parent" label="Rooms"
-                :text="rentalEntity.rooms.toString()"
+                :text="vacationHome.rooms.toString()"
                 :saveDisabled="isRoomsSaveDisabled"
                 @save="saveRooms">
                 <template slot="edit">
@@ -15,7 +15,7 @@
                 </template>
             </InfoItem>
             <InfoItem icon="bed" label="beds"
-             :text="rentalEntity.beds.toString()"
+             :text="vacationHome.beds.toString()"
              :saveDisabled="isBedsSaveDisabled"
              @save="saveBeds">
                  <template slot="edit">
@@ -35,44 +35,41 @@ import InfoItem from '@/components/InfoItem.vue'
 import RoomsInput from '@/components/RoomsInput.vue'
 export default {
     name: 'VacationHomeAdditionalInfo',
-    props: ['rentalEntity'],
+    props: ['vacationHome'],
     components: {
         InfoItem,
         RoomsInput
     },
     data() {
         return {
-            rentalEntityCopy: {
-                rooms: 1,
-                beds: 1,
-            },
+            vacationHomeCopy: null,
         }
     },
     methods: {
         roomsUpdated(rooms) {
-            this.rentalEntityCopy.rooms = rooms;
+            this.vacationHomeCopy.rooms = rooms;
         },
         bedsUpdated(beds) {
-            this.rentalEntityCopy.beds = beds;
+            this.vacationHomeCopy.beds = beds;
         },
-        setRentalEntityCopy(rentalEntity) {
-            this.rentalEntityCopy = rentalEntity
+        setVacationHomeCopy(vacationHome) {
+            this.vacationHomeCopy = vacationHome
         },
         saveRooms() {
-            if (this.rentalEntityCopy.rooms !== this.rentalEntity.rooms)
-                this.$emit('update:rooms', this.rentalEntityCopy.rooms)
+            if (this.vacationHomeCopy.rooms !== this.vacationHome.rooms)
+                this.$emit('update:rooms', this.vacationHomeCopy.rooms)
         },
         saveBeds() {
-            if (this.rentalEntityCopy.beds !== this.rentalEntity.beds)
-                this.$emit('update:beds', this.rentalEntityCopy.beds)
+            if (this.vacationHomeCopy.beds !== this.vacationHome.beds)
+                this.$emit('update:beds', this.vacationHomeCopy.beds)
         }
     },
     computed: {
         isRoomsSaveDisabled() {
-            return this.rentalEntityCopy.rooms < 1 || this.rentalEntityCopy.rooms > 20 
+            return this.vacationHomeCopy.rooms < 1 || this.vacationHomeCopy.rooms > 20 
         },
         isBedsSaveDisabled() {
-            return this.rentalEntityCopy.beds < 1 || this.rentalEntityCopy.beds > 100 
+            return this.vacationHomeCopy.beds < 1 || this.vacationHomeCopy.beds > 100 
         }
         
     }
