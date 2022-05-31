@@ -44,8 +44,10 @@ export default {
     name: 'RentalEntityPictureInput',
     props: {
         defaultPictures: {
-            Array,
-            default: []
+            type: Array,
+            default() {
+                return []
+            }
         }
     },
     components: {
