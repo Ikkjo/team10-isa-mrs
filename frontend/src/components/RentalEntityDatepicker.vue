@@ -2,8 +2,10 @@
     <div>
         <DatePicker
         v-model="value"
+        @input="$emit('update', value)"
         :disabled-date="disabledDates"
         :multiple="true"
+        value-type="x"
         class="datepicker"
         format="MM-DD-YYYY"
         />

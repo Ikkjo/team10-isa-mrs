@@ -22,8 +22,10 @@ public abstract class RentalEntityDto {
     protected String additionalServices;
     protected int price;
     protected List<String> pictures;
+    protected List<Long> availability;
 
-    public RentalEntityDto(String title, AddressDto address, String description, String rulesOfConduct, String additionalServices, int price, List<String> pictures) {
+    public RentalEntityDto(String title, AddressDto address, String description, String rulesOfConduct,
+                           String additionalServices, int price, List<String> pictures, List<Long> availability) {
         this.title = title;
         this.address = address;
         this.description = description;
@@ -31,5 +33,6 @@ public abstract class RentalEntityDto {
         this.additionalServices = additionalServices;
         this.price = price;
         this.pictures = pictures;
+        this.availability = availability;
     }
 }

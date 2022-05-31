@@ -38,6 +38,9 @@ public abstract class RentalEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     protected BusinessClient owner;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "availability_id")
+    protected Set<Availability> availability;
 
     public void setPictures(Set<Picture> pictures) {
         this.pictures.clear();

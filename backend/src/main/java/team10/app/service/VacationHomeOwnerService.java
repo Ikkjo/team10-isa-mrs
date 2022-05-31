@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
+import team10.app.model.Availability;
 import team10.app.model.VacationHome;
 import team10.app.model.VacationHomeOwner;
 import team10.app.repository.*;
@@ -15,6 +16,7 @@ import team10.app.util.Validator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -25,17 +27,6 @@ public class VacationHomeOwnerService {
     private final VacationHomeRepository vacationHomeRepository;
     private final Validator validator;
 
-    @Autowired
-    public VacationHomeOwnerService(VacationHomeOwnerRepository vacationHomeOwnerRepository,
-                                    VacationHomeRepository vacationHomeRepository,
-                                    AddressRepository addressRepository,
-                                    PictureService pictureService,
-                                    PictureRepository pictureRepository,
-                                    Validator validator) {
-        this.vacationHomeRepository = vacationHomeRepository;
-        this.vacationHomeOwnerRepository = vacationHomeOwnerRepository;
-        this.validator = validator;
-    }
 
     public Set<VacationHomeDto> getAllActiveVacationHomesByOwnerEmail(String email){
         List<VacationHome> vacationHomes = vacationHomeRepository.findAllByOwner(vacationHomeOwnerRepository.findByEmail(email).orElseThrow());
@@ -69,7 +60,8 @@ public class VacationHomeOwnerService {
                 vacationHomeDto.getPrice(),
                 PictureService.buildPictureSet(vacationHomeDto.getPictures()),
                 vacationHomeDto.getRooms(),
-                vacationHomeDto.getBeds()
+                vacationHomeDto.getBeds(),
+                vacationHomeDto.getAvailability().stream().map(Availability::new).collect(Collectors.toSet())
         );
     }
 }

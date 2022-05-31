@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team10.app.model.Address;
+import team10.app.model.Availability;
 import team10.app.model.Picture;
 import team10.app.model.Ship;
 
@@ -28,8 +29,8 @@ public class ShipDto extends RentalEntityDto {
     public ShipDto(String title, AddressDto address, String description, String rulesOfConduct, String additionalServices,
                    int price, List<String> pictures, String type, double length, int engineCount, int enginePower,
                    int maxSpeed, String navigationEquipment, String fishingEquipment, int capacity,
-                   boolean freeCancellation) {
-        super(title, address, description, rulesOfConduct, additionalServices, price, pictures);
+                   boolean freeCancellation, List<Long> availability) {
+        super(title, address, description, rulesOfConduct, additionalServices, price, pictures, availability);
         this.type = type;
         this.length = length;
         this.engineCount = engineCount;
@@ -50,7 +51,8 @@ public class ShipDto extends RentalEntityDto {
                 ship.getRulesOfConduct(),
                 ship.getAdditionalServices(),
                 ship.getPrice(),
-                ship.getPictures().stream().map(Picture::asString).collect(Collectors.toList())
+                ship.getPictures().stream().map(Picture::asString).collect(Collectors.toList()),
+                ship.getAvailability().stream().map(Availability::getDate).collect(Collectors.toList())
         );
         this.type = ship.getType();
         this.length = ship.getLength();

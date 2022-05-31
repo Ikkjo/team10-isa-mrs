@@ -10,6 +10,8 @@ import team10.app.model.*;
 import team10.app.repository.*;
 import team10.app.util.Validator;
 
+import java.util.stream.Collectors;
+
 
 @Service
 @AllArgsConstructor
@@ -18,20 +20,6 @@ public class ShipOwnerService {
     private final ShipOwnerRepository shipOwnerRepository;
     private final ShipRepository shipRepository;
     private final Validator validator;
-
-    @Autowired
-    public ShipOwnerService(ShipOwnerRepository shipOwnerRepository,
-                            ShipRepository shipRepository,
-                            AddressRepository addressRepository,
-                            PictureService pictureService,
-                            PictureRepository pictureRepository,
-                            Validator validator) {
-
-        this.shipOwnerRepository = shipOwnerRepository;
-        this.shipRepository = shipRepository;
-        this.validator = validator;
-    }
-
 
     public void addShip(ShipDto request, String email) throws RuntimeException {
         if (!validator.validateShipDto(request)) {
@@ -61,7 +49,8 @@ public class ShipOwnerService {
                shipDto.getNavigationEquipment(),
                shipDto.getFishingEquipment(),
                shipDto.getCapacity(),
-               shipDto.isFreeCancellation()
+               shipDto.isFreeCancellation(),
+               shipDto.getAvailability().stream().map(Availability::new).collect(Collectors.toSet())
        );
     }
 

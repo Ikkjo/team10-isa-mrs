@@ -53,9 +53,9 @@
                 <!-- STEP 2: ADDITIONAL INFORMATION -->
                 <div class="form" v-show="step === 2">
                     <h1>Additional information</h1>
-                    <label for="rules-of-conduct">Availability</label>
                     <div class="form-control">
-                        <RentalEntityDatepicker/>
+                    <label for="rules-of-conduct">Availability</label>
+                        <RentalEntityDatepicker @update="availabilityUpdated"/>
                     </div>
                     <div class="form-control">
                         <label for="rules-of-conduct">Rules of conduct</label>
@@ -364,6 +364,7 @@ export default {
                     description: '',
                 },
                 second: {
+                    availability: [],
                     rulesOfConduct: '',
                     additionalServices: '',
                 },
@@ -496,6 +497,9 @@ export default {
         }
     },
     methods: {
+        availabilityUpdated(availability) {
+            this.baseInfo.second.availability = availability;
+        },
         addressUpdated(address) {
             this.baseInfo.first.address = address;
         },
@@ -608,6 +612,7 @@ export default {
                     'city': this.baseInfo.first.city, 
                     'country': this.baseInfo.first.country
                     },
+                availability: this.baseInfo.second.availability,
                 description: this.baseInfo.first.description,
                 rulesOfConduct: this.baseInfo.second.rulesOfConduct,
                 additionalServices: this.baseInfo.second.additionalServices,
@@ -640,6 +645,7 @@ export default {
                     'city': this.baseInfo.first.city, 
                     'country': this.baseInfo.first.country
                     },
+                availability: this.baseInfo.second.availability,
                 description: this.baseInfo.first.description,
                 rulesOfConduct: this.baseInfo.second.rulesOfConduct,
                 additionalServices: this.baseInfo.second.additionalServices,
@@ -678,6 +684,7 @@ export default {
                     'city': this.baseInfo.first.city, 
                     'country': this.baseInfo.first.country
                     },
+                availability: this.baseInfo.second.availability,
                 description: this.baseInfo.first.description,
                 rulesOfConduct: this.baseInfo.second.rulesOfConduct,
                 additionalServices: this.baseInfo.second.additionalServices,

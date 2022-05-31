@@ -25,9 +25,10 @@ public class AdventureDto extends RentalEntityDto {
             String biography,
             String fishingEquipment,
             int capacity,
-            boolean freeCancellation
+            boolean freeCancellation,
+            List<Long> availability
             ) {
-        super(title, addressDto, description, rulesOfConduct, additionalServices, price, pictures);
+        super(title, addressDto, description, rulesOfConduct, additionalServices, price, pictures, availability);
         this.biography = biography;
         this.fishingEquipment = fishingEquipment;
         this.capacity = capacity;
