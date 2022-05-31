@@ -49,13 +49,14 @@
                             Must be between 5 to 500 characters.
                         </div>
                     </div>
-                    <div class="form-control">
-                        <RentalEntityDatepicker/>
-                    </div>
                 </div>
                 <!-- STEP 2: ADDITIONAL INFORMATION -->
                 <div class="form" v-show="step === 2">
                     <h1>Additional information</h1>
+                    <label for="rules-of-conduct">Availability</label>
+                    <div class="form-control">
+                        <RentalEntityDatepicker/>
+                    </div>
                     <div class="form-control">
                         <label for="rules-of-conduct">Rules of conduct</label>
                         <textarea 
@@ -416,7 +417,7 @@ export default {
                     fishingInstructorBio: true,
                 }
             },
-            step: 1,
+            step: 2,
             numSteps: 5,
             userRole: '',
         }
