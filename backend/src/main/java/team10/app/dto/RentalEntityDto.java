@@ -24,7 +24,7 @@ public abstract class RentalEntityDto {
     protected List<String> pictures;
     protected List<Long> availability;
 
-    public RentalEntityDto(String title, AddressDto address, String description, String rulesOfConduct,
+    protected RentalEntityDto(String title, AddressDto address, String description, String rulesOfConduct,
                            String additionalServices, int price, List<String> pictures, List<Long> availability) {
         this.title = title;
         this.address = address;
