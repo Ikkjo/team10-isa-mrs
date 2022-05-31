@@ -1,24 +1,19 @@
 <template>
     <div>
         <DatePicker
-        id="date-picker"
-        color="orange"
-        is-expanded
-        is-range
-        is-required
-        :min-date='new Date()'
-        v-model="date"
-        isDragging
-        >
-        </DatePicker>
-        <button @click="date = null" class="btn">Clear</button>
-        <button @click="save" class="btn">Save</button>
+        v-model="value"
+        :disabled-date="disabledDates"
+        :multiple="true"
+        class="datepicker"
+        format="MM-DD-YYYY"
+        />
     </div>
  
 </template>
 
 <script>
-import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 
 export default {
     name: 'RentalEntityDatepicker',
@@ -27,31 +22,21 @@ export default {
     },
     data() {
         return {
-        days: [],
-        date: new Date(),
-        dates: []
-        };
+        value: null,
+        }
     },
     methods: {
-        save() {
-            if (!this.containsObject(this.date, this.dates)) {
-                console.log('added date')
-                this.dates.push(this.date)
-            }
+        disabledDates(date) {
+            return date <= new Date();
         },
-        containsObject(obj, list) {
-            var i;
-            for (i = 0; i < list.length; i++) {
-                if (list[i] === obj) {
-                    return true;
-                }
-            }
-            return false;
-        }
     },
 }
 </script>
 
 <style>
+
+.datepicker {
+    width: 100%;
+}
 
 </style>
