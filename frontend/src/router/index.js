@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 const routes = [
     {
-      path: '/business-user/register',
+      path: '/business-client/register',
       name: 'business-client-register',
       component: () => import('../views/BusinessClientRegistration.vue')
     },
@@ -32,7 +32,12 @@ const routes = [
             {
                 path: 'registration-requests',
                 name: 'registration-requests',
-                component: () => import('../components/RegistrationRequestList.vue')
+                component: () => import('../components/RegistrationRequestTable.vue')
+            },
+            {
+                path: 'create-admin',
+                name: 'create-admin',
+                component: () => import('../components/CreateAdmin.vue')
             }
         ]
     },

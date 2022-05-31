@@ -77,7 +77,7 @@ export default {
                     let jwtData = response.data.split('.')[1]
                     let decodedJwtJsonData = window.atob(jwtData)
                     let decodedJwtData = JSON.parse(decodedJwtJsonData)
-                    window.localStorage.setItem("userRole", decodedJwtData.auth)
+                    window.localStorage.setItem("role", decodedJwtData.auth)
                     // notify that awaiting accept
                 })
                 .catch(function(error) {
@@ -121,22 +121,7 @@ export default {
     margin: 15px 0px;
 }
 
-.wrapper {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    
-}
-
-.address-wrapper {
-    grid-template-columns: 50% 30% 20%;
-}
-
-textarea {
-    height: auto;
-    width: 100%;
-}
-
-.form-control input, select {
+.form-control input {
     width: 100%;
     height: 48px;
 }
@@ -146,15 +131,6 @@ textarea {
 }
 
 .form-control {
-    display: block;
-}
-
-#datepicker {
-    display: grid;
-    grid-template-columns: 33.3% 33.3% 33.3%;
-}
-
-#registration-reason {
     display: block;
 }
 

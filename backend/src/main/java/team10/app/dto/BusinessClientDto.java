@@ -16,7 +16,7 @@ public class BusinessClientDto {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private String userRole;
+    private String role;
     private AddressDto address;
     private String dateOfBirth;
 //    private Loyalty loyalty;
@@ -26,7 +26,7 @@ public class BusinessClientDto {
         this.lastName = businessClient.getLastName();
         this.email = businessClient.getEmail();
         this.phoneNumber = businessClient.getPhoneNumber();
-        this.userRole = businessClient.getUserRole().name();
+        this.role = businessClient.getRole().name();
         this.address = new AddressDto(businessClient.getAddress());
         this.dateOfBirth = businessClient.getDateOfBirth();
 //        this.loyalty = businessClient.getLoyalty();

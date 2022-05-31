@@ -1,15 +1,29 @@
 package team10.app.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
+import javax.persistence.*;
+import java.util.UUID;
+
+@Setter
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @ToString
+@Entity
 public class RegistrationRequest {
-    private final BusinessClient user;
-    private final String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "business_client_id")
+    private BusinessClient businessClient;
+    @Column(nullable = false)
+    private String description;
+    private boolean reviewed = false;
+
+    public RegistrationRequest(BusinessClient businessClient, String description){
+        this.businessClient = businessClient;
+        this.description = description;
+    }
 }
