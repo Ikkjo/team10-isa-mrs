@@ -26,6 +26,7 @@
                 :show="showModal"
                 :rrUUID="rrUUID"
                 @close="showModal=false"
+                @removeRequest="removeRequest"
                 />
     </div>
 </template>
@@ -202,6 +203,15 @@ export default {
         }
     },
     methods: {
+        removeRequest() {
+            for (let i = 0; i < this.requests.length; i++) {
+                console.log(this.requests[i].id)
+                if (this.requests[i].id === this.rrUUID){
+                    this.requests.splice(i, 1);
+                    break;
+                }
+            }
+        },
         acceptRequest(data) {
             this.rrUUID = data.id
             axios({
@@ -211,14 +221,10 @@ export default {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
             }).then(() => {
-                for (let i = 0; i < this.requests.length; i++) {
-                    console.log(this.requests[i].id)
-                    if (this.requests[i].id === this.rrUUID){
-                        this.requests.splice(i, 1);
-                        break;
-                    }
-                }
-            })
+                this.removeRequest();
+            }).catch(() => {
+                alert('No connection.')
+            });
         },
         openDeclineRequestModal(id) {
             this.rrUUID = id;

@@ -65,7 +65,12 @@ export default {
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
-            })
+            }).then(() => {
+                this.$emit('close');
+                this.$emit('removeRequest');
+            }).catch(() => {
+                alert('No connection.')
+            });
         },
         isFocused(field) {
             return this.infocus[field]
