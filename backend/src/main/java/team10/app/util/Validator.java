@@ -102,7 +102,7 @@ public class Validator {
                 && this.validateRentalEntityAvailability(rentalEntityDto.getAvailability());
     }
 
-    private boolean validateRentalEntityAvailability(List<Long> availability) {
+    public boolean validateRentalEntityAvailability(List<Long> availability) {
         Date date = new Date();
         for (Long a : availability) {
             if (a < date.getTime() - 24 * 60 * 60 * 1000 - 10 * 1000)

@@ -55,7 +55,7 @@
                     <h1>Additional information</h1>
                     <div class="form-control">
                     <label for="rules-of-conduct">Availability</label>
-                        <RentalEntityDatepicker @update="availabilityUpdated"/>
+                        <MyCalendar @input="availabilityUpdated"/>
                     </div>
                     <div class="form-control">
                         <label for="rules-of-conduct">Rules of conduct</label>
@@ -339,7 +339,7 @@ import PriceInput from '../components/PriceInput.vue'
 import RentalEntityPictureInput from '../components/RentalEntityPictureInput.vue'
 import RoomsInput from '../components/RoomsInput.vue'
 import NumberInput from '../components/NumberInput.vue'
-import RentalEntityDatepicker from '@/components/RentalEntityDatepicker.vue'
+import MyCalendar from '@/components/MyCalendar.vue'
 import axios from 'axios';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -351,7 +351,7 @@ export default {
         RentalEntityPictureInput,
         RoomsInput,
         NumberInput,
-        RentalEntityDatepicker
+        MyCalendar
     },
     data() {
         return {
@@ -418,7 +418,7 @@ export default {
                     fishingInstructorBio: true,
                 }
             },
-            step: 2,
+            step: 1,
             numSteps: 5,
             userRole: '',
         }
@@ -498,7 +498,7 @@ export default {
     },
     methods: {
         availabilityUpdated(availability) {
-            this.baseInfo.second.availability = availability;
+            this.baseInfo.second.availability = availability.map(a => a.getTime());
         },
         addressUpdated(address) {
             this.baseInfo.first.address = address;

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="rentalEntityCopy" class="info-section">
+    <div v-if="rentalEntity" class="info-section">
         <PictureCollage :pictures="rentalEntity.pictures" @update="savePictures"/>
         <h2>Basic info</h2>
         <div class="info-items">
@@ -74,6 +74,7 @@
                     </div>
                 </template>
             </InfoItem>
+            <EditAvailability :availability="rentalEntity.availability" @save="saveAvailability"/>
             <InfoItem icon="rule" label="Rules of Conduct"
                 :text="rentalEntity.rulesOfConduct"
                 @save="saveRulesOfConduct"
@@ -152,6 +153,8 @@ import InfoItem from '@/components/InfoItem.vue'
 import PictureCollage from '@/components/PictureCollage.vue'
 import AddressInput from '@/components/AddressInput.vue'
 import PriceInput from '@/components/PriceInput.vue'
+// import Calendar from 'v-calendar/lib/components/calendar.umd'
+import EditAvailability from '@/components/EditAvailability.vue'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 export default {
     name: 'RentalEntityBasicInfo',
@@ -160,11 +163,14 @@ export default {
         InfoItem,
         PictureCollage,
         AddressInput,
-        PriceInput
+        PriceInput,
+        // Calendar,
+        EditAvailability
     },
     data() {
         return {
             rentalEntityCopy: null,
+            dates: null,
             infocus: {
                 title: true,
                 address: true,
@@ -230,6 +236,9 @@ export default {
             if (this.rentalEntityCopy.description !== this.rentalEntity.description)
                 this.$emit('update:description', this.rentalEntityCopy.description)
         },
+        saveAvailability(dates) {
+            this.$emit('update:availability', dates.map(d => d.getTime())) 
+        },
         saveRulesOfConduct() {
             if (this.rentalEntityCopy.rulesOfConduct !== this.rentalEntity.rulesOfConduct)
                 this.$emit('update:rulesOfConduct', this.rentalEntityCopy.rulesOfConduct)
@@ -259,7 +268,7 @@ export default {
             this.rentalEntityCopy.price = event;
         },
         setRentalEntityCopy(rentalEntity) {
-            this.rentalEntityCopy = rentalEntity
+            this.rentalEntityCopy = rentalEntity            
         },
         cancel() {
             console.log("canceled")
@@ -291,10 +300,6 @@ export default {
             
             return placeholder;
         },
-        mounted() {
-            console.log("MOUNTED")
-            this.rentalEntityCopy = JSON.parse(JSON.stringify(this.rentalEntity))
-        }
     },
 }
 </script>

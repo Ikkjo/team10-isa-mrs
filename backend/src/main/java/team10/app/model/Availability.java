@@ -15,7 +15,7 @@ public class Availability {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long date;
 
     public Availability(Long date) {

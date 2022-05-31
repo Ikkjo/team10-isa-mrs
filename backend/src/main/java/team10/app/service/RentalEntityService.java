@@ -102,4 +102,12 @@ public class RentalEntityService {
         rentalEntity.setPictures(PictureService.buildPictureSet(pictures));
         rentalEntityRepository.saveAndFlush(rentalEntity);
     }
+
+    public void updateAvailability(List<Long> availability, UUID id) {
+        if (!validator.validateRentalEntityAvailability(availability))
+            throw new RentalEntityAvailabilityInvalidException(availability.toString());
+        RentalEntity rentalEntity = rentalEntityRepository.getById(id);
+        rentalEntity.setAvailability(availability.stream().map(Availability::new).collect(Collectors.toSet()));
+        rentalEntityRepository.saveAndFlush(rentalEntity);
+    }
 }

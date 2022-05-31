@@ -86,6 +86,18 @@ public class RentalEntityController {
     }
 
     @Transactional
+    @PutMapping("/update/{id}/availability")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<Long[]> updateAvailability(@PathVariable UUID id, @RequestBody Long[] availability) {
+        try {
+            rentalEntityService.updateAvailability(List.of(availability), id);
+        } catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(availability, HttpStatus.OK);
+    }
+
+    @Transactional
     @PutMapping("/update/{id}/rules-of-conduct")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<String> updateRulesOfConduct(@PathVariable UUID id, @RequestBody String rulesOfConduct) {

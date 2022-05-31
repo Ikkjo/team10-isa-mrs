@@ -48,4 +48,12 @@ public abstract class RentalEntity {
             this.pictures.addAll(pictures);
         }
     }
+
+    public void setAvailability(Set<Availability> availability) {
+        this.availability.clear();
+        if (availability != null) {
+            this.availability.addAll(availability);
+        }
+    }
+
 }

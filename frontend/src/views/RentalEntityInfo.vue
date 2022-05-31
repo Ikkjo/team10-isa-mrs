@@ -11,6 +11,7 @@
                 @update:additionalServices="updateAdditionalServices"
                 @update:price="updatePrice"
                 @update:pictures="updatePictures"
+                @update:availability="updateAvailability"
             />
             <VacationHomeAdditionalInfo
                 v-if="userRole === 'HOUSE_OWNER'"
@@ -121,6 +122,30 @@ export default {
                     alert("Description Invalid")
                     console.log(error);
                 }) 
+        },
+        updateAvailability(availability) {
+            console.log("updating availability...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/'+this.rentalEntity.id+'/availability',
+                data: availability,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400) {
+                        alert("Availability Invalid")
+                    }
+                    else {
+                        this.rentalEntity.availability = response.data
+                    }
+                })
+                .catch((error) => {
+                    alert("Availability Invalid")
+                    console.log(error);
+                })
         },
         updateRulesOfConduct(rulesOfConduct) {
             console.log(rulesOfConduct)
