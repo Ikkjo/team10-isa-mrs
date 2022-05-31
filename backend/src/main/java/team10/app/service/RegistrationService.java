@@ -6,11 +6,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import team10.app.dto.BusinessClientRegistrationRequestDto;
 import team10.app.model.BusinessClient;
-import team10.app.security.auth.ConfirmationToken;
+import team10.app.model.RegistrationRequest;
+import team10.app.repository.RegistrationRequestRepository;
 import team10.app.util.EmailValidator;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -19,12 +18,10 @@ public class RegistrationService {
     private final UserService userService;
     private final EmailValidator emailValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final ConfirmationTokenService confirmationTokenService;
+    private final RegistrationRequestRepository registrationRequestRepository;
 
 
-    public String register(BusinessClientRegistrationRequestDto request) {
-
-
+    public void register(BusinessClientRegistrationRequestDto request) {
         if (!emailValidator.test(request.getEmail())) {
             // TODO: Add custom exception
             throw new IllegalStateException(String.format("Email address %s, not valid", request.getEmail()));
@@ -40,22 +37,10 @@ public class RegistrationService {
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userService.saveBusinessUser(user);
 
-        user = userService.getBusinessPartnerByEmail(user.getEmail(), user.getUserRole())
+        user = userService.getBusinessPartnerByEmail(user.getEmail(), user.getRole())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                user
-        );
-        confirmationTokenService.saveConfirmationToken(
-                confirmationToken);
-
-        // TODO: Send confirmation email if user is Client
-
-        return token;
+        registrationRequestRepository.save(new RegistrationRequest(user, request.getRegistrationReason()));
     }
 
 }

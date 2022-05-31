@@ -53,11 +53,11 @@ public class UserService implements UserDetailsService {
     }
 
     public void saveBusinessUser(BusinessClient user) {
-        if (user.getUserRole().equals(HOUSE_OWNER))
+        if (user.getRole().equals(HOUSE_OWNER))
             vacationHomeOwnerRepository.save(new VacationHomeOwner(user));
-        else if (user.getUserRole().equals(SHIP_OWNER))
+        else if (user.getRole().equals(SHIP_OWNER))
             shipOwnerRepository.save(new ShipOwner(user));
-        else if (user.getUserRole().equals(FISHING_INSTRUCTOR))
+        else if (user.getRole().equals(FISHING_INSTRUCTOR))
             fishingInstructorRepository.save(new FishingInstructor(user));
     }
 

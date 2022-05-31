@@ -1,6 +1,8 @@
 package team10.app.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.BusinessClientRegistrationRequestDto;
 import team10.app.dto.ClientRegistrationRequestDto;
@@ -17,8 +19,13 @@ public class RegistrationController {
 
 
     @PostMapping("/business-client")
-    public String registerBusinessClient(@RequestBody BusinessClientRegistrationRequestDto request) {
-        return registrationService.register(request);
+    public ResponseEntity<HttpStatus> registerBusinessClient(@RequestBody BusinessClientRegistrationRequestDto request) {
+        try {
+            registrationService.register(request);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(path = "/client")

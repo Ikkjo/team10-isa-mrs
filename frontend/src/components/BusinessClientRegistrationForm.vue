@@ -155,7 +155,7 @@
                     :class="getClass('registrationReason')" 
                     :placeholder="getPlaceholder('registrationReason', 'Tell us a few reasons why you want to join...')"/>
                 <div class="alert-info" 
-                    v-if="!isFocused('registrationReason') 
+                    v-if="!isFocused('registrationReason')
                     && !($v.registrationReason.minLength 
                     && $v.registrationReason.maxLength)"
                     >

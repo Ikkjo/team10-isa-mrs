@@ -13,8 +13,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
-
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -39,7 +37,7 @@ public abstract class User implements UserDetails {
     @Column(name = "phone_number", columnDefinition = "TEXT")
     private String phoneNumber;
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private UserRole role;
     private Boolean deleted = false;
     private Boolean enabled = false;
 
@@ -53,7 +51,7 @@ public abstract class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.userRole = appUserRole;
+        this.role = appUserRole;
         this.phoneNumber = phoneNumber;
     }
 
@@ -62,13 +60,13 @@ public abstract class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.userRole = appUserRole;
+        this.role = appUserRole;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority(userRole.name());
+                new SimpleGrantedAuthority(role.name());
         return Collections.singletonList(authority);
     }
 

@@ -39,4 +39,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("select u from User u where u.email = ?1")
     User getByEmail(String email);
+
+    @Modifying
+    @Query("update User u set u.enabled = true where u.email=?1")
+    void enableUser(String email);
 }

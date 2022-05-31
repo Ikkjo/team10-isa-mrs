@@ -63,12 +63,12 @@ export default {
               console.log(error)
           })
 
-      let userRole = window.localStorage.getItem('userRole')
-      if (userRole === 'HOUSE_OWNER')
+      let role = window.localStorage.getItem('role')
+      if (role === 'HOUSE_OWNER')
         this.coverPhoto = "https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"
-      else if (userRole === 'SHIP_OWNER')
+      else if (role === 'SHIP_OWNER')
         this.coverPhoto = "https://r4.wallpaperflare.com/wallpaper/863/684/864/sea-beach-islands-landscape-wallpaper-44b51eb89a58fdb8ff279415d8952c59.jpg"
-      else if (userRole === 'FISHING_INSTRUCTOR')
+      else if (role === 'FISHING_INSTRUCTOR')
         this.coverPhoto = "https://s2.best-wallpaper.net/wallpaper/3840x2160/1901/Man-fishing-lake-sunrise-morning_3840x2160.jpg"
     }
   }
