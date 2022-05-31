@@ -16,39 +16,37 @@
                 <div slot="decline" slot-scope="props">
                     <button
                         class="btn decline"
-                        @click="declineRequest(props.rowData)"
+                        @click="openDeclineRequestModal(props.rowData.id)"
                         >Decline
-                    </button>   
+                    </button>
                 </div>
             </Vuetable>
+            <DeclineRegistrationRequestModal
+                v-if="showModal"
+                :show="showModal"
+                :rrUUID="rrUUID"
+                @close="showModal=false"
+                />
     </div>
 </template>
 
 <script>
-// import RegistrationRequest from "./RegistrationRequest.vue"
 import { Vuetable } from 'vuetable-3'
+import axios from 'axios'
+import DeclineRegistrationRequestModal from './DeclineRegistrationRequestModal.vue'
 
 export default {
     name: "RegistrationRequestList",
     components: {
-        // RegistrationRequest,
-        Vuetable
+        Vuetable,
+        DeclineRegistrationRequestModal
     },
     data() {
         return {
+            registrationRequestUUID: null,
+            rrUUID: null,
+            showModal: false,
             fields: [
-                {
-                    name: "firstName",
-                    title: "First Name"
-                },
-                {
-                    name: "lastName",
-                    title: "Last Name"
-                },
-                {
-                    name: "email",
-                    title: "Email"
-                },
                 {
                     name: "role",
                     title: "Type",
@@ -61,6 +59,19 @@ export default {
                             return "<span class='material-icons'>phishing</span>"
                     }
                 },
+                {
+                    name: "firstName",
+                    title: "First Name"
+                },
+                {
+                    name: "lastName",
+                    title: "Last Name"
+                },
+                {
+                    name: "email",
+                    title: "Email"
+                },
+                
                 {
                     name: "phone",
                     title: "Phone number"
@@ -108,6 +119,7 @@ export default {
             ],
             requests: [
                 {
+                    id: "the",
                     firstName: "Aleksandra",
                     lastName: "Sakal Franciskovic",
                     email: "iamnikoladamjanovic@gmail.com",
@@ -123,6 +135,7 @@ export default {
                     registrationReason: "Imam lepu vikendicu koja nicemu ne sluzi pa reko da je stavim na izdavanje."
                 },
                 {
+                    id: "cum",
                     firstName: "Slavija",
                     lastName: "Lorđić",
                     email: "slavko@gmail.com",
@@ -138,6 +151,7 @@ export default {
                     registrationReason: "Volim da pecam hehehehhe. Ae prihvati me da ti platim 500e. The function got HENNESSY"
                 },
                 {
+                    id: "bucket",
                     firstName: "Ilija",
                     lastName: "Kalinic",
                     email: "ikkjo@gmail.com",
@@ -153,6 +167,7 @@ export default {
                     registrationReason: "Pecanje ovo ono, pecanje ovo ono, pecanje ovo ono."
                 },
                 {
+                    id: "from",
                     firstName: "Ana",
                     lastName: "Kličko",
                     email: "anaklicko@gmail.com",
@@ -168,6 +183,7 @@ export default {
                     registrationReason: "Kuca je velika. Ima puno mesta puno soba, dodjite da izdajem"
                 },
                 {
+                    id: "spongebob",
                     firstName: "Đorđe",
                     lastName: "Lođe",
                     email: "lordje@gmail.com",
@@ -186,23 +202,33 @@ export default {
         }
     },
     methods: {
-        acceptRequest() {
-            // send axios request to accept registration
+        acceptRequest(data) {
+            this.rrUUID = data.id
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/registration-request/'+ this.rrUUID +'/accept',
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            }).then(() => {
+                for (let i = 0; i < this.requests.length; i++) {
+                    console.log(this.requests[i].id)
+                    if (this.requests[i].id === this.rrUUID){
+                        this.requests.splice(i, 1);
+                        break;
+                    }
+                }
+            })
         },
-        declineRequest() {
-            // send axios request to decline registration
-            // emit if no errors else show error
-            this.$emit('close');
-        },
+        openDeclineRequestModal(id) {
+            this.rrUUID = id;
+            this.showModal = true;
+        }
     },
 }
 </script>
 
 <style>
-h1 {
-    padding: 20px;
-}
-
 table {
     font-family: arial, sans-serif;
     width: 100%;

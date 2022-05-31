@@ -12,13 +12,13 @@
                 @update:price="updatePrice"
             />
             <VacationHomeAdditionalInfo
-                v-if="userRole === 'HOUSE_OWNER'"
+                v-if="role === 'HOUSE_OWNER'"
                 :rentalEntity="rentalEntity"
                 ref="vacationHomeInfo"
                 @update:rooms="updateRooms"
                 @update:beds="updateBeds"/>
             <ShipAdditionalInfo
-                v-if="userRole === 'SHIP_OWNER'"
+                v-if="role === 'SHIP_OWNER'"
                 :ship="rentalEntity"
                 ref="shipInfo"
                 @update:shipType="updateShipType"
@@ -51,7 +51,7 @@ export default {
     },
     data() {
         return {
-            userRole: '',
+            role: '',
             rentalEntity: {
                 pictures: [],
                 address: '',
@@ -438,7 +438,7 @@ export default {
         },
     },
     created() {
-        this.userRole = window.localStorage.getItem('userRole')
+        this.role = window.localStorage.getItem('role')
         axios
             .get(process.env.VUE_APP_BASE_URL+"/api/v1/rental-entity/"+this.$route.params.id,
             { headers: { Authorization: 'Bearer ' + window.localStorage.getItem("jwt") }
@@ -447,9 +447,9 @@ export default {
                 console.log(response.data)
                 this.rentalEntity = response.data
                 this.$refs.basicInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
-                if (this.userRole === 'HOME_OWNER')
+                if (this.role === 'HOME_OWNER')
                     this.$refs.vacationHomeInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
-                else if (this.userRole === 'SHIP_OWNER')
+                else if (this.role === 'SHIP_OWNER')
                     this.$refs.shipInfo.setShipCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 // TODO: FISHING_INSTRUCTOR
             })

@@ -30,17 +30,17 @@ export default {
             type: Object,
             default() { 
                 return {
-                firstName: "Test",
-                lastName: "Testis",
-                email: "testing@testing.com",
-                password: "HiHiHiHa",
-                role: "FISHING_INSTRUCTOR",
-                phone: "+0493284239",
-                dateOfBirth: "22.11.2000.",
-                address: "Testing 49",
-                city: "Sremska Mitrovica",
-                country: "Republika Srbija", 
-                registrationReason: "I love selling pot while covering up as a house owner :DDD. I love selling pot while covering up as a house owner :DDD. I love selling pot while covering up as a house owner :DDD."
+                    firstName: "Test",
+                    lastName: "Testis",
+                    email: "testing@testing.com",
+                    password: "HiHiHiHa",
+                    role: "FISHING_INSTRUCTOR",
+                    phone: "+0493284239",
+                    dateOfBirth: "22.11.2000.",
+                    address: "Testing 49",
+                    city: "Sremska Mitrovica",
+                    country: "Republika Srbija", 
+                    registrationReason: "I love selling pot while covering up as a house owner :DDD. I love selling pot while covering up as a house owner :DDD. I love selling pot while covering up as a house owner :DDD."
                 }
             }
         }
