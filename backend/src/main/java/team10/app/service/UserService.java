@@ -17,6 +17,7 @@ import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static team10.app.model.UserRole.*;
 
@@ -129,5 +130,9 @@ public class UserService implements UserDetailsService {
         if (!validator.validatePhoneNumber(phoneNumber))
             throw new PhoneNumberInvalidException(phoneNumber);
         userRepository.updatePhoneNumber(phoneNumber, email);
+    }
+
+    public void deleteUser(String email) {
+        userRepository.deleteUser(email);
     }
 }
