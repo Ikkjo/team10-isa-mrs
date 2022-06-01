@@ -50,6 +50,9 @@ import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import axios from 'axios'
 
 export default {
+    props: {
+        drUUID: String,
+    },
     data() {
         return {
             response: '',
@@ -62,7 +65,7 @@ export default {
         acceptRequest() {
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-request/'+ this.rrUUID +'/accept',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-request/'+ this.drUUID +'/accept',
                 data: {response: this.response},
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -77,7 +80,7 @@ export default {
         declineRequst() {
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-request/'+ this.rrUUID +'/decline',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-request/'+ this.drUUID +'/decline',
                 data: {response: this.response},
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
