@@ -92,6 +92,23 @@ export default {
                 alert('No connection.')
             });
         },
+        isFocused(field) {
+            return this.infocus[field]
+        },
+        inFocus(field) {
+            this.infocus[field] = true
+        },
+        outFocus(field) {
+            this.infocus[field] = false
+        },
+        getClass(field) {
+            let cls = !this.isFocused(field) && this.$v[field].$invalid ? 'alert' : '';
+            return cls;
+        },
+        getPlaceholder(field, defaultPlaceholder='') {
+            let placeholder = !this.isFocused(field) && this.$v[field].$invalid ? 'Required' : defaultPlaceholder;
+            return placeholder;
+        }
     },
     validations: {
         response: {
