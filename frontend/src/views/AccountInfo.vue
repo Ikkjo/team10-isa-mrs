@@ -605,7 +605,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #account-info {
     max-width: 100%;
 }
