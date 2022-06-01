@@ -77,7 +77,7 @@ export default {
                 alert('No connection.')
             });
         },
-        declineRequst() {
+        declineRequest() {
             axios({
                 method: 'put',
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-request/'+ this.drUUID +'/decline',
@@ -223,6 +223,9 @@ export default {
 
 textarea {
     width: 100%;
+}
+.form-control {
+    display: block;
 }
 
 .close {
