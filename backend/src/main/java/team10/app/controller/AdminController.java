@@ -7,8 +7,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.AdminDto;
+import team10.app.model.Admin;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.AdminService;
+import team10.app.util.exceptions.EmailTakenException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -56,6 +58,20 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional
+    @PostMapping(path = "/create-admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<AdminDto> createAdmin(@RequestBody AdminDto adminDto, @RequestHeader (name="Authorization") String token) {
+        try {
+            if (!adminService.isMainAdmin(jwtProvider.getAuthentication(token.substring(7)).getName()))
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            // TODO: Validacija inputa
+            return new ResponseEntity<>(adminService.createAdmin(adminDto), HttpStatus.OK);
+        } catch (UsernameNotFoundException | EmailTakenException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
