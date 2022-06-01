@@ -68,6 +68,9 @@ public class Validator {
     private static final int ADVENTURE_FISHING_EQUIPMENT_MIN_LENGTH = 5;
     private static final int ADVENTURE_FISHING_EQUIPMENT_MAX_LENGTH = 500;
 
+    private static final int MIN_ACCOUNT_DELETION_REASON = 5;
+    private static final int MAX_ACCOUNT_DELETION_REASON = 200;
+
 
     private final AddressValidator addressValidator;
     private final EmailValidator emailValidator;
@@ -228,5 +231,9 @@ public class Validator {
 
     public boolean validateRentalEntityPictures(List<String> pictures) {
         return inRange(MIN_PICTURES, MAX_PICTURES, pictures.size());
+    }
+
+    public boolean validateDeletionReason(String deletionReason) {
+        return inRange(MIN_ACCOUNT_DELETION_REASON, MAX_ACCOUNT_DELETION_REASON, deletionReason.length());
     }
 }

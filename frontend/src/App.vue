@@ -90,6 +90,14 @@ a:hover {
   transform: scale(0.98);
 }
 
+.btn-red {
+  background-color: red;
+}
+
+.btn-red:hover {
+  background-color: darkred;
+}
+
 .form {
   width: 100%;
 }

@@ -153,7 +153,6 @@ import InfoItem from '@/components/InfoItem.vue'
 import PictureCollage from '@/components/PictureCollage.vue'
 import AddressInput from '@/components/AddressInput.vue'
 import PriceInput from '@/components/PriceInput.vue'
-// import Calendar from 'v-calendar/lib/components/calendar.umd'
 import EditAvailability from '@/components/EditAvailability.vue'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 export default {
@@ -164,7 +163,6 @@ export default {
         PictureCollage,
         AddressInput,
         PriceInput,
-        // Calendar,
         EditAvailability
     },
     data() {

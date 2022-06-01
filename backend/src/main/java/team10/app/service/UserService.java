@@ -33,6 +33,7 @@ public class UserService implements UserDetailsService {
     private final Validator validator;
     private final AddressRepository addressRepository;
     private final LoyaltyRepository loyaltyRepository;
+    private final DeletionRequestRepository deletionRequestRepository;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -135,4 +136,15 @@ public class UserService implements UserDetailsService {
     public void deleteUser(String email) {
         userRepository.deleteUser(email);
     }
+
+    public void requestDeletion(String deletionReason, String email) {
+        if (!validator.validateDeletionReason(deletionReason))
+            throw new DeletionReasonInvalidException(deletionReason);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+        if (deletionRequestRepository.existsByUserId(user.getId()))
+            throw new DeletionRequestAlreadyPresentException(email);
+        DeletionRequest deletionRequest = new DeletionRequest(user, deletionReason);
+        deletionRequestRepository.save(deletionRequest);
+    }
+  
 }
