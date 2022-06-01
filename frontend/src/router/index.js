@@ -20,8 +20,8 @@ const routes = [
             component: () => import('../components/AdventureHomepage.vue')
         },
         {
-            path: 'vacation-home',
-            name: 'vacation-home',
+            path: 'vacation-homes',
+            name: 'vacation-homes',
             component: () => import('../components/VacationHomeHomepage.vue')
         }
       ]

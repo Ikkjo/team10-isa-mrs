@@ -1,12 +1,9 @@
 <template>
     <router-link
                 :to="{name: link}"
-                class="filter-button"
-                :class="{'selected': isSelected}"
-                @click.native="updateViewWhenSelected">
+                class="filter-button">
                 <span class="icon-class" :class="iconClass">{{icon}}</span>
                 <span class="text">{{title}}</span>
-        
     </router-link>
 </template>
 
@@ -19,11 +16,6 @@ export default {
         iconClass: String,
         icon: String,
         title: String,
-    },
-    methods: {
-        updateViewWhenSelected() {
-            this.$emit('')
-        }
     }
 }
 </script>
@@ -33,7 +25,7 @@ export default {
 .filter-button {
     height: 15px;
     text-decoration: none;
-    color: white;
+    color: var(--orange);
     display: flex;
     align-items: center;
     gap:10px;
@@ -43,11 +35,11 @@ export default {
 }
 
 .filter-button.selected {
-    background-color: var(--orange-secondary, darkorange);
+    color: var(--orange-secondary, darkorange);
 }
 
 .filter-button:hover {
-    background-color: var(--orange-secondary, darkorange);
+    color: var(--orange-secondary, darkorange);
 }
 
 .filter-button .icon-class {

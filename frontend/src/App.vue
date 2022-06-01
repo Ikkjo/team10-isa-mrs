@@ -152,6 +152,13 @@ ul {
     z-index: 1;
 }
 
+#searchbar {
+    position: fixed;
+    margin-top: var(--nav-height);
+    width: 100%;
+    z-index: 1;
+}
+
 .alert {
     transition: 0.5s;
     border-color: red !important;
