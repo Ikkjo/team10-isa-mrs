@@ -5,16 +5,12 @@
             <div class="menu-title">Menu</div>
             <AdminMenuItem
                 :link="'registration-requests'"
-                :isSelected="options.registrationRequest"
-                @selected="selectedOption('registrationRequest')"
                 :iconClass="'material-icons'"
                 :icon="'group_add'"
                 :title="'Registration Requests'"
                 />
             <AdminMenuItem
                 :link="'create-admin'"
-                :isSelected="options.createAdmin"
-                @selected="selectedOption('createAdmin')"
                 :iconClass="'material-icons'"
                 :icon="'person_add'"
                 :title="'Create Admin'"
@@ -32,26 +28,6 @@ export default {
     name: 'AdminPanel',
     components: {
         AdminMenuItem,
-    },
-    data() {
-        return {
-            options:{
-                registrationRequest: false,
-                createAdmin: false,
-            }
-        }
-    },
-    methods: {
-        selectedOption(option) {
-            if (!this.options[option]){
-                for (const o in this.options){
-                    if (o === option)
-                        this.options[o] = true;
-                    else
-                        this.options[o] = false
-                }
-            }
-        }
     },
 }
 </script>
@@ -95,7 +71,7 @@ h1 {
     cursor: pointer;
 }
 
-.admin-sidebar .option.selected {
+.admin-sidebar .option.router-link-active {
     background-color: var(--orange-secondary, darkorange);
 }
 
