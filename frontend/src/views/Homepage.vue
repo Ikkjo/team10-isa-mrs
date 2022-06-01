@@ -75,7 +75,7 @@ export default {
     grid-template-columns: repeat(auto-fit, 20rem);
     justify-content: center;
     gap: 15px;
-    margin-top: 15px;
+    /* margin-top: 15px; */
 }
 
 @media screen and (max-width: 669px) {
