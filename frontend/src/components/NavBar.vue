@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar">
-    <router-link to="nav" class="logo">Rentr.</router-link>
+    <router-link :to="{ name: 'homepage' }" class="logo">Rentr.</router-link>
     <ul class="navbar-nav">
         <slot name="nav-right" class="nav-right"/>
     </ul>
