@@ -12,17 +12,17 @@ const routes = [
         {
             path: 'ships',
             name: 'ships',
-            component: () => import('../components/ShipHomepage.vue')
+            component: () => import('../components/HomepageShipListings.vue')
         },
         {
             path: 'adventures',
             name: 'adventures',
-            component: () => import('../components/AdventureHomepage.vue')
+            component: () => import('../components/HomepageAdventureListings.vue')
         },
         {
             path: 'vacation-homes',
             name: 'vacation-homes',
-            component: () => import('../components/VacationHomeHomepage.vue')
+            component: () => import('../components/HomepageVacationHomeListings.vue')
         }
       ]
     },
