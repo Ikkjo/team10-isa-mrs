@@ -1,12 +1,7 @@
 <template>
-    <router-link 
-                :to="{name: link}" 
-                class="option" 
-                :class="{'selected': isSelected}"
-                @click.native="updateSelected"
-                >
-                <span class="icon-class" :class="iconClass">{{icon}}</span>
-                <span class="text">{{title}}</span>
+    <router-link :to="{name: link}" class="option">
+        <span class="icon-class" :class="iconClass">{{icon}}</span>
+        <span class="text">{{title}}</span>
     </router-link>
 </template>
 
@@ -19,11 +14,6 @@ export default {
         iconClass: String,
         icon: String,
         title: String,
-    },
-    methods: {
-        updateSelected() {
-            this.$emit('selected')
-        }
     },
 }
 </script>
