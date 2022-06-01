@@ -58,6 +58,7 @@ export default {
     align-items: center;
     gap:10px;
     transition: 0.3s;
+    padding: 5px 15px;
     cursor: pointer;
 }
 
@@ -75,6 +76,10 @@ export default {
 
 .searchbar .filter-button .text {
     font-size: 1.2rem;    
+}
+
+.searchbar .filter-button.router-link-active {
+    color: var(--orange-secondary, darkorange);
 }
 
 </style>

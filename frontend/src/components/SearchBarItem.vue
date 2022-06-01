@@ -22,31 +22,4 @@ export default {
 
 <style>
 
-.filter-button {
-    height: 15px;
-    text-decoration: none;
-    color: var(--orange);
-    display: flex;
-    align-items: center;
-    gap:10px;
-    transition: 0.3s;
-    padding:5px 15px;
-    cursor: pointer;
-}
-
-.filter-button.selected {
-    color: var(--orange-secondary, darkorange);
-}
-
-.filter-button:hover {
-    color: var(--orange-secondary, darkorange);
-}
-
-.filter-button .icon-class {
-  font-size: 2rem;
-}
-
-.filter-button .text {
-    font-size: 1.2rem;    
-}
 </style>

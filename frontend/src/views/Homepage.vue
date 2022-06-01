@@ -308,7 +308,7 @@ export default {
 <style>
 .listings-container {
   max-width: 100%;
-  margin-top: 140px;
+  padding-top: 180px;
 }
 
 .listings {
@@ -316,7 +316,6 @@ export default {
     grid-template-columns: repeat(auto-fit, 20rem);
     justify-content: center;
     gap: 15px;
-    
 }
 
 @media screen and (max-width: 669px) {
