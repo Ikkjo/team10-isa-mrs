@@ -1,6 +1,5 @@
 <template>
     <div class="admin-panel-wrapper">
-
         <div class="admin-sidebar">
             <div class="menu-title">Menu</div>
             <AdminMenuItem
@@ -14,6 +13,12 @@
                 :iconClass="'material-icons'"
                 :icon="'person_add'"
                 :title="'Create Admin'"
+                />
+            <AdminMenuItem
+                :link="'deletion-requests'"
+                :iconClass="'material-icons'"
+                :icon="'person_remove'"
+                :title="'Deletion Requests'"
                 />
         </div>
         <div class="admin-panel-body">
@@ -94,4 +99,44 @@ h1 {
   margin-left: 200px; /* Same as the width of the sidebar */
   padding: 0px 10px;
 }
+
+/* Table style */
+table {
+    font-family: arial, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+    border-bottom: 2px solid var(--orange-primary, orange);
+}
+
+th, td {
+    padding: 12px 15px;
+}
+
+td {
+    border-right: 1px solid lightgray;
+    padding: 6px 10px;
+    word-wrap: break-all;
+    overflow-wrap:break-word;
+}
+
+thead tr {
+    background-color: var(--orange-primary, orange);
+    color: white;
+    text-align: left;
+}
+
 </style>
