@@ -13,6 +13,6 @@ public interface DeletionRequestRepository extends JpaRepository<DeletionRequest
     @Modifying
     @Query("update DeletionRequest dr set dr.reviewed = true where dr.id = ?1")
     void review(UUID id);
-
+  
     boolean existsByUserId(UUID userId);
 }

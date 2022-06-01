@@ -146,4 +146,5 @@ public class UserService implements UserDetailsService {
         DeletionRequest deletionRequest = new DeletionRequest(user, deletionReason);
         deletionRequestRepository.save(deletionRequest);
     }
+  
 }
