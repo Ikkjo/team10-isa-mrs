@@ -3,23 +3,19 @@
     <HomepageNavBar id="nav"/>
     <SearchBar/>
     <div class="listings-container">
-      <div class="listings">
-        <RentalEntityCard class="listing" v-for="(rentalEntity, index) in listings" :key="index" :rentalEntity="rentalEntity"/>
-      </div>
+      <router-view/>
     </div>
   </div>
 </template>
 
 <script>
 import HomepageNavBar from "@/components/HomepageNavBar.vue"
-import RentalEntityCard from "@/components/RentalEntityCard.vue"
 import SearchBar from "@/components/SearchBar.vue";
 import axios from 'axios';
 export default {
     name: 'HomepageView',
     components: {
         HomepageNavBar,
-        RentalEntityCard,
         SearchBar
     },
     data() {
@@ -28,246 +24,33 @@ export default {
         listings: [
           {
             id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
+            title: "Idila pored Lidla",
             address: {
-              address: "",
-              city: "",
-              country: "",
+              address: "Braće Ribnikar 33",
+              city: "Novi Sad",
+              country: "Serbia",
             },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
+            description: "Lidl je veoma blizu!",
+            rulesOfConduct: "Nema ljubimaca",
+            additionalServices: "Wifi, kablovska",
+            price: 23,
+            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"]
           },
                     {
             id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
+            title: "Prenoćište 'Na pola puta'",
             address: {
-              address: "",
-              city: "",
-              country: "",
+              address: "Fruškogorska 91",
+              city: "Novi Sad",
+              country: "Serbia",
             },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
-          },
-                    {
-            id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
-            address: {
-              address: "",
-              city: "",
-              country: "",
-            },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
-          },
-                    {
-            id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
-            address: {
-              address: "",
-              city: "",
-              country: "",
-            },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
-          },
-                    {
-            id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
-            address: {
-              address: "",
-              city: "",
-              country: "",
-            },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
-          },
-                    {
-            id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
-            address: {
-              address: "",
-              city: "",
-              country: "",
-            },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
-          },
-                    {
-            id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
-            address: {
-              address: "",
-              city: "",
-              country: "",
-            },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
-          },
-                    {
-            id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
-            address: {
-              address: "",
-              city: "",
-              country: "",
-            },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
-          },
-                    {
-            id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
-            address: {
-              address: "",
-              city: "",
-              country: "",
-            },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
-          },
-                    {
-            id: "57cb00b1-7b78-4ea8-8097-98f366aa53bb",
-            title: "",
-            address: {
-              address: "",
-              city: "",
-              country: "",
-            },
-            description: "",
-            rulesOfConduct: "",
-            additionalServices: "",
-            price: 33,
-            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"],
-            availability:[],
-            type: "",
-            length: 91,
-            engineCount: 33,
-            enginePower: 55,
-            maxSpeed: 80,
-            navigationEquipment: "",
-            fishingEquipment: "",
-            capacity: 3,
-            freeCancellation: false,
-          },
+            description: "Na pola puta do Fruske Gore!",
+            rulesOfConduct: "Ljubimci su dobrodosli",
+            additionalServices: "Wifi, kablovska, parking za bicikle",
+            price: 23,
+            pictures: ["https://papers.co/wallpaper/papers.co-my69-house-swimmingpool-vacation-nature-city-35-3840x2160-4k-wallpaper.jpg"]
+          }
         ],
-        
       }
     },
     created() {
@@ -308,7 +91,7 @@ export default {
 <style>
 .listings-container {
   max-width: 100%;
-  padding-top: 180px;
+  padding-top: 70px;
 }
 
 .listings {
@@ -324,6 +107,7 @@ export default {
     flex-direction: column;
     align-items: center;
     padding: 0 15px;
+    overflow: scroll;
   }
   
   .listing {
@@ -332,6 +116,4 @@ export default {
   }
 
 }
-
-
 </style> 
