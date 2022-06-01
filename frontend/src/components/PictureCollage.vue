@@ -4,7 +4,7 @@
       <button class="btn" @click="showAll = !showAll">See All & Edit</button>
       <portal to="body">
             <!-- use the modal component, pass in the prop -->
-            <MyModal
+            <PictureUpdateModal
             v-if="showAll"
             :show="showAll"
             @close="showAll=false"
@@ -13,19 +13,19 @@
             <template #body>
               <RentalEntityPictureInput ref="pictureInput" :defaultPictures="pictures" @updated="updatePictures" v-show="showAll" class="picture-input"/>
             </template>
-            </MyModal>
+            </PictureUpdateModal>
         </portal>
   </div>
 </template>
 
 <script>
 import RentalEntityPictureInput from '@/components/RentalEntityPictureInput.vue'
-import MyModal from '@/components/MyModal.vue'
+import PictureUpdateModal from '@/components/PictureUpdateModal.vue'
 export default {
     name: 'PictureCollage',
     components: {
       RentalEntityPictureInput,
-      MyModal,
+      PictureUpdateModal,
     },
     props: ['pictures'],
     data() {

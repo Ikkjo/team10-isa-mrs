@@ -55,7 +55,7 @@
                     <h1>Additional information</h1>
                     <div class="form-control">
                     <label for="rules-of-conduct">Availability</label>
-                        <MyCalendar @input="availabilityUpdated"/>
+                        <RentalEntityAvailabilityCalendar @input="availabilityUpdated"/>
                     </div>
                     <div class="form-control">
                         <label for="rules-of-conduct">Rules of conduct</label>
@@ -339,7 +339,7 @@ import PriceInput from '../components/PriceInput.vue'
 import RentalEntityPictureInput from '../components/RentalEntityPictureInput.vue'
 import RoomsInput from '../components/RoomsInput.vue'
 import NumberInput from '../components/NumberInput.vue'
-import MyCalendar from '@/components/MyCalendar.vue'
+import RentalEntityAvailabilityCalendar from '@/components/RentalEntityAvailabilityCalendar.vue'
 import axios from 'axios';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -351,7 +351,7 @@ export default {
         RentalEntityPictureInput,
         RoomsInput,
         NumberInput,
-        MyCalendar
+        RentalEntityAvailabilityCalendar
     },
     data() {
         return {

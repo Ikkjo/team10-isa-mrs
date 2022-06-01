@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: 'MyModal',
+    name: 'PictureUpdateModal',
     props: {
         show: {
             type: Boolean,

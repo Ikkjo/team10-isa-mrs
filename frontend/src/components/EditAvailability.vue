@@ -9,14 +9,14 @@
         <div v-show="edit" @click="cancelClicked" class="edit cancel noselect">Cancel</div>
     </div>
     <div class="calendar">
-        <MyCalendar ref="calendar" :defaultSelection="availability" :edit="edit"/>
+        <RentalEntityAvailabilityCalendar ref="calendar" :defaultSelection="availability" :edit="edit"/>
     </div>
     <button v-if="edit" @click="save" class="btn">Save</button>
   </div>
 </template>
 
 <script>
-import MyCalendar from '@/components/MyCalendar.vue'
+import RentalEntityAvailabilityCalendar from '@/components/RentalEntityAvailabilityCalendar.vue'
 export default {
     name: 'EditAvailability',
     props: {
@@ -26,7 +26,7 @@ export default {
         }
     },
     components: {
-        MyCalendar
+        RentalEntityAvailabilityCalendar
     },
     data() {
         return {

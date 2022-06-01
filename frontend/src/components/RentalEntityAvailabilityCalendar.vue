@@ -11,7 +11,7 @@
 <script>
 import Calendar from 'v-calendar/lib/components/calendar.umd'
 export default {
-    name: 'MyCalendar',
+    name: 'RentalEntityAvailabilityCalendar',
     props: {
         defaultSelection: {
             type: Array,
