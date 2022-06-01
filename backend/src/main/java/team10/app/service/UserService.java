@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import team10.app.dto.AdminDto;
 import team10.app.dto.BusinessClientRegistrationRequestDto;
 import team10.app.dto.ClientRegistrationRequestDto;
 import team10.app.dto.PasswordChangeDto;
@@ -50,6 +51,10 @@ public class UserService implements UserDetailsService {
 
     public Client buildClient(ClientRegistrationRequestDto dto) throws IllegalArgumentException {
         return new Client(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(), dto.getPhoneNumber());
+    }
+
+    public Admin buildAdmin(AdminDto dto) throws IllegalArgumentException {
+        return new Admin(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword());
     }
 
     public void saveBusinessUser(BusinessClient user) {
