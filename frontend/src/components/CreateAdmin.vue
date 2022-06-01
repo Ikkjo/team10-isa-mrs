@@ -80,7 +80,7 @@
                 </div>
                 <div class="btn-div">
                     <button class="btn"
-                        :disabled="$v.invalid">
+                        :disabled="$v.$invalid">
                         Create Admin
                     </button>
                 </div>
