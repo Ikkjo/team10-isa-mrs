@@ -12,7 +12,7 @@
     <div v-show="!showSlot" class="text">{{text}}</div>
     <div v-if="useSlot" v-show="showSlot" class="edit-slot">
         <slot name="edit"/>
-        <button :disabled="saveDisabled" @click="save" class="btn" :class="{'btn-red': editButton==='Delete', 'btn-disabled': saveDisabled}">{{editButton}}</button>
+        <button :disabled="saveDisabled" @click="save" class="btn" :class="{'btn-red': editButton==='Request Deletion', 'btn-disabled': saveDisabled}">{{editButton}}</button>
     </div>
   </div>
 </template>

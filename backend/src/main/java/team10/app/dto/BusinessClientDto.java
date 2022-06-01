@@ -11,22 +11,15 @@ import team10.app.model.UserRole;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BusinessClientDto {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private String role;
+public class BusinessClientDto extends UserDto {
+
     private AddressDto address;
     private String dateOfBirth;
 //    private Loyalty loyalty;
 
     public BusinessClientDto(BusinessClient businessClient) {
-        this.firstName = businessClient.getFirstName();
-        this.lastName = businessClient.getLastName();
-        this.email = businessClient.getEmail();
-        this.phoneNumber = businessClient.getPhoneNumber();
-        this.role = businessClient.getRole().name();
+        super(businessClient.getFirstName(), businessClient.getLastName(), businessClient.getEmail(),
+                businessClient.getPhoneNumber(), businessClient.getRole().name());
         this.address = new AddressDto(businessClient.getAddress());
         this.dateOfBirth = businessClient.getDateOfBirth();
 //        this.loyalty = businessClient.getLoyalty();

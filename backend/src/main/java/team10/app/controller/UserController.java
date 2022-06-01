@@ -88,4 +88,18 @@ public class UserController {
         return new ResponseEntity<>(phoneNumber, HttpStatus.OK);
     }
 
+    @Transactional
+    @PutMapping("/delete")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR', 'CLIENT')")
+    public ResponseEntity<HttpStatus> requestDeletion(@RequestBody String deletionReason, @RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            userService.requestDeletion(deletionReason, jwtProvider.getAuthentication(token.substring(7)).getName());
+        }
+        catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

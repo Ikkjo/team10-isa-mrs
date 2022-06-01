@@ -169,9 +169,10 @@
                     text="Active"
                     buttonText="Delete account"
                     style="color: red;"
-                    editButton="Delete"
+                    editButton="Request Deletion"
                     :saveDisabled="$v.deletionReason.$invalid"
                     @save="sendDeleteRequest"
+                    @cancelClicked="deletionReason=''"
                     >
                     <template slot="edit">
                         <div class="form-control block-form">
@@ -241,6 +242,7 @@ export default {
             newPassword: '',
             confirmNewPassword: '',
             deletionReason: '',
+            deletionRequestSent: false,
             infocus: {
                 firstName: true,
                 lastName: true,
@@ -490,7 +492,31 @@ export default {
             this.$router.push({ name: 'business-client-register' })
         },
         sendDeleteRequest() {
-            
+            if (this.deletionRequestSent)
+                alert("Deletion request already sent")
+            else {
+                axios({
+                    method: 'put',
+                    url: process.env.VUE_APP_BASE_URL+'/api/v1/user/delete',
+                    data: this.deletionReason,
+                    headers: {
+                        Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                    },
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        if (response.status >= 400)
+                            alert("Failed to send deletion request")
+                        else {
+                            alert("Deletion request sent succesfully")
+                            this.deletionRequestSent = true
+                        }
+                    })
+                    .catch((error) => {
+                        alert("Failed to send deletion request")
+                        console.log(error);
+                    })
+            }
         },
         updatePhone(phoneNumber){
             this.phoneNumberTmp = phoneNumber
