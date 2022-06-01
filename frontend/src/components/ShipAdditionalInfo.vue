@@ -1,5 +1,5 @@
 <template>
-  <div class="info-section">
+  <div v-if="shipCopy" class="info-section">
       <h2>Ship info</h2>
       <div class="info-items">
         <InfoItem icon="directions_boat" label="Type"
@@ -187,17 +187,7 @@ export default {
     },
     data() {
       return {
-        shipCopy: {
-            type: '',
-            length: 1,
-            engineCount: 1,
-            enginePower: 1,
-            maxSpeed: 1,
-            navigationEquipment: '',
-            fishingEquipment: '',
-            capacity: 1,
-            cancellation: null,
-        },
+        shipCopy: null,
         infocus: {
           type: true,
           navigationEquipment: true,

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import team10.app.dto.AdventureDto;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Adventure;
+import team10.app.model.Availability;
 import team10.app.model.VacationHome;
 import team10.app.repository.AddressRepository;
 import team10.app.repository.AdventureRepository;
@@ -12,14 +13,14 @@ import team10.app.repository.FishingInstructorRepository;
 import team10.app.repository.PictureRepository;
 import team10.app.util.Validator;
 
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class FishingInstructorService {
 
-    private final FishingInstructorRepository fishingInstructorRepository;
     private final AdventureRepository adventureRepository;
     private final AddressRepository addressRepository;
-    private final PictureService pictureService;
     private final PictureRepository pictureRepository;
     private final Validator validator;
 
@@ -42,13 +43,14 @@ public class FishingInstructorService {
         return new Adventure(
                 adventureDto.getTitle(),
                 adventureDto.getDescription(),
-                pictureService.buildPictureSet(adventureDto.getPictures()),
+                PictureService.buildPictureSet(adventureDto.getPictures()),
                 adventureDto.getRulesOfConduct(),
                 adventureDto.getPrice(),
                 adventureDto.getBiography(),
                 adventureDto.getCapacity(),
                 adventureDto.getFishingEquipment(),
-                adventureDto.isFreeCancellation()
+                adventureDto.isFreeCancellation(),
+                adventureDto.getAvailability().stream().map(Availability::new).collect(Collectors.toSet())
         );
     }
 }

@@ -35,7 +35,7 @@ public class Ship extends RentalEntity {
     public Ship(String title, Address address, String description, String rulesOfConduct, String additionalServices,
                 int price, Set<Picture> pictures, String type, double length, int engineCount, int enginePower,
                 int maxSpeed, String navigationEquipment, String fishingEquipment, int capacity,
-                boolean freeCancellation) {
+                boolean freeCancellation, Set<Availability> availability) {
         this.title = title;
         this.address = address;
         this.description = description;
@@ -52,5 +52,7 @@ public class Ship extends RentalEntity {
         this.fishingEquipment = fishingEquipment;
         this.capacity = capacity;
         this.freeCancellation = freeCancellation;
+        this.availability = availability;
+
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import team10.app.dto.*;
+import team10.app.model.Availability;
 import team10.app.model.RentalEntity;
 import team10.app.repository.UserRepository;
 import team10.app.util.exceptions.PasswordInvalidException;
@@ -14,6 +15,8 @@ import javax.management.remote.JMXAuthenticator;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
@@ -95,7 +98,17 @@ public class Validator {
                 && this.validateRentalEntityRulesOfConduct(rentalEntityDto.getRulesOfConduct())
                 && this.validateRentalEntityAdditionalServices(rentalEntityDto.getAdditionalServices())
                 && this.validateRentalEntityPrice(rentalEntityDto.getPrice())
-                && inRange(MIN_PICTURES, MAX_PICTURES, rentalEntityDto.getPictures().size());
+                && this.validateRentalEntityPictures(rentalEntityDto.getPictures())
+                && this.validateRentalEntityAvailability(rentalEntityDto.getAvailability());
+    }
+
+    public boolean validateRentalEntityAvailability(List<Long> availability) {
+        Date date = new Date();
+        for (Long a : availability) {
+            if (a < date.getTime() - 24 * 60 * 60 * 1000 - 10 * 1000)
+                return false;
+        }
+        return true;
     }
 
 
@@ -211,5 +224,9 @@ public class Validator {
 
     public boolean validateShipCapacity(int capacity) {
         return inRange(SHIP_MIN_CAPACITY, SHIP_MAX_CAPACITY, capacity);
+    }
+
+    public boolean validateRentalEntityPictures(List<String> pictures) {
+        return inRange(MIN_PICTURES, MAX_PICTURES, pictures.size());
     }
 }

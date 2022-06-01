@@ -14,6 +14,7 @@ import team10.app.security.auth.JWTProvider;
 import team10.app.service.RentalEntityService;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -85,6 +86,18 @@ public class RentalEntityController {
     }
 
     @Transactional
+    @PutMapping("/update/{id}/availability")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<Long[]> updateAvailability(@PathVariable UUID id, @RequestBody Long[] availability) {
+        try {
+            rentalEntityService.updateAvailability(List.of(availability), id);
+        } catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(availability, HttpStatus.OK);
+    }
+
+    @Transactional
     @PutMapping("/update/{id}/rules-of-conduct")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<String> updateRulesOfConduct(@PathVariable UUID id, @RequestBody String rulesOfConduct) {
@@ -120,6 +133,17 @@ public class RentalEntityController {
         return new ResponseEntity<>(price, HttpStatus.OK);
     }
 
+    @Transactional
+    @PutMapping("/update/{id}/pictures")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<List<String>> updatePictures(@PathVariable UUID id, @RequestBody List<String> pictures) {
+        try {
+            rentalEntityService.updatePictures(pictures, id);
+        } catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(pictures, HttpStatus.OK);
+    }
 
 
 }

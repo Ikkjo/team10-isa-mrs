@@ -8,6 +8,7 @@
         <div v-show="!showSlot" @click="editClicked" class="edit noselect">{{buttonText}}</div>
         <div v-if="useSlot" v-show="showSlot" @click="cancelClicked" class="edit cancel noselect">Cancel</div>
     </div>
+    <slot v-if="!showSlot" name="main"/>
     <div v-show="!showSlot" class="text">{{text}}</div>
     <div v-if="useSlot" v-show="showSlot" class="edit-slot">
         <slot name="edit"/>
@@ -73,7 +74,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #info-item {
     min-width: 300px;
     width: 100%;

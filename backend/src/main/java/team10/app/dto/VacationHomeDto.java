@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team10.app.model.Address;
+import team10.app.model.Availability;
 import team10.app.model.Picture;
 import team10.app.model.VacationHome;
 
@@ -19,8 +20,9 @@ public class VacationHomeDto extends RentalEntityDto {
     private int rooms;
     private int beds;
 
-    public VacationHomeDto(String title, AddressDto addressDto, String description, String rulesOfConduct, String additionalServices, int price, List<String> pictures, int rooms, int beds) {
-        super(title, addressDto, description, rulesOfConduct, additionalServices, price, pictures);
+    public VacationHomeDto(String title, AddressDto addressDto, String description, String rulesOfConduct,
+                           String additionalServices, int price, List<String> pictures, int rooms, int beds, List<Long> availiability) {
+        super(title, addressDto, description, rulesOfConduct, additionalServices, price, pictures, availiability);
         this.rooms = rooms;
         this.beds = beds;
     }
@@ -35,7 +37,9 @@ public class VacationHomeDto extends RentalEntityDto {
                 vacationHome.getRulesOfConduct(),
                 vacationHome.getAdditionalServices(),
                 vacationHome.getPrice(),
-                vacationHome.getPictures().stream().map(Picture::asString).collect(Collectors.toList())
+                vacationHome.getPictures().stream().map(Picture::asString).collect(Collectors.toList()),
+                vacationHome.getAvailability().stream().map(Availability::getDate).collect(Collectors.toList())
+
         );
         this.rooms = vacationHome.getRooms();
         this.beds = vacationHome.getBeds();

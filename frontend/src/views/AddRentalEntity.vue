@@ -54,6 +54,10 @@
                 <div class="form" v-show="step === 2">
                     <h1>Additional information</h1>
                     <div class="form-control">
+                    <label for="rules-of-conduct">Availability</label>
+                        <RentalEntityAvailabilityCalendar @input="availabilityUpdated"/>
+                    </div>
+                    <div class="form-control">
                         <label for="rules-of-conduct">Rules of conduct</label>
                         <textarea 
                             v-model="baseInfo.second.rulesOfConduct" 
@@ -335,6 +339,7 @@ import PriceInput from '../components/PriceInput.vue'
 import RentalEntityPictureInput from '../components/RentalEntityPictureInput.vue'
 import RoomsInput from '../components/RoomsInput.vue'
 import NumberInput from '../components/NumberInput.vue'
+import RentalEntityAvailabilityCalendar from '@/components/RentalEntityAvailabilityCalendar.vue'
 import axios from 'axios';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -346,6 +351,7 @@ export default {
         RentalEntityPictureInput,
         RoomsInput,
         NumberInput,
+        RentalEntityAvailabilityCalendar
     },
     data() {
         return {
@@ -358,6 +364,7 @@ export default {
                     description: '',
                 },
                 second: {
+                    availability: [],
                     rulesOfConduct: '',
                     additionalServices: '',
                 },
@@ -490,6 +497,9 @@ export default {
         }
     },
     methods: {
+        availabilityUpdated(availability) {
+            this.baseInfo.second.availability = availability.map(a => a.getTime());
+        },
         addressUpdated(address) {
             this.baseInfo.first.address = address;
         },
@@ -602,6 +612,7 @@ export default {
                     'city': this.baseInfo.first.city, 
                     'country': this.baseInfo.first.country
                     },
+                availability: this.baseInfo.second.availability,
                 description: this.baseInfo.first.description,
                 rulesOfConduct: this.baseInfo.second.rulesOfConduct,
                 additionalServices: this.baseInfo.second.additionalServices,
@@ -634,6 +645,7 @@ export default {
                     'city': this.baseInfo.first.city, 
                     'country': this.baseInfo.first.country
                     },
+                availability: this.baseInfo.second.availability,
                 description: this.baseInfo.first.description,
                 rulesOfConduct: this.baseInfo.second.rulesOfConduct,
                 additionalServices: this.baseInfo.second.additionalServices,
@@ -672,6 +684,7 @@ export default {
                     'city': this.baseInfo.first.city, 
                     'country': this.baseInfo.first.country
                     },
+                availability: this.baseInfo.second.availability,
                 description: this.baseInfo.first.description,
                 rulesOfConduct: this.baseInfo.second.rulesOfConduct,
                 additionalServices: this.baseInfo.second.additionalServices,
@@ -901,7 +914,4 @@ export default {
     border-color: red !important;
     border-width: 2px;
 }
-
-
-
 </style>

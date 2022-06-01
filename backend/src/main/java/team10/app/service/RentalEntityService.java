@@ -20,6 +20,7 @@ public class RentalEntityService {
     private final RentalEntityRepository rentalEntityRepository;
     private final BusinessClientRepository businessClientRepository;
     private final AddressService addressService;
+    private final PictureService pictureService;
     private final Validator validator;
 
     public RentalEntityDto rentalEntityToDto(UUID id) {
@@ -92,5 +93,21 @@ public class RentalEntityService {
         if (!validator.validateRentalEntityPrice(price))
             throw new RentalEntityPriceInvalidException(price);
         rentalEntityRepository.updatePrice(price, id);
+    }
+
+    public void updatePictures(List<String> pictures, UUID id) {
+        if (!validator.validateRentalEntityPictures(pictures))
+            throw new RentalEntityPicturesInvalidException();
+        RentalEntity rentalEntity = rentalEntityRepository.getById(id);
+        rentalEntity.setPictures(PictureService.buildPictureSet(pictures));
+        rentalEntityRepository.saveAndFlush(rentalEntity);
+    }
+
+    public void updateAvailability(List<Long> availability, UUID id) {
+        if (!validator.validateRentalEntityAvailability(availability))
+            throw new RentalEntityAvailabilityInvalidException(availability.toString());
+        RentalEntity rentalEntity = rentalEntityRepository.getById(id);
+        rentalEntity.setAvailability(availability.stream().map(Availability::new).collect(Collectors.toSet()));
+        rentalEntityRepository.saveAndFlush(rentalEntity);
     }
 }

@@ -27,7 +27,8 @@ public class Adventure extends RentalEntity {
                      String instructorBiography,
                      int maxCapacity,
                      String fishing,
-                     boolean freeCancellation) {
+                     boolean freeCancellation,
+                     Set<Availability> availability) {
         this.title = name;
         this.description = description;
         this.pictures = pictures;
@@ -38,5 +39,6 @@ public class Adventure extends RentalEntity {
         this.maxCapacity = maxCapacity;
         this.fishing = fishing;
         this.freeCancellation = freeCancellation;
+        this.availability = availability;
     }
 }

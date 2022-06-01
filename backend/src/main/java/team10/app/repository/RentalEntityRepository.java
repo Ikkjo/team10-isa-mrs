@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import team10.app.model.Address;
 import team10.app.model.BusinessClient;
+import team10.app.model.Picture;
 import team10.app.model.RentalEntity;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -42,4 +44,5 @@ public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID
     @Modifying
     @Query("update RentalEntity rE set rE.price = ?1 where rE.id = ?2")
     void updatePrice(int price, UUID id);
+
 }

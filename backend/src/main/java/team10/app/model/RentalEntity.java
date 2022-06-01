@@ -31,12 +31,29 @@ public abstract class RentalEntity {
     protected String additionalServices;
     @Column(nullable = false)
     protected int price;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "picture_id")
     protected Set<Picture> pictures;
     protected boolean deleted = false;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     protected BusinessClient owner;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "availability_id")
+    protected Set<Availability> availability;
+
+    public void setPictures(Set<Picture> pictures) {
+        this.pictures.clear();
+        if (pictures != null) {
+            this.pictures.addAll(pictures);
+        }
+    }
+
+    public void setAvailability(Set<Availability> availability) {
+        this.availability.clear();
+        if (availability != null) {
+            this.availability.addAll(availability);
+        }
+    }
 
 }

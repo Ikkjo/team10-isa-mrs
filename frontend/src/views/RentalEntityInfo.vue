@@ -10,10 +10,12 @@
                 @update:rulesOfConduct="updateRulesOfConduct"
                 @update:additionalServices="updateAdditionalServices"
                 @update:price="updatePrice"
+                @update:pictures="updatePictures"
+                @update:availability="updateAvailability"
             />
             <VacationHomeAdditionalInfo
                 v-if="role === 'HOUSE_OWNER'"
-                :rentalEntity="rentalEntity"
+                :vacationHome="rentalEntity"
                 ref="vacationHomeInfo"
                 @update:rooms="updateRooms"
                 @update:beds="updateBeds"/>
@@ -31,7 +33,6 @@
                 @update:shipCapacity="updateShipCapacity"
                 @update:shipCancellation="updateShipCancellation"/>
         </div>
-
     </div>
 </template>
 
@@ -51,14 +52,8 @@ export default {
     },
     data() {
         return {
+            rentalEntity: null,
             role: '',
-            rentalEntity: {
-                pictures: [],
-                address: '',
-                beds: 0,
-                rooms: 0,
-                title: ''
-            },
         }
     },
     methods: {
@@ -128,6 +123,30 @@ export default {
                     console.log(error);
                 }) 
         },
+        updateAvailability(availability) {
+            console.log("updating availability...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/'+this.rentalEntity.id+'/availability',
+                data: availability,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400) {
+                        alert("Availability Invalid")
+                    }
+                    else {
+                        this.rentalEntity.availability = response.data
+                    }
+                })
+                .catch((error) => {
+                    alert("Availability Invalid")
+                    console.log(error);
+                })
+        },
         updateRulesOfConduct(rulesOfConduct) {
             console.log(rulesOfConduct)
             axios({
@@ -190,6 +209,28 @@ export default {
                 })
                 .catch((error) => {
                     alert("Price Invalid")
+                    console.log(error);
+                }) 
+        },
+        updatePictures(pictures) {
+            console.log("updating pictures...")
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/update/'+this.rentalEntity.id+'/pictures/',
+                data: pictures.map(picture => picture.getFileEncodeDataURL()),
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Pictures Invalid")
+                    else
+                        this.rentalEntity.pictures = response.data
+                })
+                .catch((error) => {
+                    alert("Pictures Invalid")
                     console.log(error);
                 }) 
         },
@@ -445,20 +486,19 @@ export default {
             })
             .then((response) => {
                 console.log(response.data)
-                this.rentalEntity = response.data
+                this.rentalEntity = response.data;
                 this.$refs.basicInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
-                if (this.role === 'HOME_OWNER')
-                    this.$refs.vacationHomeInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                if (this.role === 'HOUSE_OWNER')
+                    this.$refs.vacationHomeInfo.setVacationHomeCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 else if (this.role === 'SHIP_OWNER')
                     this.$refs.shipInfo.setShipCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 // TODO: FISHING_INSTRUCTOR
+                
             })
             .catch(function(error) {
                 console.log(error)
             })
-        
-    }
-
+    },
 }
 </script>
 
