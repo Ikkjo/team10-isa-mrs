@@ -1,33 +1,33 @@
 <template>
     <div class="wrapper">
         <h1>Registration Requests</h1>
-            <Vuetable ref="vuetable"
-                :api-mode="false"
-                :fields="fields"
-                :data="requests"
-                >
-                <div slot="accept" slot-scope="props">
-                    <button
-                        class="btn accept"
-                        @click="acceptRequest(props.rowData)"
-                        >Accept
-                    </button>
-                </div>
-                <div slot="decline" slot-scope="props">
-                    <button
-                        class="btn decline"
-                        @click="openDeclineRequestModal(props.rowData.id)"
-                        >Decline
-                    </button>
-                </div>
-            </Vuetable>
-            <DeclineRegistrationRequestModal
-                v-if="showModal"
-                :show="showModal"
-                :rrUUID="rrUUID"
-                @close="showModal=false"
-                @removeRequest="removeRequest"
-                />
+        <Vuetable ref="vuetable"
+            :api-mode="false"
+            :fields="fields"
+            :data="requests"
+            >
+            <div slot="accept" slot-scope="props">
+                <button
+                    class="btn accept"
+                    @click="acceptRequest(props.rowData)"
+                    >Accept
+                </button>
+            </div>
+            <div slot="decline" slot-scope="props">
+                <button
+                    class="btn decline"
+                    @click="openDeclineRequestModal(props.rowData.id)"
+                    >Decline
+                </button>
+            </div>
+        </Vuetable>
+        <DeclineRegistrationRequestModal
+            v-if="showModal"
+            :show="showModal"
+            :rrUUID="rrUUID"
+            @close="showModal=false"
+            @removeRequest="removeRequest"
+            />
     </div>
 </template>
 
@@ -44,7 +44,6 @@ export default {
     },
     data() {
         return {
-            registrationRequestUUID: null,
             rrUUID: null,
             showModal: false,
             fields: [
@@ -235,44 +234,6 @@ export default {
 </script>
 
 <style>
-table {
-    font-family: arial, sans-serif;
-    width: 100%;
-    border-collapse: collapse;
-    margin: 25px 0;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-tbody tr:last-of-type {
-    border-bottom: 2px solid var(--orange-primary, orange);
-}
-
-th, td {
-    padding: 12px 15px;
-}
-
-td {
-    border-right: 1px solid lightgray;
-    padding: 6px 10px;
-    word-wrap: break-all;
-    overflow-wrap:break-word;
-}
-
-thead tr {
-    background-color: var(--orange-primary, orange);
-    color: white;
-    text-align: left;
-}
-
 .btn.accept {
     background-color: green;
 }

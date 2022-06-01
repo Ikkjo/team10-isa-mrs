@@ -38,7 +38,12 @@ const routes = [
                 path: 'create-admin',
                 name: 'create-admin',
                 component: () => import('../components/CreateAdmin.vue')
-            }
+            },
+            {
+                path: 'deletion-requests',
+                name: 'deletion-requests',
+                component: () => import('../components/DeletionRequestsTable.vue')
+            },
         ]
     },
     {

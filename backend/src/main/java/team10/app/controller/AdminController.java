@@ -52,7 +52,7 @@ public class AdminController {
     @Transactional
     @PutMapping(path = "/registration-request/{id}/decline")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<HttpStatus> denyBusinessClient(@PathVariable UUID id, @RequestBody String declineReason) {
+    public ResponseEntity<HttpStatus> declineBusinessClient(@PathVariable UUID id, @RequestBody String declineReason) {
         try {
             adminService.declineBusinessClient(id, declineReason);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -72,6 +72,32 @@ public class AdminController {
             // TODO: Validacija inputa
             return new ResponseEntity<>(adminService.createAdmin(adminDto), HttpStatus.OK);
         } catch (UsernameNotFoundException | EmailTakenException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional
+    @PutMapping(path = "/deletion-request/{id}/accept")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<HttpStatus> acceptDeletionRequest(@PathVariable UUID id, @RequestBody String response) {
+        try {
+            adminService.acceptDeletionRequest(id, response);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional
+    @PutMapping(path = "/deletion-request/{id}/decline")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<HttpStatus> declineDeletionRequest(@PathVariable UUID id, @RequestBody String response) {
+        try {
+            adminService.declineDeletionRequest(id, response);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (EntityNotFoundException ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

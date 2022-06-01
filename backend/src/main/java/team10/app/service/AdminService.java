@@ -74,4 +74,11 @@ public class AdminService {
                 });
         return admin.isMain();
     }
+
+    public void acceptDeletionRequest(UUID id, String response) {
+
+    }
+
+    public void declineDeletionRequest(UUID id, String response) {
+    }
 }
