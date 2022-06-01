@@ -7,7 +7,24 @@ const routes = [
     {
       path: '/',
       name: 'homepage',
-      component: () => import('../views/Homepage.vue')
+      component: () => import('../views/Homepage.vue'),
+      children: [
+        {
+            path: 'ships',
+            name: 'ships',
+            component: () => import('../components/ShipHomepage.vue')
+        },
+        {
+            path: 'adventures',
+            name: 'adventures',
+            component: () => import('../components/AdventureHomepage.vue')
+        },
+        {
+            path: 'vacation-home',
+            name: 'vacation-home',
+            component: () => import('../components/VacationHomeHomepage.vue')
+        }
+      ]
     },
     {
       path: '/business-client/register',

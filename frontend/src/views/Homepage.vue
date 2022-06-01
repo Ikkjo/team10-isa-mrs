@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar id="nav"/>
+    <HomepageNavBar id="nav"/>
     <div class="listings-container">
       <div class="listings">
         <RentalEntityCard class="listing" v-for="(rentalEntity, index) in listings" :key="index" :rentalEntity="rentalEntity"/>
@@ -11,13 +11,13 @@
 </template>
 
 <script>
-import NavBar from "@/components/NavBar.vue"
+import HomepageNavBar from "@/components/HomepageNavBar.vue"
 import RentalEntityCard from "@/components/RentalEntityCard.vue"
 import axios from 'axios';
 export default {
     name: 'HomepageView',
     components: {
-        NavBar,
+        HomepageNavBar,
         RentalEntityCard,
     },
     data() {
