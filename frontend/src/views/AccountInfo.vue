@@ -8,7 +8,7 @@
                     <InfoItem icon="account_box" label="Account type" :text="user.role" buttonText="Register new account" @editClicked="registerNewAccountClicked" :useSlot="false"/>
                     <InfoItem icon="account_circle" label="Full name" :text="user.firstName+' '+user.lastName" buttonText="Edit" @save="saveFullName" @cancelClicked="cancelEdit" :saveDisabled="$v.user.firstName.$invalid || $v.user.lastName.$invalid ">
                         <template slot="edit">
-                            <div class="form-control">
+                            <div class="form-control name-form">
                                 <label for="first-name">First Name</label>
                                 <input type="text"
                                     v-model="user.firstName"
@@ -26,7 +26,7 @@
                                     Between 2-20 characters, no numbers.
                                 </div>
                             </div>
-                            <div class="form-control">
+                            <div class="form-control name-form">
                                 <label for="last-name">Last Name</label>
                                 <input type="text" 
                                     v-model="user.lastName" 
@@ -164,7 +164,38 @@
                             </div>
                         </template>
                     </InfoItem>
-                    <InfoItem icon="info" label="Account status" text="Active" buttonText="Deactivate" style="color: red;"/>
+                    <InfoItem icon="info"
+                    label="Account status"
+                    text="Active"
+                    buttonText="Delete account"
+                    style="color: red;"
+                    editButton="Delete"
+                    :saveDisabled="$v.deletionReason.$invalid"
+                    @save="sendDeleteRequest"
+                    >
+                    <template slot="edit">
+                        <div class="form-control block-form">
+                            <label for="deletionReason" class="block-label">Why do you want to delete your account?</label>
+                            <textarea 
+                                name="deletionReason" 
+                                id="deletionReason" 
+                                cols="30" rows="4" 
+                                v-model="deletionReason"
+                                @focus="inFocus('deletionReason')" 
+                                @blur="outFocus('deletionReason')" 
+                                :class="getClass('deletionReason')" 
+                                :placeholder="getPlaceholder('deletionReason')"
+                            />
+                            <div class="alert-info" 
+                                v-if="!isFocused('deletionReason') 
+                                && !($v.deletionReason.minLength 
+                                && $v.deletionReason.maxLength)"
+                            >
+                                Must be between 5 to 200 characters.
+                            </div>
+                        </div>
+                        </template>
+                    </InfoItem>
                 </div>
             </div>
         </div>
@@ -209,6 +240,7 @@ export default {
             currentPassword: '',
             newPassword: '',
             confirmNewPassword: '',
+            deletionReason: '',
             infocus: {
                 firstName: true,
                 lastName: true,
@@ -220,6 +252,7 @@ export default {
                 registrationReason: true,
                 role: true,
                 dateOfBirth: true,
+                deletionReason: true,
             },
         }
     },
@@ -269,6 +302,11 @@ export default {
             required,
             sameAsPassword: sameAs("newPassword")
         },
+        deletionReason: {
+            required,
+            minLength: minLength(5),
+            maxLength: maxLength(200)
+        }
         
     },
     methods: {
@@ -451,6 +489,9 @@ export default {
         registerNewAccountClicked() {
             this.$router.push({ name: 'business-client-register' })
         },
+        sendDeleteRequest() {
+            
+        },
         updatePhone(phoneNumber){
             this.phoneNumberTmp = phoneNumber
         },
@@ -538,7 +579,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 #account-info {
     max-width: 100%;
 }
@@ -569,13 +610,17 @@ h2 {
 
 .form-control {
     display: inline-block;
-    max-width: 50%;
     margin-top: 10px;
     margin-bottom: 5px;
 }
 
+.name-form {
+    max-width: 50%;
+}
 
-.form-control input {
+
+.form-control input,
+.form-control textarea {
     width: 95% !important;
 }
 
