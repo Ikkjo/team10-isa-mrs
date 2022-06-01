@@ -4,13 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import team10.app.model.RegistrationRequest;
+import team10.app.model.DeletionRequest;
 
 import java.util.UUID;
 
 @Repository
-public interface RegistrationRequestRepository extends JpaRepository<RegistrationRequest, UUID> {
+public interface DeletionRequestRepository extends JpaRepository<DeletionRequest, UUID> {
     @Modifying
-    @Query("update RegistrationRequest rr set rr.reviewed = true where rr.id = ?1")
+    @Query("update DeletionRequest dr set dr.reviewed = true where dr.id = ?1")
     void review(UUID id);
 }
