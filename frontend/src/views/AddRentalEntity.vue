@@ -54,7 +54,7 @@
                 <div class="form" v-show="step === 2">
                     <h1>Additional information</h1>
                     <div class="form-control">
-                    <label for="rules-of-conduct">Availability</label>
+                        <label for="rules-of-conduct">Availability</label>
                         <RentalEntityAvailabilityCalendar @input="availabilityUpdated"/>
                     </div>
                     <div class="form-control">
