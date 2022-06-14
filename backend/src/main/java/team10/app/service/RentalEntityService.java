@@ -110,4 +110,8 @@ public class RentalEntityService {
         rentalEntity.setAvailability(availability.stream().map(Availability::new).collect(Collectors.toSet()));
         rentalEntityRepository.saveAndFlush(rentalEntity);
     }
+
+    public List<Long> getAvailability(UUID id) {
+        return rentalEntityRepository.getById(id).getAvailability().stream().map(Availability::getDate).collect(Collectors.toList());
+    }
 }

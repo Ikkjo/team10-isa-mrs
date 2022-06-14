@@ -12,6 +12,7 @@ import team10.app.dto.AddressDto;
 import team10.app.dto.RentalEntityDto;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.RentalEntityService;
+import team10.app.util.exceptions.RentalEntityNotFoundException;
 
 import java.security.Principal;
 import java.util.List;
@@ -44,6 +45,18 @@ public class RentalEntityController {
             return new ResponseEntity<>(rentalEntityService.getAllActiveByOwnerEmail(principal.getName()), HttpStatus.OK);
         }
         catch (UsernameNotFoundException ex)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/{id}/availability")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<List<Long>> getAvailability(@PathVariable UUID id) {
+        try {
+            return new ResponseEntity<>(rentalEntityService.getAvailability(id), HttpStatus.OK);
+        }
+        catch (RentalEntityNotFoundException ex)
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
