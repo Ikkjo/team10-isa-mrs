@@ -78,6 +78,7 @@ h1 {
 
 .form-control {
     padding: 5px 0px;
+    max-width: 100%;
 }
 
 .form-control label {
