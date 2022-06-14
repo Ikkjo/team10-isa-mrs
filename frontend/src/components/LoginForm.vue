@@ -68,19 +68,22 @@ export default {
                     username: this.email,
                     password: this.password
                 }
-            console.log(loginDto)
             axios
                 .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDto)
-                .then(function(response) {
-                    console.log(response)
-                    window.localStorage.setItem("jwt", response.data)
-                    let jwtData = response.data.split('.')[1]
-                    let decodedJwtJsonData = window.atob(jwtData)
-                    let decodedJwtData = JSON.parse(decodedJwtJsonData)
-                    window.localStorage.setItem("role", decodedJwtData.auth)
-                    // notify that awaiting accept
+                .then((response) => {
+                    window.localStorage.setItem("jwt", response.data);
+                    let jwtData = response.data.split('.')[1];
+                    let decodedJwtJsonData = window.atob(jwtData);
+                    let decodedJwtData = JSON.parse(decodedJwtJsonData);
+                    window.localStorage.setItem("role", decodedJwtData.auth);
+                    if (window.localStorage.role === "UNVERIFIED_ADMIN"){
+                        this.$router.push({name: 'admin-verification'})
+                    }
+                    else {
+                        this.$router.push({name: 'homepage'})
+                    }
                 })
-                .catch(function(error) {
+                .catch((error) => {
                     console.log(error);
                     // is email or password invalid
                 })
