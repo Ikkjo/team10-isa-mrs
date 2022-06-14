@@ -5,9 +5,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import team10.app.dto.AdminDto;
+import team10.app.dto.AdminRegistrationDto;
 import team10.app.model.Admin;
 import team10.app.model.DeletionRequest;
 import team10.app.model.RegistrationRequest;
+import team10.app.model.UserRole;
 import team10.app.repository.AdminRepository;
 import team10.app.repository.DeletionRequestRepository;
 import team10.app.repository.RegistrationRequestRepository;
@@ -68,7 +70,7 @@ public class AdminService {
         );
     }
 
-    public AdminDto createAdmin(AdminDto adminDto) throws EmailTakenException {
+    public AdminDto createAdmin(AdminRegistrationDto adminDto) throws EmailTakenException {
         if (userRepository.findByEmail(adminDto.getEmail()).isPresent())
             throw new EmailTakenException(adminDto.getEmail());
         Admin admin = userService.buildAdmin(adminDto);
@@ -83,7 +85,7 @@ public class AdminService {
                 .orElseGet( () -> {
                     throw new UsernameNotFoundException("User not found!");
                 });
-        return admin.isMain();
+        return admin.getRole() == UserRole.ADMIN;
     }
 
     public void acceptDeletionRequest(UUID deletionRequestId, String response) throws EntityNotFoundException, RegistrationRequestReviewedException {
@@ -111,5 +113,13 @@ public class AdminService {
                 dr.getUser().getEmail(),
                 EmailBuilder.getDeclineDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response)
         );
+    }
+
+    public AdminDto verifyAdmin(String email, String newPassword) {
+        userRepository.updatePassword(newPassword, email);
+        userRepository.updateRole(UserRole.ADMIN, email);
+        Admin admin = adminRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Admin not found!"));
+        return new AdminDto(admin);
     }
 }
