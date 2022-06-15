@@ -33,6 +33,7 @@
             </ActionCreationModal>
 
             <ActionCreationModal
+                @save="saveReservation()"
                 :show="isReservationModalActive"
                 @close="isReservationModalActive=false"
                 :buttonDisabled="reservationButtonDisabled"
@@ -156,17 +157,39 @@ export default {
             })
             .then(() => {
                 alert("Action added successfully")
-                this.resertAction()
+                this.resetAction()
                 this.isActionModalActive = false;
             })
             .catch((error) => {
                 console.log(error);
                 alert("Something went wrong")
-                this.resertAction()
+                this.resetAction()
                 this.isActionModalActive = false;
             })
         },
-        resertAction() {
+        saveReservation() {
+            console.log(this.reservation)
+            axios({
+                method: 'post',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/'+this.rentalEntity.id+'/add-reservation',
+                data: this.reservation,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then(() => {
+                alert("Reservation added successfully")
+                this.resetReservation()
+                this.isReservationModalActive = false;
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Something went wrong")
+                this.resetReservation()
+                this.isReservationModalActive = false;
+            })
+        },
+        resetAction() {
             Object.keys(this.action).forEach(key => this.action[key]=null)
             this.action.maxPersons = 1
         },
