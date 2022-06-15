@@ -1,7 +1,5 @@
 package team10.app.util.exceptions;
 
-import team10.app.model.RentalEntity;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
