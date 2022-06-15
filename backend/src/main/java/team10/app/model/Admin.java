@@ -13,12 +13,8 @@ import javax.persistence.Table;
 @Entity(name = "Admin")
 @Table(name = "admins")
 public class Admin extends User {
-    private boolean main;
-    private boolean initialPasswordChanged;
-
     public Admin(String firstName, String lastName, String email, String password) {
-        super(firstName, lastName, email, password, UserRole.ADMIN);
-        this.main = false;
-        this.initialPasswordChanged = false;
+        super(firstName, lastName, email, password, UserRole.UNVERIFIED_ADMIN, "");
+        this.setEnabled(true);
     }
 }

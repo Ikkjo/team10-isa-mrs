@@ -82,6 +82,11 @@ const routes = [
       path: '/account/my-listings/:id',
       name: 'my-listing',
       component: () => import('../views/RentalEntityInfo.vue'),
+    },
+    {
+        path: '/admin-verification',
+        name: 'admin-verification',
+        component: () => import("../views/AdminVerification.vue"),
     }
 ]
 

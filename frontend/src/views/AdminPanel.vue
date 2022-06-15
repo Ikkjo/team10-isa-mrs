@@ -9,6 +9,7 @@
                 :title="'Registration Requests'"
                 />
             <AdminMenuItem
+                v-if="isMainAdmin"
                 :link="'create-admin'"
                 :iconClass="'material-icons'"
                 :icon="'person_add'"
@@ -33,6 +34,22 @@ export default {
     name: 'AdminPanel',
     components: {
         AdminMenuItem,
+    },
+    data() {
+        return {
+            role: null
+        }
+    },
+    computed: {
+        isMainAdmin() {
+            return this.role !== null && this.role === 'MAIN_ADMIN' 
+        }
+    },
+    created () {
+        if (['ADMIN', 'MAIN_ADMIN'].includes(window.localStorage.getItem('role')))
+            this.role = window.localStorage.getItem('role')
+        else
+            this.$router.push({name: 'homepage'});
     },
 }
 </script>

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import team10.app.model.User;
+import team10.app.model.UserRole;
 import team10.app.model.VacationHomeOwner;
 
 import java.util.*;
@@ -47,4 +48,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Modifying
     @Query("update User u set u.deleted = true where u.email=?1")
     void deleteUser(String email);
+
+    @Modifying
+    @Query("update User u set u.role = ?1 where u.email= ?2")
+    void updateRole(UserRole role, String email);
 }
