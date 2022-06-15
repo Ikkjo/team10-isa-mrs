@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import team10.app.dto.AdminDto;
 import team10.app.dto.AdminRegistrationDto;
 import team10.app.dto.BusinessClientRegistrationRequestNoPasswordDto;
+import team10.app.dto.DeletionRequestDto;
 import team10.app.model.*;
 import team10.app.repository.AdminRepository;
 import team10.app.repository.DeletionRequestRepository;
@@ -46,7 +47,7 @@ public class AdminService {
 
     public List<BusinessClientRegistrationRequestNoPasswordDto> getRegistrationRequests() {
         List<BusinessClientRegistrationRequestNoPasswordDto> regReqs = new ArrayList<>();
-        for (RegistrationRequest rr : registrationRequestRepository.findNotReviewed()) {
+        for (RegistrationRequest rr : registrationRequestRepository.findAllNotReviewed()) {
             regReqs.add(new BusinessClientRegistrationRequestNoPasswordDto(rr));
         }
         return regReqs;
@@ -66,7 +67,7 @@ public class AdminService {
                     EmailBuilder.getAcceptEmail(rr.getBusinessClient().getFirstName())
             );
         } catch (Exception e) {
-            System.out.println("Email service not available");
+            System.err.println("Email service not available");
         }
     }
 
@@ -83,7 +84,7 @@ public class AdminService {
                     EmailBuilder.getDeclineEmail(rr.getBusinessClient().getFirstName(), declineReason)
             );
         } catch (Exception e) {
-            System.out.println("Email service not available");
+            System.err.println("Email service not available");
         }
     }
 
@@ -102,7 +103,15 @@ public class AdminService {
                 .orElseGet( () -> {
                     throw new UsernameNotFoundException("User not found!");
                 });
-        return admin.getRole() == UserRole.ADMIN;
+        return admin.getRole() == UserRole.MAIN_ADMIN;
+    }
+
+    public List<DeletionRequestDto> getDeletionRequests() {
+        List<DeletionRequestDto> delReqs = new ArrayList<>();
+        for (DeletionRequest dr : deletionRequestRepository.findAllNotReviewed()) {
+            delReqs.add(new DeletionRequestDto(dr));
+        }
+        return delReqs;
     }
 
     public void acceptDeletionRequest(UUID deletionRequestId, String response) throws EntityNotFoundException, RegistrationRequestReviewedException {
@@ -113,10 +122,14 @@ public class AdminService {
         }
         deletionRequestRepository.review(deletionRequestId);
         userRepository.deleteUser(dr.getUser().getEmail());
-        emailService.send(
-                dr.getUser().getEmail(),
-                EmailBuilder.getAcceptDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response)
-        );
+        try {
+            emailService.send(
+                    dr.getUser().getEmail(),
+                    EmailBuilder.getAcceptDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response)
+            );
+        } catch (Exception e) {
+            System.err.println("Email service not available");
+        }
     }
 
     public void declineDeletionRequest(UUID deletionRequestId, String response) {
@@ -126,10 +139,14 @@ public class AdminService {
             throw new DeletionRequestReviewedException("Deletion request already reviewed!");
         }
         deletionRequestRepository.review(deletionRequestId);
-        emailService.send(
-                dr.getUser().getEmail(),
-                EmailBuilder.getDeclineDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response)
-        );
+        try {
+            emailService.send(
+                    dr.getUser().getEmail(),
+                    EmailBuilder.getDeclineDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response)
+            );
+        } catch (Exception e) {
+            System.err.println("Email service not available");
+        }
     }
 
     public AdminDto verifyAdmin(String email, String newPassword) {

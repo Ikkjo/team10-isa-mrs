@@ -73,8 +73,8 @@ export default {
             }).then(() => {
                 this.$emit('close');
                 this.$emit('removeRequest');
-            }).catch(() => {
-                alert('No connection.')
+            }).catch((error) => {
+                console.error(error);
             });
         },
         declineRequest() {
@@ -88,8 +88,8 @@ export default {
             }).then(() => {
                 this.$emit('close');
                 this.$emit('removeRequest');
-            }).catch(() => {
-                alert('No connection.')
+            }).catch((error) => {
+                console.error(error);
             });
         },
         isFocused(field) {
@@ -190,6 +190,9 @@ export default {
 .modal-footer .btn {
     width: 40%;
 }
+.btn.accept:disabled {
+    background-color: lightgreen;
+}
 
 .btn.accept {
     background-color: green;
@@ -197,6 +200,10 @@ export default {
 
 .btn.accept:hover {
     background-color: darkgreen;
+}
+
+.btn.btn.decline:disabled {
+    background-color: tomato;
 }
 
 .btn.decline {
