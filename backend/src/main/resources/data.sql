@@ -1,23 +1,18 @@
--- OLD
-INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
-VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050', false, 'admin@rentr.com', true, 'Admin', 'Adminovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'ADMIN');
-INSERT into admins(initial_password_changed, main, id) VALUES (true, true, 'cd95284b-b6fe-46b4-ade2-491c28e55050');
-
 -- ****** USER TEST DATA ****** START
 
--- -- ADMIN
--- -- mail/username: admin@rentr.com
--- -- password: admin
--- INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
--- VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050', false, 'admin@rentr.com', true, 'Admin', 'Adminovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'MAIN_ADMIN');
--- INSERT into admins(id) VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050');
---
--- -- UNVERIFIED_ADMIN
--- -- mail/username: damir@rentr.com
--- -- password: admin
--- INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
--- VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', false, 'damir@rentr.com', true, 'Damir', 'Adamovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'UNVERIFIED_ADMIN');
--- INSERT into admins(id) VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051');
+-- ADMIN
+-- mail/username: admin@rentr.com
+-- password: admin
+INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
+VALUES ('4325ba8c-ad6a-4a2e-b661-ebfc667ab625', false, 'admin@rentr.com', true, 'Admin', 'Adminovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'MAIN_ADMIN');
+INSERT into admins(id) VALUES ('4325ba8c-ad6a-4a2e-b661-ebfc667ab625');
+
+-- UNVERIFIED_ADMIN
+-- mail/username: damir@rentr.com
+-- password: admin
+INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
+VALUES ('6447c259-812c-4d33-afae-484bb00a5628', false, 'damir@rentr.com', true, 'Damir', 'Adamovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'UNVERIFIED_ADMIN');
+INSERT into admins(id) VALUES ('6447c259-812c-4d33-afae-484bb00a5628');
 
 -- CLIENT
 -- mail/username: nikola@mail.com
