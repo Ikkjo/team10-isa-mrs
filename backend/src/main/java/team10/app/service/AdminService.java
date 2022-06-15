@@ -66,7 +66,7 @@ public class AdminService {
                     EmailBuilder.getAcceptEmail(rr.getBusinessClient().getFirstName())
             );
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Email service not available");
         }
     }
 
@@ -83,7 +83,7 @@ public class AdminService {
                     EmailBuilder.getDeclineEmail(rr.getBusinessClient().getFirstName(), declineReason)
             );
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Email service not available");
         }
     }
 
