@@ -116,16 +116,17 @@ public class RentalEntityService {
     }
 
     public void addAction(String email, UUID id, ActionDto actionDto) {
+        if (!validator.validateActionDto(actionDto))
+            throw new ActionInvalidException();
         BusinessClient businessClient = businessClientRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         RentalEntity rentalEntity = this.getById(id);
         if (rentalEntity.getOwner() != businessClient)
             throw new InvalidRentalEntityOwnerException(rentalEntity.getId(), businessClient.getId());
+        if (!validator.validateRentalEntityDateNotTaken(rentalEntity, actionDto.getDateRange()))
+            throw new RentalEntityDateTaken(rentalEntity.getId(), actionDto.getDateRange());
         rentalEntity.addAction(new Action(actionDto));
         rentalEntityRepository.saveAndFlush(rentalEntity);
     }
 
-    private Action buildAction(ActionDto actionDto) {
-        return new Action(actionDto);
-    }
 }

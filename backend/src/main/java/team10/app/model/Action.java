@@ -32,4 +32,8 @@ public class Action extends Reservation {
         this.expiresOn = actionDto.getExpiresOn();
     }
 
+    public boolean isExpired() {
+        return this.expiresOn < LocalDate.EPOCH.toEpochDay();
+    }
+
 }

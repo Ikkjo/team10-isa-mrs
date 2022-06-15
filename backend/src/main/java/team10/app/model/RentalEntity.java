@@ -78,5 +78,4 @@ public abstract class RentalEntity {
         this.actions.add(action);
     }
 
-
 }
