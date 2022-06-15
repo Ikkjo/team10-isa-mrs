@@ -62,7 +62,6 @@ export default {
         return {
             dateRange: null,
             disabledDates: [],
-            inputValue: null,
             expiresOn: null,
         }
     },
@@ -83,7 +82,7 @@ export default {
     mounted() {
         axios({
                 method: 'get',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/'+this.id+'/availability',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/'+this.id+'/taken-dates',
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
@@ -109,6 +108,7 @@ h1 {
 .form-control {
     padding: 5px 0px;
     max-width: 100% !important;
+    margin-top: 0 !important;
 }
 
 .form-control input,
@@ -120,12 +120,5 @@ h1 {
 .form-control label {
     margin-bottom: 5px;
 }
-
-.date-range {
-    display: flex;
-    align-items: center;
-    width: 50%;
-}
-
 
 </style>
