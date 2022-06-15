@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import team10.app.model.RegistrationRequest;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -13,4 +14,7 @@ public interface RegistrationRequestRepository extends JpaRepository<Registratio
     @Modifying
     @Query("update RegistrationRequest rr set rr.reviewed = true where rr.id = ?1")
     void review(UUID id);
+
+    @Query("select rr from RegistrationRequest rr where rr.reviewed = false")
+    List<RegistrationRequest> findNotReviewed();
 }

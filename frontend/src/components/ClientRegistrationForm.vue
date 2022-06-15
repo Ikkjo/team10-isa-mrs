@@ -99,7 +99,7 @@
                 Create Account
             </button>
             <div class="already-registered">Already have an account? <router-link to="/login">Log in</router-link></div>
-            <div class="business-registration">Want to rent your property? <router-link to="/business-user/register">Register a business account</router-link></div>
+            <div class="business-registration">Want to rent your property? <router-link :to="{name: 'business-client-register'}">Register a business account</router-link></div>
         </div>
     </form>
 </template>

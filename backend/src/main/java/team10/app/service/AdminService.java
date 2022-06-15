@@ -2,10 +2,10 @@ package team10.app.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import team10.app.dto.AdminDto;
 import team10.app.dto.AdminRegistrationDto;
+import team10.app.dto.BusinessClientRegistrationRequestNoPasswordDto;
 import team10.app.model.*;
 import team10.app.repository.AdminRepository;
 import team10.app.repository.DeletionRequestRepository;
@@ -20,6 +20,8 @@ import team10.app.util.exceptions.PasswordInvalidException;
 import team10.app.util.exceptions.RegistrationRequestReviewedException;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -42,6 +44,14 @@ public class AdminService {
         return new AdminDto(admin);
     }
 
+    public List<BusinessClientRegistrationRequestNoPasswordDto> getRegistrationRequests() {
+        List<BusinessClientRegistrationRequestNoPasswordDto> regReqs = new ArrayList<>();
+        for (RegistrationRequest rr : registrationRequestRepository.findNotReviewed()) {
+            regReqs.add(new BusinessClientRegistrationRequestNoPasswordDto(rr));
+        }
+        return regReqs;
+    }
+
     public void acceptBusinessClient(UUID registrationRequestId) throws EntityNotFoundException, RegistrationRequestReviewedException {
         RegistrationRequest rr = registrationRequestRepository.findById(registrationRequestId)
                 .orElseThrow(() -> new EntityNotFoundException("Registration request not found!"));
@@ -50,10 +60,14 @@ public class AdminService {
         }
         userRepository.enableUser(rr.getBusinessClient().getEmail());
         registrationRequestRepository.review(registrationRequestId);
-        emailService.send(
-                rr.getBusinessClient().getEmail(),
-                EmailBuilder.getAcceptEmail(rr.getBusinessClient().getFirstName())
-        );
+        try {
+            emailService.send(
+                    rr.getBusinessClient().getEmail(),
+                    EmailBuilder.getAcceptEmail(rr.getBusinessClient().getFirstName())
+            );
+        } catch (Exception e) {
+            System.out.println("Email service not available");
+        }
     }
 
     public void declineBusinessClient(UUID registrationRequestId, String declineReason) throws EntityNotFoundException, RegistrationRequestReviewedException {
@@ -63,10 +77,14 @@ public class AdminService {
             throw new RegistrationRequestReviewedException("");
         }
         registrationRequestRepository.review(registrationRequestId);
-        emailService.send(
-                rr.getBusinessClient().getEmail(),
-                EmailBuilder.getDeclineEmail(rr.getBusinessClient().getFirstName(), declineReason)
-        );
+        try {
+            emailService.send(
+                    rr.getBusinessClient().getEmail(),
+                    EmailBuilder.getDeclineEmail(rr.getBusinessClient().getFirstName(), declineReason)
+            );
+        } catch (Exception e) {
+            System.out.println("Email service not available");
+        }
     }
 
     public AdminDto createAdmin(AdminRegistrationDto adminDto) throws EmailTakenException {

@@ -2,7 +2,7 @@ package team10.app.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team10.app.dto.BusinessClientRegistrationRequestDto;
 import team10.app.model.BusinessClient;
@@ -17,7 +17,7 @@ public class RegistrationService {
 
     private final UserService userService;
     private final EmailValidator emailValidator;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final RegistrationRequestRepository registrationRequestRepository;
 
 
@@ -34,7 +34,7 @@ public class RegistrationService {
 
         BusinessClient user = userService.buildBusinessUser(request);
 
-        user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         userService.saveBusinessUser(user);
 
         user = userService.getBusinessPartnerByEmail(user.getEmail(), user.getRole())
