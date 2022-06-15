@@ -1,7 +1,11 @@
+-- ADMINS
 INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
-VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050', false, 'admin@rentr.com', true, 'Admin', 'Adminovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'ADMIN');
+VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050', false, 'admin@rentr.com', true, 'Admin', 'Adminovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'MAIN_ADMIN');
+INSERT into admins(id) VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050');
 
-INSERT into admins(initial_password_changed, main, id) VALUES (true, true, 'cd95284b-b6fe-46b4-ade2-491c28e55050');
+INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
+VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', false, 'damir@rentr.com', true, 'Damir', 'Adamovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'UNVERIFIED_ADMIN');
+INSERT into admins(id) VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051');
 
 /* Vacation Home Owner 1
    email: test@gmail.com
@@ -37,3 +41,4 @@ VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051');
 --
 -- INSERT INTO vacation_home_owner_vacation_homes(vacation_home_owner_id, vacation_homes_id)
 -- VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', '698d9c52-ec17-11ec-8ea0-0242ac120002')
+

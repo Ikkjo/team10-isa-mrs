@@ -5,17 +5,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import team10.app.dto.AdminDto;
-import team10.app.model.Admin;
-import team10.app.model.DeletionRequest;
-import team10.app.model.RegistrationRequest;
+import team10.app.dto.AdminRegistrationDto;
+import team10.app.model.*;
 import team10.app.repository.AdminRepository;
 import team10.app.repository.DeletionRequestRepository;
 import team10.app.repository.RegistrationRequestRepository;
 import team10.app.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import team10.app.util.EmailBuilder;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.DeletionRequestReviewedException;
 import team10.app.util.exceptions.EmailTakenException;
+import team10.app.util.exceptions.PasswordInvalidException;
 import team10.app.util.exceptions.RegistrationRequestReviewedException;
 
 import javax.persistence.EntityNotFoundException;
@@ -30,8 +31,8 @@ public class AdminService {
     private final DeletionRequestRepository deletionRequestRepository;
     private final UserRepository userRepository;
     private final EmailService emailService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     private final Validator validator;
 
@@ -68,11 +69,11 @@ public class AdminService {
         );
     }
 
-    public AdminDto createAdmin(AdminDto adminDto) throws EmailTakenException {
+    public AdminDto createAdmin(AdminRegistrationDto adminDto) throws EmailTakenException {
         if (userRepository.findByEmail(adminDto.getEmail()).isPresent())
             throw new EmailTakenException(adminDto.getEmail());
         Admin admin = userService.buildAdmin(adminDto);
-        admin.setPassword(bCryptPasswordEncoder.encode(adminDto.getPassword()));
+        admin.setPassword(passwordEncoder.encode(adminDto.getPassword()));
         adminRepository.save(admin);
         return new AdminDto(admin);
     }
@@ -83,7 +84,7 @@ public class AdminService {
                 .orElseGet( () -> {
                     throw new UsernameNotFoundException("User not found!");
                 });
-        return admin.isMain();
+        return admin.getRole() == UserRole.ADMIN;
     }
 
     public void acceptDeletionRequest(UUID deletionRequestId, String response) throws EntityNotFoundException, RegistrationRequestReviewedException {
@@ -111,5 +112,16 @@ public class AdminService {
                 dr.getUser().getEmail(),
                 EmailBuilder.getDeclineDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response)
         );
+    }
+
+    public AdminDto verifyAdmin(String email, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        if (passwordEncoder.matches(newPassword, userRepository.getByEmail(email).getPassword()))
+            throw new PasswordInvalidException(newPassword);
+        Admin admin = adminRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Admin not found!"));
+        admin.setRole(UserRole.ADMIN);
+        admin.setPassword(encodedPassword);
+        return new AdminDto(admin);
     }
 }
