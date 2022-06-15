@@ -79,6 +79,9 @@ export default {
                     if (window.localStorage.role === "UNVERIFIED_ADMIN"){
                         this.$router.push({name: 'admin-verification'})
                     }
+                    else if (['MAIN_ADMIN', 'ADMIN'].includes(window.localStorage.role)){
+                        this.$router.push({name: 'admin-panel'})
+                    }
                     else {
                         this.$router.push({name: 'homepage'})
                     }

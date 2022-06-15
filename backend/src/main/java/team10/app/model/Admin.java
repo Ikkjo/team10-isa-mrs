@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Table(name = "admins")
 public class Admin extends User {
     public Admin(String firstName, String lastName, String email, String password) {
-        super(firstName, lastName, email, password, UserRole.UNVERIFIED_ADMIN);
+        super(firstName, lastName, email, password, UserRole.UNVERIFIED_ADMIN, "");
+        this.setEnabled(true);
     }
 }

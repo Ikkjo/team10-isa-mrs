@@ -1,6 +1,6 @@
 <template>
     <div id="absoluteCenteredDiv">
-        <form class="box">
+        <form class="box" @submit.prevent="setNewPassword">
             <h1 v-if="user">{{user.firstName}}, set a password</h1>
             <div class="form-control">
                 <label for="password">Password</label>
@@ -36,7 +36,10 @@
                 </div>
             </div>
             <div class="button-wrapper">
-                <button type="button" class="btn" @click="setNewPassword">Set new password</button>
+                <button type="submit" 
+                    class="btn"
+                    :disabled="$v.$invalid"
+                    >Set new password</button>
             </div>
         </form>
     </div>
@@ -87,22 +90,19 @@ export default {
             return placeholder;
         },
         setNewPassword() {
-            let dataDto = {
-                newPassword: this.password,
-            }
             axios({
                 method: 'put',
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/verify-admin',
-                data: dataDto,
+                data: this.password,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
             })
-            .then(function(response) {
+            .then((response) => {
                 window.localStorage.setItem('role', response.data.role);
-                this.$router.push({name: 'admin'})
+                this.$router.push({name: 'admin-panel'});
             }).catch(function() {
-                alert("Something failed :(");
+                alert("New password cannot be the current one.");
             })
         }
     },
@@ -115,8 +115,11 @@ export default {
                 },
             })
             .then((response) => {
-                if(response.data.role !== "UNVERIFIED_ADMIN")
-                    this.$router.push({name: 'admin'})
+                if(response.data.role === "UNVERIFIED_ADMIN")
+                    this.user = response.data
+                else{
+                    this.$router.push({name: 'admin-panel'})
+                }
             }).catch(() => {
                 this.$router.push({name: 'homepage'})
             })
@@ -151,7 +154,7 @@ input {
 }
 
 .button-wrapper {
-    margin-top: 20px;
+    margin-top: 30px;
     display: flex;
     justify-content: center;
 }
@@ -163,6 +166,6 @@ input {
     right: 0;
     margin: auto;
     width:400px;
-    height: 300px;
+    height: 400px;
 }
 </style>

@@ -126,11 +126,11 @@ export default {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
             })
-            .then(function(response) {
-                console.log(response);
-                // notify that awaiting accept
+            .then(() => {
+                alert("Admin successfully added!");
             })
-            .catch(function(error) {
+            .catch((error) => {
+                alert("Something went wrong. See console for output.")
                 console.log(error);
             })   
         },
@@ -203,6 +203,11 @@ export default {
 
 .form-control {
     display: block;
+}
+.btn-div {
+    margin-top: 30px;
+    display:flex;
+    justify-content: center;
 }
 
 </style>

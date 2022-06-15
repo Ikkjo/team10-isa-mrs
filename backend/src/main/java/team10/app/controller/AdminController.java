@@ -26,7 +26,7 @@ public class AdminController {
     private final JWTProvider jwtProvider;
 
     @GetMapping
-    @PreAuthorize("hasRoles('MAIN_ADMIN', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('MAIN_ADMIN', 'ADMIN', 'UNVERIFIED_ADMIN')")
     public ResponseEntity<AdminDto> getUserDetails(Principal principal) {
         try {
             return new ResponseEntity<>(adminService.getUserDetails(principal.getName()), HttpStatus.OK);
@@ -38,7 +38,7 @@ public class AdminController {
 
     @Transactional
     @PutMapping(path = "/registration-request/{id}/accept")
-    @PreAuthorize("hasRoles('ADMIN', 'MAIN_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
     public ResponseEntity<HttpStatus> acceptBusinessClient(@PathVariable UUID id) {
         try {
             adminService.acceptBusinessClient(id);
@@ -51,7 +51,7 @@ public class AdminController {
 
     @Transactional
     @PutMapping(path = "/registration-request/{id}/decline")
-    @PreAuthorize("hasRoles('ADMIN', 'MAIN_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
     public ResponseEntity<HttpStatus> declineBusinessClient(@PathVariable UUID id, @RequestBody String declineReason) {
         try {
             adminService.declineBusinessClient(id, declineReason);
@@ -65,7 +65,7 @@ public class AdminController {
     @Transactional
     @PostMapping(path = "/create-admin")
     @PreAuthorize("hasRole('MAIN_ADMIN')")
-    public ResponseEntity<AdminDto> createAdmin(@RequestBody AdminRegistrationDto adminDto, @RequestHeader (name="Authorization") String token) {
+    public ResponseEntity<AdminDto> createAdmin(@RequestBody AdminRegistrationDto adminDto) {
         try {
             return new ResponseEntity<>(adminService.createAdmin(adminDto), HttpStatus.OK);
         } catch (UsernameNotFoundException | EmailTakenException e) {
@@ -75,7 +75,7 @@ public class AdminController {
 
     @Transactional
     @PutMapping(path = "/deletion-request/{id}/accept")
-    @PreAuthorize("hasRoles('ADMIN', 'MAIN_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
     public ResponseEntity<HttpStatus> acceptDeletionRequest(@PathVariable UUID id, @RequestBody String response) {
         try {
             adminService.acceptDeletionRequest(id, response);
@@ -88,7 +88,7 @@ public class AdminController {
 
     @Transactional
     @PutMapping(path = "/deletion-request/{id}/decline")
-    @PreAuthorize("hasRoles('ADMIN', 'MAIN_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
     public ResponseEntity<HttpStatus> declineDeletionRequest(@PathVariable UUID id, @RequestBody String response) {
         try {
             adminService.declineDeletionRequest(id, response);
