@@ -32,7 +32,7 @@ public abstract class User implements UserDetails {
     private String lastName;
     @Column(name = "email", nullable = false, columnDefinition = "TEXT")
     private String email;
-    @Column(name = "password", nullable = false, columnDefinition = "TEXT", unique = true)
+    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
     @Column(name = "phone_number", columnDefinition = "TEXT")
     private String phoneNumber;
