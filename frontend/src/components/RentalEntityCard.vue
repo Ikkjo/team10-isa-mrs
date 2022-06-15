@@ -8,22 +8,117 @@
                 <div>{{rentalEntity.rooms}} rooms, {{rentalEntity.beds}} beds</div>
             </div>
             <div class="main-text">${{rentalEntity.price}} night</div>
+            <div class="btn-container">
+                <button v-if="isBusinessClient()" class="btn" @click.stop="showModal = true">Add Action</button>
+            </div>
         </div>
+        <portal to="body" v-if="isBusinessClient()">
+            <!-- use the modal component, pass in the prop -->
+            <ActionCreationModal
+                @save="saveAction()"
+                :show="showModal"
+                @close="showModal=false"
+                :buttonDisabled="buttonDisabled"
+                class="modal">
+                <template #body>
+                    <ActionCreation 
+                        :id="rentalEntity.id"
+                        @updated:expiresOn="expiresOnUpdated"
+                        @updated:dateRange="dateRangeUpdated"
+                        @updated:price="priceUpdated"
+                        @updated:maxPersons="maxPersonsUpdated"
+                        />
+                </template>
+            </ActionCreationModal>
+      </portal>
     </div>
 </template>
 
 <script>
+import ActionCreation from '@/components/ActionCreation.vue'
+import ActionCreationModal from '@/components/ActionCreationModal.vue'
+import axios from 'axios'
 export default {
     name: 'RentalEntityCard',
     props: ['rentalEntity'],
+    components: {
+        ActionCreation,
+        ActionCreationModal
+    },
+    data() {
+        return {
+            userRole: null,
+            showModal: false,
+            action: {
+                expiresOn: null,
+                dateRange: null,
+                price: null,
+                maxPersons: 1,
+            },
+        }
+    },
     methods: {
         detailedView() {
-            this.$router.push({
-                name: 'my-listing',
-                params: {
-                    id: this.rentalEntity.id,
-                }
+            let userRole = localStorage.getItem('userRole');
+            if (userRole === null || userRole === 'CLIENT') {
+                console.log('Shows rental entity details for client')
+            }
+            else if (this.isBusinessClient()) {
+                this.$router.push({
+                    name: 'my-listing',
+                    params: {
+                        id: this.rentalEntity.id,
+                    }
+                })
+            }
+        },
+        isBusinessClient() {
+            return ['HOUSE_OWNER','SHIP_OWNER', 'FISHING_INSTRUCTOR'].includes(localStorage.getItem('userRole'))
+        },
+        addAction() {
+            console.log("Add action");
+        },
+        expiresOnUpdated(expiresOn) {
+            console.log("updated expires at")
+            this.action.expiresOn = expiresOn.getTime()
+        },
+        priceUpdated(price) {
+            console.log("updated price")
+            this.action.price = price
+        },
+        dateRangeUpdated(dateRange) {
+            console.log("updated date range")
+            this.action.dateRange = [dateRange.start.getTime(), dateRange.end.getTime()]
+        },
+        maxPersonsUpdated(maxPersons) {
+            console.log("updated max persons")
+            this.action.maxPersons = maxPersons
+        },
+        saveAction() {
+            console.log(this.action)
+            axios({
+                method: 'post',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/'+this.rentalEntity.id+'/add-action',
+                data: this.action,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
             })
+            .then(() => {
+                alert("Action added successfully")
+            })
+            .catch(function(error) {
+                console.log(error);
+                alert("Something went wrong")
+            })
+        }
+    },
+    computed: {
+        buttonDisabled() {
+            return  this.action.expiresOn === null
+                    || this.action.dateRange === null || this.action.dateRange === []
+                    || this.action.price === null || this.action.price == 0
+                    || this.action.maxPersons === null || this.action.maxPersons == 0  
         }
     }
 }
@@ -59,7 +154,19 @@ export default {
 
 .container {
     padding: 6px 5px;
+    display: block !important;
 }
 
+.btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 5px;
+}
+
+.btn {
+    width: 100%;
+    margin-top: 2px;
+}
 
 </style>

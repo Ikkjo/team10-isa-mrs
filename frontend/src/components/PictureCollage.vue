@@ -14,7 +14,7 @@
               <RentalEntityPictureInput ref="pictureInput" :defaultPictures="pictures" @updated="updatePictures" v-show="showAll" class="picture-input"/>
             </template>
             </PictureUpdateModal>
-        </portal>
+      </portal>
   </div>
 </template>
 

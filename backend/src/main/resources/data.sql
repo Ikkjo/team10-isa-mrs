@@ -221,3 +221,23 @@ INSERT into ship_owner(id)
 VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25');
 
 -- ****** USER TEST DATA ****** END
+
+-- ****** VACATION HOMES TEST DATA ****** START
+
+-- Vacation Home 1
+-- Owner: test@gmail.com, Testko Testic
+-- INSERT INTO address(id, address, city, country)
+-- VALUES ('f94acca8-ec16-11ec-8ea0-0242ac120002', 'Mrakovica b.b.', 'Prijedor', 'Bosnia and Herzegovina');
+--
+-- INSERT INTO rental_entity(id, additional_services, deleted, description, price, rules_of_conduct, title, address_id, owner_id)
+-- VALUES ('698d9c52-ec17-11ec-8ea0-0242ac120002', 'wifi, jaccuzzi, free parking', false, 'Luksuzna vikendica u nacionalnom parku Mrakovica.', 100, 'Zabranjeno pusenje i ljubimci.', 'Luksuzna vikendica na Mrakovici', 'f94acca8-ec16-11ec-8ea0-0242ac120002', 'cd95284b-b6fe-46b4-ade2-491c28e55051');
+--
+-- INSERT INTO rental_entity_availability(rental_entity_id, availability_id)
+-- VALUES ('698d9c52-ec17-11ec-8ea0-0242ac120002', 'ce8637a4-ec17-11ec-8ea0-0242ac120002');
+--
+-- INSERT INTO vacation_homes(id, beds, rooms)
+-- VALUES ('698d9c52-ec17-11ec-8ea0-0242ac120002', 4, 3);
+--
+-- INSERT INTO vacation_home_owner_vacation_homes(vacation_home_owner_id, vacation_homes_id)
+-- VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', '698d9c52-ec17-11ec-8ea0-0242ac120002')
+

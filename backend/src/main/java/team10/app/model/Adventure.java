@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -40,5 +41,7 @@ public class Adventure extends RentalEntity {
         this.fishing = fishing;
         this.freeCancellation = freeCancellation;
         this.availability = availability;
+        this.reservations = new HashSet<>();
+        this.actions = new HashSet<>();
     }
 }
