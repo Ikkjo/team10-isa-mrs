@@ -16,5 +16,5 @@ public interface RegistrationRequestRepository extends JpaRepository<Registratio
     void review(UUID id);
 
     @Query("select rr from RegistrationRequest rr where rr.reviewed = false")
-    List<RegistrationRequest> findNotReviewed();
+    List<RegistrationRequest> findAllNotReviewed();
 }
