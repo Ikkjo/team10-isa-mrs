@@ -1,23 +1,19 @@
 package team10.app.util;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import team10.app.dto.*;
-import team10.app.model.Availability;
+import team10.app.model.Action;
 import team10.app.model.RentalEntity;
-import team10.app.repository.UserRepository;
-import team10.app.util.exceptions.PasswordInvalidException;
+import team10.app.model.Reservation;
 
-import javax.management.remote.JMXAuthenticator;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -70,6 +66,9 @@ public class Validator {
 
     private static final int MIN_ACCOUNT_DELETION_REASON = 5;
     private static final int MAX_ACCOUNT_DELETION_REASON = 200;
+
+    private static final int RESERVATION_MIN_PERSONS = 1;
+    private static final int RESERVATION_MAX_PERSONS = 100;
 
 
     private final AddressValidator addressValidator;
@@ -235,5 +234,39 @@ public class Validator {
 
     public boolean validateDeletionReason(String deletionReason) {
         return inRange(MIN_ACCOUNT_DELETION_REASON, MAX_ACCOUNT_DELETION_REASON, deletionReason.length());
+    }
+
+    public boolean validateActionDto(ActionDto actionDto) {
+        return actionDto.getExpiresOn() >= LocalDate.EPOCH.toEpochDay()
+                && validateReservationDateRange(actionDto.getDateRange())
+                && validateRentalEntityPrice(actionDto.getPrice())
+                && validateReservationMaxPersons(actionDto.getMaxPersons());
+
+    }
+
+    private boolean validateReservationMaxPersons(int maxPersons) {
+        return inRange(RESERVATION_MIN_PERSONS, RESERVATION_MAX_PERSONS, maxPersons);
+    }
+
+    private boolean validateReservationDateRange(List<Long> dateRange) {
+        return dateRange.get(0) >= LocalDate.EPOCH.toEpochDay()
+                && dateRange.get(0) < dateRange.get(1);
+    }
+
+    public boolean validateRentalEntityDateNotTaken(RentalEntity rentalEntity, List<Long> dateRange) {
+        for (Action action : rentalEntity.getActions().stream().filter(Action::isExpired).collect(Collectors.toSet()))
+            if (this.dateInRange(action.getStartDate(), action.getEndDate(), dateRange.get(0))
+            || this.dateInRange(action.getStartDate(), action.getEndDate(), dateRange.get(1)))
+                return false;
+        for (Reservation reservation : rentalEntity.getReservations())
+            if (this.dateInRange(reservation.getStartDate(), reservation.getEndDate(), dateRange.get(0))
+                    || this.dateInRange(reservation.getStartDate(), reservation.getEndDate(), dateRange.get(1)))
+                return false;
+
+        return true;
+    }
+
+    private boolean dateInRange(long startDate, long endDate, long date) {
+        return date >= startDate && date <= endDate;
     }
 }
