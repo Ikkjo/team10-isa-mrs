@@ -3,21 +3,41 @@
         <div class="form">
             <div class="form-control">
                 <h1>Create an Action</h1>
+                 <div class="form-control">
+                    <label>Expiration date</label>
+                    <DatePicker
+                        color="yellow"
+                        v-model="expiresOn"
+                        :min-date='new Date()'
+                        @input="expiresOnUpdated">
+                        <template v-slot="{ inputValue, inputEvents}">
+                            <input :value="inputValue" v-on="inputEvents"/>
+                        </template>
+                    </DatePicker>
+                </div>
                 <div class="form-control">
                     <label for="rules-of-conduct">Availability</label>
                     <DatePicker
                         color="yellow"
-                        is-expanded
+                        class="date-picker"
                         :is-range="true"
                         v-model="dateRange"
                         :min-date='new Date()'
                         :disabled-dates="disabledDates"
-                        @input="dateRangeUpdated"
-                    />
+                        :is-expanded="true"
+                        @input="dateRangeUpdated" />
+                </div>
+                <div class="form-control price-form">
+                    <label>Price</label>
+                    <PriceInput @updated="priceUpdated" />
                 </div>
                 <div class="form-control">
-                    <label>Price</label>
-                    <PriceInput @updated="priceUpdated" class=""/>
+                    <label>Max persons</label>
+                    <NumberInput
+                        @updated="maxPersonsUpdated"
+                        :increment="1" 
+                        :minValue="1" 
+                        :maxValue="100"/>
                 </div>
             </div>
         </div>
@@ -27,6 +47,7 @@
 <script>
 import PriceInput from '@/components/PriceInput.vue'
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+import NumberInput from '@/components/NumberInput.vue'
 import axios from 'axios'
 
 export default {
@@ -35,11 +56,14 @@ export default {
     components: {
         PriceInput,
         DatePicker,
+        NumberInput,
     },
     data() {
         return {
             dateRange: null,
             disabledDates: [],
+            inputValue: null,
+            expiresOn: null,
         }
     },
     methods: {
@@ -48,6 +72,12 @@ export default {
         },
         dateRangeUpdated() {
             this.$emit('updated:dateRange', this.dateRange)
+        },
+        maxPersonsUpdated(maxPersons) {
+            this.$emit('updated:maxPersons', maxPersons)
+        },
+        expiresOnUpdated() {
+            this.$emit('updated:expiresOn', this.expiresOn)
         }
     },
     mounted() {
@@ -78,11 +108,24 @@ h1 {
 
 .form-control {
     padding: 5px 0px;
-    max-width: 100%;
+    max-width: 100% !important;
+}
+
+.form-control input,
+.form-control .date-picker
+{
+    width: 100%;
 }
 
 .form-control label {
     margin-bottom: 5px;
 }
+
+.date-range {
+    display: flex;
+    align-items: center;
+    width: 50%;
+}
+
 
 </style>

@@ -23,8 +23,10 @@
                 <template #body>
                     <ActionCreation 
                         :id="rentalEntity.id"
-                        @updated:price="priceUpdated"
+                        @updated:expiresOn="expiresOnUpdated"
                         @updated:dateRange="dateRangeUpdated"
+                        @updated:price="priceUpdated"
+                        @updated:maxPersons="maxPersonsUpdated"
                         />
                 </template>
             </ActionCreationModal>
@@ -35,6 +37,7 @@
 <script>
 import ActionCreation from '@/components/ActionCreation.vue'
 import ActionCreationModal from '@/components/ActionCreationModal.vue'
+import axios from 'axios'
 export default {
     name: 'RentalEntityCard',
     props: ['rentalEntity'],
@@ -47,8 +50,10 @@ export default {
             userRole: null,
             showModal: false,
             action: {
-                price: null,
+                expiresOn: null,
                 dateRange: null,
+                price: null,
+                maxPersons: 1,
             },
         }
     },
@@ -73,21 +78,47 @@ export default {
         addAction() {
             console.log("Add action");
         },
+        expiresOnUpdated(expiresOn) {
+            console.log("updated expires at")
+            this.action.expiresOn = expiresOn.getTime()
+        },
         priceUpdated(price) {
             console.log("updated price")
             this.action.price = price
         },
         dateRangeUpdated(dateRange) {
-            console.log("updated date")
-            this.action.dateRange = dateRange
+            console.log("updated date range")
+            this.action.dateRange = [dateRange.start.getTime(), dateRange.end.getTime()]
+        },
+        maxPersonsUpdated(maxPersons) {
+            console.log("updated max persons")
+            this.action.maxPersons = maxPersons
         },
         saveAction() {
             console.log(this.action)
+            axios({
+                method: 'post',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/rental-entity/'+this.rentalEntity.id+'/add-action',
+                data: this.action,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then(() => {
+                alert("Action added successfully")
+            })
+            .catch(function(error) {
+                console.log(error);
+                alert("Something went wrong")
+            })
         }
     },
     computed: {
         buttonDisabled() {
-            return this.action.dateRange === null || this.action.dateRange === [] || this.action.price === null || this.action.price == 0 
+            return  this.action.expiresOn === null
+                    || this.action.dateRange === null || this.action.dateRange === []
+                    || this.action.price === null || this.action.price == 0
+                    || this.action.maxPersons === null || this.action.maxPersons == 0  
         }
     }
 }
