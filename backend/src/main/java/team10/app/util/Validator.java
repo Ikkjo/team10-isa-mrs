@@ -241,7 +241,12 @@ public class Validator {
                 && validateReservationDateRange(actionDto.getDateRange())
                 && validateRentalEntityPrice(actionDto.getPrice())
                 && validateReservationMaxPersons(actionDto.getMaxPersons());
+    }
 
+    public boolean validateReservationDto(ReservationDto reservationDto) {
+        return validateReservationDateRange(reservationDto.getDateRange())
+                && validateRentalEntityPrice(reservationDto.getPrice())
+                && validateReservationMaxPersons(reservationDto.getMaxPersons());
     }
 
     private boolean validateReservationMaxPersons(int maxPersons) {
@@ -250,7 +255,7 @@ public class Validator {
 
     private boolean validateReservationDateRange(List<Long> dateRange) {
         return dateRange.get(0) >= LocalDate.EPOCH.toEpochDay()
-                && dateRange.get(0) < dateRange.get(1);
+                && dateRange.get(0) <= dateRange.get(1);
     }
 
     public boolean validateRentalEntityDateNotTaken(RentalEntity rentalEntity, List<Long> dateRange) {
