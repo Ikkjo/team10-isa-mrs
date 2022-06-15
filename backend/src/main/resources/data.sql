@@ -12,7 +12,7 @@ INSERT into admins(id) VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051');
    password: 123456
 */
 INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
-VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', false, 'test@gmail.com', true, 'Testko', 'Testic',  '$2a$10$zMZOrOVf3fso50pcA/XVg.EgBiEnosehGy6aMt2UWlG/ZsDEx7NJy', '+381654587514', 'HOUSE_OWNER');
+VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55052', false, 'test@gmail.com', true, 'Testko', 'Testic',  '$2a$10$zMZOrOVf3fso50pcA/XVg.EgBiEnosehGy6aMt2UWlG/ZsDEx7NJy', '+381654587514', 'HOUSE_OWNER');
 
 INSERT INTO address(id, address, city, country)
 VALUES ('faef9bb2-ec14-11ec-8ea0-0242ac120002', 'Bulevar Oslobodjenja 1', 'Novi Sad', 'Serbia');
@@ -21,10 +21,10 @@ INSERT INTO loyalty(id, loyalty_points, loyalty_status)
 VALUES ('33213a0e-ec15-11ec-8ea0-0242ac120002', 0, 0);
 
 INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', '12.06.1996.', 'faef9bb2-ec14-11ec-8ea0-0242ac120002', '33213a0e-ec15-11ec-8ea0-0242ac120002');
+VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55052', '12.06.1996.', 'faef9bb2-ec14-11ec-8ea0-0242ac120002', '33213a0e-ec15-11ec-8ea0-0242ac120002');
 
 INSERT INTO vacation_home_owner(id)
-VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051');
+VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55052');
 
 -- Vacation Home 1
 -- INSERT INTO address(id, address, city, country)
