@@ -29,7 +29,7 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('MAIN_ADMIN', 'ADMIN', 'UNVERIFIED_ADMIN')")
     public ResponseEntity<AdminDto> getUserDetails(Principal principal) {
         try {
-            return new ResponseEntity<>(adminService.getUserDetails(principal.getName()), HttpStatus.OK);
+            return ResponseEntity.ok(adminService.getUserDetails(principal.getName()));
         }
         catch (UsernameNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -67,7 +67,7 @@ public class AdminController {
     @PreAuthorize("hasRole('MAIN_ADMIN')")
     public ResponseEntity<AdminDto> createAdmin(@RequestBody AdminRegistrationDto adminDto) {
         try {
-            return new ResponseEntity<>(adminService.createAdmin(adminDto), HttpStatus.OK);
+            return ResponseEntity.ok(adminService.createAdmin(adminDto));
         } catch (UsernameNotFoundException | EmailTakenException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -104,11 +104,10 @@ public class AdminController {
     @PreAuthorize("hasRole('UNVERIFIED_ADMIN')")
     public ResponseEntity<AdminDto> verifyAdmin(@RequestBody String newPassword, @RequestHeader(name = "Authorization") String token){
         try {
-            return new ResponseEntity<>(
+            return ResponseEntity.ok(
                     adminService.verifyAdmin(
                             jwtProvider.getAuthentication(token.substring(7)).getName(), newPassword
-                    ),
-                    HttpStatus.OK
+                    )
             );
         } catch (UsernameNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
