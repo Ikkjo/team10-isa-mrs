@@ -139,7 +139,7 @@ public class UserService implements UserDetailsService {
         if (!validator.validateDeletionReason(deletionReason))
             throw new DeletionReasonInvalidException(deletionReason);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
-        if (deletionRequestRepository.existsByUserId(user.getId()))
+        if (deletionRequestRepository.hasActiveDeletionRequest(user.getId()))
             throw new DeletionRequestAlreadyPresentException(email);
         DeletionRequest deletionRequest = new DeletionRequest(user, deletionReason);
         deletionRequestRepository.save(deletionRequest);
