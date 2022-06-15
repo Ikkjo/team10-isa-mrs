@@ -40,14 +40,6 @@ public class Reservation {
         this.status = ReservationStatus.CREATED;
     }
 
-    public Reservation(ReservationDto reservationDto, Client client) {
-        this.startDate = reservationDto.getStartDate();
-        this.endDate = reservationDto.getEndDate();
-        this.price = reservationDto.getPrice();
-        this.client = client;
-        this.status = ReservationStatus.CREATED;
-    }
-
     public Reservation(ReservationDto reservationDto, Client client, RentalEntity rentalEntity) {
         this.startDate = reservationDto.getStartDate();
         this.endDate = reservationDto.getEndDate();
