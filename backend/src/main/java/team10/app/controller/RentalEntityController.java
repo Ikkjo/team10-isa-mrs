@@ -63,6 +63,18 @@ public class RentalEntityController {
         }
     }
 
+    @GetMapping(value = "/{id}/taken-dates")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<List<Long>> getTakenDates(@PathVariable UUID id) {
+        try {
+            return new ResponseEntity<>(rentalEntityService.getTakenDates(id), HttpStatus.OK);
+        }
+        catch (RentalEntityNotFoundException ex)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping(value = "/{id}/add-action")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<ActionDto> addAction(@RequestHeader (name="Authorization") String token, @PathVariable(name = "id") UUID id, @RequestBody ActionDto actionDto) {
