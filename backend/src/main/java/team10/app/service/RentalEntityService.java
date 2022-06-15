@@ -112,7 +112,7 @@ public class RentalEntityService {
     }
 
     public List<Long> getAvailability(UUID id) {
-        return rentalEntityRepository.getById(id).getAvailability().stream().map(Availability::getDate).collect(Collectors.toList());
+        return this.getById(id).getAvailability().stream().map(Availability::getDate).collect(Collectors.toList());
     }
 
     public void addAction(String email, UUID id, ActionDto actionDto) {
@@ -129,4 +129,7 @@ public class RentalEntityService {
         rentalEntityRepository.saveAndFlush(rentalEntity);
     }
 
+    public List<Long> getTakenDates(UUID id) {
+        return new ArrayList<>(this.getById(id).getTakenDates());
+    }
 }
