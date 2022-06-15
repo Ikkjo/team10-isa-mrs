@@ -123,6 +123,7 @@ export default {
 
 .container {
     padding: 6px 5px;
+    display: block !important;
 }
 
 .btn-container {
