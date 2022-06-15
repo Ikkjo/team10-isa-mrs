@@ -9,26 +9,43 @@
             </div>
             <div class="main-text">${{rentalEntity.price}} night</div>
             <div class="btn-container">
-                <button v-if="isBusinessClient()" class="btn" @click.stop="showModal = true">Add Action</button>
+                <button v-if="isBusinessClient()" class="btn" @click.stop="showActionModal()">Add Action</button>
+                <button v-if="isBusinessClient()" class="btn" @click.stop="showReservationModal()">Reserve</button>
             </div>
         </div>
         <portal to="body" v-if="isBusinessClient()">
             <!-- use the modal component, pass in the prop -->
             <ActionCreationModal
                 @save="saveAction()"
-                :show="showModal"
-                @close="showModal=false"
-                :buttonDisabled="buttonDisabled"
+                :show="isActionModalActive"
+                @close="isActionModalActive=false"
+                :buttonDisabled="actionButtonDisabled"
                 class="modal">
                 <template #body>
                     <ActionCreation 
                         :id="rentalEntity.id"
-                        @updated:expiresOn="expiresOnUpdated"
-                        @updated:dateRange="dateRangeUpdated"
-                        @updated:price="priceUpdated"
-                        @updated:maxPersons="maxPersonsUpdated"
+                        @updated:expiresOn="actionExpiresOnUpdated"
+                        @updated:dateRange="actionDateRangeUpdated"
+                        @updated:price="actionPriceUpdated"
+                        @updated:maxPersons="actionMaxPersonsUpdated"
                         />
                 </template>
+            </ActionCreationModal>
+
+            <ActionCreationModal
+                :show="isReservationModalActive"
+                @close="isReservationModalActive=false"
+                :buttonDisabled="reservationButtonDisabled"
+                class="modal">
+                <template #body>
+                    <ReservationCreation 
+                        :id="rentalEntity.id"
+                        @updated:username="reservationUsernameUpdated"
+                        @updated:dateRange="reservationDateRangeUpdated"
+                        @updated:price="reservationPriceUpdated"
+                        @updated:maxPersons="reservationMaxPersonsUpdated"/>
+                </template>
+
             </ActionCreationModal>
       </portal>
     </div>
@@ -38,19 +55,28 @@
 import ActionCreation from '@/components/ActionCreation.vue'
 import ActionCreationModal from '@/components/ActionCreationModal.vue'
 import axios from 'axios'
+import ReservationCreation from './ReservationCreation.vue'
 export default {
     name: 'RentalEntityCard',
     props: ['rentalEntity'],
     components: {
         ActionCreation,
-        ActionCreationModal
+        ActionCreationModal,
+        ReservationCreation
     },
     data() {
         return {
             userRole: null,
-            showModal: false,
+            isActionModalActive: false,
+            isReservationModalActive: false,
             action: {
                 expiresOn: null,
+                dateRange: null,
+                price: null,
+                maxPersons: 1,
+            },
+            reservation: {
+                username: null,
                 dateRange: null,
                 price: null,
                 maxPersons: 1,
@@ -75,24 +101,48 @@ export default {
         isBusinessClient() {
             return ['HOUSE_OWNER','SHIP_OWNER', 'FISHING_INSTRUCTOR'].includes(localStorage.getItem('userRole'))
         },
+        showActionModal() {
+            this.isReservationModalActive = false;
+            this.isActionModalActive = true;
+        },
+        showReservationModal() {
+            this.isActionModalActive = false;   
+            this.isReservationModalActive = true;
+        },
         addAction() {
             console.log("Add action");
         },
-        expiresOnUpdated(expiresOn) {
+        actionExpiresOnUpdated(expiresOn) {
             console.log("updated expires at")
             this.action.expiresOn = expiresOn.getTime()
         },
-        priceUpdated(price) {
+        actionPriceUpdated(price) {
             console.log("updated price")
             this.action.price = price
         },
-        dateRangeUpdated(dateRange) {
+        actionDateRangeUpdated(dateRange) {
             console.log("updated date range")
             this.action.dateRange = [dateRange.start.getTime(), dateRange.end.getTime()]
         },
-        maxPersonsUpdated(maxPersons) {
+        actionMaxPersonsUpdated(maxPersons) {
             console.log("updated max persons")
             this.action.maxPersons = maxPersons
+        },
+        reservationUsernameUpdated(username) {
+            console.log("updated reservation username")
+            this.reservation.username = username
+        },
+        reservationPriceUpdated(price) {
+            console.log("updated price")
+            this.reservation.price = price
+        },
+        reservationDateRangeUpdated(dateRange) {
+            console.log("updated date range")
+            this.reservation.dateRange = [dateRange.start.getTime(), dateRange.end.getTime()]
+        },
+        reservationMaxPersonsUpdated(maxPersons) {
+            console.log("updated max persons")
+            this.reservation.maxPersons = maxPersons
         },
         saveAction() {
             console.log(this.action)
@@ -106,19 +156,37 @@ export default {
             })
             .then(() => {
                 alert("Action added successfully")
+                this.resertAction()
+                this.isActionModalActive = false;
             })
-            .catch(function(error) {
+            .catch((error) => {
                 console.log(error);
                 alert("Something went wrong")
+                this.resertAction()
+                this.isActionModalActive = false;
             })
-        }
+        },
+        resertAction() {
+            Object.keys(this.action).forEach(key => this.action[key]=null)
+            this.action.maxPersons = 1
+        },
+        resetReservation() {
+            Object.keys(this.reservation).forEach(key => this.reservation[key]=null)
+            this.reservation.maxPersons = 1
+        },
     },
     computed: {
-        buttonDisabled() {
+        actionButtonDisabled() {
             return  this.action.expiresOn === null
                     || this.action.dateRange === null || this.action.dateRange === []
                     || this.action.price === null || this.action.price == 0
                     || this.action.maxPersons === null || this.action.maxPersons == 0  
+        },
+        reservationButtonDisabled() {
+            return this.reservation.username === null || this.reservation.username == ""
+                    || this.reservation.dateRange === null || this.reservation.dateRange === []
+                    || this.reservation.price === null || this.reservation.price == 0
+                    || this.reservation.maxPersons === null || this.reservation.maxPersons == 0  
         }
     }
 }
@@ -162,6 +230,10 @@ export default {
     align-items: center;
     justify-content: center;
     padding: 6px 5px;
+}
+
+.btn-container .btn:first-child {
+    margin-right: 10px
 }
 
 .btn {
