@@ -7,6 +7,7 @@ import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.repository.BusinessClientRepository;
 import team10.app.repository.RentalEntityRepository;
+import team10.app.repository.ReservationRepository;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
@@ -19,7 +20,10 @@ public class RentalEntityService {
 
     private final RentalEntityRepository rentalEntityRepository;
     private final BusinessClientRepository businessClientRepository;
+    private final ReservationRepository reservationRepository;
     private final AddressService addressService;
+    private final ClientService clientService;
+    private final BusinessClientService businessClientService;
     private final PictureService pictureService;
     private final Validator validator;
 
@@ -118,11 +122,7 @@ public class RentalEntityService {
     public void addAction(String email, UUID id, ActionDto actionDto) {
         if (!validator.validateActionDto(actionDto))
             throw new ActionInvalidException();
-        BusinessClient businessClient = businessClientRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
-        RentalEntity rentalEntity = this.getById(id);
-        if (rentalEntity.getOwner() != businessClient)
-            throw new InvalidRentalEntityOwnerException(rentalEntity.getId(), businessClient.getId());
+        RentalEntity rentalEntity = getRentalEntity(email, id);
         if (!validator.validateRentalEntityDateNotTaken(rentalEntity, actionDto.getDateRange()))
             throw new RentalEntityDateTaken(rentalEntity.getId(), actionDto.getDateRange());
         rentalEntity.addAction(new Action(actionDto));
@@ -131,5 +131,31 @@ public class RentalEntityService {
 
     public List<Long> getTakenDates(UUID id) {
         return new ArrayList<>(this.getById(id).getTakenDates());
+    }
+
+    public void addReservation(String email, UUID id, ReservationDto reservationDto) {
+        // validate
+        if (!validator.validateReservationDto(reservationDto))
+            throw new ReservationInvalidException(reservationDto);
+        RentalEntity rentalEntity = getRentalEntity(email, id);
+        if (!validator.validateRentalEntityDateNotTaken(rentalEntity, reservationDto.getDateRange()))
+            throw new RentalEntityDateTaken(rentalEntity.getId(), reservationDto.getDateRange());
+        // create reservation
+        Client client = clientService.getByUsername(reservationDto.getUsername());
+        Reservation reservation = new Reservation(reservationDto, client, rentalEntity);
+        // save
+        reservation = reservationRepository.saveAndFlush(reservation);
+        businessClientService.addReservation(email, reservation);
+        rentalEntity.addReservation(reservation);
+        clientService.addReservation(client, reservation);
+    }
+
+    private RentalEntity getRentalEntity(String email, UUID id) {
+        BusinessClient businessClient = businessClientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+        RentalEntity rentalEntity = this.getById(id);
+        if (rentalEntity.getOwner() != businessClient)
+            throw new InvalidRentalEntityOwnerException(rentalEntity.getId(), businessClient.getId());
+        return rentalEntity;
     }
 }

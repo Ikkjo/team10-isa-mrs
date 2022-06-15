@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import team10.app.dto.ActionDto;
 import team10.app.dto.AddressDto;
 import team10.app.dto.RentalEntityDto;
+import team10.app.dto.ReservationDto;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.RentalEntityService;
 import team10.app.util.exceptions.RentalEntityNotFoundException;
@@ -81,6 +82,19 @@ public class RentalEntityController {
         try {
             rentalEntityService.addAction(jwtProvider.getAuthentication(token.substring(7)).getName(), id, actionDto);
             return new ResponseEntity<>(actionDto, HttpStatus.OK);
+        }
+        catch (RentalEntityNotFoundException ex)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value = "/{id}/add-reservation")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<ReservationDto> addReservation(@RequestHeader (name="Authorization") String token, @PathVariable(name = "id") UUID id, @RequestBody ReservationDto reservationDto) {
+        try {
+            rentalEntityService.addReservation(jwtProvider.getAuthentication(token.substring(7)).getName(), id, reservationDto);
+            return new ResponseEntity<>(reservationDto, HttpStatus.OK);
         }
         catch (RentalEntityNotFoundException ex)
         {
