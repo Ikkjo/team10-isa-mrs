@@ -10,7 +10,7 @@
 
 <script>
 import HomepageNavBar from "@/components/HomepageNavBar.vue"
-import SearchBar from "@/components/SearchBar.vue";
+import SearchBar from "@/components/HomepageSearchBar.vue";
 import RentalEntityCard from "@/components/RentalEntityCard.vue";
 import axios from 'axios';
 export default {
@@ -54,7 +54,7 @@ export default {
     justify-content: center;
     gap: 15px;
     max-width: 100%;
-    padding-top: 140px;
+    padding-top: 150px;
 }
 
 @media screen and (max-width: 669px) {

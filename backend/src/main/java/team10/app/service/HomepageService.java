@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import team10.app.dto.RentalEntityDto;
 import team10.app.model.RentalEntity;
 import team10.app.repository.RentalEntityRepository;
+import team10.app.repository.specification.search.SearchCriteria;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +27,10 @@ public class HomepageService {
             rentalEntityDtoList.add(rentalEntityService.rentalEntityToDto(re.getId()));
         }
         return rentalEntityDtoList;
+    }
+
+    public List<RentalEntityDto> rentalEntitySearch(SearchCriteria criteria) {
+        return null;
     }
 
 }
