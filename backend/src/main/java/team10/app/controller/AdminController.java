@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.AdminDto;
 import team10.app.dto.AdminRegistrationDto;
+import team10.app.dto.BusinessClientRegistrationRequestNoPasswordDto;
+import team10.app.dto.RegistrationRequestDto;
+import team10.app.model.RegistrationRequest;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.AdminService;
 import team10.app.util.exceptions.EmailTakenException;
@@ -15,6 +18,7 @@ import team10.app.util.exceptions.EmailTakenException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -34,6 +38,12 @@ public class AdminController {
         catch (UsernameNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(path = "/registration-requests")
+    @PreAuthorize("hasAnyRole('ADMIN','MAIN_ADMIN')")
+    public ResponseEntity<List<BusinessClientRegistrationRequestNoPasswordDto>> getRegistrationRequests() {
+        return ResponseEntity.ok(adminService.getRegistrationRequests());
     }
 
     @Transactional
