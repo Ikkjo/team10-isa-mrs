@@ -4,6 +4,7 @@ import lombok.*;
 import team10.app.dto.VacationHomeDto;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,5 +42,7 @@ public class VacationHome extends RentalEntity {
         this.rooms = rooms;
         this.beds = beds;
         this.availability = availability;
+        this.reservations = new HashSet<>();
+        this.actions = new HashSet<>();
     }
 }

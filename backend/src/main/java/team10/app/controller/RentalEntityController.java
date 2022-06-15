@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import team10.app.dto.ActionDto;
 import team10.app.dto.AddressDto;
 import team10.app.dto.RentalEntityDto;
 import team10.app.security.auth.JWTProvider;
@@ -55,6 +56,19 @@ public class RentalEntityController {
     public ResponseEntity<List<Long>> getAvailability(@PathVariable UUID id) {
         try {
             return new ResponseEntity<>(rentalEntityService.getAvailability(id), HttpStatus.OK);
+        }
+        catch (RentalEntityNotFoundException ex)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value = "/{id}/add-action")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<ActionDto> addAction(@RequestHeader (name="Authorization") String token, @PathVariable(name = "id") UUID id, @RequestBody ActionDto actionDto) {
+        try {
+            rentalEntityService.addAction(jwtProvider.getAuthentication(token.substring(7)).getName(), id, actionDto);
+            return new ResponseEntity<>(actionDto, HttpStatus.OK);
         }
         catch (RentalEntityNotFoundException ex)
         {

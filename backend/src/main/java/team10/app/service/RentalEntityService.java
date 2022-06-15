@@ -114,4 +114,18 @@ public class RentalEntityService {
     public List<Long> getAvailability(UUID id) {
         return rentalEntityRepository.getById(id).getAvailability().stream().map(Availability::getDate).collect(Collectors.toList());
     }
+
+    public void addAction(String email, UUID id, ActionDto actionDto) {
+        BusinessClient businessClient = businessClientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+        RentalEntity rentalEntity = this.getById(id);
+        if (rentalEntity.getOwner() != businessClient)
+            throw new InvalidRentalEntityOwnerException(rentalEntity.getId(), businessClient.getId());
+        rentalEntity.addAction(new Action(actionDto));
+        rentalEntityRepository.saveAndFlush(rentalEntity);
+    }
+
+    private Action buildAction(ActionDto actionDto) {
+        return new Action(actionDto);
+    }
 }

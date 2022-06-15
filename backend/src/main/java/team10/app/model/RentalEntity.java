@@ -41,6 +41,10 @@ public abstract class RentalEntity {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "availability_id")
     protected Set<Availability> availability;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    protected Set<Reservation> reservations;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    protected Set<Action> actions;
 
     public void setPictures(Set<Picture> pictures) {
         this.pictures.clear();
@@ -55,5 +59,24 @@ public abstract class RentalEntity {
             this.availability.addAll(availability);
         }
     }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations.clear();
+        if (reservations != null) {
+            this.reservations.addAll(reservations);
+        }
+    }
+
+    public void setActions(Set<Action> actions) {
+        this.actions.clear();
+        if (actions != null) {
+            this.actions.addAll(actions);
+        }
+    }
+
+    public void addAction(Action action) {
+        this.actions.add(action);
+    }
+
 
 }
