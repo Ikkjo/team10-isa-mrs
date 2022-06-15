@@ -1,18 +1,23 @@
+-- OLD
+INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
+VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050', false, 'admin@rentr.com', true, 'Admin', 'Adminovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'ADMIN');
+INSERT into admins(initial_password_changed, main, id) VALUES (true, true, 'cd95284b-b6fe-46b4-ade2-491c28e55050');
+
 -- ****** USER TEST DATA ****** START
 
--- ADMIN
--- mail/username: admin@rentr.com
--- password: admin
-INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
-VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050', false, 'admin@rentr.com', true, 'Admin', 'Adminovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'MAIN_ADMIN');
-INSERT into admins(id) VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050');
-
--- UNVERIFIED_ADMIN
--- mail/username: damir@rentr.com
--- password: admin
-INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
-VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', false, 'damir@rentr.com', true, 'Damir', 'Adamovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'UNVERIFIED_ADMIN');
-INSERT into admins(id) VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051');
+-- -- ADMIN
+-- -- mail/username: admin@rentr.com
+-- -- password: admin
+-- INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
+-- VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050', false, 'admin@rentr.com', true, 'Admin', 'Adminovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'MAIN_ADMIN');
+-- INSERT into admins(id) VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050');
+--
+-- -- UNVERIFIED_ADMIN
+-- -- mail/username: damir@rentr.com
+-- -- password: admin
+-- INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
+-- VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', false, 'damir@rentr.com', true, 'Damir', 'Adamovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'UNVERIFIED_ADMIN');
+-- INSERT into admins(id) VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051');
 
 -- CLIENT
 -- mail/username: nikola@mail.com
@@ -99,10 +104,3 @@ VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', false, 'manja@mail.com', true, '
 INSERT into ship_owner(id) VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25');
 
 -- ****** USER TEST DATA ****** END
-
-
--- OLD
--- INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
--- VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55050', false, 'admin@rentr.com', true, 'Admin', 'Adminovic',  '$2a$12$aSdnp/ZQTnSDHWFuBZlybOIjhMWcY7GRNlZMHPYoQekbN3BaHM4AS', '', 'ADMIN');
---
--- INSERT into admins(initial_password_changed, main, id) VALUES (true, true, 'cd95284b-b6fe-46b4-ade2-491c28e55050');
