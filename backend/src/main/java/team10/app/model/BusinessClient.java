@@ -12,6 +12,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name="business_client")
 public abstract class BusinessClient extends User {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -22,9 +23,7 @@ public abstract class BusinessClient extends User {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "loyalty_id")
     private Loyalty loyalty;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "business_client_reservations", joinColumns = @JoinColumn(name = "business_client_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"))
+    @OneToMany(mappedBy = "businessClient")
     protected Set<Reservation> reservations;
 
 

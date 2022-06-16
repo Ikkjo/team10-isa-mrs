@@ -122,7 +122,9 @@ public class RentalEntityService {
     public void addAction(String email, UUID id, ActionDto actionDto) {
         if (!validator.validateActionDto(actionDto))
             throw new ActionInvalidException();
-        RentalEntity rentalEntity = getRentalEntity(email, id);
+        BusinessClient businessClient = businessClientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+        RentalEntity rentalEntity = this.getRentalEntityByOwner(businessClient, id);
         if (!validator.validateRentalEntityDateNotTaken(rentalEntity, actionDto.getDateRange()))
             throw new RentalEntityDateTaken(rentalEntity.getId(), actionDto.getDateRange());
         rentalEntity.addAction(new Action(actionDto));
@@ -133,16 +135,18 @@ public class RentalEntityService {
         return new ArrayList<>(this.getById(id).getTakenDates());
     }
 
-    public void addReservation(String email, UUID id, ReservationDto reservationDto) {
+    public void addReservation(String email, UUID id, CreateReservationDto createReservationDto) {
+        BusinessClient businessClient = businessClientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+        RentalEntity rentalEntity = this.getRentalEntityByOwner(businessClient, id);
         // validate
-        if (!validator.validateReservationDto(reservationDto))
-            throw new ReservationInvalidException(reservationDto);
-        RentalEntity rentalEntity = getRentalEntity(email, id);
-        if (!validator.validateRentalEntityDateNotTaken(rentalEntity, reservationDto.getDateRange()))
-            throw new RentalEntityDateTaken(rentalEntity.getId(), reservationDto.getDateRange());
+        if (!validator.validateReservationDto(createReservationDto))
+            throw new ReservationInvalidException(createReservationDto);
+        if (!validator.validateRentalEntityDateNotTaken(rentalEntity, createReservationDto.getDateRange()))
+            throw new RentalEntityDateTaken(rentalEntity.getId(), createReservationDto.getDateRange());
         // create reservation
-        Client client = clientService.getByUsername(reservationDto.getUsername());
-        Reservation reservation = new Reservation(reservationDto, client, rentalEntity);
+        Client client = clientService.getByUsername(createReservationDto.getUsername());
+        Reservation reservation = new Reservation(createReservationDto, businessClient, client, rentalEntity);
         // save
         reservation = reservationRepository.saveAndFlush(reservation);
         businessClientService.addReservation(email, reservation);
@@ -150,9 +154,7 @@ public class RentalEntityService {
         clientService.addReservation(client, reservation);
     }
 
-    private RentalEntity getRentalEntity(String email, UUID id) {
-        BusinessClient businessClient = businessClientRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
+    private RentalEntity getRentalEntityByOwner(BusinessClient businessClient, UUID id) {
         RentalEntity rentalEntity = this.getById(id);
         if (rentalEntity.getOwner() != businessClient)
             throw new InvalidRentalEntityOwnerException(rentalEntity.getId(), businessClient.getId());

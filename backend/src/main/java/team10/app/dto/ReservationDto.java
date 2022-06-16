@@ -1,25 +1,29 @@
 package team10.app.dto;
 
-import lombok.*;
 
-import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import team10.app.model.ReservationStatus;
+
+import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class ReservationDto {
-    private String username;
-    private List<Long> dateRange;
+
+    private UUID id;
+    private long startDate;
+    private long endDate;
     private int price;
-    private int maxPersons;
+    private ReservationStatus status;
+    private String client;
+    private String businessClient;
+    private UUID rentalEntityId;
+    private String rentalEntityTitle;
 
-    public long getStartDate() {
-        return this.dateRange.get(0);
-    }
-
-    public long getEndDate() {
-        return this.dateRange.get(1);
-    }
 }

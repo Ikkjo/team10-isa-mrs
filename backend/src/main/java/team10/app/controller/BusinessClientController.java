@@ -15,6 +15,7 @@ import team10.app.service.BusinessClientService;
 
 import java.security.Principal;
 
+
 @RestController
 @RequestMapping(path = "/api/v1/business-client")
 @AllArgsConstructor
@@ -61,6 +62,7 @@ public class BusinessClientController {
         }
         return new ResponseEntity<>(dateOfBirth, HttpStatus.OK);
     }
+
 
 
 
