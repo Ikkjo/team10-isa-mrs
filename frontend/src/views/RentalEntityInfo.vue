@@ -32,6 +32,15 @@
                 @update:shipFishingEquipment="updateShipFishingEquipment"
                 @update:shipCapacity="updateShipCapacity"
                 @update:shipCancellation="updateShipCancellation"/>
+            <AdventureAdditionalInfo
+                v-if="role === 'FISHING_INSTRUCTOR'"
+                :adventure="rentalEntity"
+                ref="adventureInfo"
+                @update:adventureBiography="updateAdventureBiography"
+                @update:adventureCapacity="updateAdventureCapacity"
+                @update:adventureFishingEquipment="updateAdventureFishingEquipment"
+                @update:adventureCancellation="updateAdventureCancellation"
+                />
         </div>
     </div>
 </template>
@@ -41,6 +50,7 @@ import BusinessClientNavBar from "@/components/BusinessClientNavBar.vue"
 import RentalEntityBasicInfo from '@/components/RentalEntityBasicInfo.vue'
 import VacationHomeAdditionalInfo from '@/components/VacationHomeAdditionalInfo.vue'
 import ShipAdditionalInfo from '@/components/ShipAdditionalInfo.vue'
+import AdventureAdditionalInfo from '@/components/AdventureAdditionalInfo.vue'
 import axios from 'axios'
 export default {
     name: 'RentalEntityInfo',
@@ -48,7 +58,8 @@ export default {
         BusinessClientNavBar,
         RentalEntityBasicInfo,
         VacationHomeAdditionalInfo,
-        ShipAdditionalInfo
+        ShipAdditionalInfo,
+        AdventureAdditionalInfo
     },
     data() {
         return {
@@ -477,6 +488,88 @@ export default {
                 }) 
 
         },
+        updateAdventureBiography(biography) {
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/adventure/update/'+this.rentalEntity.id+'/biography',
+                data: biography,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Adventure Biography Invalid")
+                    else
+                        this.rentalEntity.biography = response.data
+                })
+                .catch((error) => {
+                    alert("Adventure Biography Invalid")
+                    console.log(error);
+                }) 
+        },
+        updateAdventureCapacity(capacity) {
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/adventure/update/'+this.rentalEntity.id+'/capacity/'+capacity,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Adventure Capacity Invalid")
+                    else
+                        this.rentalEntity.capacity = response.data
+                })
+                .catch((error) => {
+                    alert("Adventure Capacity Invalid")
+                    console.log(error);
+                }) 
+        },
+        updateAdventureFishingEquipment(fishingEquipment) {
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/adventure/update/'+this.rentalEntity.id+'/fishing-equipment',
+                data: fishingEquipment,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Adventure Fishing Equipment Invalid")
+                    else
+                        this.rentalEntity.fishingEquipment = response.data
+                })
+                .catch((error) => {
+                    alert("Adventure Fishing Equipment Invalid")
+                    console.log(error);
+                }) 
+        },
+        updateAdventureCancellation(cancellation){
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/adventure/update/'+this.rentalEntity.id+'/free-cancellation/'+cancellation,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status >= 400)
+                        alert("Adventure Cancellation Invalid")
+                    else
+                        this.rentalEntity.freeCancellation = response.data
+                })
+                .catch((error) => {
+                    alert("Adventure Cancellation Invalid")
+                    console.log(error);
+                })
+        },
     },
     created() {
         this.role = window.localStorage.getItem('role')
@@ -492,8 +585,8 @@ export default {
                     this.$refs.vacationHomeInfo.setVacationHomeCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 else if (this.role === 'SHIP_OWNER')
                     this.$refs.shipInfo.setShipCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
-                // TODO: FISHING_INSTRUCTOR
-                
+                else if (this.role === 'FISHING_INSTRUCTOR')
+                    this.$refs.adventureInfo.setAdventureCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
             })
             .catch(function(error) {
                 console.log(error)
