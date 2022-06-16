@@ -27,7 +27,7 @@ public class ReservationController {
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<Map<String, Object>> getAllReservations(
             Principal principal,
-            @RequestParam(defaultValue = "id,desc") String[] sort,
+            @RequestParam(defaultValue = "id,desc") String sort,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {

@@ -116,11 +116,12 @@ export default {
         },
         // load items is what brings back the rows from server
         loadItems() {
-            console.log(this.serverParams.sort.map(s => [s.field, s.type]));
+            let sortString = ''+this.serverParams.sort[0].field+','+this.serverParams.sort[0].type
+            console.log(sortString)
             axios({
                 method: 'get',
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/reservations',
-                params: {page: this.serverParams.page, size: this.serverParams.perPage, sort: this.serverParams.sort.map(s => [s.field, s.type])},
+                params: {page: this.serverParams.page, size: this.serverParams.perPage, sort: sortString},
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },

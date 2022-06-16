@@ -24,26 +24,27 @@ public class ReservationService {
     private final BusinessClientService businessClientService;
 
 
-    public Page<Reservation> getAllReservationsByOwner(String email, String[] sort, int page, int size) {
+    public Page<Reservation> getAllReservationsByOwner(String email, String sort, int page, int size) {
         BusinessClient businessClient = businessClientService.getByEmail(email);
         Pageable paging = PageRequest.of(page, size, Sort.by(getSort(sort)));
         return reservationRepository.findByBusinessClient(businessClient, paging);
 
     }
 
-    private List<Order> getSort(String[] sort) {
+    private List<Order> getSort(String sort) {
         List<Order> orders = new ArrayList<>();
-        if (sort[0].contains(",")) {
-            // will sort more than 2 fields
-            // sortOrder="field, direction"
-            for (String sortOrder : sort) {
-                String[] _sort = sortOrder.split(",");
-                orders.add(new Order(getSortDirection(_sort[1]), _sort[0]));
-            }
-        } else {
-            // sort=[field, direction]
-            orders.add(new Order(getSortDirection(sort[1]), sort[0]));
+        String[] sortTokens = sort.split(",");
+        switch (sortTokens[0]) {
+            case "rentalEntityTitle":
+                sortTokens[0] = "rentalEntity.title";
+                break;
+            case "client":
+                    sortTokens[0] = "client.name";
+                    break;
+            default:
+                break;
         }
+        orders.add(new Order(getSortDirection(sortTokens[1]), sortTokens[0]));
         return orders;
     }
 
