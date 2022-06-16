@@ -49,10 +49,7 @@ public class RentalEntityService {
     }
 
     public Set<RentalEntityDto> getAllActiveByOwnerEmail(String email) {
-        BusinessClient businessClient = businessClientRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
-
-        List<RentalEntity> rentalEntities = rentalEntityRepository.findAllByOwner(businessClient);
+        List<RentalEntity> rentalEntities = rentalEntityRepository.findAllByOwner(businessClientService.getByEmail(email));
         Set<RentalEntityDto> rentalEntityDtoSet = new HashSet<>();
         if (!rentalEntities.isEmpty())
             rentalEntityDtoSet = rentalEntities.stream().map((rentalEntity) ->
@@ -61,6 +58,10 @@ public class RentalEntityService {
                 return buildRentalEntityDto(rentalEntity);
             }).collect(Collectors.toSet());
         return rentalEntityDtoSet;
+    }
+
+    public List<String> getAllActiveRentalEntityTitlesByOwnerEmail(String email) {
+        return rentalEntityRepository.getAllTitlesByOwner(businessClientService.getByEmail(email));
     }
 
     public void updateTitle(String title, UUID id) {
@@ -160,4 +161,5 @@ public class RentalEntityService {
             throw new InvalidRentalEntityOwnerException(rentalEntity.getId(), businessClient.getId());
         return rentalEntity;
     }
+
 }

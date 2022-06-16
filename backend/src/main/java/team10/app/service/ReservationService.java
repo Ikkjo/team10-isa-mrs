@@ -1,6 +1,7 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.hibernate.annotations.FilterDef;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,7 +40,7 @@ public class ReservationService {
                 sortTokens[0] = "rentalEntity.title";
                 break;
             case "client":
-                    sortTokens[0] = "client.name";
+                    sortTokens[0] = "client.firstName";
                     break;
             default:
                 break;

@@ -1,7 +1,7 @@
 <template>
 <div>
     <BusinessClientNavBar id="nav"/>
-    <div class="container">
+    <div class="reservation-table-container">
         <VueGoodTable
             mode="remote"
             :pagination-options="{
@@ -41,7 +41,7 @@ export default {
                     columnIndex: 0,
                 },
                 {
-                    label: 'Rental Entity',
+                    label: 'Listing',
                     field: 'rentalEntityTitle',
                     columnIndex: 1,
                 },
@@ -73,13 +73,13 @@ export default {
                 },
                 sort: [
                     {
-                        field: 'client',
+                        field: 'id',
                         type: 'asc'
                     }
                 ],
                 page: 0, 
                 perPage: 10
-            }
+            },
         }
     },
     methods: {
@@ -134,7 +134,8 @@ export default {
                 alert("Something went wrong. See console for output.")
                 console.log(error);
             }) 
-        }
+        },
+       
     },
     mounted() {
         axios({
@@ -157,12 +158,38 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 
-.container {
+.reservation-table-container {
     max-width: 100%;
     margin-top: 70px;
     padding: 0px 10px;
+}
+
+.filter {
+    padding: 3px 7px; 
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    transition: 0.5s;
+    outline-color: lightgrey;
+    background-color: #fff;
+    font-family: inherit;
+}
+
+.filter {
+   height: 48px;
+}
+
+.filter select:hover,
+.filter input:hover,
+.filter input:active {
+    border-color: var(--orange-primary, #f0a500);
+}
+
+.filter select:focus,
+.filter input:focus {
+    outline-color: var(--orange-primary, #f0a500);
 }
 
 

@@ -42,9 +42,21 @@ public class RentalEntityController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<Set<RentalEntityDto>> getAllVacationHomes(Principal principal) {
+    public ResponseEntity<Set<RentalEntityDto>> getAllRentalEntities(Principal principal) {
         try {
             return new ResponseEntity<>(rentalEntityService.getAllActiveByOwnerEmail(principal.getName()), HttpStatus.OK);
+        }
+        catch (UsernameNotFoundException ex)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/titles")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<List<String>> getAllRentalEntityTitles(Principal principal) {
+        try {
+            return new ResponseEntity<>(rentalEntityService.getAllActiveRentalEntityTitlesByOwnerEmail(principal.getName()), HttpStatus.OK);
         }
         catch (UsernameNotFoundException ex)
         {
