@@ -21,6 +21,18 @@
                 :icon="'person_remove'"
                 :title="'Deletion Requests'"
                 />
+            <div class="bottom">
+                <AdminMenuItem
+                    :link="'admin-account-info'"
+                    :iconClass="'material-icons'"
+                    :icon="'account_circle'"
+                    :title="'Account Info'"
+                    />
+                <div @click="logout" class="option">
+                    <span class="icon-class material-icons">logout</span>
+                    <span class="text">Logout</span>
+                </div>
+            </div>
         </div>
         <div class="admin-panel-body">
             <router-view/>
@@ -38,6 +50,13 @@ export default {
     data() {
         return {
             role: null
+        }
+    },
+    methods: {
+        logout() {
+            window.localStorage.removeItem('role');
+            window.localStorage.removeItem('jwt');
+            this.$router.push({name: 'login'})
         }
     },
     computed: {
@@ -61,15 +80,15 @@ h1 {
 }
 
 .admin-sidebar {
-  height: 100vh; /* Full-height: remove this if you want "auto" height */
-  width: 200px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
-  left: 0;
-  background-color: var(--orange-primary, orange); /* Black */
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 15px;
+    height: 100vh; /* Full-height: remove this if you want "auto" height */
+    width: 200px; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: var(--orange-primary, orange); /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 15px;
 }
 
 .admin-sidebar .menu-title {
@@ -102,11 +121,17 @@ h1 {
 }
 
 .admin-sidebar .option .icon-class {
-  font-size: 2rem;
+    font-size: 2rem;
 }
 
 .admin-sidebar .option .text {
     font-size: 1.2rem;    
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    width: 200px;
 }
 
 /* When you mouse over the navigation links, change their color */
