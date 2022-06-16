@@ -127,7 +127,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalItems
+                this.totalRecords = response.data.totalPages
                 this.rows = response.data.reservations
             })
             .catch((error) => {
@@ -146,7 +146,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalItems
+                this.totalRecords = response.data.totalPages
                 this.rows = response.data.reservations
             })
             .catch((error) => {
@@ -162,10 +162,8 @@ export default {
 .container {
     max-width: 100%;
     margin-top: 70px;
+    padding: 0px 10px;
 }
 
-.container:first-child {
-    width: 100%;
-}
 
 </style>
