@@ -40,7 +40,7 @@ public class ReservationService {
                 sortTokens[0] = "rentalEntity.title";
                 break;
             case "client":
-                    sortTokens[0] = "client.firstName";
+                    sortTokens[0] = "client.email";
                     break;
             default:
                 break;
