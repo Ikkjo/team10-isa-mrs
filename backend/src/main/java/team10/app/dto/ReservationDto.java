@@ -21,7 +21,8 @@ public class ReservationDto {
     private long endDate;
     private int price;
     private ReservationStatus status;
-    private String client;
+    private String clientEmail;
+    private UUID clientId;
     private String businessClient;
     private UUID rentalEntityId;
     private String rentalEntityTitle;

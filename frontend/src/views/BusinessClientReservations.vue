@@ -17,8 +17,17 @@
             @on-per-page-change="onPerPageChange"
             @on-cell-click="onCellClick">
              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'details'">
-                <button class="btn">Details</button>
+                <span v-if="props.column.field == 'review'">
+                    <button class="btn">Review</button>
+                </span>
+                <span v-else-if="props.column.field == 'clientEmail'">
+                    <router-link :to="'/user/'+props.row.clientId">{{props.row.clientEmail}}</router-link>
+                </span>
+                <span v-else-if="props.column.field == 'rentalEntityTitle'">
+                    <router-link :to="'/account/my-listings/'+props.row.rentalEntityId">{{props.row.rentalEntityTitle}}</router-link>
+                </span>
+                <span v-else>
+                    {{props.formattedRow[props.column.field]}}
                 </span>
             </template>
         </VueGoodTable>
@@ -44,7 +53,7 @@ export default {
             columns: [
                 {
                     label: 'Client',
-                    field: 'client',
+                    field: 'clientEmail',
                     columnIndex: 0,
                 },
                 {
@@ -73,8 +82,9 @@ export default {
                     field: 'status'
                 },
                 {
-                    label: 'Details',
-                    field: 'details'
+                    label: 'Review',
+                    field: 'review',
+                    sortable: false,
                 }
             ],
             rows: [],

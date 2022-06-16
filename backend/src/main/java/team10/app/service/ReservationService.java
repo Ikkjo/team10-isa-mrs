@@ -39,7 +39,7 @@ public class ReservationService {
             case "rentalEntityTitle":
                 sortTokens[0] = "rentalEntity.title";
                 break;
-            case "client":
+            case "clientEmail":
                     sortTokens[0] = "client.email";
                     break;
             default:
@@ -54,9 +54,11 @@ public class ReservationService {
     }
 
     public List<ReservationDto> getReservationDtoList(List<Reservation> reservations) {
+        for (Reservation r : reservations)
+            r.updateStatus();
         return reservations.stream().map(r ->
                 new ReservationDto(r.getId(), r.getStartDate(), r.getEndDate(), r.getPrice(), r.getStatus(),
-                        r.getClient().getEmail(), r.getBusinessClient().getEmail(),
+                        r.getClient().getEmail(), r.getBusinessClient().getId(), r.getBusinessClient().getEmail(),
                         r.getRentalEntity().getId(), r.getRentalEntity().getTitle())).collect(Collectors.toList());
     }
 }

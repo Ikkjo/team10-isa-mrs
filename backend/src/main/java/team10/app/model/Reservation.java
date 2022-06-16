@@ -1,9 +1,11 @@
 package team10.app.model;
 
 import lombok.*;
+import org.apache.tomcat.jni.Local;
 import team10.app.dto.CreateReservationDto;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
@@ -48,7 +50,19 @@ public class Reservation {
         this.price = createReservationDto.getPrice();
         this.businessClient = businessClient;
         this.client = client;
-        this.status = ReservationStatus.CREATED;
         this.rentalEntity = rentalEntity;
+        this.status = ReservationStatus.CREATED;
+    }
+
+    public void updateStatus() {
+        if (this.status.value != 1) {
+            long today = LocalDate.EPOCH.toEpochDay();
+            if (this.startDate >= today)
+                this.status = ReservationStatus.ACTIVE;
+            if (this.endDate < today)
+                this.status = ReservationStatus.FINISHED;
+            if (this.startDate < today && this.endDate > today)
+                this.status = ReservationStatus.CREATED;
+        }
     }
 }
