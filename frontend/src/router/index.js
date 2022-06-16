@@ -66,6 +66,11 @@ const routes = [
                 name: 'deletion-requests',
                 component: () => import('../components/DeletionRequestsTable.vue')
             },
+            {
+                path: 'account-info',
+                name: 'admin-account-info',
+                component: () => import('../components/AdminAccountInfo.vue')
+            }
         ]
     },
     {
