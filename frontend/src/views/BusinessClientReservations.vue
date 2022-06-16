@@ -14,7 +14,14 @@
             @on-page-change="onPageChange"
             @on-sort-change="onSortChange"
             @on-column-filter="onColumnFilter"
-            @on-per-page-change="onPerPageChange"/>
+            @on-per-page-change="onPerPageChange"
+            @on-cell-click="onCellClick">
+             <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field == 'details'">
+                <button class="btn">Details</button>
+                </span>
+            </template>
+        </VueGoodTable>
     </div>
 
 </div>
@@ -65,6 +72,10 @@ export default {
                     label: 'Status',
                     field: 'status'
                 },
+                {
+                    label: 'Details',
+                    field: 'details'
+                }
             ],
             rows: [],
             totalRecords: 0,
@@ -80,6 +91,7 @@ export default {
                 page: 0, 
                 perPage: 10
             },
+            selectedRow: null,
         }
     },
     methods: {
@@ -91,6 +103,10 @@ export default {
         },
         updateParams(newProps) {
             this.serverParams = Object.assign({}, this.serverParams, newProps);
+        },
+        onCellClick(params) {
+            if (params.column.field === "details")
+                console.log(params.row.id)
         },
         onPageChange(params) {
             this.updateParams({page: params.currentPage-1});
@@ -117,7 +133,6 @@ export default {
         // load items is what brings back the rows from server
         loadItems() {
             let sortString = ''+this.serverParams.sort[0].field+','+this.serverParams.sort[0].type
-            console.log(sortString)
             axios({
                 method: 'get',
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/reservations',
