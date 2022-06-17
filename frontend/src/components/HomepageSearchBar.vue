@@ -51,7 +51,7 @@ export default {
         titleInput: '',
         fromDate: new Date(),
         toDate: new Date(),
-        showDatePicker: false
+        showDatePicker: false,    
       }
     },
     created() {
@@ -65,8 +65,8 @@ export default {
         fromDate: this.fromDate.getTime().toString(),
         toDate: this.toDate.getTime().toString()
       }
-    },
     }
+  }
     
 }
 </script>
