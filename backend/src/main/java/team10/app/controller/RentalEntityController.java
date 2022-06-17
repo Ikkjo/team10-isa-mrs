@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import team10.app.dto.ActionDto;
 import team10.app.dto.AddressDto;
 import team10.app.dto.RentalEntityDto;
-import team10.app.repository.specification.search.SearchCriteria;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.RentalEntityService;
 import team10.app.util.exceptions.RentalEntityNotFoundException;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
