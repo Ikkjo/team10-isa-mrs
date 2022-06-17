@@ -30,7 +30,7 @@
             @on-cell-click="onCellClick">
              <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'review'">
-                    <button class="btn">Review</button>
+                    <button v-if="props.row.status === 'FINISHED'" class="btn" @click="writeReview(props.row.id)">Review</button>
                 </span>
                 <span v-else-if="props.column.field == 'clientEmail'">
                     <router-link :to="'/user/'+props.row.clientId">{{props.row.clientEmail}}</router-link>
@@ -90,16 +90,19 @@ export default {
                     field: 'startDate',
                     type: 'date',
                     formatFn: this.formatDate,
+                    width: '160px',
                 },
                 {
                     label: 'End Date',
                     field: 'endDate',
-                    formatFn: this.formatDate
+                    formatFn: this.formatDate,
+                    width: '160px',
                 },
                 {
                     label: 'Price',
                     field: 'price',
-                    formatFn: this.formatPrice
+                    formatFn: this.formatPrice,
+                    width: '100px',
                 },
                 {
                     label: 'Status',
@@ -109,6 +112,7 @@ export default {
                     label: 'Review',
                     field: 'review',
                     sortable: false,
+                    width: '120px',
                 }
             ],
             rows: [],
@@ -208,8 +212,13 @@ export default {
         },
         handleEventClick(clickInfo) {
             let event = clickInfo.event;
-            console.log(event.id);
-            this.$router.push({name: 'reservation-report', params: {id: event.id}});
+            if (event.status == 'FINISHED')
+                this.$router.push({name: 'reservation-report', params: {id: event.id}});
+            else
+                alert("Reservation is not available for review")
+        },
+        writeReview(id) {
+            this.$router.push({name: 'reservation-report', params: {id: id}});
         }
     },
     mounted() {
@@ -288,6 +297,7 @@ export default {
 
 .calendar-wrapper {
     width: 100%;
+    margin-top: 15px;
     display: flex;
     justify-content: center;
 }

@@ -85,6 +85,7 @@
 <script>
 import BusinessClientNavBar from '../components/BusinessClientNavBar.vue'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import axios from 'axios'
 export default {
     name: 'BusinessClientReport',
     components: {
@@ -140,11 +141,21 @@ export default {
         }
     },
     created () {
-        // dobavi report preko id
-        // treba $router.pushovati ga ako:
-        //      1) ne postoji reservacija
-        //      2) nije njegova rezervacija
-        //      3) jos nije aktivna
+        axios({
+                method: 'get',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/reservations/'+this.$route.params.id,
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then((response) => {
+                console.log(response)
+                this.reservation = response.data;
+            })
+            .catch((error) => {
+                alert("Something went wrong. See console for output.")
+                console.log(error);
+            }) 
     },
 }
 </script>
