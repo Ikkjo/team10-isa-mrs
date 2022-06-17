@@ -39,7 +39,7 @@ public class BusinessClientService {
         return new BusinessClientDto(businessClient);
     }
 
-    BusinessClient getByEmail(String email) {
+    public BusinessClient getByEmail(String email) {
         return businessClientRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
     }
