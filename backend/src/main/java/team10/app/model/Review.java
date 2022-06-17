@@ -21,6 +21,7 @@ public class Review {
     private long createdAt;
     private long approvedAt;
     private long answeredAt;
+    private boolean penalize;
     @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
     @OneToOne
@@ -32,10 +33,11 @@ public class Review {
         createdAt = DateTimeUtil.getTodayEpochMillisecond();
     }
 
-    public Review(String message) {
+    public Review(String message, boolean penalize) {
         this.message = message;
         this.createdAt = DateTimeUtil.getTodayEpochMillisecond();
         this.status = ReviewStatus.CREATED;
+        this.penalize = penalize;
     }
 
     // TODO: add rating collection, update model diagram to support ReviewStatus

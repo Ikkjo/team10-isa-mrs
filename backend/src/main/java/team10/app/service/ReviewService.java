@@ -41,7 +41,7 @@ public class ReviewService {
         else {
             if (!validator.validateReservationBusinessClient(email, reservation.getBusinessClient().getEmail()))
                 throw new InvalidReservationBusinessClientException(reservationId, email);
-            Review review = new Review(reviewDto.getMessage());
+            Review review = new Review(reviewDto.getMessage(), reviewDto.isPenalize());
             reviewRepository.saveAndFlush(review);
         }
         return reviewDto;
