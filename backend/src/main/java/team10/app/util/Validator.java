@@ -65,11 +65,18 @@ public class Validator {
     private static final int ADVENTURE_FISHING_EQUIPMENT_MIN_LENGTH = 5;
     private static final int ADVENTURE_FISHING_EQUIPMENT_MAX_LENGTH = 500;
 
+    // Account deletion request
     private static final int MIN_ACCOUNT_DELETION_REASON = 5;
     private static final int MAX_ACCOUNT_DELETION_REASON = 200;
 
+    // Reservation
     private static final int RESERVATION_MIN_PERSONS = 1;
     private static final int RESERVATION_MAX_PERSONS = 100;
+
+    // Review
+    private static final int REVIEW_MIN_MESSAGE = 3;
+    private static final int REVIEW_MAX_MESSAGE = 300;
+
 
 
     private final AddressValidator addressValidator;
@@ -239,7 +246,7 @@ public class Validator {
     }
 
     public boolean validateActionDto(ActionDto actionDto) {
-        return actionDto.getExpiresOn() >= LocalDate.EPOCH.toEpochDay()
+        return actionDto.getExpiresOn() >= DateTimeUtil.getTodayEpochMillisecond()
                 && validateReservationDateRange(actionDto.getDateRange())
                 && validateRentalEntityPrice(actionDto.getPrice())
                 && validateReservationMaxPersons(actionDto.getMaxPersons());
@@ -256,7 +263,7 @@ public class Validator {
     }
 
     private boolean validateReservationDateRange(List<Long> dateRange) {
-        return dateRange.get(0) >= LocalDate.EPOCH.toEpochDay()
+        return dateRange.get(0) >= DateTimeUtil.getTodayEpochMillisecond()
                 && dateRange.get(0) <= dateRange.get(1);
     }
 
@@ -283,5 +290,9 @@ public class Validator {
 
     public boolean validateReservationBusinessClient(String email1, String email2) {
         return email1.equals(email2);
+    }
+
+    public boolean validateReviewDto(ReviewDto reviewDto) {
+        return inRange(REVIEW_MIN_MESSAGE, REVIEW_MAX_MESSAGE, reviewDto.getMessage().length());
     }
 }

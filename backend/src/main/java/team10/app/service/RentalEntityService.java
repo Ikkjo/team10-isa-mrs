@@ -13,6 +13,7 @@ import team10.app.repository.RentalEntityRepository;
 import team10.app.repository.specification.RentalEntitySpecification;
 import team10.app.repository.specification.search.SearchCriteria;
 import team10.app.repository.ReservationRepository;
+import team10.app.util.DateTimeUtil;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
@@ -190,7 +191,7 @@ public class RentalEntityService {
 
         boolean ignoreAvailability = false;
 
-        if (toDate < LocalDate.now().toEpochDay()) {
+        if (toDate < DateTimeUtil.getTodayEpochMillisecond()) {
             ignoreAvailability = true;
         }
 
