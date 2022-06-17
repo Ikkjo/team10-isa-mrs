@@ -1,6 +1,7 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +15,7 @@ import team10.app.repository.specification.search.SearchCriteria;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -144,14 +146,20 @@ public class RentalEntityService {
     }
 
     public List<RentalEntityDto> rentalEntitySearch(
-            Integer page,
-            Integer pageSize,
+            int page,
+            int pageSize,
             String title,
             String country,
             String city,
-            Long fromDate,
-            Long toDate
+            long fromDate,
+            long toDate
     ) {
+
+        boolean ignoreAvailability = false;
+
+        if (toDate < LocalDate.now().toEpochDay()) {
+            ignoreAvailability = true;
+        }
 
         RentalEntitySpecification titleSpec = new RentalEntitySpecification(
                 new SearchCriteria("title", ":", title));
@@ -159,22 +167,28 @@ public class RentalEntityService {
                 new SearchCriteria("country", ":", country));
         RentalEntitySpecification citySpec = new RentalEntitySpecification(
                 new SearchCriteria("city", ":", city));
-        RentalEntitySpecification fromDateSpec = new RentalEntitySpecification(
-                new SearchCriteria("fromDate", ">", fromDate));
-        RentalEntitySpecification toDateSpec = new RentalEntitySpecification(
-                new SearchCriteria("toDate", "<", toDate));
 
         List<RentalEntity> results = rentalEntityRepository.findAll(Specification
                 .where(titleSpec)
                 .and(countrySpec)
-                .and(citySpec)
-                .and(fromDateSpec)
-                .and(toDateSpec), PageRequest.of(page, pageSize)).toList();
+                .and(citySpec), PageRequest.of(page, pageSize)).toList();
 
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
+        for (RentalEntity rE:  results) {
+            boolean fromAvailable = false;
+            boolean toAvailable = false;
+            for(Availability a: rE.getAvailability()) {
+                if (a.getDate() == fromDate){
+                    fromAvailable = true;
+                }
+                if (a.getDate() == toDate) {
+                    toAvailable = true;
+                }
+            }
 
-        for (RentalEntity rE : results) {
-            rentalEntityDtos.add(rentalEntityToDto(rE.getId()));
+            if(!ignoreAvailability && (fromAvailable && toAvailable)) {
+                rentalEntityDtos.add(rentalEntityToDto(rE.getId()));
+            }
         }
 
         return rentalEntityDtos;

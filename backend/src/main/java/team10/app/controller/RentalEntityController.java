@@ -174,13 +174,13 @@ public class RentalEntityController {
 
     @GetMapping("/search")
     public ResponseEntity<List<RentalEntityDto>> searchRentalEntities(
-            @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "pageSize", defaultValue = "50") Integer pageSize,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize,
             @RequestParam(name = "title", defaultValue = "") String title,
             @RequestParam(name = "country", defaultValue = "") String country,
             @RequestParam(name = "city", defaultValue = "") String city,
-            @RequestParam(name = "fromDate", defaultValue = "0") Long fromDate,
-            @RequestParam(name = "toDate", defaultValue = "0") Long toDate) {
+            @RequestParam(name = "fromDate", defaultValue = "0") long fromDate,
+            @RequestParam(name = "toDate", defaultValue = "0") long toDate) {
         int DEFAULT_PAGE_SIZE = 50;
 
         try{

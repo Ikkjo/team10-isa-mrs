@@ -23,18 +23,18 @@ public class RentalEntitySpecification implements Specification<RentalEntity> {
             if (root.get(criteria.getKey()).getJavaType() == String.class) {
                 return criteriaBuilder.greaterThanOrEqualTo(
                         root.<String> get(criteria.getKey()), criteria.getValue().toString());
-            } else if (root.get(criteria.getKey()).getJavaType() == Long.class){
+            } else if (root.get(criteria.getKey()).getJavaType() == long.class){
                 return criteriaBuilder.greaterThanOrEqualTo(
-                        root.<Long>get(criteria.getKey()), (Long)criteria.getValue());
+                        root.<Long>get(criteria.getKey()), (long)criteria.getValue());
             }
 
         }
         else if (criteria.getOperation().equalsIgnoreCase("<")) {
             return criteriaBuilder.lessThanOrEqualTo(
                     root.<String> get(criteria.getKey()), criteria.getValue().toString());
-        } else if (root.get(criteria.getKey()).getJavaType() == Long.class){
+        } else if (root.get(criteria.getKey()).getJavaType() == long.class){
             return criteriaBuilder.lessThanOrEqualTo(
-                    root.<Long>get(criteria.getKey()), (Long)criteria.getValue());
+                    root.<Long>get(criteria.getKey()), (long)criteria.getValue());
         }
         else if (criteria.getOperation().equalsIgnoreCase(":")) {
             if (root.get(criteria.getKey()).getJavaType() == String.class) {
