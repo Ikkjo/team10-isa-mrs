@@ -75,7 +75,7 @@ public class Validator {
     private static final int RESERVATION_MAX_PERSONS = 100;
 
     // Review
-    private static final int REVIEW_MIN_MESSAGE = 3;
+    private static final int REVIEW_MIN_MESSAGE = 5;
     private static final int REVIEW_MAX_MESSAGE = 300;
 
 
