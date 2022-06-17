@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import team10.app.dto.*;
 import team10.app.model.Action;
+import team10.app.model.BusinessClient;
 import team10.app.model.RentalEntity;
 import team10.app.model.Reservation;
 import team10.app.service.BusinessClientService;
@@ -81,7 +82,6 @@ public class Validator {
 
     private final AddressValidator addressValidator;
     private final EmailValidator emailValidator;
-    private final BusinessClientService businessClientService;
 
     public boolean validateRentalEntityTitle(String title) {
         return inRange(TITLE_MIN_LENGTH, TITLE_MAX_LENGTH, title.length());
@@ -284,8 +284,8 @@ public class Validator {
         return date >= startDate && date <= endDate;
     }
 
-    public boolean validateRentalEntityOwner(String ownerEmail, RentalEntity rentalEntity) {
-        return rentalEntity.getOwner().getId().equals(businessClientService.getByEmail(ownerEmail).getId());
+    public boolean validateRentalEntityOwner(BusinessClient businessClient, RentalEntity rentalEntity) {
+        return rentalEntity.getOwner().getId().equals(businessClient.getId());
     }
 
     public boolean validateReservationBusinessClient(String email1, String email2) {
