@@ -189,11 +189,7 @@ public class RentalEntityService {
             long toDate
     ) {
 
-        boolean ignoreAvailability = false;
-
-        if (toDate < DateTimeUtil.getTodayEpochMillisecond()) {
-            ignoreAvailability = true;
-        }
+        boolean ignoreAvailability = toDate < DateTimeUtil.getTodayEpochMillisecond();
 
         RentalEntitySpecification titleSpec = new RentalEntitySpecification(
                 new SearchCriteria("title", ":", title));
