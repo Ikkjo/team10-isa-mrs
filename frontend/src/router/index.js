@@ -8,23 +8,6 @@ const routes = [
       path: '/',
       name: 'homepage',
       component: () => import('../views/Homepage.vue'),
-      children: [
-        {
-            path: 'ships',
-            name: 'ships',
-            component: () => import('../components/HomepageShipListings.vue')
-        },
-        {
-            path: 'adventures',
-            name: 'adventures',
-            component: () => import('../components/HomepageAdventureListings.vue')
-        },
-        {
-            path: 'vacation-homes',
-            name: 'vacation-homes',
-            component: () => import('../components/HomepageVacationHomeListings.vue')
-        }
-      ]
     },
     {
       path: '/business-client/register',
