@@ -27,6 +27,7 @@ public class Reservation {
     private long startDate;
     private long endDate;
     private int price;
+    @Enumerated(EnumType.STRING)
     private ReservationStatus status;
     @ManyToOne(fetch = FetchType.LAZY)
     private BusinessClient businessClient;
