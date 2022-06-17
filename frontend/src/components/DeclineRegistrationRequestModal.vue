@@ -60,8 +60,8 @@ export default {
         declineRequest() {
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/registration-request/'+ this.rrUUID +'/accept',
-                data: {declineReason: this.declineReason},
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/registration-request/'+ this.rrUUID +'/decline',
+                data: this.declineReason,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },

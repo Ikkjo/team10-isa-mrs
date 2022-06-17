@@ -29,7 +29,7 @@
                 :disabled="$v.invalid">
                 Log In
             </button>
-            <div class="not-registered">Don't have an account yet? <router-link to="/client/register">Register an account</router-link></div>
+            <div class="not-registered">Don't have an account yet? <router-link :to="{name: 'client-registration'}">Register an account</router-link></div>
         </div>
     </form>
 </template>

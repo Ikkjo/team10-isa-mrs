@@ -17,7 +17,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String address;
     @Column(nullable = false)
     private String city;

@@ -2,21 +2,13 @@
     <div>
         <div class="form">
             <div class="form-control">
-                <h1>Create an Action</h1>
-                 <div class="form-control">
-                    <label>Expiration date</label>
-                    <DatePicker
-                        color="yellow"
-                        v-model="expiresOn"
-                        :min-date='new Date()'
-                        @input="expiresOnUpdated">
-                        <template v-slot="{ inputValue, inputEvents}">
-                            <input :value="inputValue" v-on="inputEvents"/>
-                        </template>
-                    </DatePicker>
+                <h1>Create Reservation</h1>
+                <div class="form-control">
+                    <label for="username">Username</label>
+                    <input type="text" @input="usernameUpdated"/>
                 </div>
                 <div class="form-control">
-                    <label for="rules-of-conduct">Availability</label>
+                    <label>Duration</label>
                     <DatePicker
                         color="yellow"
                         class="date-picker"
@@ -49,9 +41,8 @@ import PriceInput from '@/components/PriceInput.vue'
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 import NumberInput from '@/components/NumberInput.vue'
 import axios from 'axios'
-
 export default {
-    name: 'ActionCreation',
+    name: 'ReservationCreation',
     props: ['id'],
     components: {
         PriceInput,
@@ -62,10 +53,12 @@ export default {
         return {
             dateRange: null,
             disabledDates: [],
-            expiresOn: null,
         }
     },
     methods: {
+        usernameUpdated(event) {
+            this.$emit('updated:username', event.target.value)
+        },
         priceUpdated(price) {
             this.$emit('updated:price', price)
         },
@@ -75,9 +68,6 @@ export default {
         maxPersonsUpdated(maxPersons) {
             this.$emit('updated:maxPersons', maxPersons)
         },
-        expiresOnUpdated() {
-            this.$emit('updated:expiresOn', this.expiresOn)
-        }
     },
     mounted() {
         axios({
@@ -96,11 +86,11 @@ export default {
                 console.log(error);
             })
     },
+
 }
 </script>
 
-<style scoped>
-
+<style>
 h1 {
     margin-bottom: 5px;
 }
@@ -120,5 +110,4 @@ h1 {
 .form-control label {
     margin-bottom: 5px;
 }
-
 </style>

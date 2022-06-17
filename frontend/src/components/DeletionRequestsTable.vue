@@ -27,6 +27,7 @@
 <script>
 import Vuetable from 'vuetable-3'
 import DecisionModal from './DecisionModal.vue'
+import axios from 'axios'
 
 export default {
     components: {
@@ -71,36 +72,7 @@ export default {
                     width: "110px",
                 }
             ],
-            requests: [
-                {
-                    id: "the",
-                    firstName: "Cameron",
-                    lastName: "Swaggers",
-                    role: "FISHING_INSTRUCTOR",
-                    deletionReason: "I hate this place. I hate this place. I hate this place."
-                },
-                {
-                    id: "cum",
-                    firstName: "Mihael",
-                    lastName: "Jurluić",
-                    role: "HOUSE_OWNER",
-                    deletionReason: "I found a better alternative."
-                },
-                {
-                    id: "bucket",
-                    firstName: "Kašo",
-                    lastName: "Čekićević",
-                    role: "HOUSE_OWNER",
-                    deletionReason: "Izgubio kuću na blekđeku :("
-                },
-                {
-                    id: "yes.",
-                    firstName: "Jovan",
-                    lastName: "Stevičev",
-                    role: "SHIP_OWNER",
-                    deletionReason: "Slupao se u banderu. Ode brod"
-                },
-            ]
+            requests: null
         }
     },
     methods: {
@@ -117,6 +89,19 @@ export default {
             this.drUUID = data.id;
             this.showModal = true;
         }
+    },
+    created () {
+        axios({
+            method: 'get',
+            url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-requests',
+            headers: {
+                Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+            },
+        }).then((response) => {
+            this.requests = response.data;
+        }).catch((error) => {
+            console.log(error);
+        });
     },
 }
 </script>

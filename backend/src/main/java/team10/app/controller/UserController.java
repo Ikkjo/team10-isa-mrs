@@ -20,7 +20,7 @@ public class UserController {
 
     @Transactional
     @PutMapping("/update/email")
-    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR', 'MAIN_ADMIN', 'ADMIN')")
     public ResponseEntity<String> updateEmail(@RequestBody String email, @RequestHeader(name = "Authorization") String token)
     {
         try {
@@ -34,7 +34,7 @@ public class UserController {
 
     @Transactional
     @PutMapping("/update/password")
-    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR', 'MAIN_ADMIN', 'ADMIN')")
     public ResponseEntity<String> updatePassword(@RequestBody PasswordChangeDto passwordChangeDto, @RequestHeader(name = "Authorization") String token)
     {
         try {
@@ -48,7 +48,7 @@ public class UserController {
 
     @Transactional
     @PutMapping("/update/firstname")
-    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR', 'MAIN_ADMIN', 'ADMIN')")
     public ResponseEntity<String> updateFirstName(@RequestBody String firstName, @RequestHeader(name = "Authorization") String token)
     {
         try {
@@ -62,7 +62,7 @@ public class UserController {
 
     @Transactional
     @PutMapping("/update/lastname")
-    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR', 'MAIN_ADMIN', 'ADMIN')")
     public ResponseEntity<String> updateLastName(@RequestBody String lastName, @RequestHeader(name = "Authorization") String token)
     {
         try {
@@ -76,7 +76,7 @@ public class UserController {
 
     @Transactional
     @PutMapping("/update/phone-number")
-    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR', 'MAIN_ADMIN', 'ADMIN')")
     public ResponseEntity<String> updatePhoneNumber(@RequestBody String phoneNumber, @RequestHeader(name = "Authorization") String token)
     {
         try {
