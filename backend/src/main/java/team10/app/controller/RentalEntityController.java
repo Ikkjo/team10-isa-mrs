@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import team10.app.dto.ActionDto;
 import team10.app.dto.AddressDto;
 import team10.app.dto.RentalEntityDto;
-import team10.app.dto.ReservationDto;
+import team10.app.dto.CreateReservationDto;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.RentalEntityService;
 import team10.app.util.exceptions.RentalEntityNotFoundException;
@@ -42,9 +42,21 @@ public class RentalEntityController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<Set<RentalEntityDto>> getAllVacationHomes(Principal principal) {
+    public ResponseEntity<Set<RentalEntityDto>> getAllRentalEntities(Principal principal) {
         try {
             return new ResponseEntity<>(rentalEntityService.getAllActiveByOwnerEmail(principal.getName()), HttpStatus.OK);
+        }
+        catch (UsernameNotFoundException ex)
+        {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/titles")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<List<String>> getAllRentalEntityTitles(Principal principal) {
+        try {
+            return new ResponseEntity<>(rentalEntityService.getAllActiveRentalEntityTitlesByOwnerEmail(principal.getName()), HttpStatus.OK);
         }
         catch (UsernameNotFoundException ex)
         {
@@ -91,10 +103,10 @@ public class RentalEntityController {
 
     @PostMapping(value = "/{id}/add-reservation")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<ReservationDto> addReservation(@RequestHeader (name="Authorization") String token, @PathVariable(name = "id") UUID id, @RequestBody ReservationDto reservationDto) {
+    public ResponseEntity<CreateReservationDto> addReservation(@RequestHeader (name="Authorization") String token, @PathVariable(name = "id") UUID id, @RequestBody CreateReservationDto createReservationDto) {
         try {
-            rentalEntityService.addReservation(jwtProvider.getAuthentication(token.substring(7)).getName(), id, reservationDto);
-            return new ResponseEntity<>(reservationDto, HttpStatus.OK);
+            rentalEntityService.addReservation(jwtProvider.getAuthentication(token.substring(7)).getName(), id, createReservationDto);
+            return new ResponseEntity<>(createReservationDto, HttpStatus.OK);
         }
         catch (RentalEntityNotFoundException ex)
         {
@@ -198,5 +210,22 @@ public class RentalEntityController {
         return new ResponseEntity<>(pictures, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<RentalEntityDto>> searchRentalEntities(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize,
+            @RequestParam(name = "title", defaultValue = "") String title,
+            @RequestParam(name = "country", defaultValue = "") String country,
+            @RequestParam(name = "city", defaultValue = "") String city,
+            @RequestParam(name = "fromDate", defaultValue = "0") long fromDate,
+            @RequestParam(name = "toDate", defaultValue = "0") long toDate) {
+        int DEFAULT_PAGE_SIZE = 20;
 
+        try{
+            return ResponseEntity.ok(rentalEntityService.rentalEntitySearch(page, pageSize, title, country, city,
+                    fromDate, toDate));
+        } catch(Exception e) {
+            return ResponseEntity.ok(rentalEntityService.getAllRentalEntitiesPage(0, DEFAULT_PAGE_SIZE));
+        }
+    }
 }
