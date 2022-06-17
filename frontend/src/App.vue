@@ -135,7 +135,8 @@ button:disabled {
     outline-color: var(--orange-primary, #f0a500);
 }
 
-.form-control input, select, textarea {
+.form-control input, select, textarea,
+.calendar input {
     padding: 3px 7px;
     font-size: 17px;
     border-radius: 5px;
@@ -150,11 +151,13 @@ button:disabled {
    height: 48px;
 }
 
-.form-control input:hover, textarea:hover, select:hover {
+.form-control input:hover, textarea:hover, select:hover,
+.calendar input:hover {
     border-color: var(--orange-primary, #f0a500);
 }
 
-.form-control input:focus, textarea:focus, select:focus {
+.form-control input:focus, textarea:focus, select:focus
+.calendar input:ocus {
     outline-color: var(--orange-primary, #f0a500);
 }
 

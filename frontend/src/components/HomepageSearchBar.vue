@@ -23,10 +23,19 @@
                 :icon="'phishing'"
                 :title="'Adventures'"
        />
-        <input class="input"  type="text" v-model="titleInput" placeholder="Title" />
-        <!-- Skontaj kako radi Vladanov datepicker -->
-        <div v-if="showDatePicker" class="calendar">
-          <RentalEntityAvailabilityCalendar ref="calendar" :defaultSelection="availability" :edit="false"/>
+        <input class="input" type="text" v-model="titleInput" placeholder="Title" />
+        <div class="calendar">
+          <DatePicker class="calendar"
+                        color="yellow"
+                        v-model="dateRange"
+                        :min-date='new Date()'
+                        :is-range='true'
+                        >
+                        <template v-slot="{ inputValue, inputEvents}">
+                            <input :value="inputValue.start" v-on="inputEvents.start"/>
+                            <input :value="inputValue.end" v-on="inputEvents.end"/>
+                        </template>
+          </DatePicker>
         </div>
         <div class="btn-div">
         <button class="btn" @click="$emit('searchPressed', getSearchQuery())">Search</button>
@@ -37,21 +46,19 @@
 
 <script>
 import SearchBarItem from './HomepageSearchBarItem.vue'
-import RentalEntityAvailabilityCalendar from './RentalEntityAvailabilityCalendar.vue'
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 export default {
     name: 'HomepageSearchBar',
     components: {
     SearchBarItem,
-    RentalEntityAvailabilityCalendar
+    DatePicker
     },
     data() {
       return {
         cityInput: '',
         countryInput: '',
         titleInput: '',
-        fromDate: new Date(),
-        toDate: new Date(),
-        showDatePicker: false,    
+        dateRange: null
       }
     },
     created() {
@@ -62,8 +69,8 @@ export default {
         city: this.cityInput,
         country: this.countryInput,
         title: this.titleInput,
-        fromDate: this.fromDate.getTime().toString(),
-        toDate: this.toDate.getTime().toString()
+        fromDate: this.dateRange.start.getTime(),
+        toDate: this.dateRange.start.getTime()
       }
     }
   }
@@ -71,7 +78,7 @@ export default {
 }
 </script>
 
-<style select>
+<style>
 .searchbar {
   height: calc(var(--nav-height) + 10px);
   border-bottom: 1px solid rgb(236, 236, 236);
@@ -90,17 +97,16 @@ export default {
 }
 
 .input {
-  display: block;
+  height: 48px;
   width: 160px;
-  margin: 20px;
+  margin: 7px;
   padding: 10px;
-  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 3px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; */
-} 
+}
 
 .calendar {
     margin-top: 5px;
     padding-left: 29px;
+
 }
 
 .btn-div {
@@ -122,6 +128,17 @@ export default {
 
 .btn-div p {
     margin-top: 0px;
+}
+
+@media screen and (max-width: 669px) {
+  .searchbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 15px;
+    overflow: scroll;
+  }
+
 }
 
 </style>
