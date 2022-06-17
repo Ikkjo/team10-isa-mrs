@@ -2,8 +2,8 @@
   <nav id="searchbar"
   @keypress.enter="$emit('searchPressed', getSearchQuery())">
       <div class="searchbar">
-        <input class="search-input" type="text" v-model="cityInput" placeholder="City..." />
-        <input class="search-input" type="text" v-model="countryInput" placeholder="Country..." />
+        <input class="input" type="text" v-model="cityInput" placeholder="City" />
+        <input class="input" type="text" v-model="countryInput" placeholder="Country" />
       
                  <SearchBarItem
                 :link="'ships'"
@@ -23,7 +23,7 @@
                 :icon="'phishing'"
                 :title="'Adventures'"
        />
-        <input class="search-input" type="text" v-model="titleInput" placeholder="Title..." />
+        <input class="input"  type="text" v-model="titleInput" placeholder="Title" />
         <!-- Skontaj kako radi Vladanov datepicker -->
         <div v-if="showDatePicker" class="calendar">
           <RentalEntityAvailabilityCalendar ref="calendar" :defaultSelection="availability" :edit="false"/>
@@ -89,19 +89,14 @@ export default {
   justify-content: center;
 }
 
-.search-input {
+.input {
   display: block;
-  height: 48px;
   width: 160px;
   margin: 20px;
   padding: 10px;
-  text-align: center;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-}
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 3px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; */
+} 
 
 .calendar {
     margin-top: 5px;

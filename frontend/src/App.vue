@@ -112,6 +112,29 @@ button:disabled {
   flex-direction: column;
 }
 
+.input, .select, .textarea {
+    padding: 3px 7px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    transition: 0.5s;
+    outline-color: lightgrey;
+    background-color: #fff;
+    font-family: inherit;
+}
+
+.input, .select {
+   height: 48px;
+}
+
+.input:hover, .textarea:hover, .select:hover {
+    border-color: var(--orange-primary, #f0a500);
+}
+
+.input:focus, .textarea:focus, .select:focus {
+    outline-color: var(--orange-primary, #f0a500);
+}
+
 .form-control input, select, textarea {
     padding: 3px 7px;
     font-size: 17px;
