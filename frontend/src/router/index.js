@@ -85,7 +85,7 @@ const routes = [
         path: '/account/reservations',
         name: 'business-client-reservations',
         component: () => import('../views/BusinessClientReservations.vue')
-    }
+    },
 ]
 
 const router = new VueRouter({

@@ -67,7 +67,7 @@ export default {
     },
     data() {
         return {
-            userRole: null,
+            role: null,
             isActionModalActive: false,
             isReservationModalActive: false,
             action: {
@@ -86,8 +86,8 @@ export default {
     },
     methods: {
         detailedView() {
-            let userRole = localStorage.getItem('userRole');
-            if (userRole === null || userRole === 'CLIENT') {
+            let role = window.localStorage.getItem('role');
+            if (role === null || role === 'CLIENT') {
                 console.log('Shows rental entity details for client')
             }
             else if (this.isBusinessClient()) {
@@ -100,7 +100,7 @@ export default {
             }
         },
         isBusinessClient() {
-            return ['HOUSE_OWNER','SHIP_OWNER', 'FISHING_INSTRUCTOR'].includes(localStorage.getItem('userRole'))
+            return ['HOUSE_OWNER','SHIP_OWNER', 'FISHING_INSTRUCTOR'].includes(window.localStorage.getItem('role'))
         },
         showActionModal() {
             this.isReservationModalActive = false;
