@@ -80,6 +80,11 @@ const routes = [
         path: '/account/reservations',
         name: 'business-client-reservations',
         component: () => import('../views/BusinessClientReservations.vue')
+    },
+    {
+        path: '/rental-entity/:id',
+        name: 'rental-entity-details',
+        component: () => import('../views/RentalEntityDetails.vue')
     }
 ]
 

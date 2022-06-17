@@ -190,7 +190,7 @@ public class RentalEntityService {
 
         boolean ignoreAvailability = false;
 
-        if (toDate < LocalDate.now().toEpochDay()) {
+        if (toDate <= LocalDate.now().toEpochDay()) {
             ignoreAvailability = true;
         }
 
@@ -204,7 +204,7 @@ public class RentalEntityService {
         List<RentalEntity> results = rentalEntityRepository.findAll(Specification
                 .where(titleSpec)
                 .and(countrySpec)
-                .and(citySpec), PageRequest.of(page, pageSize)).toList();
+                .and(citySpec));
 
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
         for (RentalEntity rE:  results) {

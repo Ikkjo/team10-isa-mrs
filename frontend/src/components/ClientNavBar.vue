@@ -5,8 +5,10 @@
             <template slot="menu">
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">
-                        <dropdown-item link="/login" text="Log in" iconClass="material-icons-round" icon="login"></dropdown-item>
-                        <dropdown-item link="/client/register" text="Register an account" iconClass="material-icons-round" icon="app_registration"></dropdown-item>
+                        <dropdown-item link="" text="My account" iconClass="material-icons" icon="account_circle"></dropdown-item>
+                        <dropdown-item link="" text="My reservations" iconClass="material-icons" icon="card_travel"></dropdown-item>
+                        <dropdown-item link="" text="Reservation history" iconClass="material-icons" icon="calendar_month"></dropdown-item>
+                        <dropdown-item link="logout" text="Logout" iconClass="material-icons" icon="logout"></dropdown-item>
                     </template>
                 </dropdown-menu>
             </template>
@@ -21,7 +23,7 @@ import NavBar from '@/components/NavBar.vue'
 import DropdownMenu from '@/components/DropdownMenu.vue'
 import DropdownItem from '@/components/DropdownItem.vue'
 export default {
-    name: 'HomepageNav',
+    name: 'ClientNavBar',
     components: {
         NavBar,
         NavItem,
@@ -53,10 +55,5 @@ export default {
 </script>
 
 <style>
-.slogan {
-  position: absolute;
-  margin: 16px 0;
-  font-size: 1rem;
-  font-weight: 400;
-}
+
 </style>

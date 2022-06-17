@@ -58,7 +58,10 @@ export default {
         cityInput: '',
         countryInput: '',
         titleInput: '',
-        dateRange: null
+        dateRange: {
+          start: new Date(),
+          end: new Date()
+        }
       }
     },
     created() {
@@ -78,7 +81,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .searchbar {
   height: calc(var(--nav-height) + 10px);
   border-bottom: 1px solid rgb(236, 236, 236);
@@ -128,6 +131,29 @@ export default {
 
 .btn-div p {
     margin-top: 0px;
+}
+
+.btn {
+    display: inline-block;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    outline: none;
+    color: var(--white, #fff);
+    background-color: var(--orange-primary, orange);
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    transition: 0.5s;
+    font-size: 17px;
+}
+
+.btn:hover {
+    background-color: var(--orange-secondary, orange);
+}
+
+.btn:active {
+  transform: scale(0.98);
 }
 
 @media screen and (max-width: 669px) {

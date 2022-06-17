@@ -1,17 +1,12 @@
 <template>
   <NavBar>
       <template slot="nav-right">
-        <nav-item link="nav" text="List your property" icon=""/>
         <nav-item link="" text="Menu" icon="arrow_drop_down" @click="toggleMenu">
             <template slot="menu">
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">
-                        <dropdown-item link="/account/manage-account" text="Manage account" iconClass="material-icons" icon="account_circle"></dropdown-item>
-                        <dropdown-item link="/account/my-listings" text="Your listings" iconClass="material-icons" icon="house"></dropdown-item>
-                        <dropdown-item link="/account/reservations" text="Reservations" iconClass="material-icons" icon="calendar_month"></dropdown-item>
-                        <dropdown-item link="nav" text="Reviews" iconClass="material-icons" icon="reviews"></dropdown-item>
-                        <dropdown-item link="nav" text="Statistics" iconClass="material-icons" icon="query_stats"></dropdown-item>
-                        <dropdown-item @click="logout" link="logout" text="Logout" iconClass="material-icons" icon="logout"></dropdown-item>
+                        <dropdown-item link="/login" text="Log in" iconClass="material-icons-round" icon="login"></dropdown-item>
+                        <dropdown-item link="/client/register" text="Register an account" iconClass="material-icons-round" icon="app_registration"></dropdown-item>
                     </template>
                 </dropdown-menu>
             </template>
@@ -26,7 +21,7 @@ import NavBar from '@/components/NavBar.vue'
 import DropdownMenu from '@/components/DropdownMenu.vue'
 import DropdownItem from '@/components/DropdownItem.vue'
 export default {
-    name: 'BusinessUserNav',
+    name: 'UnknownUserNavBar',
     components: {
         NavBar,
         NavItem,
@@ -46,10 +41,7 @@ export default {
             if (!this.$el.contains(e.target)) {
                 this.showMenu = false
             }
-        },
-        logout() {
-            this.$router.push({ name: 'homepage' });
-        }
+        } 
     },
     mounted () {
         document.addEventListener('click', this.close)
@@ -61,5 +53,10 @@ export default {
 </script>
 
 <style>
-
+.slogan {
+  position: absolute;
+  margin: 16px 0;
+  font-size: 1rem;
+  font-weight: 400;
+}
 </style>
