@@ -210,5 +210,22 @@ public class RentalEntityController {
         return new ResponseEntity<>(pictures, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<RentalEntityDto>> searchRentalEntities(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize,
+            @RequestParam(name = "title", defaultValue = "") String title,
+            @RequestParam(name = "country", defaultValue = "") String country,
+            @RequestParam(name = "city", defaultValue = "") String city,
+            @RequestParam(name = "fromDate", defaultValue = "0") long fromDate,
+            @RequestParam(name = "toDate", defaultValue = "0") long toDate) {
+        int DEFAULT_PAGE_SIZE = 20;
 
+        try{
+            return ResponseEntity.ok(rentalEntityService.rentalEntitySearch(page, pageSize, title, country, city,
+                    fromDate, toDate));
+        } catch(Exception e) {
+            return ResponseEntity.ok(rentalEntityService.getAllRentalEntitiesPage(0, DEFAULT_PAGE_SIZE));
+        }
+    }
 }

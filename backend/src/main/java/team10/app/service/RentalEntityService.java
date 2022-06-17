@@ -1,16 +1,22 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.repository.BusinessClientRepository;
 import team10.app.repository.RentalEntityRepository;
+import team10.app.repository.specification.RentalEntitySpecification;
+import team10.app.repository.specification.search.SearchCriteria;
 import team10.app.repository.ReservationRepository;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -131,8 +137,8 @@ public class RentalEntityService {
         rentalEntity.addAction(new Action(actionDto));
         rentalEntityRepository.saveAndFlush(rentalEntity);
     }
-
-    public List<Long> getTakenDates(UUID id) {
+  
+        public List<Long> getTakenDates(UUID id) {
         return new ArrayList<>(this.getById(id).getTakenDates());
     }
 
@@ -160,6 +166,65 @@ public class RentalEntityService {
         if (rentalEntity.getOwner() != businessClient)
             throw new InvalidRentalEntityOwnerException(rentalEntity.getId(), businessClient.getId());
         return rentalEntity;
+    }
+  
+    public List<RentalEntityDto> getAllRentalEntitiesPage(int page, int size) {
+        List<RentalEntity> rentalEntityPage = rentalEntityRepository.findAll(PageRequest.of(page, size)).toList();
+        List<RentalEntityDto> rentalEntityDtoList = new ArrayList<>();
+
+        for (RentalEntity re : rentalEntityPage) {
+            rentalEntityDtoList.add(rentalEntityToDto(re.getId()));
+        }
+        return rentalEntityDtoList;
+    }
+
+    public List<RentalEntityDto> rentalEntitySearch(
+            int page,
+            int pageSize,
+            String title,
+            String country,
+            String city,
+            long fromDate,
+            long toDate
+    ) {
+
+        boolean ignoreAvailability = false;
+
+        if (toDate < LocalDate.now().toEpochDay()) {
+            ignoreAvailability = true;
+        }
+
+        RentalEntitySpecification titleSpec = new RentalEntitySpecification(
+                new SearchCriteria("title", ":", title));
+        RentalEntitySpecification countrySpec = new RentalEntitySpecification(
+                new SearchCriteria("country", ":", country));
+        RentalEntitySpecification citySpec = new RentalEntitySpecification(
+                new SearchCriteria("city", ":", city));
+
+        List<RentalEntity> results = rentalEntityRepository.findAll(Specification
+                .where(titleSpec)
+                .and(countrySpec)
+                .and(citySpec), PageRequest.of(page, pageSize)).toList();
+
+        List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
+        for (RentalEntity rE:  results) {
+            boolean fromAvailable = false;
+            boolean toAvailable = false;
+            for(Availability a: rE.getAvailability()) {
+                if (a.getDate() == fromDate){
+                    fromAvailable = true;
+                }
+                if (a.getDate() == toDate) {
+                    toAvailable = true;
+                }
+            }
+
+            if(!ignoreAvailability && (fromAvailable && toAvailable)) {
+                rentalEntityDtos.add(rentalEntityToDto(rE.getId()));
+            }
+        }
+
+        return rentalEntityDtos;
     }
 
 }
