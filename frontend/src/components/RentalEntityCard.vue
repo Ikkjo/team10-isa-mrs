@@ -18,7 +18,7 @@
             <ActionCreationModal
                 @save="saveAction()"
                 :show="isActionModalActive"
-                @close="isActionModalActive=false"
+                @close="isActionModalActive=false; resetAction();"
                 :buttonDisabled="actionButtonDisabled"
                 class="modal">
                 <template #body>
@@ -35,7 +35,7 @@
             <ActionCreationModal
                 @save="saveReservation()"
                 :show="isReservationModalActive"
-                @close="isReservationModalActive=false"
+                @close="isReservationModalActive=false; resetReservation();"
                 :buttonDisabled="reservationButtonDisabled"
                 class="modal">
                 <template #body>
@@ -163,8 +163,6 @@ export default {
             .catch((error) => {
                 console.log(error);
                 alert("Something went wrong")
-                this.resetAction()
-                this.isActionModalActive = false;
             })
         },
         saveReservation() {
@@ -185,8 +183,6 @@ export default {
             .catch((error) => {
                 console.log(error);
                 alert("Something went wrong")
-                this.resetReservation()
-                this.isReservationModalActive = false;
             })
         },
         resetAction() {
