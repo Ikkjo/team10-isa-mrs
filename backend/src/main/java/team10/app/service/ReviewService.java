@@ -34,6 +34,8 @@ public class ReviewService {
         if (!validator.validateReviewDto(reviewDto))
             throw new ReviewInvalidException();
         Reservation reservation = reservationService.getReservationById(reservationId);
+        if (reservation.getStatus() != ReservationStatus.FINISHED)
+            throw new ReviewInvalidException();
         User user = userService.loadUserByUsername(email);
         if (user.getRole().equals(UserRole.CLIENT)) {
             // TODO: Add review logic
