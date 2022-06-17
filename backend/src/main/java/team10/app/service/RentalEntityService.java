@@ -1,16 +1,22 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.repository.BusinessClientRepository;
 import team10.app.repository.RentalEntityRepository;
+import team10.app.repository.specification.RentalEntitySpecification;
+import team10.app.repository.specification.search.SearchCriteria;
 import team10.app.repository.ReservationRepository;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,10 +55,7 @@ public class RentalEntityService {
     }
 
     public Set<RentalEntityDto> getAllActiveByOwnerEmail(String email) {
-        BusinessClient businessClient = businessClientRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
-
-        List<RentalEntity> rentalEntities = rentalEntityRepository.findAllByOwner(businessClient);
+        List<RentalEntity> rentalEntities = rentalEntityRepository.findAllByOwner(businessClientService.getByEmail(email));
         Set<RentalEntityDto> rentalEntityDtoSet = new HashSet<>();
         if (!rentalEntities.isEmpty())
             rentalEntityDtoSet = rentalEntities.stream().map((rentalEntity) ->
@@ -61,6 +64,10 @@ public class RentalEntityService {
                 return buildRentalEntityDto(rentalEntity);
             }).collect(Collectors.toSet());
         return rentalEntityDtoSet;
+    }
+
+    public List<String> getAllActiveRentalEntityTitlesByOwnerEmail(String email) {
+        return rentalEntityRepository.getAllTitlesByOwner(businessClientService.getByEmail(email));
     }
 
     public void updateTitle(String title, UUID id) {
@@ -122,27 +129,31 @@ public class RentalEntityService {
     public void addAction(String email, UUID id, ActionDto actionDto) {
         if (!validator.validateActionDto(actionDto))
             throw new ActionInvalidException();
-        RentalEntity rentalEntity = getRentalEntity(email, id);
+        BusinessClient businessClient = businessClientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+        RentalEntity rentalEntity = this.getRentalEntityByOwner(businessClient, id);
         if (!validator.validateRentalEntityDateNotTaken(rentalEntity, actionDto.getDateRange()))
             throw new RentalEntityDateTaken(rentalEntity.getId(), actionDto.getDateRange());
         rentalEntity.addAction(new Action(actionDto));
         rentalEntityRepository.saveAndFlush(rentalEntity);
     }
-
-    public List<Long> getTakenDates(UUID id) {
+  
+        public List<Long> getTakenDates(UUID id) {
         return new ArrayList<>(this.getById(id).getTakenDates());
     }
 
-    public void addReservation(String email, UUID id, ReservationDto reservationDto) {
+    public void addReservation(String email, UUID id, CreateReservationDto createReservationDto) {
+        BusinessClient businessClient = businessClientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+        RentalEntity rentalEntity = this.getRentalEntityByOwner(businessClient, id);
         // validate
-        if (!validator.validateReservationDto(reservationDto))
-            throw new ReservationInvalidException(reservationDto);
-        RentalEntity rentalEntity = getRentalEntity(email, id);
-        if (!validator.validateRentalEntityDateNotTaken(rentalEntity, reservationDto.getDateRange()))
-            throw new RentalEntityDateTaken(rentalEntity.getId(), reservationDto.getDateRange());
+        if (!validator.validateReservationDto(createReservationDto))
+            throw new ReservationInvalidException(createReservationDto);
+        if (!validator.validateRentalEntityDateNotTaken(rentalEntity, createReservationDto.getDateRange()))
+            throw new RentalEntityDateTaken(rentalEntity.getId(), createReservationDto.getDateRange());
         // create reservation
-        Client client = clientService.getByUsername(reservationDto.getUsername());
-        Reservation reservation = new Reservation(reservationDto, client, rentalEntity);
+        Client client = clientService.getByUsername(createReservationDto.getUsername());
+        Reservation reservation = new Reservation(createReservationDto, businessClient, client, rentalEntity);
         // save
         reservation = reservationRepository.saveAndFlush(reservation);
         businessClientService.addReservation(email, reservation);
@@ -150,12 +161,70 @@ public class RentalEntityService {
         clientService.addReservation(client, reservation);
     }
 
-    private RentalEntity getRentalEntity(String email, UUID id) {
-        BusinessClient businessClient = businessClientRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
+    private RentalEntity getRentalEntityByOwner(BusinessClient businessClient, UUID id) {
         RentalEntity rentalEntity = this.getById(id);
         if (rentalEntity.getOwner() != businessClient)
             throw new InvalidRentalEntityOwnerException(rentalEntity.getId(), businessClient.getId());
         return rentalEntity;
     }
+  
+    public List<RentalEntityDto> getAllRentalEntitiesPage(int page, int size) {
+        List<RentalEntity> rentalEntityPage = rentalEntityRepository.findAll(PageRequest.of(page, size)).toList();
+        List<RentalEntityDto> rentalEntityDtoList = new ArrayList<>();
+
+        for (RentalEntity re : rentalEntityPage) {
+            rentalEntityDtoList.add(rentalEntityToDto(re.getId()));
+        }
+        return rentalEntityDtoList;
+    }
+
+    public List<RentalEntityDto> rentalEntitySearch(
+            int page,
+            int pageSize,
+            String title,
+            String country,
+            String city,
+            long fromDate,
+            long toDate
+    ) {
+
+        boolean ignoreAvailability = false;
+
+        if (toDate < LocalDate.now().toEpochDay()) {
+            ignoreAvailability = true;
+        }
+
+        RentalEntitySpecification titleSpec = new RentalEntitySpecification(
+                new SearchCriteria("title", ":", title));
+        RentalEntitySpecification countrySpec = new RentalEntitySpecification(
+                new SearchCriteria("country", ":", country));
+        RentalEntitySpecification citySpec = new RentalEntitySpecification(
+                new SearchCriteria("city", ":", city));
+
+        List<RentalEntity> results = rentalEntityRepository.findAll(Specification
+                .where(titleSpec)
+                .and(countrySpec)
+                .and(citySpec), PageRequest.of(page, pageSize)).toList();
+
+        List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
+        for (RentalEntity rE:  results) {
+            boolean fromAvailable = false;
+            boolean toAvailable = false;
+            for(Availability a: rE.getAvailability()) {
+                if (a.getDate() == fromDate){
+                    fromAvailable = true;
+                }
+                if (a.getDate() == toDate) {
+                    toAvailable = true;
+                }
+            }
+
+            if(!ignoreAvailability && (fromAvailable && toAvailable)) {
+                rentalEntityDtos.add(rentalEntityToDto(rE.getId()));
+            }
+        }
+
+        return rentalEntityDtos;
+    }
+
 }

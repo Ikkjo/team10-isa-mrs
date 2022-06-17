@@ -1,6 +1,7 @@
 package team10.app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,11 +16,15 @@ import java.util.Set;
 import java.util.UUID;
 
 @Repository
-public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID> {
+public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID>,
+                                                JpaSpecificationExecutor<RentalEntity> {
     @Override
     Optional<RentalEntity> findById(UUID uuid);
 
     List<RentalEntity> findAllByOwner(BusinessClient businessClient);
+
+    @Query("select rE.title from RentalEntity rE where rE.owner = ?1")
+    List<String> getAllTitlesByOwner(BusinessClient businessClient);
 
     @Modifying
     @Query("update RentalEntity rE set rE.title = ?1 where rE.id = ?2")

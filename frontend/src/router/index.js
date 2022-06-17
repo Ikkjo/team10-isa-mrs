@@ -8,23 +8,6 @@ const routes = [
       path: '/',
       name: 'homepage',
       component: () => import('../views/Homepage.vue'),
-      children: [
-        {
-            path: 'ships',
-            name: 'ships',
-            component: () => import('../components/HomepageShipListings.vue')
-        },
-        {
-            path: 'adventures',
-            name: 'adventures',
-            component: () => import('../components/HomepageAdventureListings.vue')
-        },
-        {
-            path: 'vacation-homes',
-            name: 'vacation-homes',
-            component: () => import('../components/HomepageVacationHomeListings.vue')
-        }
-      ]
     },
     {
       path: '/business-client/register',
@@ -94,9 +77,14 @@ const routes = [
         component: () => import("../views/AdminVerification.vue"),
     },
     {
-        path: '/account/reservation/:id/report',
+        path: '/account/reservations/:id/report',
         name: 'reservation-report',
         component: () => import("../views/BusinessClientReport.vue"),
+    },
+    {
+        path: '/account/reservations',
+        name: 'business-client-reservations',
+        component: () => import('../views/BusinessClientReservations.vue')
     }
 ]
 
