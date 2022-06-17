@@ -181,7 +181,7 @@ public class RentalEntityController {
             @RequestParam(name = "city", defaultValue = "") String city,
             @RequestParam(name = "fromDate", defaultValue = "0") long fromDate,
             @RequestParam(name = "toDate", defaultValue = "0") long toDate) {
-        int DEFAULT_PAGE_SIZE = 50;
+        int DEFAULT_PAGE_SIZE = 20;
 
         try{
             return ResponseEntity.ok(rentalEntityService.rentalEntitySearch(page, pageSize, title, country, city,

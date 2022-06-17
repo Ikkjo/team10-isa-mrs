@@ -68,10 +68,6 @@ export default {
 </script>
 
 <style>
-.listings-container {
-  max-width: 100%;
-  padding-top: 7110px;
-}
 
 .listings {
     display: grid;

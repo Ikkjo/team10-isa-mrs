@@ -11,7 +11,7 @@ public class HomepageService {
     RentalEntityService rentalEntityService;
 
     public List<RentalEntityDto> getDefaultHomepage() {
-        int DEFAULT_PAGE_SIZE = 50;
+        int DEFAULT_PAGE_SIZE = 20;
         return rentalEntityService.getAllRentalEntitiesPage(0, DEFAULT_PAGE_SIZE);
     }
 
