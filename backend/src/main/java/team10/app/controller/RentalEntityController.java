@@ -106,7 +106,9 @@ public class RentalEntityController {
 
     @PostMapping(value = "/{id}/add-action")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<ActionDto> addAction(@RequestHeader (name="Authorization") String token, @PathVariable(name = "id") UUID id, @RequestBody ActionDto actionDto) {
+    public ResponseEntity<ActionDto> addAction(@RequestHeader (name="Authorization") String token,
+                                               @PathVariable(name = "id") UUID id,
+                                               @RequestBody ActionDto actionDto) {
         try {
             rentalEntityService.addAction(jwtProvider.getAuthentication(token.substring(7)).getName(), id, actionDto);
             return new ResponseEntity<>(actionDto, HttpStatus.OK);
@@ -119,7 +121,9 @@ public class RentalEntityController {
 
     @PostMapping(value = "/{id}/add-reservation")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<CreateReservationDto> addReservation(@RequestHeader (name="Authorization") String token, @PathVariable(name = "id") UUID id, @RequestBody CreateReservationDto createReservationDto) {
+    public ResponseEntity<CreateReservationDto> addReservation(@RequestHeader (name="Authorization") String token,
+                                                               @PathVariable(name = "id") UUID id,
+                                                               @RequestBody CreateReservationDto createReservationDto) {
         try {
             rentalEntityService.addReservation(jwtProvider.getAuthentication(token.substring(7)).getName(), id, createReservationDto);
             return new ResponseEntity<>(createReservationDto, HttpStatus.OK);
@@ -133,9 +137,10 @@ public class RentalEntityController {
     @Transactional
     @PutMapping("/update/{id}/title")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<String> updateTitle(@PathVariable UUID id, @RequestBody String title) {
+    public ResponseEntity<String> updateTitle(@RequestHeader (name="Authorization") String token,
+                                              @PathVariable UUID id, @RequestBody String title) {
         try {
-            rentalEntityService.updateTitle(title, id);
+            rentalEntityService.updateTitle(jwtProvider.getAuthentication(token.substring(7)).getName(), title, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -145,9 +150,10 @@ public class RentalEntityController {
     @Transactional
     @PutMapping("/update/{id}/address")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<AddressDto> updateAddress(@PathVariable UUID id, @RequestBody AddressDto address) {
+    public ResponseEntity<AddressDto> updateAddress(@RequestHeader (name="Authorization") String token,
+                                                    @PathVariable UUID id, @RequestBody AddressDto address) {
         try {
-            rentalEntityService.updateAddress(address, id);
+            rentalEntityService.updateAddress(jwtProvider.getAuthentication(token.substring(7)).getName(), address, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -157,9 +163,10 @@ public class RentalEntityController {
     @Transactional
     @PutMapping("/update/{id}/description")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<String> updateDescription(@PathVariable UUID id, @RequestBody String description) {
+    public ResponseEntity<String> updateDescription(@RequestHeader (name="Authorization") String token,
+                                                    @PathVariable UUID id, @RequestBody String description) {
         try {
-            rentalEntityService.updateDescription(description, id);
+            rentalEntityService.updateDescription(jwtProvider.getAuthentication(token.substring(7)).getName(), description, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -169,9 +176,10 @@ public class RentalEntityController {
     @Transactional
     @PutMapping("/update/{id}/availability")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<Long[]> updateAvailability(@PathVariable UUID id, @RequestBody Long[] availability) {
+    public ResponseEntity<Long[]> updateAvailability(@RequestHeader (name="Authorization") String token,
+                                                     @PathVariable UUID id, @RequestBody Long[] availability) {
         try {
-            rentalEntityService.updateAvailability(List.of(availability), id);
+            rentalEntityService.updateAvailability(jwtProvider.getAuthentication(token.substring(7)).getName(), List.of(availability), id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -181,9 +189,10 @@ public class RentalEntityController {
     @Transactional
     @PutMapping("/update/{id}/rules-of-conduct")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<String> updateRulesOfConduct(@PathVariable UUID id, @RequestBody String rulesOfConduct) {
+    public ResponseEntity<String> updateRulesOfConduct(@RequestHeader (name="Authorization") String token,
+                                                       @PathVariable UUID id, @RequestBody String rulesOfConduct) {
         try {
-            rentalEntityService.updateRulesOfConduct(rulesOfConduct, id);
+            rentalEntityService.updateRulesOfConduct(jwtProvider.getAuthentication(token.substring(7)).getName(), rulesOfConduct, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -193,9 +202,10 @@ public class RentalEntityController {
     @Transactional
     @PutMapping("/update/{id}/additional-services")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<String> updateAdditionalServices(@PathVariable UUID id, @RequestBody String additionalServices) {
+    public ResponseEntity<String> updateAdditionalServices(@RequestHeader (name="Authorization") String token,
+                                                           @PathVariable UUID id, @RequestBody String additionalServices) {
         try {
-            rentalEntityService.updateAdditionalServices(additionalServices, id);
+            rentalEntityService.updateAdditionalServices(jwtProvider.getAuthentication(token.substring(7)).getName(), additionalServices, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -205,9 +215,10 @@ public class RentalEntityController {
     @Transactional
     @PutMapping("/update/{id}/price/{price}")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<Integer> updatePrice(@PathVariable(name = "id") UUID id, @PathVariable(name = "price") int price) {
+    public ResponseEntity<Integer> updatePrice(@RequestHeader (name="Authorization") String token,
+                                               @PathVariable(name = "id") UUID id, @PathVariable(name = "price") int price) {
         try {
-            rentalEntityService.updatePrice(price, id);
+            rentalEntityService.updatePrice(jwtProvider.getAuthentication(token.substring(7)).getName(), price, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -217,9 +228,10 @@ public class RentalEntityController {
     @Transactional
     @PutMapping("/update/{id}/pictures")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<List<String>> updatePictures(@PathVariable UUID id, @RequestBody List<String> pictures) {
+    public ResponseEntity<List<String>> updatePictures(@RequestHeader (name="Authorization") String token,
+                                                       @PathVariable UUID id, @RequestBody List<String> pictures) {
         try {
-            rentalEntityService.updatePictures(pictures, id);
+            rentalEntityService.updatePictures(jwtProvider.getAuthentication(token.substring(7)).getName(), pictures, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
