@@ -21,7 +21,7 @@ public class Client extends User{
 
     private Boolean isPenalized = false;
 
-    private Integer penaltyPoints = 0;
+    private int penaltyPoints = 0;
 
     @OneToMany(mappedBy = "client",
                fetch = FetchType.LAZY,

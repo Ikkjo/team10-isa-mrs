@@ -1,9 +1,10 @@
 package team10.app.util.exceptions;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
-public class RentalEntityNotFoundException extends RuntimeException {
+public class RentalEntityNotFoundException extends EntityNotFoundException {
     public RentalEntityNotFoundException(UUID id) {
-        super(String.format("Could not find RentalEntity %s", id));
+        super(String.format("RentalEntity not found: %s", id));
     }
 }

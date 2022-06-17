@@ -7,14 +7,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.ReservationDto;
 import team10.app.model.BusinessClient;
 import team10.app.model.Reservation;
+import team10.app.model.ReservationStatus;
 import team10.app.repository.ReservationRepository;
+import team10.app.util.exceptions.ReservationNotFoundException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,5 +65,13 @@ public class ReservationService {
                 new ReservationDto(r.getId(), r.getStartDate(), r.getEndDate(), r.getPrice(), r.getStatus(),
                         r.getClient().getEmail(), r.getBusinessClient().getId(), r.getBusinessClient().getEmail(),
                         r.getRentalEntity().getId(), r.getRentalEntity().getTitle())).collect(Collectors.toList());
+    }
+
+    public Reservation getReservationById(UUID id) {
+        return reservationRepository.findById(id).orElseThrow(() -> new ReservationNotFoundException(id));
+    }
+
+    public void updateStatus(UUID id, ReservationStatus status) {
+        reservationRepository.updateStatus(status, id);
     }
 }

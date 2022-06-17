@@ -9,6 +9,8 @@ import team10.app.model.Client;
 import team10.app.model.Reservation;
 import team10.app.repository.ClientRepository;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @Service
 public class ClientService implements UserDetailsService {
@@ -32,5 +34,9 @@ public class ClientService implements UserDetailsService {
     public void addReservation(Client client, Reservation reservation) {
         client.addReservation(reservation);
         clientRepository.saveAndFlush(client);
+    }
+
+    public void addPenalty(UUID id) {
+        clientRepository.addPenalty(id);
     }
 }
