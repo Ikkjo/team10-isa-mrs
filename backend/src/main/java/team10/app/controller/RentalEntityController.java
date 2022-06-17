@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import team10.app.dto.ActionDto;
 import team10.app.dto.AddressDto;
 import team10.app.dto.RentalEntityDto;
+import team10.app.repository.specification.search.SearchCriteria;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.RentalEntityService;
 import team10.app.util.exceptions.RentalEntityNotFoundException;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -172,5 +174,22 @@ public class RentalEntityController {
         return new ResponseEntity<>(pictures, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<RentalEntityDto>> searchRentalEntities(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "pageSize", defaultValue = "50") Integer pageSize,
+            @RequestParam(name = "title", defaultValue = "") String title,
+            @RequestParam(name = "country", defaultValue = "") String country,
+            @RequestParam(name = "city", defaultValue = "") String city,
+            @RequestParam(name = "fromDate", defaultValue = "0") Long fromDate,
+            @RequestParam(name = "toDate", defaultValue = "0") Long toDate) {
+        int DEFAULT_PAGE_SIZE = 50;
 
+        try{
+            return ResponseEntity.ok(rentalEntityService.rentalEntitySearch(page, pageSize, title, country, city,
+                    fromDate, toDate));
+        } catch(Exception e) {
+            return ResponseEntity.ok(rentalEntityService.getAllRentalEntitiesPage(0, DEFAULT_PAGE_SIZE));
+        }
+    }
 }

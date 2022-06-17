@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import team10.app.dto.RentalEntityDto;
 import team10.app.model.RentalEntity;
 import team10.app.service.HomepageService;
+import team10.app.service.RentalEntityService;
 
 @Controller
 @AllArgsConstructor
@@ -21,16 +22,7 @@ public class HomepageController {
     HomepageService homepageService;
 
     @GetMapping
-    public ResponseEntity<List<RentalEntityDto>> getDefaultHomepage() {
-        return ResponseEntity.ok(homepageService.getAllRentalEntitiesPage(0, 20));
-    }
-
-    @PostMapping
-    public ResponseEntity<List<RentalEntityDto>> homepageSearch(
-            @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
-            @RequestParam(name = "title") String title
-    ) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<RentalEntityDto>> getDefaultHomepage(){
+        return ResponseEntity.ok(homepageService.getDefaultHomepage());
     }
 }

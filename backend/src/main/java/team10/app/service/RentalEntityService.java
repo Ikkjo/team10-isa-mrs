@@ -1,12 +1,17 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.repository.BusinessClientRepository;
 import team10.app.repository.RentalEntityRepository;
+import team10.app.repository.specification.RentalEntitySpecification;
+import team10.app.repository.specification.search.SearchCriteria;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
@@ -127,6 +132,53 @@ public class RentalEntityService {
             throw new RentalEntityDateTaken(rentalEntity.getId(), actionDto.getDateRange());
         rentalEntity.addAction(new Action(actionDto));
         rentalEntityRepository.saveAndFlush(rentalEntity);
+    }
+
+    public List<RentalEntityDto> getAllRentalEntitiesPage(int page, int size) {
+        List<RentalEntity> rentalEntityPage = rentalEntityRepository.findAll(PageRequest.of(page, size)).toList();
+        List<RentalEntityDto> rentalEntityDtoList = new ArrayList<>();
+
+        for (RentalEntity re : rentalEntityPage) {
+            rentalEntityDtoList.add(rentalEntityToDto(re.getId()));
+        }
+        return rentalEntityDtoList;
+    }
+
+    public List<RentalEntityDto> rentalEntitySearch(
+            Integer page,
+            Integer pageSize,
+            String title,
+            String country,
+            String city,
+            Long fromDate,
+            Long toDate
+    ) {
+
+        RentalEntitySpecification titleSpec = new RentalEntitySpecification(
+                new SearchCriteria("title", ":", title));
+        RentalEntitySpecification countrySpec = new RentalEntitySpecification(
+                new SearchCriteria("country", ":", country));
+        RentalEntitySpecification citySpec = new RentalEntitySpecification(
+                new SearchCriteria("city", ":", city));
+        RentalEntitySpecification fromDateSpec = new RentalEntitySpecification(
+                new SearchCriteria("fromDate", ">", fromDate));
+        RentalEntitySpecification toDateSpec = new RentalEntitySpecification(
+                new SearchCriteria("toDate", "<", toDate));
+
+        List<RentalEntity> results = rentalEntityRepository.findAll(Specification
+                .where(titleSpec)
+                .and(countrySpec)
+                .and(citySpec)
+                .and(fromDateSpec)
+                .and(toDateSpec), PageRequest.of(page, pageSize)).toList();
+
+        List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
+
+        for (RentalEntity rE : results) {
+            rentalEntityDtos.add(rentalEntityToDto(rE.getId()));
+        }
+
+        return rentalEntityDtos;
     }
 
 }

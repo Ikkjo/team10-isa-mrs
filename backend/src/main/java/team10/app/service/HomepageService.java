@@ -16,21 +16,11 @@ import team10.app.repository.specification.search.SearchCriteria;
 @AllArgsConstructor
 public class HomepageService {
 
-    RentalEntityRepository rentalEntityRepository;
     RentalEntityService rentalEntityService;
 
-    public List<RentalEntityDto> getAllRentalEntitiesPage(int page, int size) {
-        List<RentalEntity> rentalEntityPage = rentalEntityRepository.findAll(PageRequest.of(page, size)).toList();
-        List<RentalEntityDto> rentalEntityDtoList = new ArrayList<>();
-
-        for (RentalEntity re : rentalEntityPage) {
-            rentalEntityDtoList.add(rentalEntityService.rentalEntityToDto(re.getId()));
-        }
-        return rentalEntityDtoList;
-    }
-
-    public List<RentalEntityDto> rentalEntitySearch(SearchCriteria criteria) {
-        return null;
+    public List<RentalEntityDto> getDefaultHomepage() {
+        int DEFAULT_PAGE_SIZE = 50;
+        return rentalEntityService.getAllRentalEntitiesPage(0, DEFAULT_PAGE_SIZE);
     }
 
 }
