@@ -92,6 +92,11 @@ const routes = [
         path: '/admin-verification',
         name: 'admin-verification',
         component: () => import("../views/AdminVerification.vue"),
+    },
+    {
+        path: '/account/reservation/:id/report',
+        name: 'reservation-report',
+        component: () => import("../views/BusinessClientReport.vue"),
     }
 ]
 
