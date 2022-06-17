@@ -7,13 +7,13 @@
                 <div v-if="reservation" class="details">
                     <h3>Details</h3>
                     <div class="rentalEntity detail">
-                        <span v-if="role==='HOUSE_OWNER'" class="vacation-home">
+                        <span v-if="role==='HOUSE_OWNER'">
                             Vacation home:
                         </span>
-                        <span v-if="role==='SHIP_OWNER'" class="ship">
+                        <span v-if="role==='SHIP_OWNER'">
                             Ship:
                         </span>
-                        <span v-if="role==='FISHING_INSTRUCTOR'" class="adventure">
+                        <span v-if="role==='FISHING_INSTRUCTOR'">
                             Adventure:
                         </span>
                         <span>
