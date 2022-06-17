@@ -1,12 +1,10 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import team10.app.dto.ReservationDto;
 import team10.app.model.Client;
 import team10.app.model.Reservation;
 import team10.app.repository.ClientRepository;

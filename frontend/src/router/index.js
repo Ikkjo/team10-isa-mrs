@@ -75,6 +75,11 @@ const routes = [
         path: '/admin-verification',
         name: 'admin-verification',
         component: () => import("../views/AdminVerification.vue"),
+    },
+    {
+        path: '/account/reservations',
+        name: 'business-client-reservations',
+        component: () => import('../views/BusinessClientReservations.vue')
     }
 ]
 

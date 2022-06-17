@@ -23,6 +23,9 @@ public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID
 
     List<RentalEntity> findAllByOwner(BusinessClient businessClient);
 
+    @Query("select rE.title from RentalEntity rE where rE.owner = ?1")
+    List<String> getAllTitlesByOwner(BusinessClient businessClient);
+
     @Modifying
     @Query("update RentalEntity rE set rE.title = ?1 where rE.id = ?2")
     void updateTitle(String title, UUID id);

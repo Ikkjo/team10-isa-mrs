@@ -1,6 +1,9 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +21,10 @@ import team10.app.repository.UserRepository;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class BusinessClientService {
@@ -32,7 +39,7 @@ public class BusinessClientService {
         return new BusinessClientDto(businessClient);
     }
 
-    private BusinessClient getByEmail(String email) {
+    BusinessClient getByEmail(String email) {
         return businessClientRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
     }
@@ -54,4 +61,5 @@ public class BusinessClientService {
         businessClient.addReservation(reservation);
         businessClientRepository.saveAndFlush(businessClient);
     }
+
 }
