@@ -1,7 +1,7 @@
 <template>
   <div>
     <HomepageNavBar id="nav"/>
-    <SearchBar/>
+    <SearchBar ref="searchBar" @searchPressed="search"/>
     <div class="listings">
       <RentalEntityCard class="listing" v-for="(rentalEntity, index) in rentalEntities" :key="index" :rentalEntity="rentalEntity"/>
     </div>
@@ -25,10 +25,13 @@ export default {
     data() {
       return {
         rentalEntities: [],
-        user: null
+        user: null,
+        searchQuery: {},
+        sharedItems: SearchBar.data
       }
     },
     created() {
+       
        axios
           .get(process.env.VUE_APP_BASE_URL+"/api/v1/homepage")
           .then((response) => {
@@ -38,6 +41,28 @@ export default {
           .catch(function(error) {
               console.log(error)
           })
+    },
+    methods: {
+      search(searchQuery) {
+        console.log(searchQuery)
+        axios
+          .get(process.env.VUE_APP_BASE_URL+"/api/v1/rental-entity/search", {
+            params: {
+              city: searchQuery.city,
+              country: searchQuery.country,
+              title: searchQuery.title,
+              fromDate: searchQuery.fromDate,
+              toDate: searchQuery.toDate
+            }
+          })
+          .then((response) => {
+            console.log(response.data)
+            this.rentalEntities = response.data
+          })
+          .catch(function(error) {
+              console.log(error)
+          })
+      }
     }
   }
 </script>

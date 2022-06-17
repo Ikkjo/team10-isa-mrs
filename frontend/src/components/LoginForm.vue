@@ -1,5 +1,6 @@
 <template>
     <form id="login-form" @submit.prevent="logInPressed">
+           
         <div class="form-control">
             <label for="email">Email</label>
             <input type="text" 
@@ -7,12 +8,8 @@
                 name="email" 
                 @focus="inFocus('email')" 
                 @blur="outFocus('email')" 
-                :class="getClass('email')" 
+                class="email" 
                 :placeholder="getPlaceholder('email', 'example@rentr.com')">
-            <div class="alert-info" 
-                v-if="!this.infocus['email'] && !$v.email.email">
-                Incorrect email format.
-            </div>
         </div>
         <div class="form-control">
             <label for="password">Password</label>
@@ -21,10 +18,10 @@
                 name="password"  
                 @focus="inFocus('password')"
                 @blur="outFocus('password')" 
-                :class="getClass('password')"
+                class="password"
                 :placeholder="getPlaceholder('password', 'Password')">
-            <div class="alert-info" 
-                v-if="!this.infocus['password'] && !( $v.password.length > 0)">
+            <div class="alert-info" v-if="credentialsInvalid">
+                Invalid email or password.
             </div>
         </div>
         <div class="btn-div">
@@ -49,7 +46,8 @@ export default {
             infocus: {
                 email: true,
                 password: true,
-            }
+            },
+            credentialsInvalid: false
         }
     },
     validations:{
@@ -88,7 +86,7 @@ export default {
                 })
                 .catch((error) => {
                     console.log(error);
-                    // is email or password invalid
+                    this.credentialsInvalid = true
                 })
         },
         updateYear(event){
@@ -104,10 +102,6 @@ export default {
         },
         outFocus(field) {
             this.infocus[field] = false
-        },
-        getClass(field) {
-            let cls = !this.isFocused(field) && this.$v[field].$invalid ? 'alert' : '';
-            return cls;
         },
         getPlaceholder(field, defaultPlaceholder='') {
             let placeholder = !this.isFocused(field) && this.$v[field].$invalid ? 'Required' : defaultPlaceholder;
@@ -166,6 +160,7 @@ export default {
 }
 
 .alert-info {
+    margin-top: 7px;
     color: red !important;
 }
 
