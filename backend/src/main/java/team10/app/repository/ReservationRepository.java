@@ -15,9 +15,6 @@ import java.util.UUID;
 
 public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
 
-    @Query("select r from Reservation r")
-    Page<Reservation> findAll(Pageable pageable);
-
     Page<Reservation> findByBusinessClient(BusinessClient businessClient, Pageable pageable);
 
     Reservation findReservationByClient(Client client);
@@ -25,4 +22,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
     @Modifying
     @Query("update Reservation r set r.status = ?1 where r.id = ?2")
     void updateStatus(ReservationStatus status, UUID id);
+
+    @Query("select count(r) > 0 from Reservation r where r.rentalEntity.id = ?1 and r.status in ?2")
+    boolean existsActiveByRentalEntityId(UUID id, ReservationStatus[] reservationStatuses);
 }

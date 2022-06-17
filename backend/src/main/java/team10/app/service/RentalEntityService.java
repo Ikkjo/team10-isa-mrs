@@ -224,4 +224,13 @@ public class RentalEntityService {
         return rentalEntityDtos;
     }
 
+    public void delete(String email, UUID id) {
+        BusinessClient businessClient = businessClientService.getByEmail(email);
+        if (!validator.validateRentalEntityOwner(businessClient, this.getById(id)))
+            throw new InvalidRentalEntityOwnerException(id, businessClient.getId());
+        ReservationStatus[] reservationStatuses = { ReservationStatus.ACTIVE, ReservationStatus.CREATED };
+        if (reservationRepository.existsActiveByRentalEntityId(id, reservationStatuses))
+            throw new RentalEntityReservedException(id);
+        rentalEntityRepository.updateDeleted(true, id);
+    }
 }

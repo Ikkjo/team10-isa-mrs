@@ -14,7 +14,9 @@ import team10.app.dto.RentalEntityDto;
 import team10.app.dto.CreateReservationDto;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.RentalEntityService;
+import team10.app.util.exceptions.InvalidRentalEntityOwnerException;
 import team10.app.util.exceptions.RentalEntityNotFoundException;
+import team10.app.util.exceptions.RentalEntityReservedException;
 
 import java.security.Principal;
 import java.util.List;
@@ -51,6 +53,20 @@ public class RentalEntityController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Transactional
+    @PutMapping("/delete/{id}")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<HttpStatus> delete(Principal principal, @PathVariable UUID id) {
+        try {
+            rentalEntityService.delete(principal.getName(), id);
+        } catch (InvalidRentalEntityOwnerException | RentalEntityReservedException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
     @GetMapping("/titles")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
