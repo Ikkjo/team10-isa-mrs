@@ -5,7 +5,7 @@
             <span :class="'icon' + ' ' + iconClass ">{{icon}}</span>
             <div class="label">{{label}}</div>
         </div>
-        <div v-show="!showSlot" @click="editClicked" class="edit noselect">{{buttonText}}</div>
+        <div v-if="useEditButton" v-show="!showSlot" @click="editClicked" class="edit noselect">{{buttonText}}</div>
         <div v-if="useSlot" v-show="showSlot" @click="cancelClicked" class="edit cancel noselect">Cancel</div>
     </div>
     <slot v-if="!showSlot" name="main"/>
@@ -57,6 +57,10 @@ export default {
             type: String,
             default: "Save"
         },
+        useEditButton: {
+            type: Boolean,
+            default: true,
+        }
     },
     methods: {
         editClicked() {

@@ -12,6 +12,7 @@ import team10.app.dto.BusinessClientDto;
 import team10.app.dto.PasswordChangeDto;
 import team10.app.model.Address;
 import team10.app.model.BusinessClient;
+import team10.app.model.Reservation;
 import team10.app.repository.BusinessClientRepository;
 import team10.app.repository.UserRepository;
 import team10.app.util.Validator;
@@ -31,6 +32,11 @@ public class BusinessClientService {
         return new BusinessClientDto(businessClient);
     }
 
+    private BusinessClient getByEmail(String email) {
+        return businessClientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+    }
+
     public void updateAddress(AddressDto addressDto, String email) {
         Address address = addressService.getAddress(addressDto);
         businessClientRepository.updateAddress(address, email);
@@ -43,4 +49,9 @@ public class BusinessClientService {
     }
 
 
+    public void addReservation(String email, Reservation reservation) {
+        BusinessClient businessClient = getByEmail(email);
+        businessClient.addReservation(reservation);
+        businessClientRepository.saveAndFlush(businessClient);
+    }
 }

@@ -73,7 +73,7 @@ export default {
                 },
                 
                 {
-                    name: "phone",
+                    name: "phoneNumber",
                     title: "Phone number"
                 },
                 {
@@ -99,15 +99,15 @@ export default {
                     }
                 },
                 {
-                    name: "address.address",
+                    name: "addressDto.address",
                     title: "Address"
                 },
                 {
-                    name: "address.city",
+                    name: "addressDto.city",
                     title: "City"
                 },
                 {
-                    name: "address.country",
+                    name: "addressDto.country",
                     title: "Country"
                 },
                 {
@@ -117,88 +117,7 @@ export default {
                 'accept',
                 'decline'
             ],
-            requests: [
-                {
-                    id: "the",
-                    firstName: "Aleksandra",
-                    lastName: "Sakal Franciskovic",
-                    email: "iamnikoladamjanovic@gmail.com",
-                    password: "HiHiHiHa",
-                    role: "HOUSE_OWNER",
-                    phone: "+3813284239",
-                    dateOfBirth: "26.4.1985.",
-                    address: {
-                        address: "Hadzi ruimova 399",
-                        city: "Sremska Mitrovica",
-                        country: "Serbia"  
-                    },
-                    registrationReason: "Imam lepu vikendicu koja nicemu ne sluzi pa reko da je stavim na izdavanje."
-                },
-                {
-                    id: "cum",
-                    firstName: "Slavija",
-                    lastName: "Lorđić",
-                    email: "slavko@gmail.com",
-                    password: "HiHiHiHa",
-                    role: "SHIP_OWNER",
-                    phone: "+3813542333",
-                    dateOfBirth: "22.5.1987.",
-                    address: {
-                        address: "Slavija 49",
-                        city: "Beograd",
-                        country: "Serbia"  
-                    },
-                    registrationReason: "Volim da pecam hehehehhe. Ae prihvati me da ti platim 500e. The function got HENNESSY"
-                },
-                {
-                    id: "bucket",
-                    firstName: "Ilija",
-                    lastName: "Kalinic",
-                    email: "ikkjo@gmail.com",
-                    password: "HiHiHiHa",
-                    role: "FISHING_INSTRUCTOR",
-                    phone: "+38654325435",
-                    dateOfBirth: "22.22.2000.",
-                    address: {
-                        address: "Somborski put 33",
-                        city: "Subotica",
-                        country: "Serbia"  
-                    },
-                    registrationReason: "Pecanje ovo ono, pecanje ovo ono, pecanje ovo ono."
-                },
-                {
-                    id: "from",
-                    firstName: "Ana",
-                    lastName: "Kličko",
-                    email: "anaklicko@gmail.com",
-                    password: "HiHiHiHa",
-                    role: "HOUSE_OWNER",
-                    phone: "+3865430900",
-                    dateOfBirth: "21.2.2000.",
-                    address: {
-                        address: "Apatinski put 12",
-                        city: "Sombor",
-                        country: "Serbia"  
-                    },
-                    registrationReason: "Kuca je velika. Ima puno mesta puno soba, dodjite da izdajem"
-                },
-                {
-                    id: "spongebob",
-                    firstName: "Đorđe",
-                    lastName: "Lođe",
-                    email: "lordje@gmail.com",
-                    password: "HiHiHiHa",
-                    role: "FISHING_INSTRUCTOR",
-                    phone: "+3863192894",
-                    dateOfBirth: "21.4.1979.",
-                    address: {
-                        address: "Prazilučka 549",
-                        city: "Novi Sad",
-                        country: "Serbia"  
-                    },
-                    registrationReason: "Najmanji pecaros u Vojvodini i šire. Jeftino pružam svoje usluge. Molim vas prihvatite da mi deca ne kisnu"
-                },
-            ]
+            requests: null
         }
     },
     methods: {
@@ -221,14 +140,28 @@ export default {
                 },
             }).then(() => {
                 this.removeRequest();
-            }).catch(() => {
+            }).catch((error) => {
                 alert('No connection.')
+                console.error(error)
             });
         },
         openDeclineRequestModal(id) {
             this.rrUUID = id;
             this.showModal = true;
         }
+    },
+    created () {
+        axios({
+            method: 'get',
+            url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/registration-requests',
+            headers: {
+                Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+            },
+        }).then((response) => {
+            this.requests = response.data;
+        }).catch(() => {
+            alert('No connection.')
+        });
     },
 }
 </script>

@@ -32,18 +32,19 @@ public class UserService implements UserDetailsService {
     private final LoyaltyRepository loyaltyRepository;
     private final DeletionRequestRepository deletionRequestRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final AddressService addressService;
 
     public BusinessClient buildBusinessUser(BusinessClientRegistrationRequestDto dto) throws IllegalArgumentException {
+            Address address = addressService.getAddress(new AddressDto(dto.getAddress(), dto.getCity(), dto.getCountry()));
             if (dto.getRole().equals(HOUSE_OWNER))
                 return new VacationHomeOwner(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(),
-                        dto.getPhoneNumber(), new Address(dto.getAddress(), dto.getCity(), dto.getCountry()), dto.getDateOfBirth());
+                        dto.getPhoneNumber(), address, dto.getDateOfBirth());
             else if (dto.getRole().equals(SHIP_OWNER))
                 return new ShipOwner(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(),
-                        dto.getPhoneNumber(), new Address(dto.getAddress(), dto.getCity(), dto.getCountry()), dto.getDateOfBirth());
+                        dto.getPhoneNumber(), address, dto.getDateOfBirth());
             else if (dto.getRole().equals(FISHING_INSTRUCTOR))
                 return new FishingInstructor(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(),
-                        dto.getPhoneNumber(), new Address(dto.getAddress(), dto.getCity(), dto.getCountry()), dto.getDateOfBirth());
+                        dto.getPhoneNumber(), address, dto.getDateOfBirth());
             else
                 throw new IllegalArgumentException();
     }
@@ -138,7 +139,7 @@ public class UserService implements UserDetailsService {
         if (!validator.validateDeletionReason(deletionReason))
             throw new DeletionReasonInvalidException(deletionReason);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
-        if (deletionRequestRepository.existsByUserId(user.getId()))
+        if (deletionRequestRepository.hasActiveDeletionRequest(user.getId()))
             throw new DeletionRequestAlreadyPresentException(email);
         DeletionRequest deletionRequest = new DeletionRequest(user, deletionReason);
         deletionRequestRepository.save(deletionRequest);

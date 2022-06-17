@@ -1,14 +1,11 @@
 package team10.app.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Entity
 @Getter
@@ -78,4 +75,21 @@ public abstract class RentalEntity {
         this.actions.add(action);
     }
 
+    public Set<Long> getTakenDates() {
+        Set<Long> dates = new HashSet<>();
+        Set<Reservation> reservations = new HashSet<>(this.getReservations());
+        reservations.addAll(this.getActions());
+        for (Reservation reservation : reservations) {
+            long date = reservation.getStartDate();
+            while (date <= reservation.getEndDate()) {
+                dates.add(date);
+                date += TimeUnit.DAYS.toMillis(1);
+            }
+        }
+        return dates;
+    }
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+    }
 }
