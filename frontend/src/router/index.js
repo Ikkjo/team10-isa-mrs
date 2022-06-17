@@ -77,6 +77,11 @@ const routes = [
         component: () => import("../views/AdminVerification.vue"),
     },
     {
+        path: '/account/reservations/:id/report',
+        name: 'reservation-report',
+        component: () => import("../views/BusinessClientReport.vue"),
+    },
+    {
         path: '/account/reservations',
         name: 'business-client-reservations',
         component: () => import('../views/BusinessClientReservations.vue')
