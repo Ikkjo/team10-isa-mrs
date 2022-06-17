@@ -43,6 +43,7 @@ import { VueGoodTable } from 'vue-good-table';
 import axios from 'axios'
 
 export default {
+    name: 'BusinessClientReservations',
     components: {
         BusinessClientNavBar,
         VueGoodTable
