@@ -194,7 +194,7 @@ public class RentalEntityService {
             long fromDate,
             long toDate
     ) {
-
+        boolean shouldCheckAvailability = fromDate < LocalDate.EPOCH.toEpochDay();
         TypedQuery<RentalEntity> query = entityManager.createQuery(
         String.format("SELECT re FROM RentalEntity re " +
 
@@ -202,28 +202,37 @@ public class RentalEntityService {
                 "WHERE re.title LIKE '%s' AND " +
                 "addr.country LIKE '%s' AND " +
                 "addr.city LIKE '%s' AND " +
-                "addr.address LIKE '%s'", title, country, city, address), RentalEntity.class);
+                "addr.address LIKE '%s'",
+                "%"+title+"%", country, city, address), RentalEntity.class);
 
         List<RentalEntity> results = query.getResultList();
 
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
         for (RentalEntity rE:  results) {
-            if(isRentalEntityAvailable(fromDate, toDate, rE))
+            if(isRentalEntityAvailable(fromDate, toDate, rE, shouldCheckAvailability))
                 rentalEntityDtos.add(rentalEntityToDto(rE.getId()));
         }
 
         return rentalEntityDtos;
     }
 
-    private boolean isRentalEntityAvailable(long from, long to, RentalEntity rentalEntity) {
-        List<Availability> reservedObj = new ArrayList<Availability>(rentalEntity.getAvailability());
-        List<Long> reserved = new ArrayList<>();
+    private boolean isRentalEntityAvailable(long from, long to, RentalEntity rentalEntity, boolean shouldCheck) {
+        if(!shouldCheck) {
+            return true;
+        }
+        Set<Availability> availableObj = rentalEntity.getAvailability();
+        Set<Long> available = new HashSet<>();
 
-        for (Availability a : reservedObj) {
-            reserved.add(a.getDate());
+        for (Availability a : availableObj) {
+            available.add(a.getDate());
         }
 
-        return (from > to) && reserved.contains(from) && reserved.contains(to);
+        boolean isAvailable = true;
+        for(long day = from; day <= to; day++ ){
+            isAvailable = isAvailable && available.contains(day);
+        }
+
+        return isAvailable;
     }
 
 }

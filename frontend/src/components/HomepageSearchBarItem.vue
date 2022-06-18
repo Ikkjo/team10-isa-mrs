@@ -1,5 +1,5 @@
 <template>
-    <div @click="toggleButton()" class="filter-button" :class="{selected: buttonToggled}" >
+    <div @click="toggleButton()" class="filter-button" :class="{selected: buttonState}" >
                 <span class="icon-class" :class="iconClass">{{icon}}</span>
                 <span class="text">{{title}}</span>
     </div>
@@ -10,7 +10,7 @@ export default {
     name: 'HomepageSearchBarItem',
     data() {
         return {
-            buttonToggled: false
+            buttonState: false
         }
     },
     props: {
@@ -21,14 +21,9 @@ export default {
     },
     methods: {
         toggleButton() {
+            this.buttonState = !(this.buttonState)
+            this.$emit("SearchBarButtonToggled", this.toggleState)
 
-            if(this.buttonToggled) {
-                this.buttonToggled = false;
-                this.$emit("SearchBarButtonToggled", false)
-            } else {
-                this.buttonToggled = true;
-                this.$emit("SearchBarButtonToggled", true)
-            }
         }
     }
 }
@@ -64,5 +59,28 @@ export default {
     font-size: 0.9rem;
     text-align: center; 
     justify-self: center;
+}
+
+input, select, textarea{
+    padding: 3px 7px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    transition: 0.5s;
+    outline-color: lightgrey;
+    background-color: #fff;
+    font-family: inherit;
+}
+
+.input, .select {
+   height: 48px;
+}
+
+input:hover, textarea:hover, select:hover{
+    border-color: var(--orange-primary, #f0a500);
+}
+
+input:focus, textarea:focus, select:focus {
+    outline-color: var(--orange-primary, #f0a500);
 }
 </style>

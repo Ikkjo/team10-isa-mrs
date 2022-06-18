@@ -50,6 +50,7 @@ export default {
             params: {
               city: searchQuery.city,
               country: searchQuery.country,
+              address: searchQuery.address,
               title: searchQuery.title,
               fromDate: searchQuery.fromDate,
               toDate: searchQuery.toDate
@@ -98,7 +99,7 @@ export default {
     justify-content: center;
     gap: 15px;
     max-width: 100%;
-    padding-top: 150px;
+    padding-top: 210px;
 }
 
 @media screen and (max-width: 669px) {
