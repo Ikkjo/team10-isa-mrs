@@ -33,7 +33,11 @@
         </div>
             <div class="form-control">
             <label for="country" class="block-label">Country</label>
-            <country-select v-model="country" :value="country" :countryName="true" topCountry="US"/>
+            <country-select  
+                v-model="country"
+                :value="country"
+                :countryName="true"
+                topCountry="US"/>
         </div>
     </div>
 </template>
