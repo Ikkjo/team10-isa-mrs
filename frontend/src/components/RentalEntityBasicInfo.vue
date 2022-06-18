@@ -42,6 +42,10 @@
                         @update:city="updateCity"
                         @update:country="updateCountry"
                         :validate="true"/>
+                        <GoogleMap
+                         :address="rentalEntityCopy.address.address"
+                         :city="rentalEntityCopy.address.city"
+                         :country="rentalEntityCopy.address.country" />
                     </div>
                 </template>
             </InfoItem>
@@ -155,6 +159,7 @@ import AddressInput from '@/components/AddressInput.vue'
 import PriceInput from '@/components/PriceInput.vue'
 import EditAvailability from '@/components/EditAvailability.vue'
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import GoogleMap from './GoogleMap.vue'
 export default {
     name: 'RentalEntityBasicInfo',
     props:['rentalEntity'],
@@ -163,7 +168,8 @@ export default {
         PictureCollage,
         AddressInput,
         PriceInput,
-        EditAvailability
+        EditAvailability,
+        GoogleMap
     },
     data() {
         return {
