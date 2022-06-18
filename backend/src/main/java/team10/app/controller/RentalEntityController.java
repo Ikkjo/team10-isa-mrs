@@ -35,7 +35,7 @@ public class RentalEntityController {
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<RentalEntityDto> findById(@PathVariable UUID id) {
         try {
-            return new ResponseEntity<>(rentalEntityService.rentalEntityToDto(id), HttpStatus.OK);
+            return new ResponseEntity<>(rentalEntityService.rentalEntityToDto(id, false), HttpStatus.OK);
         }
         catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
