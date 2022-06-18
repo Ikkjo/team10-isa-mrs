@@ -41,7 +41,7 @@
                 <template #body>
                     <ReservationCreation 
                         :id="rentalEntity.id"
-                        @updated:username="reservationUsernameUpdated"
+                        @updated:email="reservationEmailUpdated"
                         @updated:dateRange="reservationDateRangeUpdated"
                         @updated:price="reservationPriceUpdated"
                         @updated:maxPersons="reservationMaxPersonsUpdated"/>
@@ -77,7 +77,7 @@ export default {
                 maxPersons: 1,
             },
             reservation: {
-                username: null,
+                email: null,
                 dateRange: null,
                 price: null,
                 maxPersons: 1,
@@ -129,9 +129,9 @@ export default {
             console.log("updated max persons")
             this.action.maxPersons = maxPersons
         },
-        reservationUsernameUpdated(username) {
-            console.log("updated reservation username")
-            this.reservation.username = username
+        reservationEmailUpdated(email) {
+            console.log("updated reservation email")
+            this.reservation.email = email
         },
         reservationPriceUpdated(price) {
             console.log("updated price")
@@ -202,7 +202,7 @@ export default {
                     || this.action.maxPersons === null || this.action.maxPersons == 0  
         },
         reservationButtonDisabled() {
-            return this.reservation.username === null || this.reservation.username == ""
+            return this.reservation.email === null || this.reservation.email == ""
                     || this.reservation.dateRange === null || this.reservation.dateRange === []
                     || this.reservation.price === null || this.reservation.price == 0
                     || this.reservation.maxPersons === null || this.reservation.maxPersons == 0  
