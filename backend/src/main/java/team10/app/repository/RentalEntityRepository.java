@@ -1,5 +1,6 @@
 package team10.app.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -49,5 +50,17 @@ public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID
     @Modifying
     @Query("update RentalEntity rE set rE.price = ?1 where rE.id = ?2")
     void updatePrice(int price, UUID id);
+
+//    @Query("select rE from RentalEntity re where rE.title = ?1 ")
+//    Page<RentalEntity> searchRentalEntities(
+//            int page,
+//            int pageSize,
+//            String title,
+//            String country,
+//            String city,
+//            long fromDate,
+//            long toDate,
+//            UUID owner_id
+//    );
 
 }

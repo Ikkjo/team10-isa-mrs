@@ -16,6 +16,8 @@ import team10.app.repository.ReservationRepository;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
+import javax.persistence.*;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,6 +25,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class RentalEntityService {
+
+    @PersistenceContext
+    private final EntityManager entityManager;
 
     private final RentalEntityRepository rentalEntityRepository;
     private final BusinessClientRepository businessClientRepository;
@@ -181,50 +186,44 @@ public class RentalEntityService {
     public List<RentalEntityDto> rentalEntitySearch(
             int page,
             int pageSize,
+//            Long ownerId,
             String title,
             String country,
             String city,
+            String address,
             long fromDate,
             long toDate
     ) {
 
-        boolean ignoreAvailability = false;
+        TypedQuery<RentalEntity> query = entityManager.createQuery(
+        String.format("SELECT re FROM RentalEntity re " +
 
-        if (toDate <= LocalDate.now().toEpochDay()) {
-            ignoreAvailability = true;
-        }
+                "LEFT JOIN Address addr on addr.id=re.address " +
+                "WHERE re.title LIKE '%s' AND " +
+                "addr.country LIKE '%s' AND " +
+                "addr.city LIKE '%s' AND " +
+                "addr.address LIKE '%s'", title, country, city, address), RentalEntity.class);
 
-        RentalEntitySpecification titleSpec = new RentalEntitySpecification(
-                new SearchCriteria("title", ":", title));
-        RentalEntitySpecification countrySpec = new RentalEntitySpecification(
-                new SearchCriteria("country", ":", country));
-        RentalEntitySpecification citySpec = new RentalEntitySpecification(
-                new SearchCriteria("city", ":", city));
-
-        List<RentalEntity> results = rentalEntityRepository.findAll(Specification
-                .where(titleSpec)
-                .and(countrySpec)
-                .and(citySpec));
+        List<RentalEntity> results = query.getResultList();
 
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
         for (RentalEntity rE:  results) {
-            boolean fromAvailable = false;
-            boolean toAvailable = false;
-            for(Availability a: rE.getAvailability()) {
-                if (a.getDate() == fromDate){
-                    fromAvailable = true;
-                }
-                if (a.getDate() == toDate) {
-                    toAvailable = true;
-                }
-            }
-
-            if(!ignoreAvailability && (fromAvailable && toAvailable)) {
+            if(isRentalEntityAvailable(fromDate, toDate, rE))
                 rentalEntityDtos.add(rentalEntityToDto(rE.getId()));
-            }
         }
 
         return rentalEntityDtos;
+    }
+
+    private boolean isRentalEntityAvailable(long from, long to, RentalEntity rentalEntity) {
+        List<Availability> reservedObj = new ArrayList<Availability>(rentalEntity.getAvailability());
+        List<Long> reserved = new ArrayList<>();
+
+        for (Availability a : reservedObj) {
+            reserved.add(a.getDate());
+        }
+
+        return (from > to) && reserved.contains(from) && reserved.contains(to);
     }
 
 }
