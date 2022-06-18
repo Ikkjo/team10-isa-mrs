@@ -1,7 +1,6 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +16,6 @@ import team10.app.util.DateTimeUtil;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -170,7 +168,7 @@ public class RentalEntityService {
         if (!validator.validateRentalEntityDateNotTaken(rentalEntity, createReservationDto.getDateRange()))
             throw new RentalEntityDateTaken(rentalEntity.getId(), createReservationDto.getDateRange());
         // create reservation
-        Client client = clientService.getByUsername(createReservationDto.getUsername());
+        Client client = clientService.getByUsername(createReservationDto.getEmail());
         Reservation reservation = new Reservation(createReservationDto, businessClient, client, rentalEntity);
         // save
         reservation = reservationRepository.saveAndFlush(reservation);
