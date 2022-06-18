@@ -242,16 +242,25 @@ export default {
 .container {
     padding: 6px 5px;
     display: block !important;
+    position: relative;
+    width: 100%;
+    min-height: 170px;
 }
 
 .btn-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 6px 5px;
+    width: 100%;
+    position: absolute;
+    bottom: 6px;
 }
 
 .btn-container .btn:first-child {
+    margin-right: 10px
+}
+
+.btn-container .btn:nth-child(2) {
     margin-right: 10px
 }
 
