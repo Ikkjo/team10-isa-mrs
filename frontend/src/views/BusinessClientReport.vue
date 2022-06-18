@@ -47,23 +47,23 @@
                         </button>
                     </div>
                     <transition name="fade">
-                        <div class="comment" v-if="arrived">
-                            <label for="comment">Comment:</label>
+                        <div class="message" v-if="arrived">
+                            <label for="message">message:</label>
                             <textarea 
                                 :disabled="!arrived"
-                                v-model="comment" 
-                                name="comment" 
-                                id="comment" 
+                                v-model="message" 
+                                name="message" 
+                                id="message" 
                                 cols="30" rows="4" 
-                                @focus="inFocus('comment')" 
-                                @blur="outFocus('comment')" 
-                                :class="getClass('comment')" 
-                                :placeholder="getPlaceholder('comment', 'Write something about the client...')"
+                                @focus="inFocus('message')" 
+                                @blur="outFocus('message')" 
+                                :class="getClass('message')" 
+                                :placeholder="getPlaceholder('message', 'Write something about the client...')"
                                 />
                             <div class="alert-info" 
-                                v-if="!isFocused('comment') 
-                                && !($v.comment.minLength 
-                                && $v.comment.maxLength)"
+                                v-if="!isFocused('message') 
+                                && !($v.message.minLength 
+                                && $v.message.maxLength)"
                                 >
                                 Must be between 5 to 300 characters.
                             </div>
@@ -97,9 +97,9 @@ export default {
             role: window.localStorage.getItem('role'),
             reservation: null,
             infocus: {
-                comment: true,
+                message: true,
             },
-            comment: '',
+            message: '',
             badBehaviour: false,
         }
     },
@@ -125,16 +125,46 @@ export default {
         },
         submitReport() {
             if (this.arrived) {
-                // arrived logic
-                // check if bad behaviour
+                let reviewDto = {
+                    message: this.message,
+                    penalize: this.badBehaviour
+                };
+                axios({
+                    method: 'post',
+                    url: process.env.VUE_APP_BASE_URL+'/api/v1/reviews/'+this.$route.params.id,
+                    data: reviewDto,
+                    headers: {
+                        Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                    },
+                })
+                .then(() => {
+                    this.$router.push({name: 'business-client-reservations'});
+                })
+                .catch((error) => {
+                    alert("Something went wrong. See console for output.")
+                    console.log(error);
+                })
             }
             else {
-                // didnt arrive logic
+                axios({
+                    method: 'put',
+                    url: process.env.VUE_APP_BASE_URL+'/api/v1/reviews/'+this.$route.params.id+'/didnt-arrive',
+                    headers: {
+                        Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                    },
+                })
+                .then(() => {
+                    this.$router.push({name: 'business-client-reservations'});
+                })
+                .catch((error) => {
+                    alert("Something went wrong. See console for output.")
+                    console.log(error);
+                })
             }
         }
     },
     validations: {
-        comment: {
+        message: {
             required,
             minLength: minLength(5),
             maxLength: maxLength(300),
@@ -217,7 +247,7 @@ export default {
   opacity: 0;
 }
 
-.comment {
+.message {
     transition: 100ms;
 }
 
