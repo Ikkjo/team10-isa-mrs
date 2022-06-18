@@ -6,7 +6,8 @@ import java.time.LocalDate;
 public class DateTimeUtil {
 
     public static long getTodayEpochMillisecond() {
-        return (System.currentTimeMillis() / 1000L) * 1000;
+        long currentTime = System.currentTimeMillis();
+        return currentTime - (currentTime % 86400000L);
     }
 
 }
