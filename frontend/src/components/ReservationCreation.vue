@@ -4,7 +4,7 @@
             <div class="form-control">
                 <h1>Create Reservation</h1>
                 <div class="form-control">
-                    <label for="username">Username</label>
+                    <label for="username">Client Email</label>
                     <input type="text" @input="usernameUpdated"/>
                 </div>
                 <div class="form-control">
