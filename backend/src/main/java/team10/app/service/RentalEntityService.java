@@ -34,10 +34,13 @@ public class RentalEntityService {
     private final PictureService pictureService;
     private final Validator validator;
 
-    public RentalEntityDto rentalEntityToDto(UUID id) {
+    public RentalEntityDto rentalEntityToDto(UUID id, boolean singlePicture) {
         RentalEntity rentalEntity = rentalEntityRepository.findById(id)
                 .orElseThrow(() -> new RentalEntityNotFoundException(id));
-        rentalEntity.setPictures(PictureService.decompressPictures(rentalEntity.getPictures()));
+        if (singlePicture)
+            rentalEntity.setPictures(PictureService.decompressPictures(new HashSet<>(List.of(rentalEntity.getPictures().iterator().next()))));
+        else
+            rentalEntity.setPictures(PictureService.decompressPictures(rentalEntity.getPictures()));
         return buildRentalEntityDto(rentalEntity);
     }
 
@@ -188,7 +191,7 @@ public class RentalEntityService {
         List<RentalEntityDto> rentalEntityDtoList = new ArrayList<>();
 
         for (RentalEntity re : rentalEntityPage) {
-            rentalEntityDtoList.add(rentalEntityToDto(re.getId()));
+            rentalEntityDtoList.add(rentalEntityToDto(re.getId(), true));
         }
         return rentalEntityDtoList;
     }
@@ -231,7 +234,7 @@ public class RentalEntityService {
             }
 
             if(!ignoreAvailability && (fromAvailable && toAvailable)) {
-                rentalEntityDtos.add(rentalEntityToDto(rE.getId()));
+                rentalEntityDtos.add(rentalEntityToDto(rE.getId(), true));
             }
         }
 
