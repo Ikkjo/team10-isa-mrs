@@ -30,8 +30,6 @@ public class Ship extends RentalEntity {
     private String fishingEquipment;
     @Column(nullable = false)
     private int capacity;
-    @Column(nullable = false)
-    private boolean freeCancellation;
 
     public Ship(String title, Address address, String description, String rulesOfConduct, String additionalServices,
                 int price, Set<Picture> pictures, String type, double length, int engineCount, int enginePower,

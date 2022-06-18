@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.BusinessClientDto;
 import team10.app.dto.VacationHomeDto;
+import team10.app.security.auth.AuthUtil;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.VacationHomeOwnerService;
 
@@ -20,13 +21,13 @@ import java.util.Set;
 public class VacationHomeOwnerController {
 
     private final VacationHomeOwnerService vacationHomeOwnerService;
-    private final JWTProvider jwtProvider;
+    private final AuthUtil authUtil;
 
     @PostMapping("/add-vacation-home")
     @PreAuthorize("hasRole('HOUSE_OWNER')")
     public ResponseEntity<VacationHomeDto> addVacationHome(@RequestBody VacationHomeDto request, @RequestHeader(name = "Authorization") String token) {
         try {
-             vacationHomeOwnerService.addVacationHome(request, jwtProvider.getAuthentication(token.substring(7)).getName());
+             vacationHomeOwnerService.addVacationHome(request, authUtil.getEmailFromToken(token));
         }
         catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

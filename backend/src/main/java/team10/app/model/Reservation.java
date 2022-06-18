@@ -67,4 +67,18 @@ public class Reservation {
                 this.status = ReservationStatus.CREATED;
         }
     }
+
+    public double getEarnings() {
+        if (this.endDate < DateTimeUtil.getTodayEpochMillisecond()) {
+            if (this.status == ReservationStatus.DIDNT_ARRIVE) {
+                if (!this.rentalEntity.isFreeCancellation())
+                    return this.price * 0.1;
+                else
+                    return 0;
+            }
+            else
+                return this.price;
+        }
+        return 0;
+    }
 }

@@ -10,6 +10,7 @@ import team10.app.model.Client;
 import team10.app.model.Reservation;
 import team10.app.model.ReservationStatus;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,4 +26,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
 
     @Query("select count(r) > 0 from Reservation r where r.rentalEntity.id = ?1 and r.status in ?2")
     boolean existsActiveByRentalEntityId(UUID id, ReservationStatus[] reservationStatuses);
+
+    @Query("select r from Reservation r where r.businessClient = ?1 and r.startDate >= ?2 and r.endDate <= ?3")
+    List<Reservation> getAllReservationsByOwnerInRange(BusinessClient businessClient, long fromDate, long toDate);
 }

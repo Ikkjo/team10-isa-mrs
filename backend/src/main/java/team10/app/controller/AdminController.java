@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import team10.app.dto.*;
 import team10.app.model.DeletionRequest;
 import team10.app.model.RegistrationRequest;
+import team10.app.security.auth.AuthUtil;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.AdminService;
 import team10.app.util.exceptions.EmailTakenException;
@@ -25,7 +26,7 @@ import java.util.UUID;
 public class AdminController {
 
     private final AdminService adminService;
-    private final JWTProvider jwtProvider;
+    private final AuthUtil authUtil;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MAIN_ADMIN', 'ADMIN', 'UNVERIFIED_ADMIN')")
@@ -120,7 +121,7 @@ public class AdminController {
         try {
             return ResponseEntity.ok(
                     adminService.verifyAdmin(
-                            jwtProvider.getAuthentication(token.substring(7)).getName(), newPassword
+                            authUtil.getEmailFromToken(token), newPassword
                     )
             );
         } catch (UsernameNotFoundException ex) {

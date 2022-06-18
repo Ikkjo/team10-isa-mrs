@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -44,5 +43,7 @@ public class VacationHome extends RentalEntity {
         this.availability = availability;
         this.reservations = new HashSet<>();
         this.actions = new HashSet<>();
+        // TODO: Refactor freeCancellation frontend and backend for VacationHome
+        this.freeCancellation = true;
     }
 }
