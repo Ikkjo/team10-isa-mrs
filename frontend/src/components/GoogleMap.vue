@@ -28,7 +28,10 @@ export default {
     },
   },
     mounted() {
-        this.mapSrc = "https://maps.google.com/maps?&t=&z=13&ie=UTF8&iwloc=&output=embed";
+        if (!this.address || !this.city || !this.country)
+            this.mapSrc = "https://maps.google.com/maps?&t=&z=13&ie=UTF8&iwloc=&output=embed";
+        else
+            this.updateMap()
     }
 
 }

@@ -35,6 +35,13 @@
                 :saveDisabled="$v.rentalEntityCopy.address.$invalid"
                 @cancelClicked="cancel"
                 >
+                <template #body>
+                    <GoogleMap 
+                        :address="rentalEntity.address.address"
+                        :city="rentalEntity.address.city"
+                        :country="rentalEntity.address.country"
+                    />
+                </template>
                 <template slot="edit">
                     <div class="block-form">
                         <AddressInput
