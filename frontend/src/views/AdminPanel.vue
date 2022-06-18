@@ -9,17 +9,17 @@
                 :title="'Registration Requests'"
                 />
             <AdminMenuItem
+                :link="'deletion-requests'"
+                :iconClass="'material-icons'"
+                :icon="'person_remove'"
+                :title="'Deletion Requests'"
+                />
+            <AdminMenuItem
                 v-if="isMainAdmin"
                 :link="'create-admin'"
                 :iconClass="'material-icons'"
                 :icon="'person_add'"
                 :title="'Create Admin'"
-                />
-            <AdminMenuItem
-                :link="'deletion-requests'"
-                :iconClass="'material-icons'"
-                :icon="'person_remove'"
-                :title="'Deletion Requests'"
                 />
             <div class="bottom">
                 <AdminMenuItem
