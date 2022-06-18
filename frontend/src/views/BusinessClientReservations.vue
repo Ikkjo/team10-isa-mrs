@@ -129,7 +129,6 @@ export default {
                 page: 0, 
                 perPage: 10
             },
-            selectedRow: null,
             calendarOptions: {
                 plugins: [
                     dayGridPlugin,
@@ -213,7 +212,7 @@ export default {
         handleEventClick(clickInfo) {
             let event = clickInfo.event;
             if (event.status == 'FINISHED')
-                this.$router.push({name: 'reservation-report', params: {id: event.id}});
+                this.writeReview(event.id);
             else
                 alert("Reservation is not available for review")
         },
