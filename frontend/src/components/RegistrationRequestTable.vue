@@ -1,26 +1,40 @@
 <template>
     <div class="wrapper">
         <h1>Registration Requests</h1>
-        <Vuetable ref="vuetable"
-            :api-mode="false"
-            :fields="fields"
-            :data="requests"
+        <VueGoodTable
+            mode="remote"
+            :pagination-options="{
+                enabled: true,
+            }"
+            :totalRows="totalRecords"
+            :rows="requests"
+            :columns="columns"
+            :isLoading.sync="isLoading"
+            @on-page-change="onPageChange"
+            @on-sort-change="onSortChange"
+            @on-column-filter="onColumnFilter"
+            @on-per-page-change="onPerPageChange"
             >
-            <div slot="accept" slot-scope="props">
-                <button
-                    class="btn accept"
-                    @click="acceptRequest(props.rowData)"
-                    >Accept
-                </button>
-            </div>
-            <div slot="decline" slot-scope="props">
-                <button
-                    class="btn decline"
-                    @click="openDeclineRequestModal(props.rowData.id)"
-                    >Decline
-                </button>
-            </div>
-        </Vuetable>
+             <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field == 'decline'">
+                    <button class="btn decline" @click="openDeclineRequestModal(props.row.id)">Decline</button>
+                </span>
+                <span v-else-if="props.column.field == 'accept'">
+                    <button class="btn accept" @click="acceptRequest(props.row.id)">Accept</button>
+                </span>
+                <span v-else-if="props.column.field == 'role'">
+                    <span v-if="props.row.role === 'SHIP_OWNER'" class='material-icons'>directions_boat</span>
+                    <span v-else-if="props.row.role === 'HOUSE_OWNER'" class='material-icons'>house</span>
+                    <span v-else class='material-icons'>phishing</span>
+                </span>
+                <span v-else-if="props.column.field == 'dateOfBirth'">
+                    {{ props.row.dateOfBirth }} (Age:<b>{{birthDateFn(props.row.dateOfBirth)}}</b>)
+                </span>
+                <span v-else>
+                    {{props.formattedRow[props.column.field]}}
+                </span>
+            </template>
+        </VueGoodTable>
         <DeclineRegistrationRequestModal
             v-if="showModal"
             :show="showModal"
@@ -32,92 +46,108 @@
 </template>
 
 <script>
-import { Vuetable } from 'vuetable-3'
-import axios from 'axios'
-import DeclineRegistrationRequestModal from './DeclineRegistrationRequestModal.vue'
+import 'vue-good-table/dist/vue-good-table.css'
+import { VueGoodTable } from 'vue-good-table';
+import DeclineRegistrationRequestModal from './DeclineRegistrationRequestModal.vue';
+import axios from 'axios';
 
 export default {
     name: "RegistrationRequestList",
     components: {
-        Vuetable,
+        VueGoodTable,
         DeclineRegistrationRequestModal
     },
     data() {
         return {
             rrUUID: null,
             showModal: false,
-            fields: [
+            columns: [
                 {
-                    name: "role",
-                    title: "Type",
-                    formatter (value) {
-                        if (value === "SHIP_OWNER")
-                            return "<span class='material-icons'>directions_boat</span>"
-                        else if (value === "HOUSE_OWNER")
-                            return "<span class='material-icons'>house</span>"
-                        else    // FISHING_INSTRUCTOR
-                            return "<span class='material-icons'>phishing</span>"
-                    }
+                    label: 'Type',
+                    field: 'role',
+                    html: true,
+                    columnIndex: 0,
+                    tdClass: 'td-role',
                 },
                 {
-                    name: "firstName",
-                    title: "First Name"
+                    label: 'First Name',
+                    field: 'firstName',
+                    columnIndex: 1,
                 },
                 {
-                    name: "lastName",
-                    title: "Last Name"
+                    label: 'Last Name',
+                    field: 'lastName',
+                    columnIndex: 2,
                 },
                 {
-                    name: "email",
-                    title: "Email"
-                },
-                
-                {
-                    name: "phoneNumber",
-                    title: "Phone number"
+                    label: 'Email',
+                    field: 'email',
+                    columnIndex: 3,
                 },
                 {
-                    name: "dateOfBirth",
-                    title: "Birthdate",
-                    formatter (value) {
-                        let dateParts = value.split(".");
-                        let date = new Date(
-                            Number(dateParts[2]),   // Year
-                            Number(dateParts[1])-1, // Month
-                            Number(dateParts[0])    // Day
-                            );
-                        let now = new Date();
-                        let current_year = now.getFullYear();
-                        let year_diff = current_year - date.getFullYear();
-                        let birthday_this_year = new Date(current_year, date.getMonth(), date.getDate());
-                        let has_had_birthday_this_year = (now >= birthday_this_year);
-
-                        let age = has_had_birthday_this_year
-                            ? year_diff
-                            : year_diff - 1;
-                        return value + " (Age:<b>" + age+ "</b>)"
-                    }
+                    label: "Phone Number",
+                    field: "phoneNumber",
+                    columnIndex: 4,
                 },
                 {
-                    name: "addressDto.address",
-                    title: "Address"
+                    label: "Birth Date",
+                    field: "dateOfBirth",
+                    html: true,
+                    columnIndex: 5,
                 },
                 {
-                    name: "addressDto.city",
-                    title: "City"
+                    label: "Address",
+                    field: row => this.addressFn(row),
+                    sortable: false,
+                    columnIndex: 6,
                 },
                 {
-                    name: "addressDto.country",
-                    title: "Country"
+                    label: "City",
+                    field: row => this.cityFn(row),
+                    sortable: false,
+                    columnIndex: 7,
                 },
                 {
-                    name: "registrationReason",
-                    title: "Registration Reason"
+                    label: "Country",
+                    field: row => this.countryFn(row),
+                    sortable: false,
+                    columnIndex: 8,
                 },
-                'accept',
-                'decline'
+                {
+                    label: "Registration Reason",
+                    field: 'registrationReason',
+                    columnIndex: 9,
+                },
+                {
+                    label: 'Accept',
+                    field: 'accept',
+                    sortable: false,
+                    width: '120px',
+                    columnIndex: 10,
+                },
+                {
+                    label: 'Decline',
+                    field: 'decline',
+                    sortable: false,
+                    width: '120px',
+                    columnIndex: 11,
+                }
             ],
-            requests: null
+            requests: null,
+            totalRecords: 0,
+            serverParams: {
+                columnFilters: {
+                },
+                sort: [
+                    {
+                        field: 'id',
+                        type: 'asc'
+                    }
+                ],
+                page: 0, 
+                perPage: 10
+            },
+            isLoading: false,
         }
     },
     methods: {
@@ -148,20 +178,104 @@ export default {
         openDeclineRequestModal(id) {
             this.rrUUID = id;
             this.showModal = true;
-        }
+        },
+        roleFn(row) {
+            if (row.role === "SHIP_OWNER")
+                return "<span class='material-icons'>directions_boat</span>"
+            else if (row.role === "HOUSE_OWNER")
+                return "<span class='material-icons'>house</span>"
+            else    // FISHING_INSTRUCTOR
+                return "<span class='material-icons'>phishing</span>"
+        },
+        birthDateFn(value) {
+            let dateParts = value.split(".");
+            let date = new Date(
+                Number(dateParts[2]),   // Year
+                Number(dateParts[1])-1, // Month
+                Number(dateParts[0])    // Day
+                );
+            let now = new Date();
+            let current_year = now.getFullYear();
+            let year_diff = current_year - date.getFullYear();
+            let birthday_this_year = new Date(current_year, date.getMonth(), date.getDate());
+            let has_had_birthday_this_year = (now >= birthday_this_year);
+
+            let age = has_had_birthday_this_year
+                ? year_diff
+                : year_diff - 1;
+            return age
+        },
+        addressFn(row) {
+            return row.addressDto.address;
+        },
+        cityFn(row) {
+            return row.addressDto.city;
+        },
+        countryFn(row) {
+            return row.addressDto.country;
+        },
+        updateParams(newProps) {
+            this.serverParams = Object.assign({}, this.serverParams, newProps);
+        },
+        onPageChange(params) {
+            this.updateParams({page: params.currentPage-1});
+            this.loadItems();
+        },
+        onPerPageChange(params) {
+            console.log(params.currentPerPage)
+            this.updateParams({perPage: params.currentPerPage});
+            this.loadItems();
+        },
+        onSortChange(params) {
+            this.updateParams({
+                sort: [{
+                        type: params[0].type,
+                        field: params[0].field,
+                    }],
+            });
+            this.loadItems();
+        },
+        onColumnFilter(params) {
+            this.updateParams(params);
+            this.loadItems();
+        },
+        // load items is what brings back the rows from server
+        loadItems() {
+            let sortString = ''+this.serverParams.sort[0].field+','+this.serverParams.sort[0].type
+            axios({
+                method: 'get',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/registration-requests',
+                params: {page: this.serverParams.page, size: this.serverParams.perPage, sort: sortString},
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then((response) => {
+                this.totalRecords = response.data.totalPages
+                this.requests = response.data.reservations
+            })
+            .catch((error) => {
+                alert("Couldn't fetch registration requests. See console for more info.")
+                console.log(error);
+            }) 
+        },
     },
     created () {
         axios({
-            method: 'get',
-            url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/registration-requests',
-            headers: {
-                Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
-            },
-        }).then((response) => {
-            this.requests = response.data;
-        }).catch(() => {
-            alert('No connection.')
-        });
+                method: 'get',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/registration-requests',
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then((response) => {
+                this.totalRecords = response.data.totalPages
+                this.requests = response.data.reservations
+            })
+            .catch((error) => {
+                alert("Couldn't fetch registration requests. See console for more info.")
+                console.log(error);
+            })
     },
 }
 </script>
@@ -183,38 +297,7 @@ export default {
     background-color: darkred;
 }
 
-.vuetable-td-firstName , .vuetable-td-lastName{
-    width:120px;
-    max-width: 120px;
-}
-.vuetable-td-email {
-    max-width:160px;
-    width:160px;
-}
-
-.vuetable-td-dateOfBirth {
-    max-width: 110px;
-    width: 110px;
+.td-role {
     text-align: center;
-}
-
-.vuetable-td-role {
-    max-width: 70px;
-    text-align: center;
-}
-
-.vuetable-td-phone {
-    width: 140px;
-    max-width: 140px;
-}
-
-.vuetable-td-address\.address {
-    width: 130px;
-    max-width: 130px;
-}
-
-.vuetable-td-address\.city, .vuetable-td-address\.country {
-    width: 100px;
-    max-width: 100px;
 }
 </style>

@@ -1,6 +1,7 @@
 package team10.app.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +17,9 @@ import team10.app.util.exceptions.EmailTakenException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -40,8 +43,24 @@ public class AdminController {
 
     @GetMapping(path = "/registration-requests")
     @PreAuthorize("hasAnyRole('ADMIN','MAIN_ADMIN')")
-    public ResponseEntity<List<BusinessClientRegistrationRequestNoPasswordDto>> getRegistrationRequests() {
-        return ResponseEntity.ok(adminService.getRegistrationRequests());
+    public ResponseEntity<Map<String, Object>> getRegistrationRequests(
+            @RequestParam(defaultValue = "id,desc") String sort,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+            Page<RegistrationRequest> registrationRequestPage = adminService.getRegistrationRequests(sort, page, size);
+            Map<String, Object> response = new HashMap<>();
+            response.put(
+                    "reservations", adminService.getRegistrationRequestsDtoList(registrationRequestPage.getContent())
+            );
+            response.put("currentPage", registrationRequestPage.getNumber());
+            response.put("totalItems", registrationRequestPage.getTotalElements());
+            response.put("totalPages", registrationRequestPage.getTotalPages());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Transactional
@@ -83,8 +102,24 @@ public class AdminController {
 
     @GetMapping(path = "/deletion-requests")
     @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
-    public ResponseEntity<List<DeletionRequestDto>> getDeletionRequests() {
-        return ResponseEntity.ok(adminService.getDeletionRequests());
+    public ResponseEntity<Map<String, Object>> getDeletionRequests(
+            @RequestParam(defaultValue = "id,desc") String sort,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+            Page<DeletionRequest> deletionRequestPage = adminService.getDeletionRequests(sort, page, size);
+            Map<String, Object> response = new HashMap<>();
+            response.put(
+                    "reservations", adminService.getDeletionRequestsDtoList(deletionRequestPage.getContent())
+            );
+            response.put("currentPage", deletionRequestPage.getNumber());
+            response.put("totalItems", deletionRequestPage.getTotalElements());
+            response.put("totalPages", deletionRequestPage.getTotalPages());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Transactional
