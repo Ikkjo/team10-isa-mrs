@@ -49,7 +49,12 @@
                             Must be between 5 to 500 characters.
                         </div>
                     </div>
+                    <GoogleMap
+                        :address="baseInfo.first.address"
+                        :city="baseInfo.first.city"
+                        :country="baseInfo.first.country" />
                 </div>
+
                 <!-- STEP 2: ADDITIONAL INFORMATION -->
                 <div class="form" v-show="step === 2">
                     <h1>Additional information</h1>
@@ -340,6 +345,7 @@ import RentalEntityPictureInput from '../components/RentalEntityPictureInput.vue
 import RoomsInput from '../components/RoomsInput.vue'
 import NumberInput from '../components/NumberInput.vue'
 import RentalEntityAvailabilityCalendar from '@/components/RentalEntityAvailabilityCalendar.vue'
+import GoogleMap from '@/components/GoogleMap.vue'
 import axios from 'axios';
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 
@@ -351,7 +357,8 @@ export default {
         RentalEntityPictureInput,
         RoomsInput,
         NumberInput,
-        RentalEntityAvailabilityCalendar
+        RentalEntityAvailabilityCalendar,
+        GoogleMap,
     },
     data() {
         return {
@@ -421,6 +428,7 @@ export default {
             step: 1,
             numSteps: 5,
             role: '',
+            mapSrc: null,
         }
     },
     validations: {
@@ -914,4 +922,5 @@ export default {
     border-color: red !important;
     border-width: 2px;
 }
+
 </style>
