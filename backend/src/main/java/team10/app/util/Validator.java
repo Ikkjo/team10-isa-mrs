@@ -7,7 +7,6 @@ import team10.app.model.Action;
 import team10.app.model.BusinessClient;
 import team10.app.model.RentalEntity;
 import team10.app.model.Reservation;
-import team10.app.service.BusinessClientService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -75,8 +74,8 @@ public class Validator {
     private static final int RESERVATION_MAX_PERSONS = 100;
 
     // Review
-    private static final int REVIEW_MIN_MESSAGE = 5;
-    private static final int REVIEW_MAX_MESSAGE = 300;
+    private static final int REPORT_MIN_MESSAGE = 5;
+    private static final int REPORT_MAX_MESSAGE = 300;
 
 
 
@@ -292,7 +291,7 @@ public class Validator {
         return email1.equals(email2);
     }
 
-    public boolean validateReviewDto(ReviewDto reviewDto) {
-        return inRange(REVIEW_MIN_MESSAGE, REVIEW_MAX_MESSAGE, reviewDto.getMessage().length());
+    public boolean validateReportDto(ReportDto reportDto) {
+        return inRange(REPORT_MIN_MESSAGE, REPORT_MAX_MESSAGE, reportDto.getMessage().length());
     }
 }
