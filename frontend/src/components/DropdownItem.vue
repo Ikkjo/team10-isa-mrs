@@ -51,7 +51,7 @@ export default {
 .menu-item:hover {
     background-color: rgb(236, 236, 236);
     color: var(--orange-primary);
-    /* color: black; */
+
 }
 
 .icon-right {

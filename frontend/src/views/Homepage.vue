@@ -1,9 +1,9 @@
 <template>
-  <div @SearchBarButtonToggled="filterRentalEntities">
+  <div>
     <UniversalNavBar/>
     <SearchBar ref="searchBar" @searchPressed="search"/>
     <div class="listings">
-      <RentalEntityCard class="listing" v-for="(rentalEntity, index) in filteredRentalEntities" :key="index" :rentalEntity="rentalEntity"/>
+      <RentalEntityCard class="listing" v-for="(rentalEntity, index) in rentalEntities" :key="index" :rentalEntity="rentalEntity"/>
     </div>
   </div>
 </template>
@@ -25,7 +25,6 @@ export default {
     data() {
       return {
         rentalEntities: [],
-        filteredRentalEntities: [],
         searchQuery: {},
         sharedItems: SearchBar.data
       }
@@ -37,14 +36,6 @@ export default {
           .then((response) => {
             console.log(response.data)
             this.rentalEntities = response.data
-
-            if (this.rentalEntities.length > 0) {
-              this.rentalEntities.forEach(rentalEntity => {
-                rentalEntity.show = true;
-              });
-            }
-
-            this.filteredRentalEntities = this.rentalEntities
             })
           .catch(function(error) {
               console.log(error)
@@ -61,36 +52,20 @@ export default {
               address: searchQuery.address,
               title: searchQuery.title,
               fromDate: searchQuery.fromDate,
-              toDate: searchQuery.toDate
+              toDate: searchQuery.toDate,
+              ofType: searchQuery.ofType,
+              minPrice: searchQuery.minPrice,
+              maxPrice: searchQuery.maxPrice
             }
           })
           .then((response) => {
             console.log(response.data)
             this.rentalEntities = response.data
-
-            if (this.rentalEntities.length > 0) {
-              this.rentalEntities.forEach(rentalEntity => {
-                rentalEntity.show = true;
-              });
-            }
-
-            this.filteredRentalEntities = this.rentalEntities
           })
           .catch(function(error) {
               console.log(error)
           })
       },
-      filterRentalEntities(buttonData) {
-        let pressed = buttonData.state
-        let type = buttonData.type
-
-        for (let rentalEntity of this.rentalEntities) {
-          if (rentalEntity.type == type) {
-              rentalEntity.show = pressed;
-          }
-        }
-      }
-
     }
   }
 </script>
@@ -126,7 +101,7 @@ export default {
     justify-content: center;
     gap: 15px;
     max-width: 100%;
-    padding-top: 210px;
+    padding-top: 240px;
 }
 
 @media screen and (max-width: 669px) {
