@@ -198,7 +198,7 @@ public class AdminService {
         Report report = reportRepository.findById(reportId)
                 .orElseThrow( () -> new ReportNotFoundException(reportId));
         if (userRepository.existsById(report.getClient().getId()))
-            throw new UsernameNotFoundException(report.getClient().getEmail());
+            throw new UsernameNotFoundException("Reported user doesn't exist.");
         if (penalize)
             clientRepository.addPenalty(report.getClient().getId());
         try {
