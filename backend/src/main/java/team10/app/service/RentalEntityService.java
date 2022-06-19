@@ -222,11 +222,12 @@ public class RentalEntityService {
                         "SELECT re FROM RentalEntity re " +
                         "LEFT JOIN Address addr on addr.id=re.address " +
                         "WHERE re.title LIKE '%s' AND " +
+                        "re.description LIKE '%s' AND " +
                         "addr.country LIKE '%s' AND " +
                         "addr.city LIKE '%s' AND " +
                         "addr.address LIKE '%s' AND " +
                         "re.price BETWEEN %d AND %d",
-                "%"+title+"%", country, city, address, minPrice, maxPrice);
+                "%"+title+"%", "%"+title+"%", country, city, address, minPrice, maxPrice);
         boolean shouldCheckAvailability = !(fromDate < DateTimeUtil.getTodayEpochMillisecond());
         TypedQuery<RentalEntity> query = entityManager.createQuery(queryStr, RentalEntity.class);
 
@@ -234,7 +235,8 @@ public class RentalEntityService {
 
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
         for (RentalEntity rE:  results) {
-            if(isRentalEntityAvailable(fromDate, toDate, rE, shouldCheckAvailability))
+            if(isRentalEntityAvailable(fromDate, toDate, rE, shouldCheckAvailability) &&
+                    shouldIncludeBasedOnTypeFilter(rE, typeFilters, shouldFilterByType(typeFilters)))
                 rentalEntityDtos.add(setRentalEntityDtoType(rE, rentalEntityToDto(rE.getId(), true)));
         }
 
@@ -286,16 +288,17 @@ public class RentalEntityService {
 
     }
 
-    private boolean shouldFilter(List<String> filters){
+    private boolean shouldFilterByType(List<String> filters){
         if (filters != null) {
-            if (filters.size() > 0) {
-                return true;
-            }
+            return filters.size() > 0;
         }
         return false;
     }
 
-    private boolean shouldInclude(List<RentalEntity> rentalEntities, List<String> filters) {
+    private boolean shouldIncludeBasedOnTypeFilter(RentalEntity rentalEntity, List<String> filters, boolean shouldFilter) {
+        if (shouldFilter) {
+            return filters.contains(rentalEntity.getClass().getSimpleName());
+        }
         return true;
     }
 
