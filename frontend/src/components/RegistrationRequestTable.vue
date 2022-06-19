@@ -6,10 +6,10 @@
             :pagination-options="{
                 enabled: true,
             }"
-            :totalRows="totalRecords"
+            :total-rows="totalRequests"
             :rows="requests"
             :columns="columns"
-            :isLoading.sync="isLoading"
+            :is-loading.sync="isLoading"
             @on-page-change="onPageChange"
             @on-sort-change="onSortChange"
             @on-column-filter="onColumnFilter"
@@ -134,7 +134,7 @@ export default {
                 }
             ],
             requests: null,
-            totalRecords: 0,
+            totalRequests: 0,
             serverParams: {
                 columnFilters: {
                 },
@@ -251,7 +251,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
+                this.totalRequests = response.data.totalPages * this.serverParams.perPage;
                 this.requests = response.data.reservations
             })
             .catch((error) => {
@@ -269,7 +269,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
+                this.totalRequests = response.data.totalPages * this.serverParams.perPage;
                 this.requests = response.data.reservations
             })
             .catch((error) => {
