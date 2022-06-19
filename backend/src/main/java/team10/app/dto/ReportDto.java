@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDto {
+public class ReportDto {
     private String message;
     private boolean penalize;
 }

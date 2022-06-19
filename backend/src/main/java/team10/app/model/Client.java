@@ -26,7 +26,7 @@ public class Client extends User{
     @OneToMany(mappedBy = "client",
                fetch = FetchType.LAZY,
                cascade = CascadeType.ALL)
-    private Set<Review> reviews;
+    private Set<Report> reports;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private Set<Reservation> reservations;

@@ -1,13 +1,13 @@
 <template>
     <div class="wrapper">
-        <h1>Account Deletion Requests</h1>
+        <h1>Business Client Reports</h1>
         <VueGoodTable
             mode="remote"
             :pagination-options="{
                 enabled: true,
             }"
             :total-rows="totalRecords"
-            :rows="requests"
+            :rows="reports"
             :columns="columns"
             :isLoading.sync="isLoading"
             @on-page-change="onPageChange"
@@ -15,9 +15,12 @@
             @on-column-filter="onColumnFilter"
             @on-per-page-change="onPerPageChange"
             >
-             <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'decide'">
-                    <button class="btn" @click="openDeletionDecisionModal(props.row)">Decide</button>
+            <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field == 'penalize'">
+                    <button class="btn" @click="penalizeClient(props.row.id)">Penalize</button>
+                </span>
+                <span v-else-if="props.column.field == 'dont-penalize'">
+                    <button class="btn" @click="dontPenalizeClient(props.row.id)">Don't Penalize</button>
                 </span>
                 <span v-else-if="props.column.field == 'role'">
                     <span v-if="props.row.role === 'SHIP_OWNER'" class='material-icons'>directions_boat</span>
@@ -29,68 +32,65 @@
                 </span>
             </template>
         </VueGoodTable>
-        <DeletionDecisionModal
-            v-if="showModal"
-            :show="showModal"
-            :drUUID="drUUID"
-            @close="showModal=false"
-            @removeRequest="removeRequest"
-            />
     </div>
 </template>
 
 <script>
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
-import DeletionDecisionModal from './DeletionDecisionModal.vue'
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
+    name: 'BusinessClientReportsTable',
     components: {
         VueGoodTable,
-        DeletionDecisionModal
     },
     data() {
         return {
-            drUUID: null,
-            showModal: false,
             columns: [
                 {
                     label: 'Type',
-                    field: 'role',
+                    field: 'reportedByRole',
                     html: true,
                     columnIndex: 0,
                     tdClass: 'td-role',
                 },
                 {
-                    label: 'First Name',
-                    field: 'firstName',
+                    label: 'Reported By',
+                    field: 'reportedBy',
                     columnIndex: 1,
                 },
                 {
-                    label: 'Last Name',
-                    field: 'lastName',
+                    label: 'Person Reported',
+                    field: 'personReported',
                     columnIndex: 2,
                 },
                 {
-                    label: 'Email',
-                    field: 'email',
+                    label: 'Rental Entity Title',
+                    field: 'rentalEntityTitle',
                     columnIndex: 3,
                 },
                 {
-                    label: "Deletion Reason",
-                    field: 'deletionReason',
+                    label: "Penalization Reason",
+                    field: 'message',
                     columnIndex: 4,
                 },
                 {
-                    label: 'Decide',
-                    field: 'decide',
+                    label: 'Penalize',
+                    field: 'penalize',
                     sortable: false,
-                    width: '120px',
+                    width: '160px',
                     columnIndex: 5,
+                },
+                {
+                    label: "Don't Penalize",
+                    field: 'dont-penalize',
+                    sortable: false,
+                    width: '160px',
+                    columnIndex: 6,
                 }
             ],
-            requests: null,
+            reports: null,
             totalRecords: 0,
             serverParams: {
                 columnFilters: {
@@ -108,19 +108,6 @@ export default {
         }
     },
     methods: {
-        removeRequest() {
-            for (let i = 0; i < this.requests.length; i++) {
-                console.log(this.requests[i].id)
-                if (this.requests[i].id === this.drUUID){
-                    this.requests.splice(i, 1);
-                    break;
-                }
-            }
-        },
-        openDeletionDecisionModal(data) {
-            this.drUUID = data.id;
-            this.showModal = true;
-        },
         updateParams(newProps) {
             this.serverParams = Object.assign({}, this.serverParams, newProps);
         },
@@ -146,12 +133,11 @@ export default {
             this.updateParams(params);
             this.loadItems();
         },
-        // load items is what brings back the rows from server
         loadItems() {
             let sortString = ''+this.serverParams.sort[0].field+','+this.serverParams.sort[0].type
             axios({
                 method: 'get',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-requests',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/reports/not-reviewed',
                 params: {page: this.serverParams.page, size: this.serverParams.perPage, sort: sortString},
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -159,32 +145,85 @@ export default {
             })
             .then((response) => {
                 this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-                this.requests = response.data.reservations
+                this.reports = response.data.reservations
             })
             .catch((error) => {
-                alert("Couldn't fetch registration requests. See console for more info.")
+                this.isLoading = false;
+                alert("Couldn't fetch reports. See console for more info.")
                 console.log(error);
-            }) 
+            })
         },
+        penalizeClient(id) {
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/reports/'+id+'/penalize',
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then(() => {
+                this.loadItems();
+            })
+            .catch((error) => {
+                alert("Something went wrong. See console")
+                console.log(error);
+            })
+        },
+        dontPenalizeClient(id) {
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/reports/'+id+'/dont-penalize',
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then(() => {
+                this.loadItems();
+            })
+            .catch((error) => {
+                alert("Something went wrong. See console")
+                console.log(error);
+            })
+        }
     },
     created () {
         axios({
             method: 'get',
-            url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-requests',
+            url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/reports/not-reviewed',
             headers: {
                 Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
             },
-        }).then((response) => {
+        })
+        .then((response) => {
             this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-            this.requests = response.data;
-        }).catch((error) => {
+            this.reports = response.data.reservations
+        })
+        .catch((error) => {
+            this.isLoading = false;
+            alert("Couldn't fetch reports. See console for more info.")
             console.log(error);
-        });
+        })
     },
 }
 </script>
 
-<style>
+<style scoped>
+.btn.accept {
+    background-color: green;
+}
+
+.btn.accept:hover {
+    background-color: darkgreen;
+}
+
+.btn.decline {
+    background-color: red;
+}
+
+.btn.decline:hover {
+    background-color: darkred;
+}
+
 .td-role {
     text-align: center;
 }

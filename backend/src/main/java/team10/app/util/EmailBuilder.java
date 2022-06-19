@@ -276,4 +276,21 @@ public class EmailBuilder {
                 "\n" +
                 "</div></div>";
     }
+    // TODO: Make the emails bellow in html
+    public static String getClientPenalizedForBusinessClientEmail(String name, String clientReported) {
+        return name + ", Your report has been accepted and "+clientReported+" has been penalized.";
+    }
+
+    public static String getClientPenalizedForClientEmail(String name, String rentalEntityTitle) {
+        return name + ", You have been reported by the owner of "+rentalEntityTitle+" and we have decided to penalize you for bad behaviour.";
+    }
+
+    public static String getClientNotPenalizedForBusinessClientEmail(String name, String clientReported) {
+        return name + ", Your report for "+clientReported+" has not been accepted.";
+
+    }
+
+    public static String getClientNotPenalizedForClientEmail(String name, String rentalEntityTitle) {
+        return name + ", You have been reported by the owner of "+rentalEntityTitle+" and we have decided not to penalize you.";
+    }
 }
