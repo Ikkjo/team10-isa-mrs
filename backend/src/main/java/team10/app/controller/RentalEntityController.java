@@ -247,12 +247,15 @@ public class RentalEntityController {
             @RequestParam(name = "city", defaultValue = "%") String city,
             @RequestParam(name = "address", defaultValue = "%") String address,
             @RequestParam(name = "fromDate", defaultValue = "0") long fromDate,
-            @RequestParam(name = "toDate", defaultValue = "0") long toDate) {
+            @RequestParam(name = "toDate", defaultValue = "0") long toDate,
+            @RequestParam(name = "ofType", defaultValue = "") String ofType,
+            @RequestParam(name = "minPrice", defaultValue = "0") int minPrice,
+            @RequestParam(name = "maxPrice", defaultValue = "0") int maxPrice) {
         int DEFAULT_PAGE_SIZE = 20;
 
         try{
             return ResponseEntity.ok(rentalEntityService.rentalEntitySearch(page, pageSize, title, country, city,
-                    address, fromDate, toDate));
+                    address, fromDate, toDate, ofType, minPrice, maxPrice));
         } catch(Exception e) {
             return ResponseEntity.ok(rentalEntityService.getAllRentalEntitiesPage(0, DEFAULT_PAGE_SIZE));
         }

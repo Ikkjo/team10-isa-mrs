@@ -23,8 +23,9 @@
         </div>
         <div>
         <button class="btn" @click="$emit('searchPressed', getSearchQuery())">
+        <span class="material-icons-outlined">search</span>
           Search
-          <span class="material-icons-outlined">search</span>
+          
         </button>
         </div>
         
@@ -206,6 +207,9 @@ export default {
 .btn {
   margin: 7px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .searchbar {
   height: calc(var(--nav-height) + 10px);
@@ -251,17 +255,21 @@ export default {
     outline-color: var(--orange-primary, #f0a500);
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 500px) {
   .searchbar {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+
     align-items: center;
     padding: 0 15px;
     height: auto;
   }
 
   #search {
-    position: absolute;
+    position: relative;
+  }
+
+  .filter-bar{
+    flex-direction: column;
   }
 
 }

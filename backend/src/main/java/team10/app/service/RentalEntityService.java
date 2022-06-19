@@ -208,17 +208,27 @@ public class RentalEntityService {
             String city,
             String address,
             long fromDate,
-            long toDate
+            long toDate,
+            String ofType,
+            int minPrice,
+            int maxPrice
     ) {
+        List<String> typeFilters = getTypeFilterList(ofType);
+        if(minPrice == maxPrice || maxPrice < minPrice) {
+            minPrice = 0;
+            maxPrice = 10000;
+        }
+        String queryStr = String.format(
+                        "SELECT re FROM RentalEntity re " +
+                        "LEFT JOIN Address addr on addr.id=re.address " +
+                        "WHERE re.title LIKE '%s' AND " +
+                        "addr.country LIKE '%s' AND " +
+                        "addr.city LIKE '%s' AND " +
+                        "addr.address LIKE '%s' AND " +
+                        "re.price BETWEEN %d AND %d",
+                "%"+title+"%", country, city, address, minPrice, maxPrice);
         boolean shouldCheckAvailability = !(fromDate < DateTimeUtil.getTodayEpochMillisecond());
-        TypedQuery<RentalEntity> query = entityManager.createQuery(
-            String.format("SELECT re FROM RentalEntity re " +
-                "LEFT JOIN Address addr on addr.id=re.address " +
-                "WHERE re.title LIKE '%s' AND " +
-                "addr.country LIKE '%s' AND " +
-                "addr.city LIKE '%s' AND " +
-                "addr.address LIKE '%s'",
-                "%"+title+"%", country, city, address), RentalEntity.class);
+        TypedQuery<RentalEntity> query = entityManager.createQuery(queryStr, RentalEntity.class);
 
         List<RentalEntity> results = query.getResultList();
 
@@ -263,6 +273,30 @@ public class RentalEntityService {
         if (reservationRepository.existsActiveByRentalEntityId(id, reservationStatuses))
             throw new RentalEntityReservedException(id);
         rentalEntityRepository.updateDeleted(true, id);
+    }
+
+    private List<String> getTypeFilterList(String ofTypeString) {
+        List<String> filters = Arrays.asList(ofTypeString.split(","));
+
+        if(filters.contains("VacationHome") || filters.contains("Ship") || filters.contains("Adventure")) {
+            return filters;
+        } else {
+            return null;
+        }
+
+    }
+
+    private boolean shouldFilter(List<String> filters){
+        if (filters != null) {
+            if (filters.size() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean shouldInclude(List<RentalEntity> rentalEntities, List<String> filters) {
+        return true;
     }
 
 }
