@@ -53,7 +53,18 @@ const routes = [
                 path: 'account-info',
                 name: 'admin-account-info',
                 component: () => import('../components/AdminAccountInfo.vue')
-            }
+            },
+            {
+                path: 'business-client-reports',
+                name: 'business-client-reports',
+                component: () => import('../components/BusinessClientReportsTable.vue')
+            },
+            // TODO: Create this component
+            // {
+            //     path: 'user-complaints',
+            //     name: 'user-complaints',
+            //     component: () => import('../components/UserComplaintsTable.vue')
+            // }
         ]
     },
     {

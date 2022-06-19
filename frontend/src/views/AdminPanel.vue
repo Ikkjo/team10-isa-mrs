@@ -3,30 +3,43 @@
         <div class="admin-sidebar">
             <div class="menu-title">Menu</div>
             <AdminMenuItem
-                :link="'registration-requests'"
-                :iconClass="'material-icons'"
-                :icon="'group_add'"
-                :title="'Registration Requests'"
+                link="registration-requests"
+                iconClass="material-icons"
+                icon="group_add"
+                title="Registration Requests"
+                />
+            <!-- TODO: Create this component -->
+            <!-- <AdminMenuItem
+                link="user-complaints"
+                iconClass="material-icons"
+                icon="flag"
+                title="User Complaints"
+                /> -->
+            <AdminMenuItem
+                link="business-client-reports"
+                iconClass="material-icons"
+                icon="flag"
+                title="Business Client Reports"
                 />
             <AdminMenuItem
-                :link="'deletion-requests'"
-                :iconClass="'material-icons'"
-                :icon="'person_remove'"
-                :title="'Deletion Requests'"
+                link="deletion-requests"
+                iconClass="material-icons"
+                icon="person_remove"
+                title="Deletion Requests"
                 />
             <AdminMenuItem
                 v-if="isMainAdmin"
-                :link="'create-admin'"
-                :iconClass="'material-icons'"
-                :icon="'person_add'"
-                :title="'Create Admin'"
+                link="create-admin"
+                iconClass="material-icons"
+                icon="person_add"
+                title="Create Admin"
                 />
             <div class="bottom">
                 <AdminMenuItem
-                    :link="'admin-account-info'"
-                    :iconClass="'material-icons'"
-                    :icon="'account_circle'"
-                    :title="'Account Info'"
+                    link="admin-account-info"
+                    iconClass="material-icons"
+                    icon="account_circle"
+                    title="Account Info"
                     />
                 <div @click="logout" class="option">
                     <span class="icon-class material-icons">logout</span>
