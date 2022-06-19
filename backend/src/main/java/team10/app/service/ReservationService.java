@@ -123,7 +123,7 @@ public class ReservationService {
         }
     }
 
-    public Map<String, Double> getReservationsReport(String email, String period) {
+    public Map<String, Integer> getReservationsReport(String email, String period) {
         switch (period) {
             case("week"):
                 return this.buildWeekReservationsReportMap(this.getAllReservationsByOwnerInRange(email,
@@ -139,35 +139,35 @@ public class ReservationService {
         }
     }
 
-    private Map<String, Double> buildWeekReservationsReportMap(List<Reservation> reservations) {
-        Map<String, Double> map = new HashMap<>();
+    private Map<String, Integer> buildWeekReservationsReportMap(List<Reservation> reservations) {
+        Map<String, Integer> map = new HashMap<>();
         for (Reservation reservation : reservations) {
             String week = DateTimeUtil.getWeekOfYearFromDate(reservation.getEndDate());
             if (!map.containsKey(week))
-                map.put(week, 0.0);
-            map.put(week, map.get(week) + reservation.getEarnings());
+                map.put(week, 0);
+            map.put(week, map.get(week) + 1);
         }
         return map;
     }
 
-    private Map<String, Double> buildMonthReservationsReportMap(List<Reservation> reservations) {
-        Map<String, Double> map = new HashMap<>();
+    private Map<String, Integer> buildMonthReservationsReportMap(List<Reservation> reservations) {
+        Map<String, Integer> map = new HashMap<>();
         for (Reservation reservation : reservations) {
                 String month = DateTimeUtil.getMonthFromDate(reservation.getEndDate());
                 if (!map.containsKey(month))
-                    map.put(month, 0.0);
-                map.put(month, map.get(month) + reservation.getEarnings());
+                    map.put(month, 0);
+                map.put(month, map.get(month) + 1);
         }
         return map;
     }
 
-    private Map<String, Double> buildYearReservationsReportMap(List<Reservation> reservations) {
-        Map<String, Double> map = new HashMap<>();
+    private Map<String, Integer> buildYearReservationsReportMap(List<Reservation> reservations) {
+        Map<String, Integer> map = new HashMap<>();
         for (Reservation reservation : reservations) {
             String year = DateTimeUtil.getYearFromDate(reservation.getEndDate());
             if (!map.containsKey(year))
-                map.put(year, 0.0);
-            map.put(year, map.get(year) + reservation.getEarnings());
+                map.put(year, 0);
+            map.put(year, map.get(year) + 1);
         }
         return map;
     }

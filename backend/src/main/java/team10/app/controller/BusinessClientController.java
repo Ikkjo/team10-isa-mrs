@@ -85,7 +85,7 @@ public class BusinessClientController {
 
     @GetMapping("/report/reservations")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<Map<String, Double>> getEarningsReport(@RequestHeader(name = "Authorization") String token,
+    public ResponseEntity<Map<String, Integer>> getEarningsReport(@RequestHeader(name = "Authorization") String token,
                                                                  @RequestParam String period)
     {
         try {
