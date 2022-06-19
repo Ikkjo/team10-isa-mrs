@@ -4,8 +4,21 @@
             <div class="form-control">
                 <h1>Create Reservation</h1>
                 <div class="form-control">
-                    <label for="username">Username</label>
-                    <input type="text" @input="usernameUpdated"/>
+                    <label for="email">Client Email</label>
+                    <input type="text" 
+                        v-model="email" 
+                        name="email" 
+                        @input="emailUpdated"
+                        @focus="infocus.email = true" 
+                        @blur="infocus.email = false" 
+                        :class="{alert: !infocus.email && $v.email.$invalid}" 
+                        :placeholder="!infocus.email && $v.email.$invalid ? 'Required' : 'client@rentr.com'">
+                    <div class="alert-info" 
+                        v-if="!infocus.email
+                        && !$v.email.email"
+                        >
+                        Incorrect email format.
+                    </div>
                 </div>
                 <div class="form-control">
                     <label>Duration</label>
@@ -40,6 +53,7 @@
 import PriceInput from '@/components/PriceInput.vue'
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 import NumberInput from '@/components/NumberInput.vue'
+import { required, email } from 'vuelidate/lib/validators'
 import axios from 'axios'
 export default {
     name: 'ReservationCreation',
@@ -53,11 +67,22 @@ export default {
         return {
             dateRange: null,
             disabledDates: [],
+            email: '',
+            infocus: { email: true },
         }
     },
+    validations: {
+         email: {
+            required,
+            email
+        },
+    },
     methods: {
-        usernameUpdated(event) {
-            this.$emit('updated:username', event.target.value)
+        emailUpdated(event) {
+            if (!this.$v.email.$invalid)
+                this.$emit('updated:email', event.target.value)
+            else
+                this.$emit('updated:email', '')
         },
         priceUpdated(price) {
             this.$emit('updated:price', price)

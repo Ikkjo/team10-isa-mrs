@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.ReviewDto;
+import team10.app.security.auth.AuthUtil;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.ReviewService;
 import team10.app.util.exceptions.ReviewInvalidException;
@@ -21,7 +22,7 @@ import java.util.UUID;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final JWTProvider jwtProvider;
+    private final AuthUtil authUtil;
 
     @Transactional
     @PutMapping("/{reservationId}/didnt-arrive")
@@ -43,7 +44,7 @@ public class ReviewController {
     public ResponseEntity<ReviewDto> addReview(@RequestHeader (name="Authorization") String token, @PathVariable UUID reservationId, @RequestBody ReviewDto reviewDto) {
         try {
             return new ResponseEntity<>(reviewService.addReview(
-                    jwtProvider.getAuthentication(token.substring(7)).getName(), reservationId, reviewDto), HttpStatus.OK);
+                    authUtil.getEmailFromToken(token), reservationId, reviewDto), HttpStatus.OK);
         }
         catch (ReviewInvalidException | UsernameNotFoundException e)
         {

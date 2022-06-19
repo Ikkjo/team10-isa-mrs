@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.ReservationDto;
 import team10.app.model.Reservation;
-import team10.app.security.auth.JWTProvider;
+import team10.app.security.auth.AuthUtil;
 import team10.app.service.ReservationService;
 import team10.app.util.exceptions.InvalidReservationBusinessClientException;
 import team10.app.util.exceptions.ReservationNotAvailableForReviewException;
@@ -25,7 +25,7 @@ import java.util.UUID;
 public class ReservationController {
 
     private final ReservationService reservationService;
-    private final JWTProvider jwtProvider;
+    private final AuthUtil authUtil;
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
@@ -36,7 +36,7 @@ public class ReservationController {
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            Page<Reservation> reservationPage = reservationService.getAllReservationsByOwner(principal.getName(), sort, page, size);
+            Page<Reservation> reservationPage = reservationService.getAllReservationsByOwnerPage(principal.getName(), sort, page, size);
             Map<String, Object> response = new HashMap<>();
             response.put("reservations", reservationService.getReservationDtoList(reservationPage.getContent()));
             response.put("currentPage", reservationPage.getNumber());
@@ -55,7 +55,7 @@ public class ReservationController {
         try {
             return new ResponseEntity<>(
                     reservationService.getReservationDtoById(
-                            jwtProvider.getAuthentication(token.substring(7)).getName(),
+                            authUtil.getEmailFromToken(token),
                             id
                     ),
                     HttpStatus.OK

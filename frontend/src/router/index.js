@@ -87,6 +87,11 @@ const routes = [
         component: () => import('../views/BusinessClientReservations.vue')
     },
     {
+        path: '/account/statistics',
+        name: 'statistics',
+        component: () => import('../views/StatisticsView.vue')
+    },
+    {
         path: '/listing/:id',
         name: 'rental-entity-details',
         component: () => import('../views/RentalEntityDetails.vue')
