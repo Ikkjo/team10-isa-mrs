@@ -127,7 +127,7 @@ public class ReservationService {
         switch (period) {
             case("week"):
                 return this.buildWeekReservationsReportMap(this.getAllReservationsByOwnerInRange(email,
-                        DateTimeUtil.getDeltaWeekFromToday(-4), DateTimeUtil.getDeltaFromToday(4)));
+                        DateTimeUtil.getDeltaWeekFromToday(-9), DateTimeUtil.getTodayEpochMillisecond()));
             case("month"):
                 return this.buildMonthReservationsReportMap(this.getAllReservationsByOwnerInRange(email,
                         DateTimeUtil.getFirstDayOfCurrentYear(), DateTimeUtil.getLastDayOfCurrentYear()));
