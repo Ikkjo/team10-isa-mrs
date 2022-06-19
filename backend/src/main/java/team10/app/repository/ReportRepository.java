@@ -11,9 +11,6 @@ import team10.app.model.Report;
 import java.util.UUID;
 
 public interface ReportRepository extends JpaRepository<Report, UUID> {
-
-    Page<Report> findAll(Pageable pageable);
-
     @Query(
             value = "select r from Report r where r.reviewed = false and r.penalize = true",
             countQuery = "select count(r) from Report r where r.reviewed = false and r.penalize = true"
