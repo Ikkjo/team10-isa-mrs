@@ -13,7 +13,7 @@ public class Rating {
     private Double serviceRating;
 
     @OneToOne(fetch = FetchType.EAGER)
-    private Review review;
+    private Report report;
 
 
     public Rating(){
