@@ -1,8 +1,6 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +12,6 @@ import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
 import java.util.Optional;
-import java.util.UUID;
-
 import static team10.app.model.UserRole.*;
 
 @Service

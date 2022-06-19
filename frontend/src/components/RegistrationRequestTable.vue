@@ -15,7 +15,7 @@
             @on-column-filter="onColumnFilter"
             @on-per-page-change="onPerPageChange"
             >
-             <template slot="table-row" slot-scope="props">
+            <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'decline'">
                     <button class="btn decline" @click="openDeclineRequestModal(props.row.id)">Decline</button>
                 </span>
@@ -280,7 +280,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .btn.accept {
     background-color: green;
 }

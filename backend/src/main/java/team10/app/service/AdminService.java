@@ -9,17 +9,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.*;
 import team10.app.model.*;
-import team10.app.repository.AdminRepository;
-import team10.app.repository.DeletionRequestRepository;
-import team10.app.repository.RegistrationRequestRepository;
-import team10.app.repository.UserRepository;
+import team10.app.repository.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import team10.app.util.EmailBuilder;
+import team10.app.util.Sorting;
 import team10.app.util.Validator;
-import team10.app.util.exceptions.DeletionRequestReviewedException;
-import team10.app.util.exceptions.EmailTakenException;
-import team10.app.util.exceptions.PasswordInvalidException;
-import team10.app.util.exceptions.RegistrationRequestReviewedException;
+import team10.app.util.exceptions.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -35,6 +30,8 @@ public class AdminService {
     private final RegistrationRequestRepository registrationRequestRepository;
     private final DeletionRequestRepository deletionRequestRepository;
     private final UserRepository userRepository;
+    private final ReportRepository reportRepository;
+    private final ClientRepository clientRepository;
     private final EmailService emailService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -57,12 +54,8 @@ public class AdminService {
         String[] sortTokens = sort.split(",");
         sortTokens[0] = sortTokens[0].equals("registrationReason")
                 ? "description" : "businessClient." + sortTokens[0];
-        orders.add(new Sort.Order(getSortDirection(sortTokens[1]), sortTokens[0]));
+        orders.add(Sorting.getSorting(sortTokens));
         return orders;
-    }
-
-    private Sort.Direction getSortDirection(String s) {
-        return s.contains("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
     }
 
     public void acceptBusinessClient(UUID registrationRequestId) throws EntityNotFoundException, RegistrationRequestReviewedException {
@@ -136,7 +129,7 @@ public class AdminService {
             default:
                 break;
         }
-        orders.add(new Sort.Order(getSortDirection(sortTokens[1]), sortTokens[0]));
+        orders.add(Sorting.getSorting(sortTokens));
         return orders;
     }
 
@@ -199,5 +192,46 @@ public class AdminService {
         return deletionRequests.stream()
                 .map(DeletionRequestDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public void penalizeClient(UUID reportId, boolean penalize) {
+        Report report = reportRepository.findById(reportId)
+                .orElseThrow( () -> new ReportNotFoundException(reportId));
+        if (userRepository.existsById(report.getClient().getId()))
+            throw new EntityNotFoundException("Reported user doesn't exist.");
+        if (penalize)
+            clientRepository.addPenalty(report.getClient().getId());
+        try {
+            if (penalize) {
+                emailService.send(
+                        report.getRentalEntity().getOwner().getEmail(),
+                        EmailBuilder.getClientPenalizedForBusinessClientEmail(
+                                report.getRentalEntity().getOwner().getFirstName(),
+                                report.getClient().getEmail()
+                        ));
+                emailService.send(
+                        report.getClient().getEmail(),
+                        EmailBuilder.getClientPenalizedForClientEmail(
+                                report.getClient().getFirstName(),
+                                report.getRentalEntity().getTitle()
+                        ));
+            }
+            else {
+                emailService.send(
+                        report.getRentalEntity().getOwner().getEmail(),
+                        EmailBuilder.getClientNotPenalizedForBusinessClientEmail(
+                                report.getRentalEntity().getOwner().getFirstName(),
+                                report.getClient().getEmail()
+                        ));
+                emailService.send(
+                        report.getClient().getEmail(),
+                        EmailBuilder.getClientNotPenalizedForClientEmail(
+                                report.getClient().getFirstName(),
+                                report.getRentalEntity().getTitle()
+                        ));
+            }
+        } catch (Exception e) {
+            System.err.println("Email service not available.");
+        }
     }
 }

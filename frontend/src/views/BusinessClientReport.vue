@@ -125,14 +125,14 @@ export default {
         },
         submitReport() {
             if (this.arrived) {
-                let reviewDto = {
+                let reportDto = {
                     message: this.message,
                     penalize: this.badBehaviour
                 };
                 axios({
                     method: 'post',
-                    url: process.env.VUE_APP_BASE_URL+'/api/v1/reviews/'+this.$route.params.id,
-                    data: reviewDto,
+                    url: process.env.VUE_APP_BASE_URL+'/api/v1/reports/'+this.$route.params.id,
+                    data: reportDto,
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
@@ -148,7 +148,7 @@ export default {
             else {
                 axios({
                     method: 'put',
-                    url: process.env.VUE_APP_BASE_URL+'/api/v1/reviews/'+this.$route.params.id+'/didnt-arrive',
+                    url: process.env.VUE_APP_BASE_URL+'/api/v1/reports/'+this.$route.params.id+'/didnt-arrive',
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
