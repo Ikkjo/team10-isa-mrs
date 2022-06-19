@@ -294,4 +294,8 @@ public class Validator {
     public boolean validateReportDto(ReportDto reportDto) {
         return inRange(REPORT_MIN_MESSAGE, REPORT_MAX_MESSAGE, reportDto.getMessage().length());
     }
+
+    public boolean validateEarningsReportDateRange(long fromDate, long toDate) {
+        return fromDate <= toDate && fromDate <= DateTimeUtil.getTodayEpochMillisecond();
+    }
 }

@@ -1,11 +1,36 @@
 <template>
+  
   <nav id="searchbar"
   @keypress.enter="$emit('searchPressed', getSearchQuery())">
+  
       <div class="searchbar">
-        <input class="search-input" type="text" v-model="cityInput" placeholder="City..." />
-        <input class="search-input" type="text" v-model="countryInput" placeholder="Country..." />
-      
-                 <SearchBarItem
+        <input class="input" type="text" v-model="countryInput" placeholder="Country" />
+        <input class="input" type="text" v-model="cityInput" placeholder="City" />
+        <input class="input" type="text" v-model="addressInput" placeholder="Address" />
+        <input class="input" type="text" v-model="titleInput" placeholder="Title" />
+        <div class="calendar">
+          <DatePicker class="calendar"
+                        color="yellow"
+                        v-model="dateRange"
+                        :min-date='new Date()'
+                        :is-range='true'
+                        >
+                        <template v-slot="{ inputValue, inputEvents}">
+                            <input :value="inputValue.start" v-on="inputEvents.start" placeholder="From"/>
+                            <input :value="inputValue.end" v-on="inputEvents.end" placeholder="To"/>
+                        </template>
+          </DatePicker>
+        </div>
+        <div>
+        <button class="btn" @click="$emit('searchPressed', getSearchQuery())">
+          Search
+          <span class="material-icons-outlined">search</span>
+        </button>
+        </div>
+        
+      </div>
+      <div class="button-bar">
+                         <SearchBarItem
                 :link="'ships'"
                 :iconClass="'material-icons-outlined'"
                 :icon="'directions_boat'"
@@ -23,58 +48,75 @@
                 :icon="'phishing'"
                 :title="'Adventures'"
        />
-        <input class="search-input" type="text" v-model="titleInput" placeholder="Title..." />
-        <!-- Skontaj kako radi Vladanov datepicker -->
-        <div v-if="showDatePicker" class="calendar">
-          <RentalEntityAvailabilityCalendar ref="calendar" :defaultSelection="availability" :edit="false"/>
-        </div>
-        <div class="btn-div">
-        <button class="btn" @click="$emit('searchPressed', getSearchQuery())">Search</button>
-        </div>
       </div>
   </nav>
 </template>
 
 <script>
 import SearchBarItem from './HomepageSearchBarItem.vue'
-import RentalEntityAvailabilityCalendar from './RentalEntityAvailabilityCalendar.vue'
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 export default {
     name: 'HomepageSearchBar',
     components: {
     SearchBarItem,
-    RentalEntityAvailabilityCalendar
+    DatePicker
     },
     data() {
       return {
         cityInput: '',
         countryInput: '',
         titleInput: '',
-        fromDate: new Date(),
-        toDate: new Date(),
-        showDatePicker: false,    
+        addressInput: '',
+        dateRange: {
+          start: null,
+          end: null
+        }
       }
     },
     created() {
     },
     methods: {
     getSearchQuery() {
+
+      let from = this.dateRange.start
+      let to = this.dateRange.end
+
+      if(!from) {
+        from = 0;
+      }
+
+      if(!to) {
+        to = 0;
+      }
       return {
         city: this.cityInput,
         country: this.countryInput,
+        address: this.addressInput,
         title: this.titleInput,
-        fromDate: this.fromDate.getTime().toString(),
-        toDate: this.toDate.getTime().toString()
+        fromDate: from,
+        toDate: to
       }
     }
   }
-    
 }
 </script>
 
-<style select>
+<style scoped>
+
+.button-bar{
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  border-bottom: 1px solid rgb(236, 236, 236);
+}
+
+/* Button text doesn't align to center, needs fix */
+.btn {
+  margin: 7px;
+  text-align: center;
+}
 .searchbar {
   height: calc(var(--nav-height) + 10px);
-  border-bottom: 1px solid rgb(236, 236, 236);
   background-color: white;
   display: flex;
   justify-content: center;
@@ -89,44 +131,43 @@ export default {
   justify-content: center;
 }
 
-.search-input {
-  display: block;
-  height: 48px;
-  width: 160px;
-  margin: 20px;
-  padding: 10px;
-  text-align: center;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+.input, .select, .textarea,
+.calendar input{
+    padding: 3px 7px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    transition: 0.5s;
+    outline-color: lightgrey;
+    background-color: #fff;
+    font-family: inherit;
+    height: 48px;
+    width: 160px;
+    margin: 7px;
+    padding: 10px;
 }
 
-.calendar {
-    margin-top: 5px;
-    padding-left: 29px;
+.input:hover, .textarea:hover, .select:hover{
+    border-color: var(--orange-primary, #f0a500);
 }
 
-.btn-div {
+.input:focus, .textarea:focus, .select:focus {
+    outline-color: var(--orange-primary, #f0a500);
+}
+
+@media screen and (max-width: 1200px) {
+  .searchbar {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    padding: 0 15px;
+    height: auto;
+  }
 
-}
+  #search {
+    position: absolute;
+  }
 
-.btn {
-  height: 48px;
-  width: calc(160px/1.5);
-  margin: 20px;
-  padding: 10px;
-  text-align: center;
-  font-size: 16px;
-}
-
-.btn-div p {
-    margin-top: 0px;
 }
 
 </style>

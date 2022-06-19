@@ -12,6 +12,7 @@ import team10.app.dto.ActionDto;
 import team10.app.dto.AddressDto;
 import team10.app.dto.RentalEntityDto;
 import team10.app.dto.CreateReservationDto;
+import team10.app.security.auth.AuthUtil;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.RentalEntityService;
 import team10.app.util.exceptions.InvalidRentalEntityOwnerException;
@@ -29,7 +30,7 @@ import java.util.UUID;
 public class RentalEntityController {
 
     private final RentalEntityService rentalEntityService;
-    private final JWTProvider jwtProvider;
+    private final AuthUtil authUtil;
 
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
@@ -110,7 +111,7 @@ public class RentalEntityController {
                                                @PathVariable(name = "id") UUID id,
                                                @RequestBody ActionDto actionDto) {
         try {
-            rentalEntityService.addAction(jwtProvider.getAuthentication(token.substring(7)).getName(), id, actionDto);
+            rentalEntityService.addAction(authUtil.getEmailFromToken(token), id, actionDto);
             return new ResponseEntity<>(actionDto, HttpStatus.OK);
         }
         catch (RentalEntityNotFoundException ex)
@@ -125,7 +126,7 @@ public class RentalEntityController {
                                                                @PathVariable(name = "id") UUID id,
                                                                @RequestBody CreateReservationDto createReservationDto) {
         try {
-            rentalEntityService.addReservation(jwtProvider.getAuthentication(token.substring(7)).getName(), id, createReservationDto);
+            rentalEntityService.addReservation(authUtil.getEmailFromToken(token), id, createReservationDto);
             return new ResponseEntity<>(createReservationDto, HttpStatus.OK);
         }
         catch (RentalEntityNotFoundException ex)
@@ -140,7 +141,7 @@ public class RentalEntityController {
     public ResponseEntity<String> updateTitle(@RequestHeader (name="Authorization") String token,
                                               @PathVariable UUID id, @RequestBody String title) {
         try {
-            rentalEntityService.updateTitle(jwtProvider.getAuthentication(token.substring(7)).getName(), title, id);
+            rentalEntityService.updateTitle(authUtil.getEmailFromToken(token), title, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -153,7 +154,7 @@ public class RentalEntityController {
     public ResponseEntity<AddressDto> updateAddress(@RequestHeader (name="Authorization") String token,
                                                     @PathVariable UUID id, @RequestBody AddressDto address) {
         try {
-            rentalEntityService.updateAddress(jwtProvider.getAuthentication(token.substring(7)).getName(), address, id);
+            rentalEntityService.updateAddress(authUtil.getEmailFromToken(token), address, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -166,7 +167,7 @@ public class RentalEntityController {
     public ResponseEntity<String> updateDescription(@RequestHeader (name="Authorization") String token,
                                                     @PathVariable UUID id, @RequestBody String description) {
         try {
-            rentalEntityService.updateDescription(jwtProvider.getAuthentication(token.substring(7)).getName(), description, id);
+            rentalEntityService.updateDescription(authUtil.getEmailFromToken(token), description, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -179,7 +180,7 @@ public class RentalEntityController {
     public ResponseEntity<Long[]> updateAvailability(@RequestHeader (name="Authorization") String token,
                                                      @PathVariable UUID id, @RequestBody Long[] availability) {
         try {
-            rentalEntityService.updateAvailability(jwtProvider.getAuthentication(token.substring(7)).getName(), List.of(availability), id);
+            rentalEntityService.updateAvailability(authUtil.getEmailFromToken(token), List.of(availability), id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -192,7 +193,7 @@ public class RentalEntityController {
     public ResponseEntity<String> updateRulesOfConduct(@RequestHeader (name="Authorization") String token,
                                                        @PathVariable UUID id, @RequestBody String rulesOfConduct) {
         try {
-            rentalEntityService.updateRulesOfConduct(jwtProvider.getAuthentication(token.substring(7)).getName(), rulesOfConduct, id);
+            rentalEntityService.updateRulesOfConduct(authUtil.getEmailFromToken(token), rulesOfConduct, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -205,7 +206,7 @@ public class RentalEntityController {
     public ResponseEntity<String> updateAdditionalServices(@RequestHeader (name="Authorization") String token,
                                                            @PathVariable UUID id, @RequestBody String additionalServices) {
         try {
-            rentalEntityService.updateAdditionalServices(jwtProvider.getAuthentication(token.substring(7)).getName(), additionalServices, id);
+            rentalEntityService.updateAdditionalServices(authUtil.getEmailFromToken(token), additionalServices, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -218,7 +219,7 @@ public class RentalEntityController {
     public ResponseEntity<Integer> updatePrice(@RequestHeader (name="Authorization") String token,
                                                @PathVariable(name = "id") UUID id, @PathVariable(name = "price") int price) {
         try {
-            rentalEntityService.updatePrice(jwtProvider.getAuthentication(token.substring(7)).getName(), price, id);
+            rentalEntityService.updatePrice(authUtil.getEmailFromToken(token), price, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -231,7 +232,7 @@ public class RentalEntityController {
     public ResponseEntity<List<String>> updatePictures(@RequestHeader (name="Authorization") String token,
                                                        @PathVariable UUID id, @RequestBody List<String> pictures) {
         try {
-            rentalEntityService.updatePictures(jwtProvider.getAuthentication(token.substring(7)).getName(), pictures, id);
+            rentalEntityService.updatePictures(authUtil.getEmailFromToken(token), pictures, id);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -242,16 +243,17 @@ public class RentalEntityController {
     public ResponseEntity<List<RentalEntityDto>> searchRentalEntities(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "50") int pageSize,
-            @RequestParam(name = "title", defaultValue = "") String title,
-            @RequestParam(name = "country", defaultValue = "") String country,
-            @RequestParam(name = "city", defaultValue = "") String city,
+            @RequestParam(name = "title", defaultValue = "%") String title,
+            @RequestParam(name = "country", defaultValue = "%") String country,
+            @RequestParam(name = "city", defaultValue = "%") String city,
+            @RequestParam(name = "address", defaultValue = "%") String address,
             @RequestParam(name = "fromDate", defaultValue = "0") long fromDate,
             @RequestParam(name = "toDate", defaultValue = "0") long toDate) {
         int DEFAULT_PAGE_SIZE = 20;
 
         try{
             return ResponseEntity.ok(rentalEntityService.rentalEntitySearch(page, pageSize, title, country, city,
-                    fromDate, toDate));
+                    address, fromDate, toDate));
         } catch(Exception e) {
             return ResponseEntity.ok(rentalEntityService.getAllRentalEntitiesPage(0, DEFAULT_PAGE_SIZE));
         }

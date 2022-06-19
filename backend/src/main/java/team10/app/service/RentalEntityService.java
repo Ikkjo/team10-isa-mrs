@@ -1,7 +1,6 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,13 +9,11 @@ import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.repository.BusinessClientRepository;
 import team10.app.repository.RentalEntityRepository;
-import team10.app.repository.specification.RentalEntitySpecification;
-import team10.app.repository.specification.search.SearchCriteria;
 import team10.app.repository.ReservationRepository;
 import team10.app.util.DateTimeUtil;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
-
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,6 +21,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class RentalEntityService {
+
+    @PersistenceContext
+    private final EntityManager entityManager;
 
     private final RentalEntityRepository rentalEntityRepository;
     private final BusinessClientRepository businessClientRepository;
@@ -170,7 +170,7 @@ public class RentalEntityService {
         if (!validator.validateRentalEntityDateNotTaken(rentalEntity, createReservationDto.getDateRange()))
             throw new RentalEntityDateTaken(rentalEntity.getId(), createReservationDto.getDateRange());
         // create reservation
-        Client client = clientService.getByUsername(createReservationDto.getUsername());
+        Client client = clientService.getByUsername(createReservationDto.getEmail());
         Reservation reservation = new Reservation(createReservationDto, businessClient, client, rentalEntity);
         // save
         reservation = reservationRepository.saveAndFlush(reservation);
@@ -199,47 +199,60 @@ public class RentalEntityService {
     public List<RentalEntityDto> rentalEntitySearch(
             int page,
             int pageSize,
+//            Long ownerId,
             String title,
             String country,
             String city,
+            String address,
             long fromDate,
             long toDate
     ) {
+        boolean shouldCheckAvailability = !(fromDate < DateTimeUtil.getTodayEpochMillisecond());
+        TypedQuery<RentalEntity> query = entityManager.createQuery(
+            String.format("SELECT re FROM RentalEntity re " +
+                "LEFT JOIN Address addr on addr.id=re.address " +
+                "WHERE re.title LIKE '%s' AND " +
+                "addr.country LIKE '%s' AND " +
+                "addr.city LIKE '%s' AND " +
+                "addr.address LIKE '%s'",
+                "%"+title+"%", country, city, address), RentalEntity.class);
 
-        boolean ignoreAvailability = toDate < DateTimeUtil.getTodayEpochMillisecond();
-
-        RentalEntitySpecification titleSpec = new RentalEntitySpecification(
-                new SearchCriteria("title", ":", title));
-        RentalEntitySpecification countrySpec = new RentalEntitySpecification(
-                new SearchCriteria("country", ":", country));
-        RentalEntitySpecification citySpec = new RentalEntitySpecification(
-                new SearchCriteria("city", ":", city));
-
-        List<RentalEntity> results = rentalEntityRepository.findAll(Specification
-                .where(titleSpec)
-                .and(countrySpec)
-                .and(citySpec), PageRequest.of(page, pageSize)).toList();
+        List<RentalEntity> results = query.getResultList();
 
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
         for (RentalEntity rE:  results) {
-            boolean fromAvailable = false;
-            boolean toAvailable = false;
-            for(Availability a: rE.getAvailability()) {
-                if (a.getDate() == fromDate){
-                    fromAvailable = true;
-                }
-                if (a.getDate() == toDate) {
-                    toAvailable = true;
-                }
-            }
-
-            if(!ignoreAvailability && (fromAvailable && toAvailable)) {
-                rentalEntityDtos.add(rentalEntityToDto(rE.getId(), true));
-            }
+            if(isRentalEntityAvailable(fromDate, toDate, rE, shouldCheckAvailability))
+                rentalEntityDtos.add(setRentalEntityDtoType(rE, rentalEntityToDto(rE.getId(), true)));
         }
 
         return rentalEntityDtos;
     }
+
+
+    private boolean isRentalEntityAvailable(long from, long to, RentalEntity rentalEntity, boolean shouldCheck) {
+        if(!shouldCheck) {
+            return true;
+        }
+        Set<Availability> availableObj = rentalEntity.getAvailability();
+        Set<Long> available = new HashSet<>();
+
+        for (Availability a : availableObj) {
+            available.add(a.getDate());
+        }
+
+        boolean isAvailable = true;
+        for(long day = from; day <= to; day++ ){
+            isAvailable = isAvailable && available.contains(day);
+        }
+
+        return isAvailable;
+    }
+
+    private RentalEntityDto setRentalEntityDtoType(RentalEntity rentalEntity, RentalEntityDto rentalEntityDto){
+        rentalEntityDto.setType(rentalEntity.getClass().getSimpleName());
+        return rentalEntityDto;
+    }
+
 
     public void delete(String email, UUID id) {
         validateOwner(email, id);
@@ -248,4 +261,5 @@ public class RentalEntityService {
             throw new RentalEntityReservedException(id);
         rentalEntityRepository.updateDeleted(true, id);
     }
+
 }

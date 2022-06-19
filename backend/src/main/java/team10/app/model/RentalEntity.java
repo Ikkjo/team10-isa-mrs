@@ -42,6 +42,8 @@ public abstract class RentalEntity {
     protected Set<Reservation> reservations;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     protected Set<Action> actions;
+    @Column(nullable = false)
+    protected boolean freeCancellation;
 
     public void setPictures(Set<Picture> pictures) {
         this.pictures.clear();
