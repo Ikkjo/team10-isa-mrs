@@ -55,28 +55,8 @@ public class AdminService {
     private List<Sort.Order> registrationRequestGetSort(String sort) {
         List<Sort.Order> orders = new ArrayList<>();
         String[] sortTokens = sort.split(",");
-        switch (sortTokens[0]) {
-            case "role":
-                sortTokens[0] = "businessClient.role";
-                break;
-            case "firstName":
-                sortTokens[0] = "businessClient.firstName";
-                break;
-            case "lastName":
-                sortTokens[0] = "businessClient.lastName";
-                break;
-            case "email":
-                sortTokens[0] = "businessClient.email";
-                break;
-            case "dateOfBirth":
-                sortTokens[0] = "businessClient.dateOfBirth";
-                break;
-            case "registrationReason":
-                sortTokens[0] = "description";
-                break;
-            default:
-                break;
-        }
+        sortTokens[0] = sortTokens[0].equals("registrationReason")
+                ? "description" : "businessClient." + sortTokens[0];
         orders.add(new Sort.Order(getSortDirection(sortTokens[1]), sortTokens[0]));
         return orders;
     }
@@ -148,16 +128,10 @@ public class AdminService {
         String[] sortTokens = sort.split(",");
         switch (sortTokens[0]) {
             case "role":
-                sortTokens[0] = "user.role";
-                break;
             case "firstName":
-                sortTokens[0] = "user.firstName";
-                break;
             case "lastName":
-                sortTokens[0] = "user.lastName";
-                break;
             case "email":
-                sortTokens[0] = "user.email";
+                sortTokens[0] = "user." + sortTokens[0];
                 break;
             default:
                 break;
