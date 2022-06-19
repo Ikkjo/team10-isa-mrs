@@ -1,12 +1,13 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import team10.app.dto.AdminDto;
-import team10.app.dto.AdminRegistrationDto;
-import team10.app.dto.BusinessClientRegistrationRequestNoPasswordDto;
-import team10.app.dto.DeletionRequestDto;
+import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.repository.AdminRepository;
 import team10.app.repository.DeletionRequestRepository;
@@ -24,6 +25,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -45,12 +47,22 @@ public class AdminService {
         return new AdminDto(admin);
     }
 
-    public List<BusinessClientRegistrationRequestNoPasswordDto> getRegistrationRequests() {
-        List<BusinessClientRegistrationRequestNoPasswordDto> regReqs = new ArrayList<>();
-        for (RegistrationRequest rr : registrationRequestRepository.findAllNotReviewed()) {
-            regReqs.add(new BusinessClientRegistrationRequestNoPasswordDto(rr));
-        }
-        return regReqs;
+    public Page<RegistrationRequest> getRegistrationRequests(String sort, int page, int size) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(registrationRequestGetSort(sort)));
+        return registrationRequestRepository.findAllNotReviewed(paging);
+    }
+
+    private List<Sort.Order> registrationRequestGetSort(String sort) {
+        List<Sort.Order> orders = new ArrayList<>();
+        String[] sortTokens = sort.split(",");
+        sortTokens[0] = sortTokens[0].equals("registrationReason")
+                ? "description" : "businessClient." + sortTokens[0];
+        orders.add(new Sort.Order(getSortDirection(sortTokens[1]), sortTokens[0]));
+        return orders;
+    }
+
+    private Sort.Direction getSortDirection(String s) {
+        return s.contains("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
     }
 
     public void acceptBusinessClient(UUID registrationRequestId) throws EntityNotFoundException, RegistrationRequestReviewedException {
@@ -106,12 +118,26 @@ public class AdminService {
         return admin.getRole() == UserRole.MAIN_ADMIN;
     }
 
-    public List<DeletionRequestDto> getDeletionRequests() {
-        List<DeletionRequestDto> delReqs = new ArrayList<>();
-        for (DeletionRequest dr : deletionRequestRepository.findAllNotReviewed()) {
-            delReqs.add(new DeletionRequestDto(dr));
+    public Page<DeletionRequest> getDeletionRequests(String sort, int page, int size) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(deletionRequestGetSort(sort)));
+        return deletionRequestRepository.findAllNotReviewed(paging);
+    }
+
+    private List<Sort.Order> deletionRequestGetSort(String sort) {
+        List<Sort.Order> orders = new ArrayList<>();
+        String[] sortTokens = sort.split(",");
+        switch (sortTokens[0]) {
+            case "role":
+            case "firstName":
+            case "lastName":
+            case "email":
+                sortTokens[0] = "user." + sortTokens[0];
+                break;
+            default:
+                break;
         }
-        return delReqs;
+        orders.add(new Sort.Order(getSortDirection(sortTokens[1]), sortTokens[0]));
+        return orders;
     }
 
     public void acceptDeletionRequest(UUID deletionRequestId, String response) throws EntityNotFoundException, RegistrationRequestReviewedException {
@@ -158,5 +184,20 @@ public class AdminService {
         admin.setRole(UserRole.ADMIN);
         admin.setPassword(encodedPassword);
         return new AdminDto(admin);
+    }
+
+    public List<BusinessClientRegistrationRequestNoPasswordDto> getRegistrationRequestsDtoList(
+            List<RegistrationRequest> registrationRequests
+    )
+    {
+        return registrationRequests.stream()
+                .map(BusinessClientRegistrationRequestNoPasswordDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<DeletionRequestDto> getDeletionRequestsDtoList(List<DeletionRequest> deletionRequests) {
+        return deletionRequests.stream()
+                .map(DeletionRequestDto::new)
+                .collect(Collectors.toList());
     }
 }
