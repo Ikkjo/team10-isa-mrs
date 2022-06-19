@@ -13,10 +13,10 @@
                     @click="reservationsViewClicked()"
                     >Reservations
                 </button>
-                <button class="btn avg-price-view"
-                    :class="{'not-selected': !avgPriceView}"
-                    @click="avgPriceViewClicked()"
-                    >Avg. Price
+                <button class="btn avg-rating-view"
+                    :class="{'not-selected': !avgRatingView}"
+                    @click="avgRatingViewClicked()"
+                    >Avg. Rating
                 </button>
             </div>
             <div>
@@ -42,24 +42,24 @@ export default {
         return {
             earningsView: true,
             reservationsView: false,
-            avgPriceView: false,
+            avgRatingView: false,
         }
     },
     methods: {
         earningsViewClicked() {
             this.earningsView = true
             this.reservationsView = false;
-            this.avgPriceView = false;
+            this.avgRatingView = false;
         },
         reservationsViewClicked() {
             this.earningsView = false
             this.reservationsView = true;
-            this.avgPriceView = false;
+            this.avgRatingView = false;
         },
-        avgPriceViewClicked() {
+        avgRatingViewClicked() {
             this.earningsView = false
             this.reservationsView = false;
-            this.avgPriceView = true;
+            this.avgRatingView = true;
         }
     }
    
@@ -81,7 +81,7 @@ export default {
     border-radius:  0;
 }
 
-.avg-price-view {
+.avg-rating-view {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
