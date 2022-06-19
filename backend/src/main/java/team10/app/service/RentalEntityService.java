@@ -210,7 +210,7 @@ public class RentalEntityService {
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
         for (RentalEntity rE:  results) {
             if(isRentalEntityAvailable(fromDate, toDate, rE, shouldCheckAvailability))
-                rentalEntityDtos.add(rentalEntityToDto(rE.getId()));
+                rentalEntityDtos.add(setRentalEntityDtoType(rE, rentalEntityToDto(rE.getId())));
         }
 
         return rentalEntityDtos;
@@ -233,6 +233,17 @@ public class RentalEntityService {
         }
 
         return isAvailable;
+    }
+
+    private RentalEntityDto setRentalEntityDtoType(RentalEntity rentalEntity, RentalEntityDto rentalEntityDto){
+        if (rentalEntity instanceof VacationHome){
+            rentalEntityDto.setType("VacationHome");
+        } else if (rentalEntity instanceof Ship) {
+            rentalEntityDto.setType("Ship");
+        } else if (rentalEntity instanceof Adventure) {
+            rentalEntityDto.setType("Adventure");
+        }
+        return rentalEntityDto;
     }
 
 }

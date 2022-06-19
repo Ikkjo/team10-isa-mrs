@@ -16,8 +16,8 @@
                         :is-range='true'
                         >
                         <template v-slot="{ inputValue, inputEvents}">
-                            <input :value="inputValue.start" v-on="inputEvents.start"/>
-                            <input :value="inputValue.end" v-on="inputEvents.end"/>
+                            <input :value="inputValue.start" v-on="inputEvents.start" placeholder="From"/>
+                            <input :value="inputValue.end" v-on="inputEvents.end" placeholder="To"/>
                         </template>
           </DatePicker>
         </div>
@@ -68,8 +68,8 @@ export default {
         titleInput: '',
         addressInput: '',
         dateRange: {
-          start: new Date(),
-          end: new Date()
+          start: null,
+          end: null
         }
       }
     },
@@ -77,13 +77,24 @@ export default {
     },
     methods: {
     getSearchQuery() {
+
+      let from = this.dateRange.start
+      let to = this.dateRange.end
+
+      if(!from) {
+        from = 0;
+      }
+
+      if(!to) {
+        to = 0;
+      }
       return {
         city: this.cityInput,
         country: this.countryInput,
         address: this.addressInput,
         title: this.titleInput,
-        fromDate: this.dateRange.start.getTime(),
-        toDate: this.dateRange.start.getTime()
+        fromDate: from,
+        toDate: to
       }
     }
   }

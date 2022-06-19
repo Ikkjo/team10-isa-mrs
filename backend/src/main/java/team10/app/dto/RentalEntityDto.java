@@ -20,6 +20,7 @@ public abstract class RentalEntityDto {
     protected String description;
     protected String rulesOfConduct;
     protected String additionalServices;
+    protected String type;
     protected int price;
     protected List<String> pictures;
     protected List<Long> availability;
