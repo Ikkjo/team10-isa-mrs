@@ -2,7 +2,7 @@
     <div>
         <BusinessClientNavBar id="nav"/>
         <div class="content">
-            <div class="btn-group-calendar">
+            <div class="">
                 <button class="btn earnings-view"
                     :class="{'not-selected': !earningsView}"
                     @click="earningsViewClicked()"
@@ -20,7 +20,8 @@
                 </button>
             </div>
             <div>
-               <BusinessClientEarningsReport v-if="earningsView"/> 
+               <BusinessClientEarningsReport v-if="earningsView"/>
+               <BusinessClientReservationsReport v-if="reservationsView" /> 
             </div>
         </div>
     </div>
@@ -29,11 +30,13 @@
 <script>
 import BusinessClientNavBar from '@/components/BusinessClientNavBar.vue'
 import BusinessClientEarningsReport from '@/components/BusinessClientEarningsReport.vue'
+import BusinessClientReservationsReport from '@/components/BusinessClientReservationsReport.vue'
 export default {
     name: 'StatisticsView',
     components: {
         BusinessClientNavBar,
         BusinessClientEarningsReport,
+        BusinessClientReservationsReport,
     },
     data() {
         return {
