@@ -212,8 +212,7 @@ public class RentalEntityService {
     ) {
         boolean shouldCheckAvailability = !(fromDate < DateTimeUtil.getTodayEpochMillisecond());
         TypedQuery<RentalEntity> query = entityManager.createQuery(
-        String.format("SELECT re FROM RentalEntity re " +
-
+            String.format("SELECT re FROM RentalEntity re " +
                 "LEFT JOIN Address addr on addr.id=re.address " +
                 "WHERE re.title LIKE '%s' AND " +
                 "addr.country LIKE '%s' AND " +
@@ -253,13 +252,7 @@ public class RentalEntityService {
     }
 
     private RentalEntityDto setRentalEntityDtoType(RentalEntity rentalEntity, RentalEntityDto rentalEntityDto){
-        if (rentalEntity instanceof VacationHome){
-            rentalEntityDto.setType("VacationHome");
-        } else if (rentalEntity instanceof Ship) {
-            rentalEntityDto.setType("Ship");
-        } else if (rentalEntity instanceof Adventure) {
-            rentalEntityDto.setType("Adventure");
-        }
+        rentalEntityDto.setType(rentalEntity.getClass().getSimpleName());
         return rentalEntityDto;
     }
 

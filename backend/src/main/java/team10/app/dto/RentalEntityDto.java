@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team10.app.model.Address;
+import team10.app.model.Picture;
+import team10.app.model.RentalEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

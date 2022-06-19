@@ -21,7 +21,7 @@ import NavBar from '@/components/NavBar.vue'
 import DropdownMenu from '@/components/DropdownMenu.vue'
 import DropdownItem from '@/components/DropdownItem.vue'
 export default {
-    name: 'UnknownUserNavBar',
+    name: 'HomepageNav',
     components: {
         NavBar,
         NavItem,

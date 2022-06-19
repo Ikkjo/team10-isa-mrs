@@ -8,7 +8,9 @@
                         <dropdown-item link="" text="My account" iconClass="material-icons" icon="account_circle"></dropdown-item>
                         <dropdown-item link="" text="My reservations" iconClass="material-icons" icon="card_travel"></dropdown-item>
                         <dropdown-item link="" text="Reservation history" iconClass="material-icons" icon="calendar_month"></dropdown-item>
-                        <dropdown-item link="logout" text="Logout" iconClass="material-icons" icon="logout"></dropdown-item>
+                        <div class="menu-item" @click="logout">
+                            <span class="icon-button material-icons">logout</span> Logout
+                        </div>
                     </template>
                 </dropdown-menu>
             </template>
@@ -43,7 +45,13 @@ export default {
             if (!this.$el.contains(e.target)) {
                 this.showMenu = false
             }
-        } 
+        },
+        logout() {
+            window.localStorage.removeItem("jwt")
+            window.localStorage.removeItem("role")
+            this.$router.push({name: "homepage"})
+            location.reload(); 
+        }
     },
     mounted () {
         document.addEventListener('click', this.close)
@@ -55,5 +63,34 @@ export default {
 </script>
 
 <style>
+
+.menu-item {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    transition: background 500ms;
+    padding: 0.5rem;
+    color: var(--black);
+    cursor: pointer;
+}
+
+.menu-item .icon-button {
+    margin-right: 0.5rem;
+}
+
+.menu-item .icon-button:hover {
+    filter: none;
+}
+
+.menu-item:hover {
+    background-color: rgb(236, 236, 236);
+    color: var(--orange-primary);
+    /* color: black; */
+}
+
+.icon-right {
+    margin-left: auto;
+}
 
 </style>

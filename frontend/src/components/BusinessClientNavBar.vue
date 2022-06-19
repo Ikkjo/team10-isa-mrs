@@ -11,7 +11,10 @@
                         <dropdown-item link="/account/reservations" text="Reservations" iconClass="material-icons" icon="calendar_month"></dropdown-item>
                         <dropdown-item link="nav" text="Reviews" iconClass="material-icons" icon="reviews"></dropdown-item>
                         <dropdown-item link="nav" text="Statistics" iconClass="material-icons" icon="query_stats"></dropdown-item>
-                        <dropdown-item @click="logout" link="logout" text="Logout" iconClass="material-icons" icon="logout"></dropdown-item>
+                        <div class="menu-item" @click="logout">
+                            <span class="icon-button material-icons">logout</span> Logout
+                        </div>
+                        
                     </template>
                 </dropdown-menu>
             </template>
@@ -48,7 +51,10 @@ export default {
             }
         },
         logout() {
-            this.$router.push({ name: 'homepage' });
+            window.localStorage.removeItem("jwt")
+            window.localStorage.removeItem("role")
+            this.$router.push({name: "homepage"})
+            location.reload(); 
         }
     },
     mounted () {
@@ -60,6 +66,35 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+.menu-item {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    transition: background 500ms;
+    padding: 0.5rem;
+    color: var(--black);
+    cursor: pointer;
+}
+
+.menu-item .icon-button {
+    margin-right: 0.5rem;
+}
+
+.menu-item .icon-button:hover {
+    filter: none;
+}
+
+.menu-item:hover {
+    background-color: rgb(236, 236, 236);
+    color: var(--orange-primary);
+    /* color: black; */
+}
+
+.icon-right {
+    margin-left: auto;
+}
 
 </style>

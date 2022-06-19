@@ -1,12 +1,11 @@
 <template>
     <div id="nav">
-        <div v-if="this.isBusinessClientLoggedIn()">
+        <div v-if="businessClient.includes(role)">
             <BusinessClientNavBar/>
         </div>
-        <div v-else-if="this.isClientLoggedIn()">
+        <div v-else-if="client === role">
             <ClientNavBar/>
         </div>
-        <div v-else-if="this.isAdminLoggedIn()"/>
         <div v-else>
             <UnknownUserNavBar/>  
         </div>
@@ -26,29 +25,14 @@ export default {
 },
     data() {
         return{
-            userRole: '',
-            clientLogged: false,
-            businessClientLogged: false,
-            adminLogged: false,
-            client: ["CLIENT"],
+            role: null,
+            client: "CLIENT",
             businessClient: ["HOUSE_OWNER", "SHIP_OWNER", "FISHING_INSTRUCTOR"],
-            admin: ["MAIN_ADMIN", "ADMIN", "UNVERIFIED_ADMIN"]
         }
     },
-    methods: {
-        isClientLoggedIn(){
-            return this.client.includes(localStorage.getItem('userRole'));
-        },
-        isBusinessClientLoggedIn() {
-            return this.businessClient.includes(localStorage.getItem('userRole'));
-        },
-        isAdminLoggedIn() {
-            return this.admin.includes(localStorage.getItem('userRole'));
+    created() {
+        this.role = localStorage.getItem('role')
         }
-    }
-
-
-
 }
 </script>
 
