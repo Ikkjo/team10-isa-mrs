@@ -1,31 +1,31 @@
 <template>
-  <div>
-    <HomepageNavBar id="nav"/>
+  <div @SearchBarButtonToggled="filterRentalEntities">
+    <UniversalNavBar/>
     <SearchBar ref="searchBar" @searchPressed="search"/>
     <div class="listings">
-      <RentalEntityCard class="listing" v-for="(rentalEntity, index) in rentalEntities" :key="index" :rentalEntity="rentalEntity"/>
+      <RentalEntityCard class="listing" v-for="(rentalEntity, index) in filteredRentalEntities" :key="index" :rentalEntity="rentalEntity"/>
     </div>
   </div>
 </template>
 
 <script>
-import HomepageNavBar from "@/components/HomepageNavBar.vue"
 import SearchBar from "@/components/HomepageSearchBar.vue";
 import RentalEntityCard from "@/components/RentalEntityCard.vue";
 import axios from 'axios';
+import UniversalNavBar from "@/components/UniversalNavBar.vue";
 export default {
     name: 'HomepageView',
     components: {
-        HomepageNavBar,
-        SearchBar,
-        RentalEntityCard
-    },
+    SearchBar,
+    RentalEntityCard,
+    UniversalNavBar
+},
 
 
     data() {
       return {
         rentalEntities: [],
-        user: null,
+        filteredRentalEntities: [],
         searchQuery: {},
         sharedItems: SearchBar.data
       }
@@ -37,7 +37,15 @@ export default {
           .then((response) => {
             console.log(response.data)
             this.rentalEntities = response.data
-          })
+
+            if (this.rentalEntities.length > 0) {
+              this.rentalEntities.forEach(rentalEntity => {
+                rentalEntity.show = true;
+              });
+            }
+
+            this.filteredRentalEntities = this.rentalEntities
+            })
           .catch(function(error) {
               console.log(error)
           })
@@ -50,6 +58,7 @@ export default {
             params: {
               city: searchQuery.city,
               country: searchQuery.country,
+              address: searchQuery.address,
               title: searchQuery.title,
               fromDate: searchQuery.fromDate,
               toDate: searchQuery.toDate
@@ -58,16 +67,58 @@ export default {
           .then((response) => {
             console.log(response.data)
             this.rentalEntities = response.data
+
+            if (this.rentalEntities.length > 0) {
+              this.rentalEntities.forEach(rentalEntity => {
+                rentalEntity.show = true;
+              });
+            }
+
+            this.filteredRentalEntities = this.rentalEntities
           })
           .catch(function(error) {
               console.log(error)
           })
+      },
+      filterRentalEntities(buttonData) {
+        let pressed = buttonData.state
+        let type = buttonData.type
+
+        for (let rentalEntity of this.rentalEntities) {
+          if (rentalEntity.type == type) {
+              rentalEntity.show = pressed;
+          }
+        }
       }
+
     }
   }
 </script>
 
-<style>
+<style scoped>
+
+.input, .select, .textarea {
+    padding: 3px 7px;
+    font-size: 17px;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    transition: 0.5s;
+    outline-color: lightgrey;
+    background-color: #fff;
+    font-family: inherit;
+}
+
+.input, .select {
+   height: 48px;
+}
+
+.input:hover, .textarea:hover, .select:hover {
+    border-color: var(--orange-primary, #f0a500);
+}
+
+.input:focus, .textarea:focus, .select:focus {
+    outline-color: var(--orange-primary, #f0a500);
+}
 
 .listings {
     display: grid;
@@ -75,7 +126,7 @@ export default {
     justify-content: center;
     gap: 15px;
     max-width: 100%;
-    padding-top: 150px;
+    padding-top: 210px;
 }
 
 @media screen and (max-width: 669px) {

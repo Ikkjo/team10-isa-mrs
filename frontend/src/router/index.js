@@ -86,6 +86,11 @@ const routes = [
         name: 'business-client-reservations',
         component: () => import('../views/BusinessClientReservations.vue')
     },
+    {
+        path: '/listing/:id',
+        name: 'rental-entity-details',
+        component: () => import('../views/RentalEntityDetails.vue')
+    }
 ]
 
 const router = new VueRouter({
