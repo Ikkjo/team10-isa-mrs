@@ -184,4 +184,7 @@ ul {
   display: block;
 }
 
+.not-selected {
+    background-color: lightgray;
+}
 </style>
