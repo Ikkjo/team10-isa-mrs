@@ -3,6 +3,7 @@ package team10.app.model;
 import lombok.*;
 import org.apache.tomcat.jni.Local;
 import team10.app.dto.CreateReservationDto;
+import team10.app.util.DateTimeUtil;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class Reservation {
     private long startDate;
     private long endDate;
     private int price;
+    @Enumerated(EnumType.STRING)
     private ReservationStatus status;
     @ManyToOne(fetch = FetchType.LAZY)
     private BusinessClient businessClient;
@@ -56,7 +58,7 @@ public class Reservation {
 
     public void updateStatus() {
         if (this.status.value != 1) {
-            long today = LocalDate.EPOCH.toEpochDay();
+            long today = DateTimeUtil.getTodayEpochMillisecond();
             if (this.startDate >= today)
                 this.status = ReservationStatus.ACTIVE;
             if (this.endDate < today)

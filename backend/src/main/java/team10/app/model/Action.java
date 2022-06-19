@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team10.app.dto.ActionDto;
+import team10.app.util.DateTimeUtil;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Action extends Reservation {
     }
 
     public boolean isExpired() {
-        return this.expiresOn < LocalDate.EPOCH.toEpochDay();
+        return this.expiresOn < DateTimeUtil.getTodayEpochMillisecond();
     }
 
 }

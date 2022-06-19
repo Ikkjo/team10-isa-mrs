@@ -37,10 +37,13 @@ public class RentalEntityService {
     private final PictureService pictureService;
     private final Validator validator;
 
-    public RentalEntityDto rentalEntityToDto(UUID id) {
+    public RentalEntityDto rentalEntityToDto(UUID id, boolean singlePicture) {
         RentalEntity rentalEntity = rentalEntityRepository.findById(id)
                 .orElseThrow(() -> new RentalEntityNotFoundException(id));
-        rentalEntity.setPictures(PictureService.decompressPictures(rentalEntity.getPictures()));
+        if (singlePicture)
+            rentalEntity.setPictures(PictureService.decompressPictures(new HashSet<>(List.of(rentalEntity.getPictures().iterator().next()))));
+        else
+            rentalEntity.setPictures(PictureService.decompressPictures(rentalEntity.getPictures()));
         return buildRentalEntityDto(rentalEntity);
     }
 
@@ -74,43 +77,50 @@ public class RentalEntityService {
         return rentalEntityRepository.getAllTitlesByOwner(businessClientService.getByEmail(email));
     }
 
-    public void updateTitle(String title, UUID id) {
+    public void updateTitle(String email, String title, UUID id) {
+        validateOwner(email, id);
         if (!validator.validateRentalEntityTitle(title))
             throw new RentalEntityTitleInvalidException(title);
         rentalEntityRepository.updateTitle(title, id);
     }
 
-    public void updateAddress(AddressDto addressDto, UUID id) {
+    public void updateAddress(String email, AddressDto addressDto, UUID id) {
+        validateOwner(email, id);
         if (!validator.validateRentalEntityAddress(addressDto, getById(id)))
             throw new RentalEntityAddressInvalidException(addressDto);
         rentalEntityRepository.updateAddress(addressService.getAddress(addressDto), id);
     }
 
-    public void updateDescription(String description, UUID id) {
+    public void updateDescription(String email, String description, UUID id) {
+        validateOwner(email, id);
         if (!validator.validateRentalEntityDescription(description))
             throw new RentalEntityDescriptionInvalidException(description);
         rentalEntityRepository.updateDescription(description, id);
     }
 
-    public void updateRulesOfConduct(String rulesOfConduct, UUID id) {
+    public void updateRulesOfConduct(String email, String rulesOfConduct, UUID id) {
+        validateOwner(email, id);
         if (!validator.validateRentalEntityRulesOfConduct(rulesOfConduct))
             throw new RentalEntityRulesOfConductInvalidException(rulesOfConduct);
         rentalEntityRepository.updateRulesOfConduct(rulesOfConduct, id);
     }
 
-    public void updateAdditionalServices(String additionalServices, UUID id) {
+    public void updateAdditionalServices(String email, String additionalServices, UUID id) {
+        validateOwner(email, id);
         if (!validator.validateRentalEntityAdditionalServices(additionalServices))
             throw new RentalEntityAdditionalServicesInvalidException(additionalServices);
         rentalEntityRepository.updateAdditionalServices(additionalServices, id);
     }
 
-    public void updatePrice(int price, UUID id) {
+    public void updatePrice(String email, int price, UUID id) {
+        validateOwner(email, id);
         if (!validator.validateRentalEntityPrice(price))
             throw new RentalEntityPriceInvalidException(price);
         rentalEntityRepository.updatePrice(price, id);
     }
 
-    public void updatePictures(List<String> pictures, UUID id) {
+    public void updatePictures(String email, List<String> pictures, UUID id) {
+        validateOwner(email, id);
         if (!validator.validateRentalEntityPictures(pictures))
             throw new RentalEntityPicturesInvalidException();
         RentalEntity rentalEntity = rentalEntityRepository.getById(id);
@@ -118,12 +128,19 @@ public class RentalEntityService {
         rentalEntityRepository.saveAndFlush(rentalEntity);
     }
 
-    public void updateAvailability(List<Long> availability, UUID id) {
+    public void updateAvailability(String email, List<Long> availability, UUID id) {
+        validateOwner(email, id);
         if (!validator.validateRentalEntityAvailability(availability))
             throw new RentalEntityAvailabilityInvalidException(availability.toString());
         RentalEntity rentalEntity = rentalEntityRepository.getById(id);
         rentalEntity.setAvailability(availability.stream().map(Availability::new).collect(Collectors.toSet()));
         rentalEntityRepository.saveAndFlush(rentalEntity);
+    }
+
+    private void validateOwner(String email, UUID id) {
+        BusinessClient businessClient = businessClientService.getByEmail(email);
+        if (!validator.validateRentalEntityOwner(businessClient, this.getById(id)))
+            throw new InvalidRentalEntityOwnerException(id, businessClient.getId());
     }
 
     public List<Long> getAvailability(UUID id) {
@@ -177,7 +194,7 @@ public class RentalEntityService {
         List<RentalEntityDto> rentalEntityDtoList = new ArrayList<>();
 
         for (RentalEntity re : rentalEntityPage) {
-            rentalEntityDtoList.add(rentalEntityToDto(re.getId()));
+            rentalEntityDtoList.add(rentalEntityToDto(re.getId(), true));
         }
         return rentalEntityDtoList;
     }
@@ -209,11 +226,12 @@ public class RentalEntityService {
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
         for (RentalEntity rE:  results) {
             if(isRentalEntityAvailable(fromDate, toDate, rE, shouldCheckAvailability))
-                rentalEntityDtos.add(setRentalEntityDtoType(rE, rentalEntityToDto(rE.getId())));
+                rentalEntityDtos.add(setRentalEntityDtoType(rE, rentalEntityToDto(rE.getId(), true)));
         }
 
         return rentalEntityDtos;
     }
+
 
     private boolean isRentalEntityAvailable(long from, long to, RentalEntity rentalEntity, boolean shouldCheck) {
         if(!shouldCheck) {
@@ -243,6 +261,15 @@ public class RentalEntityService {
             rentalEntityDto.setType("Adventure");
         }
         return rentalEntityDto;
+    }
+
+
+    public void delete(String email, UUID id) {
+        validateOwner(email, id);
+        ReservationStatus[] reservationStatuses = { ReservationStatus.ACTIVE, ReservationStatus.CREATED };
+        if (reservationRepository.existsActiveByRentalEntityId(id, reservationStatuses))
+            throw new RentalEntityReservedException(id);
+        rentalEntityRepository.updateDeleted(true, id);
     }
 
 }

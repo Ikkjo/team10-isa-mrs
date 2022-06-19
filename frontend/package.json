@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^5.11.0",
+    "@fullcalendar/vue": "^5.11.0",
     "axios": "^0.21.1",
     "core-js": "^3.8.3",
     "filepond-plugin-file-encode": "^2.1.10",

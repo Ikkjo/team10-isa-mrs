@@ -1,19 +1,34 @@
 <template>
     <div class="wrapper">
         <h1>Account Deletion Requests</h1>
-        <Vuetable ref="vuetable"
-            :api-mode="false"
-            :fields="fields"
-            :data="requests"
+        <VueGoodTable
+            mode="remote"
+            :pagination-options="{
+                enabled: true,
+            }"
+            :totalRows="totalRecords"
+            :rows="requests"
+            :columns="columns"
+            :isLoading.sync="isLoading"
+            @on-page-change="onPageChange"
+            @on-sort-change="onSortChange"
+            @on-column-filter="onColumnFilter"
+            @on-per-page-change="onPerPageChange"
             >
-            <div slot="decide" slot-scope="props">
-                <button
-                    class="btn"
-                    @click="openDecisionModal(props.rowData)"
-                    >Decide
-                </button>
-            </div>
-        </Vuetable>
+             <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field == 'decide'">
+                    <button class="btn" @click="openDecisionModal(props.row)">Decide</button>
+                </span>
+                <span v-else-if="props.column.field == 'role'">
+                    <span v-if="props.row.role === 'SHIP_OWNER'" class='material-icons'>directions_boat</span>
+                    <span v-else-if="props.row.role === 'HOUSE_OWNER'" class='material-icons'>house</span>
+                    <span v-else class='material-icons'>phishing</span>
+                </span>
+                <span v-else>
+                    {{props.formattedRow[props.column.field]}}
+                </span>
+            </template>
+        </VueGoodTable>
         <DecisionModal
             v-if="showModal"
             :show="showModal"
@@ -25,54 +40,71 @@
 </template>
 
 <script>
-import Vuetable from 'vuetable-3'
+import 'vue-good-table/dist/vue-good-table.css'
+import { VueGoodTable } from 'vue-good-table';
 import DecisionModal from './DecisionModal.vue'
 import axios from 'axios'
 
 export default {
     components: {
-        Vuetable,
+        VueGoodTable,
         DecisionModal
     },
     data() {
         return {
             drUUID: null,
             showModal: false,
-            fields: [
+            columns: [
                 {
-                    name: "role",
-                    title: "Type",
-                    formatter (value) {
-                        if (value === "SHIP_OWNER")
-                            return "<span class='material-icons'>directions_boat</span>"
-                        else if (value === "HOUSE_OWNER")
-                            return "<span class='material-icons'>house</span>"
-                        else    // FISHING_INSTRUCTOR
-                            return "<span class='material-icons'>phishing</span>"
-                    },
-                    width: "70px"
+                    label: 'Type',
+                    field: 'role',
+                    html: true,
+                    columnIndex: 0,
+                    tdClass: 'td-role',
                 },
                 {
-                    name: "firstName",
-                    title: "First Name",
-                    width: "200px"
+                    label: 'First Name',
+                    field: 'firstName',
+                    columnIndex: 1,
                 },
                 {
-                    name: "lastName",
-                    title: "Last Name",
-                    width: "200px"
+                    label: 'Last Name',
+                    field: 'lastName',
+                    columnIndex: 2,
                 },
                 {
-                    name: "deletionReason",
-                    title: "Deletion Reason"
+                    label: 'Email',
+                    field: 'email',
+                    columnIndex: 3,
                 },
                 {
-                    name: "decide",
-                    title: "Decide",
-                    width: "110px",
+                    label: "Deletion Reason",
+                    field: 'deletionReason',
+                    columnIndex: 4,
+                },
+                {
+                    label: 'Decide',
+                    field: 'decide',
+                    sortable: false,
+                    width: '120px',
+                    columnIndex: 5,
                 }
             ],
-            requests: null
+            requests: null,
+            totalRecords: 0,
+            serverParams: {
+                columnFilters: {
+                },
+                sort: [
+                    {
+                        field: 'id',
+                        type: 'asc'
+                    }
+                ],
+                page: 0, 
+                perPage: 10
+            },
+            isLoading: false,
         }
     },
     methods: {
@@ -88,7 +120,52 @@ export default {
         openDecisionModal(data) {
             this.drUUID = data.id;
             this.showModal = true;
-        }
+        },
+        updateParams(newProps) {
+            this.serverParams = Object.assign({}, this.serverParams, newProps);
+        },
+        onPageChange(params) {
+            this.updateParams({page: params.currentPage-1});
+            this.loadItems();
+        },
+        onPerPageChange(params) {
+            console.log(params.currentPerPage)
+            this.updateParams({perPage: params.currentPerPage});
+            this.loadItems();
+        },
+        onSortChange(params) {
+            this.updateParams({
+                sort: [{
+                        type: params[0].type,
+                        field: params[0].field,
+                    }],
+            });
+            this.loadItems();
+        },
+        onColumnFilter(params) {
+            this.updateParams(params);
+            this.loadItems();
+        },
+        // load items is what brings back the rows from server
+        loadItems() {
+            let sortString = ''+this.serverParams.sort[0].field+','+this.serverParams.sort[0].type
+            axios({
+                method: 'get',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-requests',
+                params: {page: this.serverParams.page, size: this.serverParams.perPage, sort: sortString},
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then((response) => {
+                this.totalRecords = response.data.totalPages
+                this.requests = response.data.reservations
+            })
+            .catch((error) => {
+                alert("Couldn't fetch registration requests. See console for more info.")
+                console.log(error);
+            }) 
+        },
     },
     created () {
         axios({
@@ -107,11 +184,7 @@ export default {
 </script>
 
 <style>
-.vuetable-td-role {
+.td-role {
     text-align: center;
-}
-.vuetable-td-firstName , .vuetable-td-lastName{
-    width:120px;
-    max-width: 120px;
 }
 </style>

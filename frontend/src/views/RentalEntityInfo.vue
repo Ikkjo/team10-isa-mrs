@@ -41,6 +41,7 @@
                 @update:adventureFishingEquipment="updateAdventureFishingEquipment"
                 @update:adventureCancellation="updateAdventureCancellation"
                 />
+            <RemoveListing v-if="rentalEntity" :rentalEntityId="rentalEntity.id"/>
         </div>
     </div>
 </template>
@@ -51,6 +52,7 @@ import RentalEntityBasicInfo from '@/components/RentalEntityBasicInfo.vue'
 import VacationHomeAdditionalInfo from '@/components/VacationHomeAdditionalInfo.vue'
 import ShipAdditionalInfo from '@/components/ShipAdditionalInfo.vue'
 import AdventureAdditionalInfo from '@/components/AdventureAdditionalInfo.vue'
+import RemoveListing from '@/components/RemoveListing.vue'
 import axios from 'axios'
 export default {
     name: 'RentalEntityInfo',
@@ -59,7 +61,8 @@ export default {
         RentalEntityBasicInfo,
         VacationHomeAdditionalInfo,
         ShipAdditionalInfo,
-        AdventureAdditionalInfo
+        AdventureAdditionalInfo,
+        RemoveListing,
     },
     data() {
         return {

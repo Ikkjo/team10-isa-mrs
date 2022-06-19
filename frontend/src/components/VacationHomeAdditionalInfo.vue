@@ -14,7 +14,7 @@
                     />
                 </template>
             </InfoItem>
-            <InfoItem icon="bed" label="beds"
+            <InfoItem icon="bed" label="Beds"
              :text="vacationHome.beds.toString()"
              :saveDisabled="isBedsSaveDisabled"
              @save="saveBeds">

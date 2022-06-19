@@ -19,24 +19,24 @@ INSERT into admins(id) VALUES ('6447c259-812c-4d33-afae-484bb00a5628');
 -- password: client
 INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
 VALUES ('f39ea854-da20-4995-89d8-33038a797bbb', false, 'nikola@mail.com', true, 'Nikola', 'Damjanović',  '$2a$12$YLS0DixoqqDLLyYhcqfJoe.ugEwUZOj11sAea4UPZq3P.mtzOlequ', '+38168223909', 'CLIENT');
-INSERT into client(id)
-VALUES ('f39ea854-da20-4995-89d8-33038a797bbb');
+INSERT into client(is_penalized, penalty_points, id)
+VALUES (false, 0, 'f39ea854-da20-4995-89d8-33038a797bbb');
 
 -- CLIENT
 -- mail/username: ilija@mail.com
 -- password: client
 INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
 VALUES ('d4bf14a8-bb24-4730-b313-7a29c8db26f8', false, 'ilija@mail.com', true, 'Ilija', 'Kalinić',  '$2a$12$YLS0DixoqqDLLyYhcqfJoe.ugEwUZOj11sAea4UPZq3P.mtzOlequ', '+38164998010', 'CLIENT');
-INSERT into client(id)
-VALUES ('d4bf14a8-bb24-4730-b313-7a29c8db26f8');
+INSERT into client(is_penalized, penalty_points, id)
+VALUES (false, 0, 'd4bf14a8-bb24-4730-b313-7a29c8db26f8');
 
 -- CLIENT
 -- mail/username: vladan@mail.com
 -- password: client
 INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
 VALUES ('02002c55-c3d1-4dda-9657-53049c08918d', false, 'vladan@mail.com', true, 'Vladan', 'Mikić',  '$2a$12$YLS0DixoqqDLLyYhcqfJoe.ugEwUZOj11sAea4UPZq3P.mtzOlequ', '+38164223878', 'CLIENT');
-INSERT into client(id)
-VALUES ('02002c55-c3d1-4dda-9657-53049c08918d');
+INSERT into client(is_penalized, penalty_points, id)
+VALUES (false, 0, '02002c55-c3d1-4dda-9657-53049c08918d');
 
 -- VACATION_HOUSE_OWNER
 -- mail/username: test@gmail.com

@@ -110,7 +110,8 @@ button:disabled {
   flex-direction: column;
 }
 
-.form-control input, select, textarea,
+
+.form-control input, select, textarea, .map,
 .calendar input {
     padding: 3px 7px;
     font-size: 17px;

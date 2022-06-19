@@ -1,6 +1,7 @@
 package team10.app.repository;
 
 import org.springframework.data.domain.Page;
+import com.sun.istack.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,9 +20,8 @@ import java.util.UUID;
 @Repository
 public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID>,
                                                 JpaSpecificationExecutor<RentalEntity> {
-    @Override
-    Optional<RentalEntity> findById(UUID uuid);
 
+    @Query("select rE from RentalEntity rE where rE.owner = ?1 and rE.deleted = false")
     List<RentalEntity> findAllByOwner(BusinessClient businessClient);
 
     @Query("select rE.title from RentalEntity rE where rE.owner = ?1")
@@ -51,16 +51,8 @@ public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID
     @Query("update RentalEntity rE set rE.price = ?1 where rE.id = ?2")
     void updatePrice(int price, UUID id);
 
-//    @Query("select rE from RentalEntity re where rE.title = ?1 ")
-//    Page<RentalEntity> searchRentalEntities(
-//            int page,
-//            int pageSize,
-//            String title,
-//            String country,
-//            String city,
-//            long fromDate,
-//            long toDate,
-//            UUID owner_id
-//    );
+    @Modifying
+    @Query("update RentalEntity rE set rE.deleted = ?1 where rE.id = ?2")
+    void updateDeleted(boolean deleted, UUID id);
 
 }

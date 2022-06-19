@@ -5,16 +5,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import team10.app.dto.ReservationDto;
 import team10.app.model.Reservation;
+import team10.app.security.auth.JWTProvider;
 import team10.app.service.ReservationService;
+import team10.app.util.exceptions.InvalidReservationBusinessClientException;
+import team10.app.util.exceptions.ReservationNotAvailableForReviewException;
+import team10.app.util.exceptions.ReservationNotFoundException;
 
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/reservations")
@@ -22,6 +25,7 @@ import java.util.Map;
 public class ReservationController {
 
     private final ReservationService reservationService;
+    private final JWTProvider jwtProvider;
 
     @GetMapping()
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
@@ -45,4 +49,23 @@ public class ReservationController {
         }
     }
 
+    @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<ReservationDto> getReservationById(@RequestHeader (name="Authorization") String token, @PathVariable UUID id) {
+        try {
+            return new ResponseEntity<>(
+                    reservationService.getReservationDtoById(
+                            jwtProvider.getAuthentication(token.substring(7)).getName(),
+                            id
+                    ),
+                    HttpStatus.OK
+            );
+        } catch (InvalidReservationBusinessClientException | ReservationNotAvailableForReviewException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } catch (ReservationNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -10,9 +10,12 @@
     </div>
     <slot v-if="!showSlot" name="main"/>
     <div v-show="!showSlot" class="text">{{text}}</div>
+    <div v-show="!showSlot" class="body">
+        <slot  name="body"/>
+    </div>
     <div v-if="useSlot" v-show="showSlot" class="edit-slot">
         <slot name="edit"/>
-        <button :disabled="saveDisabled" @click="save" class="btn" :class="{'btn-red': editButton==='Request Deletion', 'btn-disabled': saveDisabled}">{{editButton}}</button>
+        <button :disabled="saveDisabled" @click="save" class="btn" :class="{'btn-red': editButton==='Request Deletion' || editButton === 'Remove', 'btn-disabled': saveDisabled}">{{editButton}}</button>
     </div>
   </div>
 </template>
@@ -103,6 +106,11 @@ export default {
     font-size: 0.9rem;
     color: grey !important;
     display: inline-block;
+}
+
+.body {
+    padding-top: 2px;
+    padding-left: 29px;
 }
 
 .wrapper {
