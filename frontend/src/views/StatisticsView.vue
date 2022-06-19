@@ -2,113 +2,85 @@
     <div>
         <BusinessClientNavBar id="nav"/>
         <div class="content">
-        <h1>Statistics View</h1>
-        <div v-if="earningsReport" class="charts">
-            <div class="chart">
-                <BarChart
-                    :chartData="getBarChartData()"
-                    tickLabel="$"
-                    :plugins="getBarChartPlugins()"
-                />
+            <div class="btn-group-calendar">
+                <button class="btn earnings-view"
+                    :class="{'not-selected': !earningsView}"
+                    @click="earningsViewClicked()"
+                    >Earnings
+                </button>
+                <button class="btn reservations-view"
+                    :class="{'not-selected': !reservationsView}"
+                    @click="reservationsViewClicked()"
+                    >Reservations
+                </button>
+                <button class="btn avg-price-view"
+                    :class="{'not-selected': !avgPriceView}"
+                    @click="avgPriceViewClicked()"
+                    >Avg. Price
+                </button>
             </div>
-            <div class="chart">
-                <PieChart 
-                    :chartData="getPieChartData()"/>
+            <div>
+               <BusinessClientEarningsReport v-if="earningsView"/> 
             </div>
-        </div>
         </div>
     </div>
 </template>
 
 <script>
 import BusinessClientNavBar from '@/components/BusinessClientNavBar.vue'
-import BarChart from '@/components/BarChart.vue'
-import PieChart from '@/components/PieChart.vue'
-import axios from 'axios'
+import BusinessClientEarningsReport from '@/components/BusinessClientEarningsReport.vue'
 export default {
     name: 'StatisticsView',
     components: {
-      BusinessClientNavBar,
-      BarChart,
-      PieChart,
+        BusinessClientNavBar,
+        BusinessClientEarningsReport,
     },
     data() {
         return {
-            earningsReport: null,
+            earningsView: true,
+            reservationsView: false,
+            avgPriceView: false,
         }
     },
     methods: {
-        getBarChartData() {
-            let data = {
-                labels: [],
-                datasets: [
-                    {
-                        label: 'Earnings',
-                        backgroundColor: '#f0a500',
-                        data: []
-                    }
-                ]
-            }
-            for (let item of this.earningsReport.dailyEarnings) {
-                data.labels.push(new Date(item.day).toLocaleDateString("en-US"))
-                data.datasets[0].data.push(item.earnings);
-            }
-            return data;
+        earningsViewClicked() {
+            this.earningsView = true
+            this.reservationsView = false;
+            this.avgPriceView = false;
         },
-        getPieChartData() {
-            let data = {
-                labels: [],
-                datasets: [
-                    {
-                        label: 'Earnings',
-                        backgroundColor: [],
-                        data: []
-                    }
-                ]
-            }
-            for (let item of this.earningsReport.individualEarnings) {
-                console.log(item)
-                data.labels.push(item.rentalEntityTitle)
-                data.datasets[0].backgroundColor.push(this.getRandomColor())
-                data.datasets[0].data.push(item.earnings);
-            }
-            return data;
+        reservationsViewClicked() {
+            this.earningsView = false
+            this.reservationsView = true;
+            this.avgPriceView = false;
         },
-        getRandomColor() {
-            let letters = '0123456789ABCDEF'.split('');
-            let color = '#';
-            for (let i = 0; i < 6; i++ ) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
+        avgPriceViewClicked() {
+            this.earningsView = false
+            this.reservationsView = false;
+            this.avgPriceView = true;
         }
-    },
-    mounted() {
-         axios({
-                method: 'get',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/report/earnings',
-                params: {fromDate: 1652708658000, toDate: 1660657458000},
-                headers: {
-                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
-                },
-                })
-                .then((response) => {
-                    // console.log(response.data)
-                    this.earningsReport = response.data;
-                })
-                .catch((error) => {
-                    alert("Something went wrong")
-                    console.log(error);
-                }) 
     }
+   
 
 }
 </script>
 
-<style>
+<style scoped>
 .content {
   margin-top: 70px;
+  padding: 0 5%;
 }
 
+.earnings-view {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.reservations-view {
+    border-radius:  0;
+}
+
+.avg-price-view {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 
 </style>
