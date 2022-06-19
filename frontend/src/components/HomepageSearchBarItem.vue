@@ -14,6 +14,7 @@ export default {
         }
     },
     props: {
+        type: String,
         isSelected: Boolean,
         iconClass: String,
         icon: String,
@@ -22,7 +23,7 @@ export default {
     methods: {
         toggleButton() {
             this.buttonState = !(this.buttonState)
-            this.$emit("SearchBarButtonToggled", this.toggleState)
+            this.$emit("SearchBarButtonToggled", {state: this.toggleState, type: this.type})
 
         }
     }
@@ -59,28 +60,5 @@ export default {
     font-size: 0.9rem;
     text-align: center; 
     justify-self: center;
-}
-
-input, select, textarea{
-    padding: 3px 7px;
-    font-size: 17px;
-    border-radius: 5px;
-    border: 1px solid lightgrey;
-    transition: 0.5s;
-    outline-color: lightgrey;
-    background-color: #fff;
-    font-family: inherit;
-}
-
-.input, .select {
-   height: 48px;
-}
-
-input:hover, textarea:hover, select:hover{
-    border-color: var(--orange-primary, #f0a500);
-}
-
-input:focus, textarea:focus, select:focus {
-    outline-color: var(--orange-primary, #f0a500);
 }
 </style>

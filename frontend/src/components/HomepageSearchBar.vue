@@ -21,7 +21,7 @@
                         </template>
           </DatePicker>
         </div>
-        <div class="btn-div">
+        <div>
         <button class="btn" @click="$emit('searchPressed', getSearchQuery())">
           Search
           <span class="material-icons-outlined">search</span>
@@ -106,7 +106,14 @@ export default {
 .button-bar{
   display: flex;
   justify-content: center;
+  background-color: white;
   border-bottom: 1px solid rgb(236, 236, 236);
+}
+
+/* Button text doesn't align to center, needs fix */
+.btn {
+  margin: 7px;
+  text-align: center;
 }
 .searchbar {
   height: calc(var(--nav-height) + 10px);
@@ -123,10 +130,6 @@ export default {
   display: flex;
   justify-content: center;
 }
-
-/* .input {
-
-} */
 
 .input, .select, .textarea,
 .calendar input{
@@ -152,55 +155,17 @@ export default {
     outline-color: var(--orange-primary, #f0a500);
 }
 
-.btn-div {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn {
-  height: 48px;
-  width: calc(160px/1.3);
-  margin: 20px;
-  padding: 10px;
-  text-align: center;
-  font-size: 16px;
-}
-
-.btn-div p {
-  margin-top: 0px;
-}
-
-.btn {
-    display: inline-block;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    outline: none;
-    color: var(--white, #fff);
-    background-color: var(--orange-primary, orange);
-    cursor: pointer;
-    font-family: inherit;
-    text-decoration: none;
-    transition: 0.5s;
-    font-size: 17px;
-}
-
-.btn:hover {
-    background-color: var(--orange-secondary, orange);
-}
-
-.btn:active {
-  transform: scale(0.98);
-}
-
-@media screen and (max-width: 669px) {
+@media screen and (max-width: 1200px) {
   .searchbar {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0 15px;
-    overflow: scroll;
+    height: auto;
+  }
+
+  #search {
+    position: absolute;
   }
 
 }

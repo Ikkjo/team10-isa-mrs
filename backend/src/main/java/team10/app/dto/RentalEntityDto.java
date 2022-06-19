@@ -25,8 +25,21 @@ public abstract class RentalEntityDto {
     protected List<String> pictures;
     protected List<Long> availability;
 
-    protected RentalEntityDto(String title, AddressDto address, String description, String rulesOfConduct,
+    public RentalEntityDto(UUID id, String title, AddressDto address, String description, String rulesOfConduct,
                            String additionalServices, int price, List<String> pictures, List<Long> availability) {
+        this.id = id;
+        this.title = title;
+        this.address = address;
+        this.description = description;
+        this.rulesOfConduct = rulesOfConduct;
+        this.additionalServices = additionalServices;
+        this.price = price;
+        this.pictures = pictures;
+        this.availability = availability;
+    }
+
+    protected RentalEntityDto(String title, AddressDto address, String description, String rulesOfConduct,
+                              String additionalServices, int price, List<String> pictures, List<Long> availability) {
         this.title = title;
         this.address = address;
         this.description = description;

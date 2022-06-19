@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div @SearchBarButtonToggled="filterRentalEntities">
     <UniversalNavBar/>
     <SearchBar ref="searchBar" @searchPressed="search"/>
     <div class="listings">
-      <RentalEntityCard class="listing" v-for="(rentalEntity, index) in rentalEntities" :key="index" :rentalEntity="rentalEntity"/>
+      <RentalEntityCard class="listing" v-for="(rentalEntity, index) in filteredRentalEntities" :key="index" :rentalEntity="rentalEntity"/>
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
     data() {
       return {
         rentalEntities: [],
-        user: null,
+        filteredRentalEntities: [],
         searchQuery: {},
         sharedItems: SearchBar.data
       }
@@ -37,7 +37,15 @@ export default {
           .then((response) => {
             console.log(response.data)
             this.rentalEntities = response.data
-          })
+
+            if (this.rentalEntities.length > 0) {
+              this.rentalEntities.forEach(rentalEntity => {
+                rentalEntity.show = true;
+              });
+            }
+
+            this.filteredRentalEntities = this.rentalEntities
+            })
           .catch(function(error) {
               console.log(error)
           })
@@ -59,11 +67,30 @@ export default {
           .then((response) => {
             console.log(response.data)
             this.rentalEntities = response.data
+
+            if (this.rentalEntities.length > 0) {
+              this.rentalEntities.forEach(rentalEntity => {
+                rentalEntity.show = true;
+              });
+            }
+
+            this.filteredRentalEntities = this.rentalEntities
           })
           .catch(function(error) {
               console.log(error)
           })
+      },
+      filterRentalEntities(buttonData) {
+        let pressed = buttonData.state
+        let type = buttonData.type
+
+        for (let rentalEntity of this.rentalEntities) {
+          if (rentalEntity.type == type) {
+              rentalEntity.show = pressed;
+          }
+        }
       }
+
     }
   }
 </script>
