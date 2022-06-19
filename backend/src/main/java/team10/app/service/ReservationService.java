@@ -107,18 +107,21 @@ public class ReservationService {
     }
 
     private void addDailyEarnings(Map<Long, DailyEarningsDto> dailyEarningsDtoMap, long day, double earnings) {
-        if (!dailyEarningsDtoMap.containsKey(day))
-            dailyEarningsDtoMap.put(day, new DailyEarningsDto(day, earnings));
-        else
-            dailyEarningsDtoMap.get(day).addEarnings(earnings);
+        if (earnings > 0) {
+            if (!dailyEarningsDtoMap.containsKey(day))
+                dailyEarningsDtoMap.put(day, new DailyEarningsDto(day, earnings));
+            else
+                dailyEarningsDtoMap.get(day).addEarnings(earnings);
+        }
     }
 
     private void addIndividualEarnings(Map<UUID, IndividualEarningsDto> individualEarningsDtoMap, Reservation reservation, RentalEntity rentalEntity) {
-        if (!individualEarningsDtoMap.containsKey(rentalEntity.getId())) {
-            individualEarningsDtoMap.put(rentalEntity.getId(),
-                    new IndividualEarningsDto(rentalEntity.getId(), rentalEntity.getTitle(), reservation.getEarnings()));
+        if (reservation.getEarnings() > 0) {
+            if (!individualEarningsDtoMap.containsKey(rentalEntity.getId())) {
+                individualEarningsDtoMap.put(rentalEntity.getId(),
+                        new IndividualEarningsDto(rentalEntity.getId(), rentalEntity.getTitle(), reservation.getEarnings()));
+            } else
+                individualEarningsDtoMap.get(rentalEntity.getId()).addEarnings(reservation.getEarnings());
         }
-        else
-            individualEarningsDtoMap.get(rentalEntity.getId()).addEarnings(reservation.getEarnings());
     }
 }
