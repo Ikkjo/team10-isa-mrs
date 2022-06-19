@@ -11,6 +11,7 @@ public class DeletionRequestDto {
     private String id;
     private String firstName;
     private String lastName;
+    private String email;
     private UserRole role;
     private String deletionReason;
 
@@ -18,6 +19,7 @@ public class DeletionRequestDto {
         this.id = dr.getId().toString();
         this.firstName = dr.getUser().getFirstName();
         this.lastName = dr.getUser().getLastName();
+        this.email = dr.getUser().getEmail();
         this.role = dr.getUser().getRole();
         this.deletionReason = dr.getDeletionReason();
     }

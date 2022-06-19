@@ -1,16 +1,13 @@
 <template>
   <NavBar>
       <template slot="nav-right">
-        <nav-item link="/add-rental-entity" text="List your property" icon=""/>
         <nav-item link="" text="Menu" icon="arrow_drop_down" @click="toggleMenu">
             <template slot="menu">
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">
-                        <dropdown-item :link="{ name: 'manage-account' }" text="Manage account" iconClass="material-icons" icon="account_circle"></dropdown-item>
-                        <dropdown-item :link="{ name: 'my-listings' }" text="My listings" iconClass="material-icons" icon="house"></dropdown-item>
-                        <dropdown-item :link="{ name: 'business-client-reservations' }" text="Reservations" iconClass="material-icons" icon="calendar_month"></dropdown-item>
-                        <dropdown-item :link="{}" text="Reviews" iconClass="material-icons" icon="reviews"></dropdown-item>
-                        <dropdown-item :link="{ name: 'statistics' }" text="Statistics" iconClass="material-icons" icon="query_stats"></dropdown-item>
+                        <dropdown-item link="" text="My account" iconClass="material-icons" icon="account_circle"></dropdown-item>
+                        <dropdown-item link="" text="My reservations" iconClass="material-icons" icon="card_travel"></dropdown-item>
+                        <dropdown-item link="" text="Reservation history" iconClass="material-icons" icon="calendar_month"></dropdown-item>
                         <div class="menu-item" @click="logout">
                             <span class="icon-button material-icons">logout</span> Logout
                         </div>
@@ -28,7 +25,7 @@ import NavBar from '@/components/NavBar.vue'
 import DropdownMenu from '@/components/DropdownMenu.vue'
 import DropdownItem from '@/components/DropdownItem.vue'
 export default {
-    name: 'BusinessUserNav',
+    name: 'ClientNavBar',
     components: {
         NavBar,
         NavItem,
@@ -65,7 +62,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 .menu-item {
     height: 50px;

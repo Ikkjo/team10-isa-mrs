@@ -1,5 +1,5 @@
 <template>
-    <div @click="toggleButton()" class="filter-button" :class="{selected: buttonToggled}" >
+    <div @click="toggleButton()" class="filter-button" :class="{selected: buttonState}" >
                 <span class="icon-class" :class="iconClass">{{icon}}</span>
                 <span class="text">{{title}}</span>
     </div>
@@ -10,10 +10,11 @@ export default {
     name: 'HomepageSearchBarItem',
     data() {
         return {
-            buttonToggled: false
+            buttonState: false
         }
     },
     props: {
+        type: String,
         isSelected: Boolean,
         iconClass: String,
         icon: String,
@@ -21,20 +22,15 @@ export default {
     },
     methods: {
         toggleButton() {
+            this.buttonState = !(this.buttonState)
+            this.$emit("SearchBarButtonToggled", {state: this.toggleState, type: this.type})
 
-            if(this.buttonToggled) {
-                this.buttonToggled = false;
-                this.$emit("SearchBarButtonToggled", false)
-            } else {
-                this.buttonToggled = true;
-                this.$emit("SearchBarButtonToggled", true)
-            }
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
 .filter-button {
     text-decoration: none;
     color: var(--orange);

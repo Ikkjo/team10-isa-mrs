@@ -1,5 +1,5 @@
 <template>
-    <div id="rental-entity-card" @click="detailedView()" >
+    <div id="rental-entity-card" @click="detailedView()">
         <img class="cover-photo" :src="rentalEntity.pictures[0]" alt="" srcset="">
         <div class="container">
             <div class="main-text">{{rentalEntity.title}}</div>
@@ -82,6 +82,7 @@ export default {
                 price: null,
                 maxPersons: 1,
             },
+            show: true,
         }
     },
     methods: {
@@ -193,6 +194,9 @@ export default {
             Object.keys(this.reservation).forEach(key => this.reservation[key]=null)
             this.reservation.maxPersons = 1
         },
+    },
+    created() {
+
     },
     computed: {
         actionButtonDisabled() {

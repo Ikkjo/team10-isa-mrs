@@ -91,6 +91,11 @@ const routes = [
         name: 'statistics',
         component: () => import('../views/StatisticsView.vue')
     },
+    {
+        path: '/listing/:id',
+        name: 'rental-entity-details',
+        component: () => import('../views/RentalEntityDetails.vue')
+    }
 ]
 
 const router = new VueRouter({

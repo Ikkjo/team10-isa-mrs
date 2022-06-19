@@ -1,5 +1,6 @@
 package team10.app.repository;
 
+import org.springframework.data.domain.Page;
 import com.sun.istack.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -53,4 +54,5 @@ public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID
     @Modifying
     @Query("update RentalEntity rE set rE.deleted = ?1 where rE.id = ?2")
     void updateDeleted(boolean deleted, UUID id);
+
 }
