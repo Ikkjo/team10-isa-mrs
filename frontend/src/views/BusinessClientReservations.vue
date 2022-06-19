@@ -19,7 +19,7 @@
             :pagination-options="{
                 enabled: true,
             }"
-            :totalRows="totalRecords"
+            :total-rows="totalRecords"
             :rows="rows"
             :columns="columns"
             :isLoading.sync="isLoading"
@@ -191,7 +191,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
+                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
                 this.rows = response.data.reservations
             })
             .catch((error) => {
@@ -230,7 +230,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
+                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
                 this.rows = response.data.reservations
                 this.rows.forEach(this.convertReservationToEvent)
             })

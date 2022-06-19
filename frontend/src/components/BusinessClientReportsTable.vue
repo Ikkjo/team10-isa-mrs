@@ -6,7 +6,7 @@
             :pagination-options="{
                 enabled: true,
             }"
-            :totalRows="totalRecords"
+            :total-rows="totalRecords"
             :rows="reports"
             :columns="columns"
             :isLoading.sync="isLoading"
@@ -144,7 +144,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
+                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
                 this.reports = response.data.reservations
             })
             .catch((error) => {
@@ -195,7 +195,7 @@ export default {
             },
         })
         .then((response) => {
-            this.totalRecords = response.data.totalPages
+            this.totalRecords = response.data.totalPages * this.serverParams.perPage;
             this.reports = response.data.reservations
         })
         .catch((error) => {

@@ -6,7 +6,7 @@
             :pagination-options="{
                 enabled: true,
             }"
-            :totalRows="totalRecords"
+            :total-rows="totalRecords"
             :rows="requests"
             :columns="columns"
             :isLoading.sync="isLoading"
@@ -158,7 +158,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
+                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
                 this.requests = response.data.reservations
             })
             .catch((error) => {
@@ -175,6 +175,7 @@ export default {
                 Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
             },
         }).then((response) => {
+            this.totalRecords = response.data.totalPages * this.serverParams.perPage;
             this.requests = response.data;
         }).catch((error) => {
             console.log(error);
