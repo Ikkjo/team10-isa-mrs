@@ -17,7 +17,7 @@
             >
              <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'decide'">
-                    <button class="btn" @click="openDecisionModal(props.row)">Decide</button>
+                    <button class="btn" @click="openDeletionDecisionModal(props.row)">Decide</button>
                 </span>
                 <span v-else-if="props.column.field == 'role'">
                     <span v-if="props.row.role === 'SHIP_OWNER'" class='material-icons'>directions_boat</span>
@@ -29,7 +29,7 @@
                 </span>
             </template>
         </VueGoodTable>
-        <DecisionModal
+        <DeletionDecisionModal
             v-if="showModal"
             :show="showModal"
             :drUUID="drUUID"
@@ -42,13 +42,13 @@
 <script>
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
-import DecisionModal from './DecisionModal.vue'
+import DeletionDecisionModal from './DeletionDecisionModal.vue'
 import axios from 'axios'
 
 export default {
     components: {
         VueGoodTable,
-        DecisionModal
+        DeletionDecisionModal
     },
     data() {
         return {
@@ -117,7 +117,7 @@ export default {
                 }
             }
         },
-        openDecisionModal(data) {
+        openDeletionDecisionModal(data) {
             this.drUUID = data.id;
             this.showModal = true;
         },

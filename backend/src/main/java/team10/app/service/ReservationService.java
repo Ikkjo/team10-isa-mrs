@@ -16,6 +16,7 @@ import team10.app.model.RentalEntity;
 import team10.app.model.Reservation;
 import team10.app.model.ReservationStatus;
 import team10.app.repository.ReservationRepository;
+import team10.app.util.Sorting;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.EarningsReportDateRangeInvalidException;
 import team10.app.util.exceptions.InvalidReservationBusinessClientException;
@@ -54,12 +55,8 @@ public class ReservationService {
             default:
                 break;
         }
-        orders.add(new Order(getSortDirection(sortTokens[1]), sortTokens[0]));
+        orders.add(Sorting.getSorting(sortTokens));
         return orders;
-    }
-
-    private Sort.Direction getSortDirection(String s) {
-        return s.contains("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
     }
 
     public List<ReservationDto> getReservationDtoList(List<Reservation> reservations) {
