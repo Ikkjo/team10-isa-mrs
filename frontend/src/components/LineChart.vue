@@ -1,5 +1,5 @@
 <template>
-  <Bar
+  <LineChartGenerator
     :chart-options="chartOptions"
     :chart-data="chartData"
     :chart-id="chartId"
@@ -13,29 +13,38 @@
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs/legacy'
+import { Line as LineChartGenerator } from 'vue-chartjs/legacy'
 
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  BarElement,
+  LineElement,
+  LinearScale,
   CategoryScale,
-  LinearScale
+  PointElement
 } from 'chart.js'
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  LinearScale,
+  CategoryScale,
+  PointElement
+)
 
 export default {
-  name: 'BarChart',
+  name: 'LineChart',
   components: {
-    Bar
+    LineChartGenerator
   },
   props: {
     chartId: {
       type: String,
-      default: 'bar-chart'
+      default: 'line-chart'
     },
     datasetIdKey: {
       type: String,
@@ -61,48 +70,35 @@ export default {
       type: Array,
       default: () => []
     },
-   
     chartData: {
         type: Object,
         default: () => ({
             labels: [
-                // for day in daily earnings
-                '17.06.2022.',
-                '18.06.2022.',
-                '19.06.2022.',
-            ],
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July'
+                ],
             datasets: [
                 {
-                    label: 'Earnings',
-                    backgroundColor: '#f0a500',
-                    data: [40, 20, 12] // for earnings in daily earnings
+                    label: 'Data One',
+                    backgroundColor: '#f87979',
+                    data: [40, 39, 10, 40, 39, 80, 40]
                 }
             ]
-        })
+      }),
     },
-    tickLabel: {
-        type: String,
-        default: "",
+    chartOptions: {
+        type: Object,
+        default: () => ({
+            responsive: true,
+            maintainAspectRatio: false
+
+        })
     }
   },
-  data() {
-    return {
-        chartOptions: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    ticks: {
-                        // Include a dollar sign in the ticks
-                        callback: (value) => {
-                            return this.tickLabel + value;
-                        }
-                    }
-                }
-            },
-            
-        },
-    }
-  }
 }
 </script>
