@@ -25,6 +25,7 @@
             <BarChart
                 :chartData="getBarChartData()"
                 tickLabel="$"
+                scales="$"
             />
             </div>
             <div class="chart">
@@ -59,7 +60,8 @@ export default {
             dateRange: {
                 start: null,
                 end: null
-            }
+            },
+            colors: [],
         }
     },
     methods: {
@@ -69,13 +71,14 @@ export default {
                 datasets: [
                     {
                         label: 'Earnings',
-                        backgroundColor: '#f0a500',
+                        backgroundColor: [],
                         data: []
                     }
                 ]
             }
             for (let item of this.earningsReport.dailyEarnings) {
                 data.labels.push(new Date(item.day).toLocaleDateString("en-US"))
+                data.datasets[0].backgroundColor.push(this.getRandomColor())
                 data.datasets[0].data.push(item.earnings);
             }
             return data;

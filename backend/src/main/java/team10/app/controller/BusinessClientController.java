@@ -16,8 +16,10 @@ import team10.app.security.auth.JWTProvider;
 import team10.app.service.BusinessClientService;
 import team10.app.service.ReservationService;
 import team10.app.util.exceptions.EarningsReportDateRangeInvalidException;
+import team10.app.util.exceptions.ReservationsReportParamInvalidException;
 
 import java.security.Principal;
+import java.util.Map;
 
 
 @RestController
@@ -77,6 +79,19 @@ public class BusinessClientController {
             return new ResponseEntity<>(reservationService.getEarningsReport(authUtil.getEmailFromToken(token), fromDate, toDate), HttpStatus.OK);
         }
         catch (EarningsReportDateRangeInvalidException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/report/reservations")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<Map<String, Integer>> getEarningsReport(@RequestHeader(name = "Authorization") String token,
+                                                                 @RequestParam String period)
+    {
+        try {
+            return new ResponseEntity<>(reservationService.getReservationsReport(authUtil.getEmailFromToken(token), period), HttpStatus.OK);
+        }
+        catch (ReservationsReportParamInvalidException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -16,12 +16,10 @@ import team10.app.model.RentalEntity;
 import team10.app.model.Reservation;
 import team10.app.model.ReservationStatus;
 import team10.app.repository.ReservationRepository;
+import team10.app.util.DateTimeUtil;
 import team10.app.util.Sorting;
 import team10.app.util.Validator;
-import team10.app.util.exceptions.EarningsReportDateRangeInvalidException;
-import team10.app.util.exceptions.InvalidReservationBusinessClientException;
-import team10.app.util.exceptions.ReservationNotAvailableForReviewException;
-import team10.app.util.exceptions.ReservationNotFoundException;
+import team10.app.util.exceptions.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -121,4 +119,54 @@ public class ReservationService {
                 individualEarningsDtoMap.get(rentalEntity.getId()).addEarnings(reservation.getEarnings());
         }
     }
+
+    public Map<String, Integer> getReservationsReport(String email, String period) {
+        switch (period) {
+            case("week"):
+                return this.buildWeekReservationsReportMap(this.getAllReservationsByOwnerInRange(email,
+                        DateTimeUtil.getDeltaWeekFromToday(-9), DateTimeUtil.getTodayEpochMillisecond()));
+            case("month"):
+                return this.buildMonthReservationsReportMap(this.getAllReservationsByOwnerInRange(email,
+                        DateTimeUtil.getFirstDayOfCurrentYear(), DateTimeUtil.getLastDayOfCurrentYear()));
+            case("year"):
+                return this.buildYearReservationsReportMap(this.getAllReservationsByOwnerInRange(email, 0,
+                        DateTimeUtil.getTodayEpochMillisecond()));
+            default:
+                throw new ReservationsReportParamInvalidException(period);
+        }
+    }
+
+    private Map<String, Integer> buildWeekReservationsReportMap(List<Reservation> reservations) {
+        Map<String, Integer> map = new HashMap<>();
+        for (Reservation reservation : reservations) {
+            String week = DateTimeUtil.getWeekOfYearFromDate(reservation.getEndDate());
+            if (!map.containsKey(week))
+                map.put(week, 0);
+            map.put(week, map.get(week) + 1);
+        }
+        return map;
+    }
+
+    private Map<String, Integer> buildMonthReservationsReportMap(List<Reservation> reservations) {
+        Map<String, Integer> map = new HashMap<>();
+        for (Reservation reservation : reservations) {
+                String month = DateTimeUtil.getMonthFromDate(reservation.getEndDate());
+                if (!map.containsKey(month))
+                    map.put(month, 0);
+                map.put(month, map.get(month) + 1);
+        }
+        return map;
+    }
+
+    private Map<String, Integer> buildYearReservationsReportMap(List<Reservation> reservations) {
+        Map<String, Integer> map = new HashMap<>();
+        for (Reservation reservation : reservations) {
+            String year = DateTimeUtil.getYearFromDate(reservation.getEndDate());
+            if (!map.containsKey(year))
+                map.put(year, 0);
+            map.put(year, map.get(year) + 1);
+        }
+        return map;
+    }
+
 }

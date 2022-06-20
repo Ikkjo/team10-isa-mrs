@@ -2,7 +2,7 @@
     <div>
         <BusinessClientNavBar id="nav"/>
         <div class="content">
-            <div class="btn-group-calendar">
+            <div class="">
                 <button class="btn earnings-view"
                     :class="{'not-selected': !earningsView}"
                     @click="earningsViewClicked()"
@@ -13,14 +13,15 @@
                     @click="reservationsViewClicked()"
                     >Reservations
                 </button>
-                <button class="btn avg-price-view"
-                    :class="{'not-selected': !avgPriceView}"
-                    @click="avgPriceViewClicked()"
-                    >Avg. Price
+                <button class="btn avg-rating-view"
+                    :class="{'not-selected': !avgRatingView}"
+                    @click="avgRatingViewClicked()"
+                    >Avg. Rating
                 </button>
             </div>
             <div>
-               <BusinessClientEarningsReport v-if="earningsView"/> 
+               <BusinessClientEarningsReport v-if="earningsView"/>
+               <BusinessClientReservationsReport v-if="reservationsView" /> 
             </div>
         </div>
     </div>
@@ -29,34 +30,36 @@
 <script>
 import BusinessClientNavBar from '@/components/BusinessClientNavBar.vue'
 import BusinessClientEarningsReport from '@/components/BusinessClientEarningsReport.vue'
+import BusinessClientReservationsReport from '@/components/BusinessClientReservationsReport.vue'
 export default {
     name: 'StatisticsView',
     components: {
         BusinessClientNavBar,
         BusinessClientEarningsReport,
+        BusinessClientReservationsReport,
     },
     data() {
         return {
             earningsView: true,
             reservationsView: false,
-            avgPriceView: false,
+            avgRatingView: false,
         }
     },
     methods: {
         earningsViewClicked() {
             this.earningsView = true
             this.reservationsView = false;
-            this.avgPriceView = false;
+            this.avgRatingView = false;
         },
         reservationsViewClicked() {
             this.earningsView = false
             this.reservationsView = true;
-            this.avgPriceView = false;
+            this.avgRatingView = false;
         },
-        avgPriceViewClicked() {
+        avgRatingViewClicked() {
             this.earningsView = false
             this.reservationsView = false;
-            this.avgPriceView = true;
+            this.avgRatingView = true;
         }
     }
    
@@ -78,7 +81,7 @@ export default {
     border-radius:  0;
 }
 
-.avg-price-view {
+.avg-rating-view {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }

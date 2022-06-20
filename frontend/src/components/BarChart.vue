@@ -83,6 +83,10 @@ export default {
     tickLabel: {
         type: String,
         default: "",
+    },
+    scales: {
+      type: String,
+      default: "int"
     }
   },
   data() {
@@ -90,7 +94,16 @@ export default {
         chartOptions: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
+            scales: this.scales === 'int' ? 
+              {
+                y: {
+                    ticks: {
+                        beginAtZero: true,
+                        callback: (value) => { if (Number.isInteger(value)) { return value; } },
+                        stepSize: 1
+                    }
+                }
+              } : {
                 y: {
                     ticks: {
                         // Include a dollar sign in the ticks
