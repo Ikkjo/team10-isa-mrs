@@ -29,4 +29,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
 
     @Query("select r from Reservation r where r.businessClient = ?1 and r.startDate >= ?2 and r.endDate <= ?3")
     List<Reservation> getAllReservationsByOwnerInRange(BusinessClient businessClient, long fromDate, long toDate);
+
 }

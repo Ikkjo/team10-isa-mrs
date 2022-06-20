@@ -23,11 +23,6 @@ public class Client extends User{
 
     private int penaltyPoints = 0;
 
-    @OneToMany(mappedBy = "client",
-               fetch = FetchType.LAZY,
-               cascade = CascadeType.ALL)
-    private Set<Report> reports;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private Set<Reservation> reservations;
 
