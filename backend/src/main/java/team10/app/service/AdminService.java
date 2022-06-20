@@ -236,23 +236,4 @@ public class AdminService {
             System.err.println("Email service not available.");
         }
     }
-
-    public List<Loyalty> getLoyaltyPrograms() {
-        return loyaltyRepository.findAll();
-    }
-
-    public List<LoyaltyDto> getLoyaltyDtoList(List<Loyalty> loyalties) {
-        return loyalties.stream()
-                .map(LoyaltyDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public Loyalty getLoyaltyProgram(UUID loyaltyId) {
-        return loyaltyRepository.findById(loyaltyId)
-                .orElseThrow( () -> new EntityNotFoundException("Loyalty Program with this id doesnt exist: "+loyaltyId));
-    }
-
-    public LoyaltyDto getLoyaltyDto(Loyalty loyaltyProgram) {
-        return new LoyaltyDto(loyaltyProgram);
-    }
 }
