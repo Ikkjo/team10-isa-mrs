@@ -46,6 +46,8 @@ public abstract class RentalEntity {
     protected Set<Rating> rating;
     @Column(nullable = false)
     protected boolean freeCancellation;
+    @Version
+    private Long version;
 
     public void setPictures(Set<Picture> pictures) {
         this.pictures.clear();

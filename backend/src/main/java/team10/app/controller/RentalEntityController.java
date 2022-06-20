@@ -3,6 +3,7 @@ package team10.app.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -61,6 +62,8 @@ public class RentalEntityController {
     public ResponseEntity<HttpStatus> delete(Principal principal, @PathVariable UUID id) {
         try {
             rentalEntityService.delete(principal.getName(), id);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (InvalidRentalEntityOwnerException | RentalEntityReservedException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -118,6 +121,9 @@ public class RentalEntityController {
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @PostMapping(value = "/{id}/add-reservation")
@@ -133,6 +139,9 @@ public class RentalEntityController {
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @Transactional
@@ -142,10 +151,13 @@ public class RentalEntityController {
                                               @PathVariable UUID id, @RequestBody String title) {
         try {
             rentalEntityService.updateTitle(authUtil.getEmailFromToken(token), title, id);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(title, HttpStatus.OK);
+
     }
 
     @Transactional
@@ -155,6 +167,8 @@ public class RentalEntityController {
                                                     @PathVariable UUID id, @RequestBody AddressDto address) {
         try {
             rentalEntityService.updateAddress(authUtil.getEmailFromToken(token), address, id);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -168,6 +182,8 @@ public class RentalEntityController {
                                                     @PathVariable UUID id, @RequestBody String description) {
         try {
             rentalEntityService.updateDescription(authUtil.getEmailFromToken(token), description, id);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -181,6 +197,8 @@ public class RentalEntityController {
                                                      @PathVariable UUID id, @RequestBody Long[] availability) {
         try {
             rentalEntityService.updateAvailability(authUtil.getEmailFromToken(token), List.of(availability), id);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -194,6 +212,8 @@ public class RentalEntityController {
                                                        @PathVariable UUID id, @RequestBody String rulesOfConduct) {
         try {
             rentalEntityService.updateRulesOfConduct(authUtil.getEmailFromToken(token), rulesOfConduct, id);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -207,6 +227,8 @@ public class RentalEntityController {
                                                            @PathVariable UUID id, @RequestBody String additionalServices) {
         try {
             rentalEntityService.updateAdditionalServices(authUtil.getEmailFromToken(token), additionalServices, id);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -220,6 +242,8 @@ public class RentalEntityController {
                                                @PathVariable(name = "id") UUID id, @PathVariable(name = "price") int price) {
         try {
             rentalEntityService.updatePrice(authUtil.getEmailFromToken(token), price, id);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -233,6 +257,8 @@ public class RentalEntityController {
                                                        @PathVariable UUID id, @RequestBody List<String> pictures) {
         try {
             rentalEntityService.updatePictures(authUtil.getEmailFromToken(token), pictures, id);
+        } catch (ObjectOptimisticLockingFailureException ex) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
