@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import team10.app.dto.LoyaltyDto;
 import team10.app.model.Loyalty;
 import team10.app.repository.LoyaltyRepository;
+import team10.app.util.exceptions.LoyaltyAlreadyExistsException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -74,5 +75,13 @@ public class LoyaltyProgramsService {
     public void updateColor(UUID loyaltyId, String color) {
         loyaltyExists(loyaltyId);
         loyaltyRepository.updateColor(loyaltyId, color);
+    }
+
+    public LoyaltyDto addLoyaltyProgram(LoyaltyDto loyaltyDto) {
+        if (loyaltyRepository.existsByTitle(loyaltyDto.getTitle()))
+            throw new LoyaltyAlreadyExistsException("Loyalty with name: "+loyaltyDto.getTitle());
+        Loyalty loyalty = new Loyalty(loyaltyDto);
+        loyaltyRepository.save(loyalty);
+        return new LoyaltyDto(loyalty);
     }
 }

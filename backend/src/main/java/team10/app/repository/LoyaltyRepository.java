@@ -36,4 +36,7 @@ public interface LoyaltyRepository extends JpaRepository<Loyalty, UUID> {
     @Modifying
     @Query("update Loyalty l set l.color=?2 where l.id=?1")
     void updateColor(UUID loyaltyId, String color);
+
+    @Query("select count(l)>0 from Loyalty l where l.title=?1")
+    boolean existsByTitle(String title);
 }

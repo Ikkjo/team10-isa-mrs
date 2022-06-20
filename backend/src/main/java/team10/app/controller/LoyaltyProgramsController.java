@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import team10.app.dto.LoyaltyDto;
 import team10.app.model.Loyalty;
 import team10.app.service.LoyaltyProgramsService;
+import team10.app.util.exceptions.LoyaltyAlreadyExistsException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -173,6 +174,20 @@ public class LoyaltyProgramsController {
         }
         catch (EntityNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(path = "/add")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<LoyaltyDto> addLoyaltyProgram(@RequestBody LoyaltyDto loyaltyDto) {
+        try {
+            return ResponseEntity.ok(loyaltyProgramsService.addLoyaltyProgram(loyaltyDto));
+        }
+        catch (LoyaltyAlreadyExistsException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
