@@ -211,4 +211,21 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(path = "/loyalty-programs/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<LoyaltyDto> getLoyaltyProgramDetails(@PathVariable UUID id) {
+        try {
+            return new ResponseEntity<>(
+                    adminService.getLoyaltyDto(adminService.getLoyaltyProgram(id)),
+                    HttpStatus.OK
+            );
+        }
+        catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
+            return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

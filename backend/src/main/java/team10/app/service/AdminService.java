@@ -246,4 +246,13 @@ public class AdminService {
                 .map(LoyaltyDto::new)
                 .collect(Collectors.toList());
     }
+
+    public Loyalty getLoyaltyProgram(UUID loyaltyId) {
+        return loyaltyRepository.findById(loyaltyId)
+                .orElseThrow( () -> new EntityNotFoundException("Loyalty Program with this id doesnt exist: "+loyaltyId));
+    }
+
+    public LoyaltyDto getLoyaltyDto(Loyalty loyaltyProgram) {
+        return new LoyaltyDto(loyaltyProgram);
+    }
 }
