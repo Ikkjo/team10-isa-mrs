@@ -241,7 +241,8 @@ public class RentalEntityController {
     @GetMapping("/search")
     public ResponseEntity<List<RentalEntityDto>> searchRentalEntities(
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "pageSize", defaultValue = "50") int pageSize,
+            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(name = "owner", defaultValue = "%") String owner,
             @RequestParam(name = "title", defaultValue = "%") String title,
             @RequestParam(name = "country", defaultValue = "%") String country,
             @RequestParam(name = "city", defaultValue = "%") String city,
@@ -250,11 +251,11 @@ public class RentalEntityController {
             @RequestParam(name = "toDate", defaultValue = "0") long toDate,
             @RequestParam(name = "ofType", defaultValue = "") String ofType,
             @RequestParam(name = "minPrice", defaultValue = "0") int minPrice,
-            @RequestParam(name = "maxPrice", defaultValue = "0") int maxPrice) {
+            @RequestParam(name = "maxPrice", defaultValue = "10000") int maxPrice) {
         int DEFAULT_PAGE_SIZE = 20;
 
         try{
-            return ResponseEntity.ok(rentalEntityService.rentalEntitySearch(page, pageSize, title, country, city,
+            return ResponseEntity.ok(rentalEntityService.rentalEntitySearch(page, pageSize, owner, title, country, city,
                     address, fromDate, toDate, ofType, minPrice, maxPrice));
         } catch(Exception e) {
             return ResponseEntity.ok(rentalEntityService.getAllRentalEntitiesPage(0, DEFAULT_PAGE_SIZE));

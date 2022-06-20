@@ -202,7 +202,7 @@ public class RentalEntityService {
     public List<RentalEntityDto> rentalEntitySearch(
             int page,
             int pageSize,
-//            Long ownerId,
+            String owner,
             String title,
             String country,
             String city,
@@ -218,20 +218,12 @@ public class RentalEntityService {
             minPrice = 0;
             maxPrice = 10000;
         }
-        String queryStr = String.format(
-                        "SELECT re FROM RentalEntity re " +
-                        "LEFT JOIN Address addr on addr.id=re.address " +
-                        "WHERE re.title LIKE '%s' AND " +
-                        "re.description LIKE '%s' AND " +
-                        "addr.country LIKE '%s' AND " +
-                        "addr.city LIKE '%s' AND " +
-                        "addr.address LIKE '%s' AND " +
-                        "re.price BETWEEN %d AND %d",
-                "%"+title+"%", "%"+title+"%", country, city, address, minPrice, maxPrice);
         boolean shouldCheckAvailability = !(fromDate < DateTimeUtil.getTodayEpochMillisecond());
-        TypedQuery<RentalEntity> query = entityManager.createQuery(queryStr, RentalEntity.class);
 
-        List<RentalEntity> results = query.getResultList();
+        // TODO: add search by owner name
+        List<RentalEntity> results = rentalEntityRepository.searchRentalEntities(
+                    "%" + title + "%", country, city, address, minPrice, maxPrice, PageRequest.of(page, pageSize))
+                    .toList();
 
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
         for (RentalEntity rE:  results) {

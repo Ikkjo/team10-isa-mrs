@@ -13,8 +13,7 @@
                         <dropdown-item link="nav" text="Statistics" iconClass="material-icons" icon="query_stats"></dropdown-item>
                         <div class="menu-item" @click="logout">
                             <span class="icon-button material-icons">logout</span> Logout
-                        </div>
-                        
+                        </div>                       
                     </template>
                 </dropdown-menu>
             </template>

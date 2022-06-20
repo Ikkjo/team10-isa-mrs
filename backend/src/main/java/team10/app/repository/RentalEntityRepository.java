@@ -2,6 +2,7 @@ package team10.app.repository;
 
 import org.springframework.data.domain.Page;
 import com.sun.istack.NotNull;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -55,4 +56,18 @@ public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID
     @Query("update RentalEntity rE set rE.deleted = ?1 where rE.id = ?2")
     void updateDeleted(boolean deleted, UUID id);
 
+    @Query(
+            value = "SELECT re FROM RentalEntity re LEFT JOIN Address addr ON addr.id=re.address " +
+                    "WHERE re.title LIKE ?1 AND" +
+                    " re.description LIKE ?1 AND addr.country LIKE ?2 AND addr.city LIKE ?3 AND" +
+                    " addr.address LIKE ?4 AND re.price BETWEEN ?5 AND ?6",
+            countQuery = "SELECT count(re) FROM RentalEntity re LEFT JOIN Address addr ON addr.id=re.address " +
+                    "WHERE re.title LIKE ?1 AND" +
+                    " re.description LIKE ?1 AND addr.country LIKE ?2 AND addr.city LIKE ?3 AND" +
+                    " addr.address LIKE ?4 AND re.price BETWEEN ?5 AND ?6"
+    )
+    Page<RentalEntity> searchRentalEntities(String title, String country,
+                                            String city, String address, int minPrice, int maxPrice, Pageable pageable);
+
+//    re.owner.firstName = ?1 AND re.owner.lastName = ?1 AND
 }
