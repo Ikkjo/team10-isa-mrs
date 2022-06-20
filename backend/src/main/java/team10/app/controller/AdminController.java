@@ -4,19 +4,19 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.*;
 import team10.app.model.DeletionRequest;
 import team10.app.model.RegistrationRequest;
 import team10.app.security.auth.AuthUtil;
-import team10.app.security.auth.JWTProvider;
 import team10.app.service.AdminService;
 import team10.app.util.exceptions.EmailTakenException;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +38,9 @@ public class AdminController {
         }
         catch (UsernameNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -71,8 +74,14 @@ public class AdminController {
             adminService.acceptBusinessClient(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        catch (EntityNotFoundException ex){
+        catch (EntityNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (ObjectOptimisticLockingFailureException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -87,6 +96,12 @@ public class AdminController {
         catch (EntityNotFoundException ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        catch (ObjectOptimisticLockingFailureException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Transactional
@@ -95,8 +110,12 @@ public class AdminController {
     public ResponseEntity<AdminDto> createAdmin(@RequestBody AdminRegistrationDto adminDto) {
         try {
             return ResponseEntity.ok(adminService.createAdmin(adminDto));
-        } catch (UsernameNotFoundException | EmailTakenException e) {
+        }
+        catch (UsernameNotFoundException | EmailTakenException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -117,9 +136,11 @@ public class AdminController {
             response.put("totalItems", deletionRequestPage.getTotalElements());
             response.put("totalPages", deletionRequestPage.getTotalPages());
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     @Transactional
@@ -133,6 +154,12 @@ public class AdminController {
         catch (EntityNotFoundException ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        catch (ObjectOptimisticLockingFailureException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Transactional
@@ -145,6 +172,12 @@ public class AdminController {
         }
         catch (EntityNotFoundException ex){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (ObjectOptimisticLockingFailureException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -160,6 +193,9 @@ public class AdminController {
             );
         } catch (UsernameNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
