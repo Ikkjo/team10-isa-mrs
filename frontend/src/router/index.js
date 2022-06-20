@@ -63,6 +63,11 @@ const routes = [
                 path: 'loyalty-programs',
                 name: 'loyalty-programs',
                 component: () => import("../components/LoyaltyPrograms.vue")
+            },
+            {
+                path: 'loyalty-programs/:id',
+                name: 'loyalty-program-details',
+                component: () => import("../components/LoyaltyProgramDetails.vue")
             }
             // TODO: Create this component after Ilija implements user complaints
             // {
