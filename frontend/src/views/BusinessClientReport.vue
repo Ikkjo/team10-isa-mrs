@@ -48,7 +48,7 @@
                     </div>
                     <transition name="fade">
                         <div class="message" v-if="arrived">
-                            <label for="message">message:</label>
+                            <label for="message">Message:</label>
                             <textarea 
                                 :disabled="!arrived"
                                 v-model="message" 
