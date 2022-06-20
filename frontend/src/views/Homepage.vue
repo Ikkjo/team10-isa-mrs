@@ -4,6 +4,17 @@
     <SearchBar ref="searchBar" @searchPressed="search"/>
     <div class="listings">
       <RentalEntityCard class="listing" v-for="(rentalEntity, index) in rentalEntities" :key="index" :rentalEntity="rentalEntity"/>
+
+    </div>
+    <div class="page-div">
+    <Paginate :container-class="'pagination'"
+        v-model="page"
+        :click-handler="pageChange"
+        :page-count="50"
+        :page-range="3"
+        :page-class="'page-item'"
+        :break-view-class="'page-item'">
+    </Paginate>
     </div>
   </div>
 </template>
@@ -13,19 +24,32 @@ import SearchBar from "@/components/HomepageSearchBar.vue";
 import RentalEntityCard from "@/components/RentalEntityCard.vue";
 import axios from 'axios';
 import UniversalNavBar from "@/components/UniversalNavBar.vue";
+import Paginate from 'vuejs-paginate'
 export default {
     name: 'HomepageView',
     components: {
     SearchBar,
     RentalEntityCard,
-    UniversalNavBar
+    UniversalNavBar,
+    Paginate
 },
 
 
     data() {
       return {
         rentalEntities: [],
-        searchQuery: {},
+        searchQueryDefault: {
+            city: "%",
+            country: "%",
+            address: "%",
+            title: "%",
+            fromDate: 0,
+            toDate: 0,
+            ofType: "",
+            minPrice: 0,
+            maxPrice: 10000
+        },
+        page: 0,
         sharedItems: SearchBar.data
       }
     },
@@ -44,9 +68,15 @@ export default {
     methods: {
       search(searchQuery) {
         console.log(searchQuery)
+
+        if(!searchQuery) {
+          searchQuery = this.searchQueryDefault
+        }
+
         axios
           .get(process.env.VUE_APP_BASE_URL+"/api/v1/rental-entity/search", {
             params: {
+              page: this.page-1,
               city: searchQuery.city,
               country: searchQuery.country,
               address: searchQuery.address,
@@ -66,6 +96,11 @@ export default {
               console.log(error)
           })
       },
+      pageChange: function(page) {
+        console.log(page)
+        this.page = page
+        this.search()
+      }
     }
   }
 </script>
@@ -103,6 +138,37 @@ export default {
     max-width: 100%;
     padding-top: 240px;
 }
+
+.page-div *{
+  display: grid;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+}
+.pagination {
+  margin: 1.7rem;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  border-radius: .25rem;
+  
+}
+.page-item {
+    margin: 1rem;
+    display: inline-block;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    outline: none;
+    color: var(--white, #fff);
+    background-color: var(--orange-primary, orange);
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    transition: 0.5s;
+    font-size: 17px;
+}
+
 
 @media screen and (max-width: 669px) {
   .listings {
