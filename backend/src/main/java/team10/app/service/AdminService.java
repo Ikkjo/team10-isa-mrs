@@ -25,17 +25,19 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class AdminService {
-
+    // repos
     private final AdminRepository adminRepository;
     private final RegistrationRequestRepository registrationRequestRepository;
     private final DeletionRequestRepository deletionRequestRepository;
     private final UserRepository userRepository;
     private final ReportRepository reportRepository;
     private final ClientRepository clientRepository;
+    private final LoyaltyRepository loyaltyRepository;
+    // services
     private final EmailService emailService;
     private final UserService userService;
+    // util
     private final PasswordEncoder passwordEncoder;
-
     private final Validator validator;
 
     public AdminDto getUserDetails(String email) throws UsernameNotFoundException {
@@ -233,5 +235,15 @@ public class AdminService {
         } catch (Exception e) {
             System.err.println("Email service not available.");
         }
+    }
+
+    public List<Loyalty> getLoyaltyPrograms() {
+        return loyaltyRepository.findAll();
+    }
+
+    public List<LoyaltyDto> getLoyaltyDtoList(List<Loyalty> loyalties) {
+        return loyalties.stream()
+                .map(LoyaltyDto::new)
+                .collect(Collectors.toList());
     }
 }

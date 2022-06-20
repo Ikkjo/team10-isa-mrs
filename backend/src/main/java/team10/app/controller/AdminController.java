@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.*;
 import team10.app.model.DeletionRequest;
+import team10.app.model.Loyalty;
 import team10.app.model.RegistrationRequest;
 import team10.app.security.auth.AuthUtil;
 import team10.app.service.AdminService;
@@ -19,6 +20,7 @@ import team10.app.util.exceptions.EmailTakenException;
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -195,6 +197,17 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/loyalty-programs")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<List<LoyaltyDto>> getLoyaltyPrograms() {
+        try {
+            List<Loyalty> loyalties = adminService.getLoyaltyPrograms();
+            return new ResponseEntity<>(adminService.getLoyaltyDtoList(loyalties), HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
