@@ -201,7 +201,7 @@ export default {
                 axios({
                     method: 'put',
                     url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id+'/title',
-                    data: this.loyaltyProgram.title,
+                    data: this.loyaltyProgramCopy.title,
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
@@ -224,7 +224,7 @@ export default {
                 axios({
                     method: 'put',
                     url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id
-                        +'/available-at-points/'+this.loyaltyProgram.availableAtPoints,
+                        +'/available-at-points/'+this.loyaltyProgramCopy.availableAtPoints,
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
@@ -250,7 +250,7 @@ export default {
                 axios({
                     method: 'put',
                     url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id
-                        +'/client-discount/'+this.loyaltyProgram.clientDiscount,
+                        +'/client-discount/'+this.loyaltyProgramCopy.clientDiscount,
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
@@ -276,7 +276,7 @@ export default {
                 axios({
                     method: 'put',
                     url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id
-                        +'/business-client-cut/'+this.loyaltyProgram.businessClientCut,
+                        +'/business-client-cut/'+this.loyaltyProgramCopy.businessClientCut,
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
@@ -302,7 +302,7 @@ export default {
                 axios({
                     method: 'put',
                     url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id
-                        +'/business-client-points-per-reservation/'+this.loyaltyProgram.businessClientPointsPerReservation,
+                        +'/business-client-points-per-reservation/'+this.loyaltyProgramCopy.businessClientPointsPerReservation,
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
@@ -328,7 +328,7 @@ export default {
                 axios({
                     method: 'put',
                     url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id
-                        +'/client-points-per-reservation/'+this.loyaltyProgram.clientPointsPerReservation,
+                        +'/client-points-per-reservation/'+this.loyaltyProgramCopy.clientPointsPerReservation,
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
@@ -353,8 +353,8 @@ export default {
             if (this.loyaltyProgramCopy.color !== this.loyaltyProgram.color) {
                 axios({
                     method: 'put',
-                    url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id+'/title',
-                    data: this.loyaltyProgram.color,
+                    url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id+'/color',
+                    data: this.loyaltyProgramCopy.color,
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
