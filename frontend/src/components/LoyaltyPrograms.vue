@@ -40,7 +40,7 @@ export default {
             this.$router.push({name: 'loyalty-program-details', params:{id: id}});
         },
         addLoyaltyProgram() {
-            console.log("Add Loyalty Program clicked.")
+            this.$router.push({name: 'create-loyalty-program'});
         },
         async animateCards() {
             await new Promise(r => setTimeout(r, 100));
