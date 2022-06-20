@@ -9,7 +9,6 @@
                         <dropdown-item :link="{ name: 'manage-account' }" text="Manage account" iconClass="material-icons" icon="account_circle"></dropdown-item>
                         <dropdown-item :link="{ name: 'my-listings' }" text="My listings" iconClass="material-icons" icon="house"></dropdown-item>
                         <dropdown-item :link="{ name: 'business-client-reservations' }" text="Reservations" iconClass="material-icons" icon="calendar_month"></dropdown-item>
-                        <dropdown-item :link="{}" text="Reviews" iconClass="material-icons" icon="reviews"></dropdown-item>
                         <dropdown-item :link="{ name: 'statistics' }" text="Statistics" iconClass="material-icons" icon="query_stats"></dropdown-item>
                         <div class="menu-item" @click="logout">
                             <span class="icon-button material-icons">logout</span> Logout

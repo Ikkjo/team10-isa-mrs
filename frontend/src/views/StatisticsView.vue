@@ -21,7 +21,8 @@
             </div>
             <div>
                <BusinessClientEarningsReport v-if="earningsView"/>
-               <BusinessClientReservationsReport v-if="reservationsView" /> 
+               <BusinessClientReservationsReport v-if="reservationsView" />
+               <BusinessClientAvgRatingReport v-if="avgRatingView"/> 
             </div>
         </div>
     </div>
@@ -31,12 +32,14 @@
 import BusinessClientNavBar from '@/components/BusinessClientNavBar.vue'
 import BusinessClientEarningsReport from '@/components/BusinessClientEarningsReport.vue'
 import BusinessClientReservationsReport from '@/components/BusinessClientReservationsReport.vue'
+import BusinessClientAvgRatingReport from '@/components/BusinessClientAvgRatingReport.vue'
 export default {
     name: 'StatisticsView',
     components: {
         BusinessClientNavBar,
         BusinessClientEarningsReport,
         BusinessClientReservationsReport,
+        BusinessClientAvgRatingReport,
     },
     data() {
         return {

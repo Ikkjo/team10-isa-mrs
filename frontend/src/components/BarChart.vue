@@ -94,8 +94,15 @@ export default {
         chartOptions: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: this.scales === 'int' ? 
-              {
+            scales: this.getScales()
+            
+        },
+    }
+  },
+  methods: {
+      getScales() {
+        if (this.scales === 'int') {
+          return  {
                 y: {
                     ticks: {
                         beginAtZero: true,
@@ -103,7 +110,25 @@ export default {
                         stepSize: 1
                     }
                 }
-              } : {
+              }
+        }
+        else if (this.scales === '10') {
+          return {
+                y: {
+                    ticks: {
+                        beginAtZero: true,
+                        callback: (value) => { if (Number.isInteger(value)) { return value; } },
+                        stepSize: 1,
+                        min: 0,
+                        max: 10,
+                        grace: 1,
+                    }
+                }
+            }
+        }
+
+        else {
+          return {
                 y: {
                     ticks: {
                         // Include a dollar sign in the ticks
@@ -112,10 +137,9 @@ export default {
                         }
                     }
                 }
-            },
-            
-        },
-    }
+            }
+        }
+      }
   }
 }
 </script>

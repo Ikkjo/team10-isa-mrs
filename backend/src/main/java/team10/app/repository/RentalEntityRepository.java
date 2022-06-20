@@ -55,4 +55,6 @@ public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID
     @Query("update RentalEntity rE set rE.deleted = ?1 where rE.id = ?2")
     void updateDeleted(boolean deleted, UUID id);
 
+    @Query("select rE.title from RentalEntity rE where rE.id = ?1")
+    String getTitleById(UUID id);
 }

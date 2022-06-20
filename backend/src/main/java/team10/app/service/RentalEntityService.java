@@ -262,4 +262,7 @@ public class RentalEntityService {
         rentalEntityRepository.updateDeleted(true, id);
     }
 
+    public String getTitle(UUID id) {
+        return rentalEntityRepository.getTitleById(id);
+    }
 }
