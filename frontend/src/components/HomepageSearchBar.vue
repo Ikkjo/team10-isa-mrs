@@ -37,7 +37,7 @@
                             label="Min price" 
                             :increment="5" 
                             :minValue="0" 
-                            :maxValue="100000000"
+                            :maxValue="10000"
                             />
         <NumberInput class="number-input"
                             @updated="maxPriceUpdated" 
@@ -45,7 +45,7 @@
                             label="Max price" 
                             :increment="5" 
                             :minValue="0" 
-                            :maxValue="100000000"
+                            :maxValue="10000"
                             />
                          <SearchBarItem
                 :link="'ships'"
@@ -176,7 +176,6 @@ export default {
         let retStr = ""
         if(this.typeFilter.VacationHome) {
           retStr = retStr.concat("VacationHome,")
-          console.log("JEBEM TI MAJKU")
         }
         if(this.typeFilter.Ship) {
           retStr = retStr.concat("Ship,")
@@ -184,9 +183,8 @@ export default {
         if(this.typeFilter.Adventure) {
           retStr = retStr.concat("Adventure,")
         }
-        console.log(retStr)
         if (retStr){
-          retStr = retStr.substring(0, retStr.length-1) // brise se , ako se dodalo nesto
+          retStr = retStr.substring(0, retStr.length-1) // brise se poslednji , ako se dodalo nesto
         }
         return retStr
       },

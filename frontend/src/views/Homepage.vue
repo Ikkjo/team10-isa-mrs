@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="homepage">
     <UniversalNavBar/>
     <SearchBar ref="searchBar" @searchPressed="search"/>
     <div class="listings">
@@ -13,7 +13,10 @@
         :page-count="50"
         :page-range="3"
         :page-class="'page-item'"
-        :break-view-class="'page-item'">
+        :break-view-class="'page-item'"
+        :next-class="'page-navigation'"
+        :prev-class="'page-navigation'"
+        :page-link-class="'page-link'">
     </Paginate>
     </div>
   </div>
@@ -58,7 +61,6 @@ export default {
        axios
           .get(process.env.VUE_APP_BASE_URL+"/api/v1/homepage")
           .then((response) => {
-            console.log(response.data)
             this.rentalEntities = response.data
             })
           .catch(function(error) {
@@ -67,11 +69,10 @@ export default {
     },
     methods: {
       search(searchQuery) {
-        console.log(searchQuery)
 
         if(!searchQuery) {
           searchQuery = this.searchQueryDefault
-        }
+        } 
 
         axios
           .get(process.env.VUE_APP_BASE_URL+"/api/v1/rental-entity/search", {
@@ -89,7 +90,6 @@ export default {
             }
           })
           .then((response) => {
-            console.log(response.data)
             this.rentalEntities = response.data
           })
           .catch(function(error) {
@@ -97,7 +97,6 @@ export default {
           })
       },
       pageChange: function(page) {
-        console.log(page)
         this.page = page
         this.search()
       }
@@ -105,9 +104,9 @@ export default {
   }
 </script>
 
-<style scoped>
+<style>
 
-.input, .select, .textarea {
+.homepage input, select, textarea {
     padding: 3px 7px;
     font-size: 17px;
     border-radius: 5px;
@@ -145,16 +144,16 @@ export default {
   align-items: center;
   text-align: center;
 }
+
 .pagination {
   margin: 1.7rem;
   display: flex;
   justify-content: center;
   list-style: none;
   border-radius: .25rem;
-  
 }
 .page-item {
-    margin: 1rem;
+    margin: 0.2rem;
     display: inline-block;
     border: none;
     border-radius: 5px;
@@ -167,6 +166,30 @@ export default {
     text-decoration: none;
     transition: 0.5s;
     font-size: 17px;
+}
+
+.page-navigation{
+    margin: 0.3rem;
+    display: inline-block;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    outline: none;
+    color: var(--white, #fff);
+    background-color: var(--orange-primary, orange);
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    transition: 0.5s;
+    font-size: 17px;
+}
+
+.page-link, .page-navigation a{
+  color: var(--white, #fff);
+}
+.page-link:disabled {
+    pointer-events: none;
+    background-color: lightgray;
 }
 
 

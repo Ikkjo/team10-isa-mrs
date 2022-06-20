@@ -87,17 +87,24 @@ export default {
     },
     methods: {
         detailedView() {
-            let role = window.localStorage.getItem('role');
-            if (role === null || role === 'CLIENT') {
-                console.log('Shows rental entity details for client')
-            }
-            else if (this.isBusinessClient()) {
+            // let role = window.localStorage.getItem('role');
+
+            if (this.isBusinessClient()) {
                 this.$router.push({
                     name: 'my-listing',
                     params: {
                         id: this.rentalEntity.id,
                     }
                 })
+            } else {
+                console.log('Shows rental entity details for client')
+                this.$router.push({
+                    name: 'listing-details-view',
+                    params: {
+                        id: this.rentalEntity.id,
+                    }
+                })
+                
             }
         },
         isBusinessClient() {

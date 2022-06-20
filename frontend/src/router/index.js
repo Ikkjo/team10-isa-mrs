@@ -88,8 +88,8 @@ const routes = [
     },
     {
         path: '/listing/:id',
-        name: 'rental-entity-details',
-        component: () => import('../views/ClientRentalEntityDetails.vue')
+        name: 'listing-details-view',
+        component: () => import('../views/RentalEntityDetailsView.vue')
     }
 ]
 
