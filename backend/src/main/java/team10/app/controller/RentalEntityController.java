@@ -32,7 +32,8 @@ public class RentalEntityController {
     private final JWTProvider jwtProvider;
 
     @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+//    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR', 'CLIENT')")
+//    No need for authorization because unauthorized users can view
     public ResponseEntity<RentalEntityDto> findById(@PathVariable UUID id) {
         try {
             return new ResponseEntity<>(rentalEntityService.rentalEntityToDto(id, false), HttpStatus.OK);

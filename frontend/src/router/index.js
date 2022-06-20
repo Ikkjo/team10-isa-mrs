@@ -90,7 +90,13 @@ const routes = [
         path: '/listing/:id',
         name: 'listing-details-view',
         component: () => import('../views/RentalEntityDetailsView.vue')
+    },
+    {
+        path: '/my-account',
+        name: 'client-account-view',
+        component: () => import('../components/ClientAccountInfo.vue')
     }
+
 ]
 
 const router = new VueRouter({

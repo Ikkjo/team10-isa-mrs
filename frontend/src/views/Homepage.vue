@@ -7,7 +7,7 @@
 
     </div>
     <div class="page-div">
-    <Paginate :container-class="'pagination'"
+    <Paginate v-show="rentalEntities.length > 0" :container-class="'pagination'"
         v-model="page"
         :click-handler="pageChange"
         :page-count="50"
@@ -19,6 +19,7 @@
         :page-link-class="'page-link'">
     </Paginate>
     </div>
+    <!-- TODO: Show message if there are no results -->
   </div>
 </template>
 
