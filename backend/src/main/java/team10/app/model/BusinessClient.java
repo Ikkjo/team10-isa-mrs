@@ -22,6 +22,8 @@ public abstract class BusinessClient extends User {
     private String dateOfBirth;
     @OneToMany(mappedBy = "businessClient")
     protected Set<Reservation> reservations;
+    @Column(nullable = false)
+    private int loyaltyPoints = 0;
 
 
     protected BusinessClient(String firstName, String lastName, String email, String password, UserRole appUserRole, String phoneNumber, Address address, String dateOfBirth) {

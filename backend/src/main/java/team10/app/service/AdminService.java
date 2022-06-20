@@ -34,6 +34,7 @@ public class AdminService {
     // services
     private final EmailService emailService;
     private final UserService userService;
+    private final LoyaltyProgramsService loyaltyProgramService;
     // util
     private final PasswordEncoder passwordEncoder;
     private final ReservationService reservationService;
@@ -244,9 +245,13 @@ public class AdminService {
     private Map<Object, Double> buildDailyReport(List<Reservation> reservations) {
         Map<Object, Double> map = new HashMap<>();
         for (Reservation r : reservations) {
-            if (!map.containsKey(r.getEndDate()))
-                map.put(r.getEndDate(), 0.0);
-            // TODO
+            double earnings = this.getBusinessEarnings(r);
+            if (earnings > 0) {
+                long date = r.getEndDate();
+                if (!map.containsKey(date))
+                    map.put(date, 0.0);
+                map.put(date, map.get(date) + earnings);
+            }
         }
         return map;
     }
@@ -254,11 +259,23 @@ public class AdminService {
     private Map<Object, Double> buildMonthlyReport(List<Reservation> reservations) {
         Map<Object, Double> map = new HashMap<>();
         for (Reservation r : reservations) {
-            String date = DateTimeUtil.getMonthAndYearFromDate(r.getEndDate());
-            if (!map.containsKey(date))
-                map.put(date, 0.0);
-            // TODO
+            double earnings = this.getBusinessEarnings(r);
+            if (earnings > 0) {
+                String date = DateTimeUtil.getMonthAndYearFromDate(r.getEndDate());
+                if (!map.containsKey(date))
+                    map.put(date, 0.0);
+                map.put(date, map.get(date) + earnings);
+            }
         }
         return map;
+    }
+
+    private double getBusinessEarnings(Reservation reservation) {
+        double reservationEarnings = reservation.getEarnings();
+        double businessClientCut = loyaltyProgramService.getByLoyaltyPoints(reservation.getBusinessClient().getLoyaltyPoints()).getBusinessClientCut();
+        double businessClientEarnings = reservationEarnings * businessClientCut;
+        double clientDiscount = loyaltyProgramService.getByLoyaltyPoints(reservation.getClient().getLoyaltyPoints()).getClientDiscount();
+        double clientEarnings = reservationEarnings * clientDiscount;
+        return reservationEarnings - businessClientEarnings - clientEarnings;
     }
 }
