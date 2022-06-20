@@ -24,6 +24,9 @@ public class Report {
     private RentalEntity rentalEntity;
     private boolean reviewed;
 
+    @Version
+    private Long version;
+
     public Report(ReportDto reportDto) {
         this.message = reportDto.getMessage();
         this.penalize = reportDto.isPenalize();

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,8 +63,10 @@ public class ReportController {
             reportService.addClientDidntArrive(principal.getName(), reservationId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        catch (Exception e)
-        {
+        catch (ObjectOptimisticLockingFailureException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -97,10 +100,15 @@ public class ReportController {
         try {
             adminService.penalizeClient(id, true);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ReportNotFoundException e) {
+        }
+        catch (ReportNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (ObjectOptimisticLockingFailureException e) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -110,9 +118,14 @@ public class ReportController {
         try {
             adminService.penalizeClient(id, false);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ReportNotFoundException e) {
+        }
+        catch (ReportNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
+        }
+        catch (ObjectOptimisticLockingFailureException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
