@@ -168,4 +168,8 @@ public class ReservationService {
         }
         return map;
     }
+
+    public List<Reservation> getAllInRange(long fromDate, long toDate) {
+        return reservationRepository.getAllInRange(fromDate, toDate);
+    }
 }
