@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Entity(name = "loyalty")
+@Entity
 @Table(name = "loyalty")
 @NoArgsConstructor
 public class Loyalty {

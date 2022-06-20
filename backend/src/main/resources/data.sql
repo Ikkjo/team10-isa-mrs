@@ -200,7 +200,7 @@ VALUES ('611619a9-394f-42b3-aad7-7fb123133c69', 'Regular', 0, 0.0, 85.0, 1, 1, '
 
 --SILVER
 INSERT INTO loyalty(id, title, available_at_points, client_discount, business_client_cut, client_points_per_reservation, business_client_points_per_reservation, color, deletable)
-VALUES ('611619a9-394f-42b3-aad7-7fb123133c70', 'Silver', 10, 1.5, 87.0, 2, 2, '#999999', false);
+VALUES ('611619a9-394f-42b3-aad7-7fb123133c70', 'Silver', 10, 1, 87.0, 2, 2, '#999999', false);
 
 --GOLD
 INSERT INTO loyalty(id, title, available_at_points, client_discount, business_client_cut, client_points_per_reservation, business_client_points_per_reservation, color, deletable)
