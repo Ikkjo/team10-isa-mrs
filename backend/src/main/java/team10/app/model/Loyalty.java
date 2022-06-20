@@ -3,6 +3,7 @@ package team10.app.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import team10.app.dto.LoyaltyDto;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -25,4 +26,13 @@ public class Loyalty {
     private String color;
     private boolean deletable = true;
 
+    public Loyalty(LoyaltyDto loyaltyDto) {
+        this.title = loyaltyDto.getTitle();
+        this.availableAtPoints = loyaltyDto.getAvailableAtPoints();
+        this.clientDiscount = loyaltyDto.getClientDiscount();
+        this.businessClientCut = loyaltyDto.getBusinessClientCut();
+        this.clientPointsPerReservation = loyaltyDto.getClientPointsPerReservation();
+        this.businessClientPointsPerReservation = loyaltyDto.getBusinessClientPointsPerReservation();
+        this.color = loyaltyDto.getColor();
+    }
 }
