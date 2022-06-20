@@ -48,11 +48,8 @@ VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', false, 'test@gmail.com', true, '
 INSERT INTO address(id, address, city, country)
 VALUES ('faef9bb2-ec14-11ec-8ea0-0242ac120002', 'Bulevar Oslobodjenja 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('33213a0e-ec15-11ec-8ea0-0242ac120002', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', '12.06.1991.', 'faef9bb2-ec14-11ec-8ea0-0242ac120002', '33213a0e-ec15-11ec-8ea0-0242ac120002');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', '12.06.1991.', 'faef9bb2-ec14-11ec-8ea0-0242ac120002');
 
 INSERT INTO vacation_home_owner(id)
 VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051');
@@ -67,11 +64,8 @@ VALUES ('b9ac9b1b-85fd-4fcc-9509-96a53a706539', false, 'houseowner@mail.com', tr
 INSERT INTO address(id, address, city, country)
 VALUES ('ff6072d4-c3c9-4293-8ead-1e59275f86a8', 'Futoška ulica 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('f927b1ba-ed44-48f9-ad1b-305866cfb86f', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('b9ac9b1b-85fd-4fcc-9509-96a53a706539', '12.06.1976.', 'ff6072d4-c3c9-4293-8ead-1e59275f86a8', 'f927b1ba-ed44-48f9-ad1b-305866cfb86f');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('b9ac9b1b-85fd-4fcc-9509-96a53a706539', '12.06.1976.', 'ff6072d4-c3c9-4293-8ead-1e59275f86a8');
 
 INSERT into vacation_home_owner(id)
 VALUES ('b9ac9b1b-85fd-4fcc-9509-96a53a706539');
@@ -85,11 +79,8 @@ VALUES ('8ba04d80-3ff0-48b0-81b4-e432b7f19a60', false, 'ikkjohouses@mail.com', t
 INSERT INTO address(id, address, city, country)
 VALUES ('107f457f-d279-452f-8879-cbf661cfdc9f', 'Braće Ribnikar 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('b9326b5e-08d8-42d0-9ad6-92c7acd4d441', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('8ba04d80-3ff0-48b0-81b4-e432b7f19a60', '12.06.1986.', '107f457f-d279-452f-8879-cbf661cfdc9f', 'b9326b5e-08d8-42d0-9ad6-92c7acd4d441');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('8ba04d80-3ff0-48b0-81b4-e432b7f19a60', '12.06.1986.', '107f457f-d279-452f-8879-cbf661cfdc9f');
 
 INSERT into vacation_home_owner(id)
 VALUES ('8ba04d80-3ff0-48b0-81b4-e432b7f19a60');
@@ -103,11 +94,8 @@ VALUES ('ae751645-27c5-4270-b069-27d958773080', false, 'teodor@mail.com', true, 
 INSERT INTO address(id, address, city, country)
 VALUES ('65f2ecdd-374f-457f-a2c8-4df1af7e8fb9', 'Nikole Tesle 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('c0793ad4-84ba-41b5-8036-b6191a45c0f1', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('ae751645-27c5-4270-b069-27d958773080', '12.06.1999.', '65f2ecdd-374f-457f-a2c8-4df1af7e8fb9', 'c0793ad4-84ba-41b5-8036-b6191a45c0f1');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('ae751645-27c5-4270-b069-27d958773080', '12.06.1999.', '65f2ecdd-374f-457f-a2c8-4df1af7e8fb9');
 
 INSERT into vacation_home_owner(id)
 VALUES ('ae751645-27c5-4270-b069-27d958773080');
@@ -121,11 +109,8 @@ VALUES ('30d93782-d08e-4d78-aa0c-f8df67a9826f', false, 'jsmith@mail.com', true, 
 INSERT INTO address(id, address, city, country)
 VALUES ('fc6849c2-f535-4f4a-9722-70d2d7222230', 'Bulevar Žrtava Racije 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('485f8d23-f4d2-4b63-a4b5-9f3ce78b26b2', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('30d93782-d08e-4d78-aa0c-f8df67a9826f', '12.06.1992.', 'fc6849c2-f535-4f4a-9722-70d2d7222230', '485f8d23-f4d2-4b63-a4b5-9f3ce78b26b2');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('30d93782-d08e-4d78-aa0c-f8df67a9826f', '12.06.1992.', 'fc6849c2-f535-4f4a-9722-70d2d7222230');
 
 INSERT into ship_owner(id)
 VALUES ('30d93782-d08e-4d78-aa0c-f8df67a9826f');
@@ -139,11 +124,8 @@ VALUES ('48c3d59a-dd95-4358-b758-79a7af29099c', false, 'jdoe@mail.com', true, 'J
 INSERT INTO address(id, address, city, country)
 VALUES ('522ee9fa-ccd8-4ecf-b8a8-1b68de67a88b', 'Ćirpanova 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('c509a80c-daef-4ca4-9b97-7a151f588cf1', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('48c3d59a-dd95-4358-b758-79a7af29099c', '12.06.1989.', '522ee9fa-ccd8-4ecf-b8a8-1b68de67a88b', 'c509a80c-daef-4ca4-9b97-7a151f588cf1');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('48c3d59a-dd95-4358-b758-79a7af29099c', '12.06.1989.', '522ee9fa-ccd8-4ecf-b8a8-1b68de67a88b');
 
 INSERT into ship_owner(id)
 VALUES ('48c3d59a-dd95-4358-b758-79a7af29099c');
@@ -157,11 +139,8 @@ VALUES ('e754974d-6932-4d25-a14b-dded1c92e729', false, 'demarco@mail.com', true,
 INSERT INTO address(id, address, city, country)
 VALUES ('8bfae442-176d-4097-96b2-2c0c9841702b', 'Novosadskog sajma 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('513555b4-0244-49e4-a3dd-663cc7cbec07', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('e754974d-6932-4d25-a14b-dded1c92e729', '12.06.1988.', '8bfae442-176d-4097-96b2-2c0c9841702b', '513555b4-0244-49e4-a3dd-663cc7cbec07');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('e754974d-6932-4d25-a14b-dded1c92e729', '12.06.1988.', '8bfae442-176d-4097-96b2-2c0c9841702b');
 
 INSERT into ship_owner(id)
 VALUES ('e754974d-6932-4d25-a14b-dded1c92e729');
@@ -175,11 +154,8 @@ VALUES ('99523027-e4ad-40c6-ba7d-3848f0c2ee6a', false, 'borkofish@mail.com', tru
 INSERT INTO address(id, address, city, country)
 VALUES ('dae6ea0e-6d42-4b58-8c96-7fb6dcd5a460', 'Braće Radića 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('2a947f20-c1c4-4afc-a9c8-9446af650779', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('99523027-e4ad-40c6-ba7d-3848f0c2ee6a', '12.06.1985.', 'dae6ea0e-6d42-4b58-8c96-7fb6dcd5a460', '2a947f20-c1c4-4afc-a9c8-9446af650779');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('99523027-e4ad-40c6-ba7d-3848f0c2ee6a', '12.06.1985.', 'dae6ea0e-6d42-4b58-8c96-7fb6dcd5a460');
 
 INSERT into ship_owner(id)
 VALUES ('99523027-e4ad-40c6-ba7d-3848f0c2ee6a');
@@ -193,11 +169,8 @@ VALUES ('1a5c1107-eac5-4dbb-b679-7d7830a65ab8', false, 'ivanam@mail.com', true, 
 INSERT INTO address(id, address, city, country)
 VALUES ('135d59e7-63a2-4f65-b68a-02c7f8abec8a', 'Gogoljeva 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('66e8504b-9137-46ce-8053-47ee9632ac08', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('1a5c1107-eac5-4dbb-b679-7d7830a65ab8', '12.06.1956.', '135d59e7-63a2-4f65-b68a-02c7f8abec8a', '66e8504b-9137-46ce-8053-47ee9632ac08');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('1a5c1107-eac5-4dbb-b679-7d7830a65ab8', '12.06.1956.', '135d59e7-63a2-4f65-b68a-02c7f8abec8a');
 
 INSERT into ship_owner(id)
 VALUES ('1a5c1107-eac5-4dbb-b679-7d7830a65ab8');
@@ -211,16 +184,31 @@ VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', false, 'manja@mail.com', true, '
 INSERT INTO address(id, address, city, country)
 VALUES ('84acb707-1b0f-4dd2-8fec-2b5333cc88de', 'Puškinova 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO loyalty(id, loyalty_points, loyalty_status)
-VALUES ('bd213521-8edb-418b-974e-ce764797e0c8', 0, 0);
-
-INSERT INTO business_client(id, date_of_birth, address_id, loyalty_id)
-VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', '12.06.1956.', '84acb707-1b0f-4dd2-8fec-2b5333cc88de', 'bd213521-8edb-418b-974e-ce764797e0c8');
+INSERT INTO business_client(id, date_of_birth, address_id)
+VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', '12.06.1956.', '84acb707-1b0f-4dd2-8fec-2b5333cc88de');
 
 INSERT into ship_owner(id)
 VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25');
 
 -- ****** USER TEST DATA ****** END
+
+-- ****** LOYALTIES TEST DATA ****** START
+
+--REGULAR
+INSERT INTO loyalty(id, title, available_at_points, client_discount, business_client_cut, client_points_per_reservation, business_client_points_per_reservation, color, deletable)
+VALUES ('611619a9-394f-42b3-aad7-7fb123133c69', 'Regular', 0, 0.0, 85.0, 1, 1, 'orange', false);
+
+--SILVER
+INSERT INTO loyalty(id, title, available_at_points, client_discount, business_client_cut, client_points_per_reservation, business_client_points_per_reservation, color, deletable)
+VALUES ('611619a9-394f-42b3-aad7-7fb123133c70', 'Silver', 10, 1.5, 87.0, 2, 2, '#999999', false);
+
+--GOLD
+INSERT INTO loyalty(id, title, available_at_points, client_discount, business_client_cut, client_points_per_reservation, business_client_points_per_reservation, color, deletable)
+VALUES ('611619a9-394f-42b3-aad7-7fb123133c71', 'Gold', 40, 3.0, 89.0, 3, 3, '#FFD700', false);
+
+
+-- ****** LOYALTIES TEST DATA ****** END
+
 
 -- ****** VACATION HOMES TEST DATA ****** START
 
