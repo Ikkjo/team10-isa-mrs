@@ -20,9 +20,6 @@ public abstract class BusinessClient extends User {
     private Address address;
     @Column(nullable = false)
     private String dateOfBirth;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "loyalty_id")
-    private Loyalty loyalty;
     @OneToMany(mappedBy = "businessClient")
     protected Set<Reservation> reservations;
 
@@ -31,7 +28,6 @@ public abstract class BusinessClient extends User {
         super(firstName, lastName, email, password, appUserRole, phoneNumber);
         this.address = address;
         this.dateOfBirth = dateOfBirth;
-        this.loyalty = new Loyalty();
     }
 
     protected BusinessClient(String firstName, String lastName, String email, String password, UserRole appUserRole) {

@@ -28,6 +28,12 @@
                 title="Deletion Requests"
                 />
             <AdminMenuItem
+                link="loyalty-programs"
+                iconClass="material-icons"
+                icon="card_membership"
+                title="Loyalty Program"
+                />
+            <AdminMenuItem
                 v-if="isMainAdmin"
                 link="create-admin"
                 iconClass="material-icons"
