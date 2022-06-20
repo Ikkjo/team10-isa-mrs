@@ -83,8 +83,12 @@ public class ReservationService {
     public EarningsReportDto getEarningsReport(String email, long fromDate, long toDate) {
         if (!validator.validateEarningsReportDateRange(fromDate, toDate))
             throw new EarningsReportDateRangeInvalidException(fromDate, toDate);
-        return buildEarningsReportDto(getAllReservationsByOwnerInRange(email, fromDate, toDate), fromDate, toDate);
+        return buildEarningsReportDto(getAllReservationsByOwnerInRangeForEarnings(email, fromDate, toDate), fromDate, toDate);
 
+    }
+
+    private List<Reservation> getAllReservationsByOwnerInRangeForEarnings(String email, long fromDate, long toDate) {
+        return reservationRepository.getAllReservationsByOwnerInRangeForEarnings(businessClientService.getByEmail(email), fromDate, toDate);
     }
 
     private List<Reservation> getAllReservationsByOwnerInRange(String email, long fromDate, long toDate) {

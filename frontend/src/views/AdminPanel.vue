@@ -40,6 +40,12 @@
                 icon="person_add"
                 title="Create Admin"
                 />
+            <AdminMenuItem
+                link="earnings-report"
+                iconClass="material-icons"
+                icon="bar_chart"
+                title="Earnings Report"
+                />
             <div class="bottom">
                 <AdminMenuItem
                     link="admin-account-info"

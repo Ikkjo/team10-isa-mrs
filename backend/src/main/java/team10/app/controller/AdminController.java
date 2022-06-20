@@ -203,7 +203,7 @@ public class AdminController {
 
     @GetMapping(path = "/report")
     @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
-    public ResponseEntity<Map<Object, Double>> getReport(@RequestParam long fromDate, @RequestParam long toDate){
+    public ResponseEntity<Map<String, Double>> getReport(@RequestParam long fromDate, @RequestParam long toDate){
         try {
             return ResponseEntity.ok(adminService.getReport(fromDate, toDate)
             );

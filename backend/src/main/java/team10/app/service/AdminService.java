@@ -234,7 +234,7 @@ public class AdminService {
         }
     }
 
-    public Map<Object, Double> getReport(long fromDate, long toDate) {
+    public Map<String, Double> getReport(long fromDate, long toDate) {
         List<Reservation> reservations = reservationService.getAllInRange(fromDate, toDate);
         if (DateTimeUtil.sameMonthAndYear(fromDate, toDate))
             return this.buildDailyReport(reservations);
@@ -242,12 +242,12 @@ public class AdminService {
             return this.buildMonthlyReport(reservations);
     }
 
-    private Map<Object, Double> buildDailyReport(List<Reservation> reservations) {
-        Map<Object, Double> map = new HashMap<>();
+    private Map<String, Double> buildDailyReport(List<Reservation> reservations) {
+        Map<String, Double> map = new HashMap<>();
         for (Reservation r : reservations) {
             double earnings = this.getBusinessEarnings(r);
             if (earnings > 0) {
-                long date = r.getEndDate();
+                String date = DateTimeUtil.getDateFromEpochMilliseconds(r.getEndDate());
                 if (!map.containsKey(date))
                     map.put(date, 0.0);
                 map.put(date, map.get(date) + earnings);
@@ -256,8 +256,8 @@ public class AdminService {
         return map;
     }
 
-    private Map<Object, Double> buildMonthlyReport(List<Reservation> reservations) {
-        Map<Object, Double> map = new HashMap<>();
+    private Map<String, Double> buildMonthlyReport(List<Reservation> reservations) {
+        Map<String, Double> map = new HashMap<>();
         for (Reservation r : reservations) {
             double earnings = this.getBusinessEarnings(r);
             if (earnings > 0) {
