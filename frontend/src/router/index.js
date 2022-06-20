@@ -59,7 +59,12 @@ const routes = [
                 name: 'business-client-reports',
                 component: () => import('../components/BusinessClientReportsTable.vue')
             },
-            // TODO: Create this component
+            {
+                path: 'loyalty-programs',
+                name: 'loyalty-programs',
+                component: () => import("../components/LoyaltyPrograms.vue")
+            }
+            // TODO: Create this component after Ilija implements user complaints
             // {
             //     path: 'user-complaints',
             //     name: 'user-complaints',
