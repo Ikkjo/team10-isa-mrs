@@ -11,14 +11,19 @@ import org.springframework.web.bind.annotation.*;
 import team10.app.dto.AddressDto;
 import team10.app.dto.BusinessClientDto;
 import team10.app.dto.EarningsReportDto;
+import team10.app.dto.RentalEntityRatingDto;
+import team10.app.model.RentalEntity;
 import team10.app.security.auth.AuthUtil;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.BusinessClientService;
+import team10.app.service.RatingService;
+import team10.app.service.RentalEntityService;
 import team10.app.service.ReservationService;
 import team10.app.util.exceptions.EarningsReportDateRangeInvalidException;
 import team10.app.util.exceptions.ReservationsReportParamInvalidException;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 
@@ -29,6 +34,7 @@ public class BusinessClientController {
 
     private final BusinessClientService businessClientService;
     private final ReservationService reservationService;
+    private final RatingService ratingService;
     private final AuthUtil authUtil;
 
     @GetMapping
@@ -90,6 +96,18 @@ public class BusinessClientController {
     {
         try {
             return new ResponseEntity<>(reservationService.getReservationsReport(authUtil.getEmailFromToken(token), period), HttpStatus.OK);
+        }
+        catch (ReservationsReportParamInvalidException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/report/rating")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    public ResponseEntity<List<RentalEntityRatingDto>> getRatingReport(@RequestHeader(name = "Authorization") String token)
+    {
+        try {
+            return new ResponseEntity<>(ratingService.getRatingReport(authUtil.getEmailFromToken(token)), HttpStatus.OK);
         }
         catch (ReservationsReportParamInvalidException ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
