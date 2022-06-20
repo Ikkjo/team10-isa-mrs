@@ -13,7 +13,7 @@
                     @click="reservationsViewClicked()"
                     >Reservations
                 </button>
-                <button class="btn avg-rating-view"
+f54099de-c4e2-4533-b24e-5a…                <button class="btn avg-rating-view"
                     :class="{'not-selected': !avgRatingView}"
                     @click="avgRatingViewClicked()"
                     >Avg. Rating
@@ -21,7 +21,8 @@
             </div>
             <div>
                <BusinessClientEarningsReport v-if="earningsView"/>
-               <BusinessClientReservationsReport v-if="reservationsView" /> 
+               <BusinessClientReservationsReport v-if="reservationsView" />
+               <BusinessClientAvgRatingReport v-if="avgRatingView"/> 
             </div>
         </div>
     </div>
@@ -31,12 +32,14 @@
 import BusinessClientNavBar from '@/components/BusinessClientNavBar.vue'
 import BusinessClientEarningsReport from '@/components/BusinessClientEarningsReport.vue'
 import BusinessClientReservationsReport from '@/components/BusinessClientReservationsReport.vue'
+import BusinessClientAvgRatingReport from '@/components/BusinessClientAvgRatingReport.vue'
 export default {
     name: 'StatisticsView',
     components: {
         BusinessClientNavBar,
         BusinessClientEarningsReport,
         BusinessClientReservationsReport,
+        BusinessClientAvgRatingReport,
     },
     data() {
         return {
