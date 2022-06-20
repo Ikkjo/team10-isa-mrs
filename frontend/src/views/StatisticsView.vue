@@ -13,7 +13,7 @@
                     @click="reservationsViewClicked()"
                     >Reservations
                 </button>
-f54099de-c4e2-4533-b24e-5a…                <button class="btn avg-rating-view"
+                <button class="btn avg-rating-view"
                     :class="{'not-selected': !avgRatingView}"
                     @click="avgRatingViewClicked()"
                     >Avg. Rating
