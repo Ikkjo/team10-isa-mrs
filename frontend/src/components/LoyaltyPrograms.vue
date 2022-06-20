@@ -101,7 +101,7 @@ export default {
     created () {
         axios({
             method: 'get',
-            url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/loyalty-programs',
+            url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs',
             headers: {
                 Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
             },
