@@ -162,4 +162,16 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(path = "/report")
+    @PreAuthorize("hasRole('UNVERIFIED_ADMIN')")
+    public ResponseEntity<Map<String, Double>> getReport(@RequestParam long fromDate, @RequestParam long toDate){
+        try {
+            return ResponseEntity.ok(adminService.getReport(fromDate, toDate)
+            );
+        } catch (UsernameNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

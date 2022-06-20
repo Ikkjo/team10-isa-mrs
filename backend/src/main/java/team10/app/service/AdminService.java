@@ -11,15 +11,13 @@ import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.repository.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import team10.app.util.DateTimeUtil;
 import team10.app.util.EmailBuilder;
 import team10.app.util.Sorting;
-import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,8 +33,7 @@ public class AdminService {
     private final EmailService emailService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-
-    private final Validator validator;
+    private final ReservationService reservationService;
 
     public AdminDto getUserDetails(String email) throws UsernameNotFoundException {
         Admin admin = adminRepository.findByEmail(email)
@@ -105,9 +102,7 @@ public class AdminService {
 
     public boolean isMainAdmin(String email) {
         Admin admin = (Admin) userRepository.findByEmail(email)
-                .orElseGet( () -> {
-                    throw new UsernameNotFoundException("User not found!");
-                });
+                .orElseThrow( () -> new UsernameNotFoundException("User not found!"));
         return admin.getRole() == UserRole.MAIN_ADMIN;
     }
 
@@ -233,5 +228,30 @@ public class AdminService {
         } catch (Exception e) {
             System.err.println("Email service not available.");
         }
+    }
+
+    public Map<String, Double> getReport(long fromDate, long toDate) {
+        List<Reservation> reservations = reservationService.getAllInRange(fromDate, toDate);
+        if (DateTimeUtil.sameMonthAndYear(fromDate, toDate))
+            return this.buildDailyReport(reservations);
+        else
+            return this.buildMonthlyReport(reservations);
+    }
+
+    private Map<String, Double> buildDailyReport(List<Reservation> reservations) {
+        Map<String, Double> map = new HashMap<>();
+        // TODO
+        return map;
+    }
+
+    private Map<String, Double> buildMonthlyReport(List<Reservation> reservations) {
+        Map<String, Double> map = new HashMap<>();
+        for (Reservation r : reservations) {
+            String date = DateTimeUtil.getMonthAndYearFromDate(r.getEndDate());
+            if (!map.containsKey(date))
+                map.put(date, 0.0);
+            // TODO
+        }
+        return map;
     }
 }

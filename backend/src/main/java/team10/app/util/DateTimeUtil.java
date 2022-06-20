@@ -74,4 +74,13 @@ public class DateTimeUtil {
         LocalDate epoch = LocalDate.ofEpochDay(0);
         return String.valueOf(ChronoUnit.WEEKS.between(epoch, day));
     }
+
+    public static boolean sameMonthAndYear(long date1, long date2) {
+        return getMonthFromDate(date1).equals(getMonthFromDate(date2))
+                && getYearFromDate(date1).equals(getYearFromDate(date2));
+    }
+
+    public static String getMonthAndYearFromDate(long date) {
+        return getMonthFromDate(date) + " " + getYearFromDate(date);
+    }
 }
