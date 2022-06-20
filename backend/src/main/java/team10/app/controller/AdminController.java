@@ -142,7 +142,6 @@ public class AdminController {
         catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @Transactional
