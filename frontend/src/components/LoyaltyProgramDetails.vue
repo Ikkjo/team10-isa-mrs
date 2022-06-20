@@ -250,7 +250,7 @@ export default {
                 axios({
                     method: 'put',
                     url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id
-                        +'/client-discount/'+this.loyaltyProgramCopy.clientDiscount,
+                        +'/client-discount/'+(this.loyaltyProgramCopy.clientDiscount/100),
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
@@ -260,7 +260,7 @@ export default {
                         if (response.status >= 400)
                             alert("Title Invalid")
                         else
-                            this.loyaltyProgram.clientDiscount = response.data
+                            this.loyaltyProgram.clientDiscount = response.data*100
                     })
                     .catch((error) => {
                         alert("Title Invalid")
@@ -276,7 +276,7 @@ export default {
                 axios({
                     method: 'put',
                     url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/update/'+this.loyaltyProgram.id
-                        +'/business-client-cut/'+this.loyaltyProgramCopy.businessClientCut,
+                        +'/business-client-cut/'+(this.loyaltyProgramCopy.businessClientCut/100),
                     headers: {
                         Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                     },
@@ -286,7 +286,7 @@ export default {
                         if (response.status >= 400)
                             alert("Title Invalid")
                         else
-                            this.loyaltyProgram.businessClientCut = response.data
+                            this.loyaltyProgram.businessClientCut = response.data*100
                     })
                     .catch((error) => {
                         alert("Title Invalid")
@@ -404,6 +404,8 @@ export default {
             },
         })
         .then((response) => {
+            response.data.businessClientCut = response.data.businessClientCut*100;
+            response.data.clientDiscount = response.data.clientDiscount*100;
             this.loyaltyProgram = response.data;
             this.loyaltyProgramCopy = JSON.parse(JSON.stringify(this.loyaltyProgram));
         })

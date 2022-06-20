@@ -107,6 +107,10 @@ export default {
             },
         })
         .then((response) => {
+            response.data.forEach(function(card){
+                card.clientDiscount = card.clientDiscount*100;
+                card.businessClientCut = card.businessClientCut*100;
+            });
             this.cards = response.data;
             this.animateCards();
         })
