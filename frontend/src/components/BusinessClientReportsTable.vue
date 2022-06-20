@@ -156,7 +156,7 @@ export default {
         penalizeClient(id) {
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/reports/'+id+'/penalize',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/reports/'+id+'/penalize',
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
@@ -172,7 +172,7 @@ export default {
         dontPenalizeClient(id) {
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/reports/'+id+'/dont-penalize',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/reports/'+id+'/dont-penalize',
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
@@ -189,7 +189,7 @@ export default {
     created () {
         axios({
             method: 'get',
-            url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/reports/not-reviewed',
+            url: process.env.VUE_APP_BASE_URL+'/api/v1/reports/not-reviewed',
             headers: {
                 Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
             },
