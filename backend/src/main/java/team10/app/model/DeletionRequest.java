@@ -22,6 +22,9 @@ public class DeletionRequest {
     private String deletionReason;
     private boolean reviewed = false;
 
+    @Version
+    private Long version;
+
     public DeletionRequest(User user, String deletionReason){
         this.user = user;
         this.deletionReason = deletionReason;
