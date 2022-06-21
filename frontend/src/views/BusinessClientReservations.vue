@@ -19,15 +19,14 @@
             :pagination-options="{
                 enabled: true,
             }"
-            :totalRows="totalRecords"
+            :total-rows="totalRecords"
             :rows="rows"
             :columns="columns"
             :isLoading.sync="isLoading"
             @on-page-change="onPageChange"
             @on-sort-change="onSortChange"
             @on-column-filter="onColumnFilter"
-            @on-per-page-change="onPerPageChange"
-            @on-cell-click="onCellClick">
+            @on-per-page-change="onPerPageChange">
              <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'review'">
                     <button v-if="props.row.status === 'FINISHED'" class="btn" @click="writeReview(props.row.id)">Review</button>
@@ -153,16 +152,11 @@ export default {
         updateParams(newProps) {
             this.serverParams = Object.assign({}, this.serverParams, newProps);
         },
-        onCellClick(params) {
-            if (params.column.field === "details")
-                console.log(params.row.id)
-        },
         onPageChange(params) {
             this.updateParams({page: params.currentPage-1});
             this.loadItems();
         },
         onPerPageChange(params) {
-            console.log(params.currentPerPage)
             this.updateParams({perPage: params.currentPerPage});
             this.loadItems();
         },
@@ -191,7 +185,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
+                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
                 this.rows = response.data.reservations
             })
             .catch((error) => {
@@ -206,12 +200,13 @@ export default {
                 start: new Date(reservation.startDate).toISOString().replace(/T.*$/, ''),
                 end: new Date(reservation.endDate+86400000).toISOString().replace(/T.*$/, ''),
                 color: 'orange',
+                status: reservation.status
             }
             this.calendarOptions.events.push(event);
         },
         handleEventClick(clickInfo) {
             let event = clickInfo.event;
-            if (event.status == 'FINISHED')
+            if (event._def.extendedProps.status === 'FINISHED')
                 this.writeReview(event.id);
             else
                 alert("Reservation is not available for review")
@@ -230,7 +225,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
+                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
                 this.rows = response.data.reservations
                 this.rows.forEach(this.convertReservationToEvent)
             })

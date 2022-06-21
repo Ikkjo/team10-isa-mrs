@@ -22,6 +22,9 @@ public class RegistrationRequest {
     private String description;
     private boolean reviewed = false;
 
+    @Version
+    private Long version;
+
     public RegistrationRequest(BusinessClient businessClient, String description){
         this.businessClient = businessClient;
         this.description = description;

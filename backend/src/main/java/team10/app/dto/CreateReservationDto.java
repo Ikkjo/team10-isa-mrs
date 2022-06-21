@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class CreateReservationDto {
-    private String username;
+    private String email;
     private List<Long> dateRange;
     private int price;
     private int maxPersons;

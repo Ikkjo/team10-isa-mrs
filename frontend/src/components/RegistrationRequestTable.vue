@@ -6,16 +6,16 @@
             :pagination-options="{
                 enabled: true,
             }"
-            :totalRows="totalRecords"
+            :total-rows="totalRequests"
             :rows="requests"
             :columns="columns"
-            :isLoading.sync="isLoading"
+            :is-loading.sync="isLoading"
             @on-page-change="onPageChange"
             @on-sort-change="onSortChange"
             @on-column-filter="onColumnFilter"
             @on-per-page-change="onPerPageChange"
             >
-             <template slot="table-row" slot-scope="props">
+            <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'decline'">
                     <button class="btn decline" @click="openDeclineRequestModal(props.row.id)">Decline</button>
                 </span>
@@ -134,7 +134,7 @@ export default {
                 }
             ],
             requests: null,
-            totalRecords: 0,
+            totalRequests: 0,
             serverParams: {
                 columnFilters: {
                 },
@@ -251,8 +251,8 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
-                this.requests = response.data.reservations
+                this.totalRequests = response.data.totalPages * this.serverParams.perPage;
+                this.requests = response.data.registrationRequests
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")
@@ -269,8 +269,8 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
-                this.requests = response.data.reservations
+                this.totalRequests = response.data.totalPages * this.serverParams.perPage;
+                this.requests = response.data.registrationRequests
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")
@@ -280,7 +280,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .btn.accept {
     background-color: green;
 }

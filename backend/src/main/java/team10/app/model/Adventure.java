@@ -17,7 +17,6 @@ public class Adventure extends RentalEntity {
     private String instructorBiography;
     @Column(name = "fishing", nullable = false)
     private String fishing;
-    private boolean freeCancellation;
     private int maxCapacity;
 
     public Adventure(String name,

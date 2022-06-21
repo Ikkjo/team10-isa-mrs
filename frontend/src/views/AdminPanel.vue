@@ -3,30 +3,67 @@
         <div class="admin-sidebar">
             <div class="menu-title">Menu</div>
             <AdminMenuItem
-                :link="'registration-requests'"
-                :iconClass="'material-icons'"
-                :icon="'group_add'"
-                :title="'Registration Requests'"
+                link="registration-requests"
+                iconClass="material-icons"
+                icon="group_add"
+                title="Registration Requests"
                 />
             <AdminMenuItem
-                :link="'deletion-requests'"
-                :iconClass="'material-icons'"
-                :icon="'person_remove'"
-                :title="'Deletion Requests'"
+                link="users"
+                iconClass="material-icons"
+                icon="group"
+                title="All Users"
+                />
+            <AdminMenuItem
+                link="rental-entities"
+                iconClass="material-icons-outlined"
+                icon="real_estate_agent"
+                title="All Rental Entities"
+                />
+            <!-- TODO: Create this component -->
+            <!-- <AdminMenuItem
+                link="user-complaints"
+                iconClass="material-icons"
+                icon="flag"
+                title="User Complaints"
+                /> -->
+            <AdminMenuItem
+                link="business-client-reports"
+                iconClass="material-icons"
+                icon="flag"
+                title="Business Client Reports"
+                />
+            <AdminMenuItem
+                link="loyalty-programs"
+                iconClass="material-icons"
+                icon="card_membership"
+                title="Loyalty Program"
+                />
+            <AdminMenuItem
+                link="deletion-requests"
+                iconClass="material-icons"
+                icon="person_remove"
+                title="Deletion Requests"
                 />
             <AdminMenuItem
                 v-if="isMainAdmin"
-                :link="'create-admin'"
-                :iconClass="'material-icons'"
-                :icon="'person_add'"
-                :title="'Create Admin'"
+                link="create-admin"
+                iconClass="material-icons"
+                icon="person_add"
+                title="Create Admin"
+                />
+            <AdminMenuItem
+                link="earnings-report"
+                iconClass="material-icons"
+                icon="bar_chart"
+                title="Earnings Report"
                 />
             <div class="bottom">
                 <AdminMenuItem
-                    :link="'admin-account-info'"
-                    :iconClass="'material-icons'"
-                    :icon="'account_circle'"
-                    :title="'Account Info'"
+                    link="admin-account-info"
+                    iconClass="material-icons"
+                    icon="manage_accounts"
+                    title="Account Info"
                     />
                 <div @click="logout" class="option">
                     <span class="icon-class material-icons">logout</span>
@@ -65,8 +102,10 @@ export default {
         }
     },
     created () {
-        if (['ADMIN', 'MAIN_ADMIN'].includes(window.localStorage.getItem('role')))
-            this.role = window.localStorage.getItem('role')
+        if (['ADMIN', 'MAIN_ADMIN'].includes(window.localStorage.getItem('role'))) {
+            this.role = window.localStorage.getItem('role');
+            this.$router.push({name: 'registration-requests'});
+        }
         else
             this.$router.push({name: 'homepage'});
     },

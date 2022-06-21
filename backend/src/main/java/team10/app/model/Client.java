@@ -12,19 +12,16 @@ import java.util.Set;
 @Table(name = "client")
 public class Client extends User{
 
-    //TODO: add @Column for all fields, create client table
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "loyalty_id")
-    private Loyalty loyalty;
-    @Column(name="is_penalized", nullable = false)
+    @Column(name = "loyalty_points", nullable = false)
+    private int loyaltyPoints = 0;
     private Boolean isPenalized = false;
-    @Column(name="penalty_points")
+    @Column(name="is_penalized", nullable = false)
     private int penaltyPoints = 0;
     @OneToMany(mappedBy = "client",
                fetch = FetchType.LAZY,
                cascade = CascadeType.ALL)
     private Set<Review> reviews;
+  
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private Set<Reservation> reservations;
 

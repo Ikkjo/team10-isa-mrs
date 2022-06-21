@@ -6,7 +6,7 @@
             :pagination-options="{
                 enabled: true,
             }"
-            :totalRows="totalRecords"
+            :total-rows="totalRecords"
             :rows="requests"
             :columns="columns"
             :isLoading.sync="isLoading"
@@ -17,7 +17,7 @@
             >
              <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'decide'">
-                    <button class="btn" @click="openDecisionModal(props.row)">Decide</button>
+                    <button class="btn" @click="openDeletionDecisionModal(props.row)">Decide</button>
                 </span>
                 <span v-else-if="props.column.field == 'role'">
                     <span v-if="props.row.role === 'SHIP_OWNER'" class='material-icons'>directions_boat</span>
@@ -29,7 +29,7 @@
                 </span>
             </template>
         </VueGoodTable>
-        <DecisionModal
+        <DeletionDecisionModal
             v-if="showModal"
             :show="showModal"
             :drUUID="drUUID"
@@ -42,13 +42,13 @@
 <script>
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
-import DecisionModal from './DecisionModal.vue'
+import DeletionDecisionModal from './DeletionDecisionModal.vue'
 import axios from 'axios'
 
 export default {
     components: {
         VueGoodTable,
-        DecisionModal
+        DeletionDecisionModal
     },
     data() {
         return {
@@ -117,7 +117,7 @@ export default {
                 }
             }
         },
-        openDecisionModal(data) {
+        openDeletionDecisionModal(data) {
             this.drUUID = data.id;
             this.showModal = true;
         },
@@ -158,8 +158,8 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages
-                this.requests = response.data.reservations
+                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+                this.requests = response.data.deletionRequests
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")
@@ -175,7 +175,8 @@ export default {
                 Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
             },
         }).then((response) => {
-            this.requests = response.data;
+            this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+            this.requests = response.data.deletionRequests;
         }).catch((error) => {
             console.log(error);
         });

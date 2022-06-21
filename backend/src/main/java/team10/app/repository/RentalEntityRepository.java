@@ -55,7 +55,7 @@ public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID
     @Modifying
     @Query("update RentalEntity rE set rE.deleted = ?1 where rE.id = ?2")
     void updateDeleted(boolean deleted, UUID id);
-
+                                                  
     @Query(
             value = "SELECT re FROM RentalEntity re LEFT JOIN Address addr ON addr.id=re.address " +
                     "WHERE re.title LIKE ?1 AND" +
@@ -69,5 +69,7 @@ public interface RentalEntityRepository extends JpaRepository<RentalEntity, UUID
     Page<RentalEntity> searchRentalEntities(String title, String country,
                                             String city, String address, int minPrice, int maxPrice, Pageable pageable);
 
-//    re.owner.firstName = ?1 AND re.owner.lastName = ?1 AND
+    @Query("select rE.title from RentalEntity rE where rE.id = ?1")
+    String getTitleById(UUID id);
+
 }

@@ -10,8 +10,8 @@ export default {
     name: 'DropdownItem',
     props: {
         link: {
-            type: String,
-            default: "" 
+            type: Object,
+            default: () => {} 
         },
         text: {
             type: String,

@@ -1,8 +1,10 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,11 +12,14 @@ import org.springframework.stereotype.Service;
 import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.repository.*;
+import team10.app.util.Sorting;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static team10.app.model.UserRole.*;
 
@@ -144,5 +149,22 @@ public class UserService implements UserDetailsService {
         DeletionRequest deletionRequest = new DeletionRequest(user, deletionReason);
         deletionRequestRepository.save(deletionRequest);
     }
-  
+
+    public List<UserDto> getUserDtoList(List<User> allUsers) {
+        return allUsers.stream()
+                .map(UserDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public Page<User> getAllUsers(String sort, int page, int size) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(usersGetSort(sort)));
+        return userRepository.findAll(paging);
+    }
+
+    private List<Sort.Order> usersGetSort(String sort) {
+        List<Sort.Order> orders = new ArrayList<>();
+        String[] sortTokens = sort.split(",");
+        orders.add(Sorting.getSorting(sortTokens));
+        return orders;
+    }
 }

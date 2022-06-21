@@ -32,7 +32,7 @@ export default {
 }
 
 html, body {
-  /* height: 100%; */
+    height: 100%;
 }
 
 body {
@@ -186,4 +186,7 @@ ul {
   display: block;
 }
 
+.not-selected {
+    background-color: lightgray;
+}
 </style>

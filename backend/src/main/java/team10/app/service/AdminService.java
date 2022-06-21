@@ -9,37 +9,35 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.*;
 import team10.app.model.*;
-import team10.app.repository.AdminRepository;
-import team10.app.repository.DeletionRequestRepository;
-import team10.app.repository.RegistrationRequestRepository;
-import team10.app.repository.UserRepository;
+import team10.app.repository.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import team10.app.util.DateTimeUtil;
 import team10.app.util.EmailBuilder;
-import team10.app.util.Validator;
-import team10.app.util.exceptions.DeletionRequestReviewedException;
-import team10.app.util.exceptions.EmailTakenException;
-import team10.app.util.exceptions.PasswordInvalidException;
-import team10.app.util.exceptions.RegistrationRequestReviewedException;
+import team10.app.util.Sorting;
+import team10.app.util.exceptions.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class AdminService {
-
+    // repos
     private final AdminRepository adminRepository;
     private final RegistrationRequestRepository registrationRequestRepository;
     private final DeletionRequestRepository deletionRequestRepository;
     private final UserRepository userRepository;
+    private final ReportRepository reportRepository;
+    private final ClientRepository clientRepository;
+    private final RentalEntityRepository rentalEntityRepository;
+    // services
     private final EmailService emailService;
     private final UserService userService;
+    private final LoyaltyProgramsService loyaltyProgramService;
+    // util
     private final PasswordEncoder passwordEncoder;
-
-    private final Validator validator;
+    private final ReservationService reservationService;
 
     public AdminDto getUserDetails(String email) throws UsernameNotFoundException {
         Admin admin = adminRepository.findByEmail(email)
@@ -57,12 +55,8 @@ public class AdminService {
         String[] sortTokens = sort.split(",");
         sortTokens[0] = sortTokens[0].equals("registrationReason")
                 ? "description" : "businessClient." + sortTokens[0];
-        orders.add(new Sort.Order(getSortDirection(sortTokens[1]), sortTokens[0]));
+        orders.add(Sorting.getSorting(sortTokens));
         return orders;
-    }
-
-    private Sort.Direction getSortDirection(String s) {
-        return s.contains("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
     }
 
     public void acceptBusinessClient(UUID registrationRequestId) throws EntityNotFoundException, RegistrationRequestReviewedException {
@@ -112,9 +106,7 @@ public class AdminService {
 
     public boolean isMainAdmin(String email) {
         Admin admin = (Admin) userRepository.findByEmail(email)
-                .orElseGet( () -> {
-                    throw new UsernameNotFoundException("User not found!");
-                });
+                .orElseThrow( () -> new UsernameNotFoundException("User not found!"));
         return admin.getRole() == UserRole.MAIN_ADMIN;
     }
 
@@ -136,7 +128,7 @@ public class AdminService {
             default:
                 break;
         }
-        orders.add(new Sort.Order(getSortDirection(sortTokens[1]), sortTokens[0]));
+        orders.add(Sorting.getSorting(sortTokens));
         return orders;
     }
 
@@ -198,6 +190,110 @@ public class AdminService {
     public List<DeletionRequestDto> getDeletionRequestsDtoList(List<DeletionRequest> deletionRequests) {
         return deletionRequests.stream()
                 .map(DeletionRequestDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public void penalizeClient(UUID reportId, boolean penalize) {
+        Report report = reportRepository.findById(reportId)
+                .orElseThrow( () -> new ReportNotFoundException(reportId));
+        if (userRepository.existsById(report.getClient().getId()))
+            throw new EntityNotFoundException("Reported user doesn't exist.");
+        if (penalize)
+            clientRepository.addPenalty(report.getClient().getId());
+        try {
+            if (penalize) {
+                emailService.send(
+                        report.getRentalEntity().getOwner().getEmail(),
+                        EmailBuilder.getClientPenalizedForBusinessClientEmail(
+                                report.getRentalEntity().getOwner().getFirstName(),
+                                report.getClient().getEmail()
+                        ));
+                emailService.send(
+                        report.getClient().getEmail(),
+                        EmailBuilder.getClientPenalizedForClientEmail(
+                                report.getClient().getFirstName(),
+                                report.getRentalEntity().getTitle()
+                        ));
+            }
+            else {
+                emailService.send(
+                        report.getRentalEntity().getOwner().getEmail(),
+                        EmailBuilder.getClientNotPenalizedForBusinessClientEmail(
+                                report.getRentalEntity().getOwner().getFirstName(),
+                                report.getClient().getEmail()
+                        ));
+                emailService.send(
+                        report.getClient().getEmail(),
+                        EmailBuilder.getClientNotPenalizedForClientEmail(
+                                report.getClient().getFirstName(),
+                                report.getRentalEntity().getTitle()
+                        ));
+            }
+        } catch (Exception e) {
+            System.err.println("Email service not available.");
+        }
+    }
+
+    public Map<String, Double> getReport(long fromDate, long toDate) {
+        List<Reservation> reservations = reservationService.getAllInRange(fromDate, toDate);
+        if (DateTimeUtil.sameMonthAndYear(fromDate, toDate))
+            return this.buildDailyReport(reservations);
+        else
+            return this.buildMonthlyReport(reservations);
+    }
+
+    private Map<String, Double> buildDailyReport(List<Reservation> reservations) {
+        Map<String, Double> map = new HashMap<>();
+        for (Reservation r : reservations) {
+            double earnings = this.getBusinessEarnings(r);
+            if (earnings > 0) {
+                String date = DateTimeUtil.getDateFromEpochMilliseconds(r.getEndDate());
+                if (!map.containsKey(date))
+                    map.put(date, 0.0);
+                map.put(date, map.get(date) + earnings);
+            }
+        }
+        return map;
+    }
+
+    private Map<String, Double> buildMonthlyReport(List<Reservation> reservations) {
+        Map<String, Double> map = new HashMap<>();
+        for (Reservation r : reservations) {
+            double earnings = this.getBusinessEarnings(r);
+            if (earnings > 0) {
+                String date = DateTimeUtil.getMonthAndYearFromDate(r.getEndDate());
+                if (!map.containsKey(date))
+                    map.put(date, 0.0);
+                map.put(date, map.get(date) + earnings);
+            }
+        }
+        return map;
+    }
+
+    private double getBusinessEarnings(Reservation reservation) {
+        double reservationEarnings = reservation.getEarnings();
+        double businessClientCut = loyaltyProgramService.getByLoyaltyPoints(reservation.getBusinessClient().getLoyaltyPoints()).getBusinessClientCut();
+        double businessClientEarnings = reservationEarnings * businessClientCut;
+        double clientDiscount = loyaltyProgramService.getByLoyaltyPoints(reservation.getClient().getLoyaltyPoints()).getClientDiscount();
+        double clientEarnings = reservationEarnings * clientDiscount;
+        return reservationEarnings - businessClientEarnings - clientEarnings;
+    }
+
+    public void toggleUserDeletedStatus(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow( () -> new EntityNotFoundException("User not found id: "+userId));
+        user.setDeleted(!user.getDeleted());
+    }
+
+    public void toggleRentalEntityDeletedStatus(UUID rentalEntityId) {
+        RentalEntity rentalEntity = rentalEntityRepository.findById(rentalEntityId)
+                .orElseThrow( () -> new EntityNotFoundException("User not found id: "+rentalEntityId));
+        rentalEntity.setDeleted(!rentalEntity.isDeleted());
+    }
+
+    public List<AdminRentalEntityDto> getRentalEntityDtoList(List<RentalEntity> rentalEntities) {
+        return rentalEntities.stream()
+                .map(AdminRentalEntityDto::new)
                 .collect(Collectors.toList());
     }
 }

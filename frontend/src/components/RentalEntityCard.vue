@@ -41,7 +41,7 @@
                 <template #body>
                     <ReservationCreation 
                         :id="rentalEntity.id"
-                        @updated:username="reservationUsernameUpdated"
+                        @updated:email="reservationEmailUpdated"
                         @updated:dateRange="reservationDateRangeUpdated"
                         @updated:price="reservationPriceUpdated"
                         @updated:maxPersons="reservationMaxPersonsUpdated"/>
@@ -77,7 +77,7 @@ export default {
                 maxPersons: 1,
             },
             reservation: {
-                username: null,
+                email: null,
                 dateRange: null,
                 price: null,
                 maxPersons: 1,
@@ -137,9 +137,9 @@ export default {
             console.log("updated max persons")
             this.action.maxPersons = maxPersons
         },
-        reservationUsernameUpdated(username) {
-            console.log("updated reservation username")
-            this.reservation.username = username
+        reservationEmailUpdated(email) {
+            console.log("updated reservation email")
+            this.reservation.email = email
         },
         reservationPriceUpdated(price) {
             console.log("updated price")
@@ -213,7 +213,7 @@ export default {
                     || this.action.maxPersons === null || this.action.maxPersons == 0  
         },
         reservationButtonDisabled() {
-            return this.reservation.username === null || this.reservation.username == ""
+            return this.reservation.email === null || this.reservation.email == ""
                     || this.reservation.dateRange === null || this.reservation.dateRange === []
                     || this.reservation.price === null || this.reservation.price == 0
                     || this.reservation.maxPersons === null || this.reservation.maxPersons == 0  
@@ -253,16 +253,25 @@ export default {
 .container {
     padding: 6px 5px;
     display: block !important;
+    position: relative;
+    width: 100%;
+    min-height: 170px;
 }
 
 .btn-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 6px 5px;
+    width: 100%;
+    position: absolute;
+    bottom: 6px;
 }
 
 .btn-container .btn:first-child {
+    margin-right: 10px
+}
+
+.btn-container .btn:nth-child(2) {
     margin-right: 10px
 }
 

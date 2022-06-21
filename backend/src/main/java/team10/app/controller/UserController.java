@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.PasswordChangeDto;
+import team10.app.security.auth.AuthUtil;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.UserService;
 
@@ -16,7 +17,7 @@ import team10.app.service.UserService;
 public class UserController {
 
     private final UserService userService;
-    private final JWTProvider jwtProvider;
+    private final AuthUtil authUtil;
 
     @Transactional
     @PutMapping("/update/email")
@@ -24,7 +25,7 @@ public class UserController {
     public ResponseEntity<String> updateEmail(@RequestBody String email, @RequestHeader(name = "Authorization") String token)
     {
         try {
-            userService.updateEmail(email, jwtProvider.getAuthentication(token.substring(7)).getName());
+            userService.updateEmail(email, authUtil.getEmailFromToken(token));
         }
         catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -38,7 +39,7 @@ public class UserController {
     public ResponseEntity<String> updatePassword(@RequestBody PasswordChangeDto passwordChangeDto, @RequestHeader(name = "Authorization") String token)
     {
         try {
-            userService.updatePassword(passwordChangeDto, jwtProvider.getAuthentication(token.substring(7)).getName());
+            userService.updatePassword(passwordChangeDto, authUtil.getEmailFromToken(token));
         }
         catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -52,7 +53,7 @@ public class UserController {
     public ResponseEntity<String> updateFirstName(@RequestBody String firstName, @RequestHeader(name = "Authorization") String token)
     {
         try {
-            userService.updateFirstName(firstName, jwtProvider.getAuthentication(token.substring(7)).getName());
+            userService.updateFirstName(firstName, authUtil.getEmailFromToken(token));
         }
         catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -66,7 +67,7 @@ public class UserController {
     public ResponseEntity<String> updateLastName(@RequestBody String lastName, @RequestHeader(name = "Authorization") String token)
     {
         try {
-            userService.updateLastName(lastName, jwtProvider.getAuthentication(token.substring(7)).getName());
+            userService.updateLastName(lastName, authUtil.getEmailFromToken(token));
         }
         catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -80,7 +81,7 @@ public class UserController {
     public ResponseEntity<String> updatePhoneNumber(@RequestBody String phoneNumber, @RequestHeader(name = "Authorization") String token)
     {
         try {
-            userService.updatePhoneNumber(phoneNumber, jwtProvider.getAuthentication(token.substring(7)).getName());
+            userService.updatePhoneNumber(phoneNumber, authUtil.getEmailFromToken(token));
         }
         catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -94,7 +95,7 @@ public class UserController {
     public ResponseEntity<HttpStatus> requestDeletion(@RequestBody String deletionReason, @RequestHeader(name = "Authorization") String token)
     {
         try {
-            userService.requestDeletion(deletionReason, jwtProvider.getAuthentication(token.substring(7)).getName());
+            userService.requestDeletion(deletionReason, authUtil.getEmailFromToken(token));
         }
         catch (RuntimeException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

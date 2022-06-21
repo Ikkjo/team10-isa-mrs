@@ -1,30 +1,34 @@
 package team10.app.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
 import team10.app.model.Loyalty;
-import team10.app.model.LoyaltyStatus;
 
 import java.util.UUID;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class LoyaltyDto {
+    private UUID id;
+    private String title;
+    private int availableAtPoints;
+    private double clientDiscount;
+    private double businessClientCut;
+    private int clientPointsPerReservation;
+    private int businessClientPointsPerReservation;
+    private String color;
+    private boolean deletable;
 
-    private String id = "";
-    private int loyaltyPoints = 0;
-    private String loyaltyStatus = "REGULAR";
-
-    public LoyaltyDto(Loyalty l) {
-        if (l != null){
-            this.id = l.getId().toString();
-            this.loyaltyPoints = l.getLoyaltyPoints();
-            this.loyaltyStatus = l.getLoyaltyStatus().name();
-        }
-
+    public LoyaltyDto(Loyalty loyalty) {
+        this.id = loyalty.getId();
+        this.title = loyalty.getTitle();
+        this.availableAtPoints = loyalty.getAvailableAtPoints();
+        this.clientDiscount = loyalty.getClientDiscount();
+        this.clientPointsPerReservation = loyalty.getClientPointsPerReservation();
+        this.businessClientCut = loyalty.getBusinessClientCut();
+        this.businessClientPointsPerReservation = loyalty.getBusinessClientPointsPerReservation();
+        this.color = loyalty.getColor();
     }
 }
