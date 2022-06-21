@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import team10.app.model.Loyalty;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface LoyaltyRepository extends JpaRepository<Loyalty, UUID> {
+    @Query("select l from Loyalty l where l.availableAtPoints <= ?1")
+    List<Loyalty> getByLoyaltyPoints(int loyaltyPoints);
 
     @Modifying
     @Query("update Loyalty l set l.title=?2 where l.id=?1")

@@ -89,4 +89,17 @@ public class LoyaltyProgramsService {
         loyaltyExists(id);
         loyaltyRepository.deleteById(id);
     }
+  
+    public Loyalty getByLoyaltyPoints(int loyaltyPoints) {
+        List<Loyalty> loyalties = loyaltyRepository.getByLoyaltyPoints(loyaltyPoints);
+        int max = 0;
+        Loyalty loyalty = new Loyalty();
+        for (Loyalty l : loyalties) {
+            if (l.getAvailableAtPoints() > max && loyaltyPoints >= l.getAvailableAtPoints()) {
+                max = l.getAvailableAtPoints();
+                loyalty = l;
+            }
+        }
+        return loyalty;
+    }
 }

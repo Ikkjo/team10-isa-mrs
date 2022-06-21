@@ -84,7 +84,7 @@ export default {
                 })
                 .then((response) => {
                     console.log(response);
-                    if (response.data === null)
+                    if (Object.keys(response.data).length === 0)
                         alert('No reservations in selected period')
                     else {
                         this.report = response.data;

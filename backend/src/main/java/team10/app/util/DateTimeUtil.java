@@ -35,7 +35,10 @@ public class DateTimeUtil {
      */
     public static long getDeltaWeekFromToday(int weeks) {
         long currentTime = System.currentTimeMillis();
-        return currentTime + (currentTime % (604800000L * (weeks+1))) - MS_IN_DAY*3;
+        if (weeks < 0)
+            return currentTime - (currentTime % (604800000L * (weeks+1))) - MS_IN_DAY*3;
+        else
+            return currentTime + (currentTime % (604800000L * (weeks+1))) - MS_IN_DAY*3;
     }
 
     /**
@@ -73,5 +76,19 @@ public class DateTimeUtil {
         LocalDate day = Instant.ofEpochMilli(endDate).atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate epoch = LocalDate.ofEpochDay(0);
         return String.valueOf(ChronoUnit.WEEKS.between(epoch, day));
+    }
+
+    public static boolean sameMonthAndYear(long date1, long date2) {
+        return getMonthFromDate(date1).equals(getMonthFromDate(date2))
+                && getYearFromDate(date1).equals(getYearFromDate(date2));
+    }
+
+    public static String getMonthAndYearFromDate(long date) {
+        return getMonthFromDate(date) + " " + getYearFromDate(date);
+    }
+
+    public static String getDateFromEpochMilliseconds(long date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        return sdf.format(new Date(date));
     }
 }
