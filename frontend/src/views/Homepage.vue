@@ -107,7 +107,7 @@ export default {
 
 <style>
 
-.homepage input, select, textarea {
+.homepage input, .homepage select, .homepage textarea {
     padding: 3px 7px;
     font-size: 17px;
     border-radius: 5px;
