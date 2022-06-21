@@ -159,7 +159,7 @@ export default {
             })
             .then((response) => {
                 this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-                this.requests = response.data.reservations
+                this.requests = response.data.deletionRequests
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")
@@ -176,7 +176,7 @@ export default {
             },
         }).then((response) => {
             this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-            this.requests = response.data;
+            this.requests = response.data.deletionRequests;
         }).catch((error) => {
             console.log(error);
         });

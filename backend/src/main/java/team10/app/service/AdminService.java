@@ -30,7 +30,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final ReportRepository reportRepository;
     private final ClientRepository clientRepository;
-    private final LoyaltyRepository loyaltyRepository;
+    private final RentalEntityRepository rentalEntityRepository;
     // services
     private final EmailService emailService;
     private final UserService userService;
@@ -277,5 +277,23 @@ public class AdminService {
         double clientDiscount = loyaltyProgramService.getByLoyaltyPoints(reservation.getClient().getLoyaltyPoints()).getClientDiscount();
         double clientEarnings = reservationEarnings * clientDiscount;
         return reservationEarnings - businessClientEarnings - clientEarnings;
+    }
+
+    public void toggleUserDeletedStatus(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow( () -> new EntityNotFoundException("User not found id: "+userId));
+        user.setDeleted(!user.getDeleted());
+    }
+
+    public void toggleRentalEntityDeletedStatus(UUID rentalEntityId) {
+        RentalEntity rentalEntity = rentalEntityRepository.findById(rentalEntityId)
+                .orElseThrow( () -> new EntityNotFoundException("User not found id: "+rentalEntityId));
+        rentalEntity.setDeleted(!rentalEntity.isDeleted());
+    }
+
+    public List<AdminRentalEntityDto> getRentalEntityDtoList(List<RentalEntity> rentalEntities) {
+        return rentalEntities.stream()
+                .map(AdminRentalEntityDto::new)
+                .collect(Collectors.toList());
     }
 }
