@@ -19,24 +19,24 @@ INSERT into admins(id) VALUES ('6447c259-812c-4d33-afae-484bb00a5628');
 -- password: client
 INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
 VALUES ('f39ea854-da20-4995-89d8-33038a797bbb', false, 'nikola@mail.com', true, 'Nikola', 'Damjanović',  '$2a$12$YLS0DixoqqDLLyYhcqfJoe.ugEwUZOj11sAea4UPZq3P.mtzOlequ', '+38168223909', 'CLIENT');
-INSERT into client(is_penalized, penalty_points, id)
-VALUES (false, 0, 'f39ea854-da20-4995-89d8-33038a797bbb');
+INSERT into client(is_penalized, penalty_points, id, loyalty_points)
+VALUES (false, 0, 'f39ea854-da20-4995-89d8-33038a797bbb', 69);
 
 -- CLIENT
 -- mail/username: ilija@mail.com
 -- password: client
 INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
 VALUES ('d4bf14a8-bb24-4730-b313-7a29c8db26f8', false, 'ilija@mail.com', true, 'Ilija', 'Kalinić',  '$2a$12$YLS0DixoqqDLLyYhcqfJoe.ugEwUZOj11sAea4UPZq3P.mtzOlequ', '+38164998010', 'CLIENT');
-INSERT into client(is_penalized, penalty_points, id)
-VALUES (false, 0, 'd4bf14a8-bb24-4730-b313-7a29c8db26f8');
+INSERT into client(is_penalized, penalty_points, id, loyalty_points)
+VALUES (false, 0, 'd4bf14a8-bb24-4730-b313-7a29c8db26f8', 0);
 
 -- CLIENT
 -- mail/username: vladan@mail.com
 -- password: client
 INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
 VALUES ('02002c55-c3d1-4dda-9657-53049c08918d', false, 'vladan@mail.com', true, 'Vladan', 'Mikić',  '$2a$12$YLS0DixoqqDLLyYhcqfJoe.ugEwUZOj11sAea4UPZq3P.mtzOlequ', '+38164223878', 'CLIENT');
-INSERT into client(is_penalized, penalty_points, id)
-VALUES (false, 0, '02002c55-c3d1-4dda-9657-53049c08918d');
+INSERT into client(is_penalized, penalty_points, id, loyalty_points)
+VALUES (false, 0, '02002c55-c3d1-4dda-9657-53049c08918d', 40);
 
 -- VACATION_HOUSE_OWNER
 -- mail/username: test@gmail.com
@@ -48,8 +48,8 @@ VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', false, 'test@gmail.com', true, '
 INSERT INTO address(id, address, city, country)
 VALUES ('faef9bb2-ec14-11ec-8ea0-0242ac120002', 'Bulevar Oslobodjenja 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', '12.06.1991.', 'faef9bb2-ec14-11ec-8ea0-0242ac120002');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051', '12.06.1991.', 'faef9bb2-ec14-11ec-8ea0-0242ac120002', 40);
 
 INSERT INTO vacation_home_owner(id)
 VALUES ('cd95284b-b6fe-46b4-ade2-491c28e55051');
@@ -64,8 +64,8 @@ VALUES ('b9ac9b1b-85fd-4fcc-9509-96a53a706539', false, 'houseowner@mail.com', tr
 INSERT INTO address(id, address, city, country)
 VALUES ('ff6072d4-c3c9-4293-8ead-1e59275f86a8', 'Futoška ulica 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('b9ac9b1b-85fd-4fcc-9509-96a53a706539', '12.06.1976.', 'ff6072d4-c3c9-4293-8ead-1e59275f86a8');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('b9ac9b1b-85fd-4fcc-9509-96a53a706539', '12.06.1976.', 'ff6072d4-c3c9-4293-8ead-1e59275f86a8', 40);
 
 INSERT into vacation_home_owner(id)
 VALUES ('b9ac9b1b-85fd-4fcc-9509-96a53a706539');
@@ -79,8 +79,8 @@ VALUES ('8ba04d80-3ff0-48b0-81b4-e432b7f19a60', false, 'ikkjohouses@mail.com', t
 INSERT INTO address(id, address, city, country)
 VALUES ('107f457f-d279-452f-8879-cbf661cfdc9f', 'Braće Ribnikar 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('8ba04d80-3ff0-48b0-81b4-e432b7f19a60', '12.06.1986.', '107f457f-d279-452f-8879-cbf661cfdc9f');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('8ba04d80-3ff0-48b0-81b4-e432b7f19a60', '12.06.1986.', '107f457f-d279-452f-8879-cbf661cfdc9f', 0);
 
 INSERT into vacation_home_owner(id)
 VALUES ('8ba04d80-3ff0-48b0-81b4-e432b7f19a60');
@@ -94,8 +94,8 @@ VALUES ('ae751645-27c5-4270-b069-27d958773080', false, 'teodor@mail.com', true, 
 INSERT INTO address(id, address, city, country)
 VALUES ('65f2ecdd-374f-457f-a2c8-4df1af7e8fb9', 'Nikole Tesle 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('ae751645-27c5-4270-b069-27d958773080', '12.06.1999.', '65f2ecdd-374f-457f-a2c8-4df1af7e8fb9');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('ae751645-27c5-4270-b069-27d958773080', '12.06.1999.', '65f2ecdd-374f-457f-a2c8-4df1af7e8fb9', 10);
 
 INSERT into vacation_home_owner(id)
 VALUES ('ae751645-27c5-4270-b069-27d958773080');
@@ -109,8 +109,8 @@ VALUES ('30d93782-d08e-4d78-aa0c-f8df67a9826f', false, 'jsmith@mail.com', true, 
 INSERT INTO address(id, address, city, country)
 VALUES ('fc6849c2-f535-4f4a-9722-70d2d7222230', 'Bulevar Žrtava Racije 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('30d93782-d08e-4d78-aa0c-f8df67a9826f', '12.06.1992.', 'fc6849c2-f535-4f4a-9722-70d2d7222230');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('30d93782-d08e-4d78-aa0c-f8df67a9826f', '12.06.1992.', 'fc6849c2-f535-4f4a-9722-70d2d7222230', 10);
 
 INSERT into ship_owner(id)
 VALUES ('30d93782-d08e-4d78-aa0c-f8df67a9826f');
@@ -124,8 +124,8 @@ VALUES ('48c3d59a-dd95-4358-b758-79a7af29099c', false, 'jdoe@mail.com', true, 'J
 INSERT INTO address(id, address, city, country)
 VALUES ('522ee9fa-ccd8-4ecf-b8a8-1b68de67a88b', 'Ćirpanova 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('48c3d59a-dd95-4358-b758-79a7af29099c', '12.06.1989.', '522ee9fa-ccd8-4ecf-b8a8-1b68de67a88b');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('48c3d59a-dd95-4358-b758-79a7af29099c', '12.06.1989.', '522ee9fa-ccd8-4ecf-b8a8-1b68de67a88b', 0);
 
 INSERT into ship_owner(id)
 VALUES ('48c3d59a-dd95-4358-b758-79a7af29099c');
@@ -139,8 +139,8 @@ VALUES ('e754974d-6932-4d25-a14b-dded1c92e729', false, 'demarco@mail.com', true,
 INSERT INTO address(id, address, city, country)
 VALUES ('8bfae442-176d-4097-96b2-2c0c9841702b', 'Novosadskog sajma 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('e754974d-6932-4d25-a14b-dded1c92e729', '12.06.1988.', '8bfae442-176d-4097-96b2-2c0c9841702b');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('e754974d-6932-4d25-a14b-dded1c92e729', '12.06.1988.', '8bfae442-176d-4097-96b2-2c0c9841702b', 0);
 
 INSERT into ship_owner(id)
 VALUES ('e754974d-6932-4d25-a14b-dded1c92e729');
@@ -154,8 +154,8 @@ VALUES ('99523027-e4ad-40c6-ba7d-3848f0c2ee6a', false, 'borkofish@mail.com', tru
 INSERT INTO address(id, address, city, country)
 VALUES ('dae6ea0e-6d42-4b58-8c96-7fb6dcd5a460', 'Braće Radića 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('99523027-e4ad-40c6-ba7d-3848f0c2ee6a', '12.06.1985.', 'dae6ea0e-6d42-4b58-8c96-7fb6dcd5a460');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('99523027-e4ad-40c6-ba7d-3848f0c2ee6a', '12.06.1985.', 'dae6ea0e-6d42-4b58-8c96-7fb6dcd5a460', 0);
 
 INSERT into ship_owner(id)
 VALUES ('99523027-e4ad-40c6-ba7d-3848f0c2ee6a');
@@ -169,8 +169,8 @@ VALUES ('1a5c1107-eac5-4dbb-b679-7d7830a65ab8', false, 'ivanam@mail.com', true, 
 INSERT INTO address(id, address, city, country)
 VALUES ('135d59e7-63a2-4f65-b68a-02c7f8abec8a', 'Gogoljeva 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('1a5c1107-eac5-4dbb-b679-7d7830a65ab8', '12.06.1956.', '135d59e7-63a2-4f65-b68a-02c7f8abec8a');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('1a5c1107-eac5-4dbb-b679-7d7830a65ab8', '12.06.1956.', '135d59e7-63a2-4f65-b68a-02c7f8abec8a', 0);
 
 INSERT into ship_owner(id)
 VALUES ('1a5c1107-eac5-4dbb-b679-7d7830a65ab8');
@@ -184,8 +184,8 @@ VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', false, 'manja@mail.com', true, '
 INSERT INTO address(id, address, city, country)
 VALUES ('84acb707-1b0f-4dd2-8fec-2b5333cc88de', 'Puškinova 1', 'Novi Sad', 'Serbia');
 
-INSERT INTO business_client(id, date_of_birth, address_id)
-VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', '12.06.1956.', '84acb707-1b0f-4dd2-8fec-2b5333cc88de');
+INSERT INTO business_client(id, date_of_birth, address_id, loyalty_points)
+VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', '12.06.1956.', '84acb707-1b0f-4dd2-8fec-2b5333cc88de', 0);
 
 INSERT into ship_owner(id)
 VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25');

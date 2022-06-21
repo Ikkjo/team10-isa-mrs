@@ -142,7 +142,6 @@ public class AdminController {
         catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @Transactional
@@ -200,4 +199,16 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(path = "/report")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<Map<String, Double>> getReport(@RequestParam long fromDate, @RequestParam long toDate){
+        try {
+            return ResponseEntity.ok(adminService.getReport(fromDate, toDate)
+            );
+        } catch (UsernameNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
