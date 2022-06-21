@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -69,6 +70,7 @@ class BusinessClientControllerIntegrationTest {
     }
 
     @Test
+    @WithMockUser(roles = "HOUSE_OWNER")
     void updateAddress() throws Exception {
         String url = BASE_URL + "/update/address";
         AddressDto addressDto = new AddressDto();

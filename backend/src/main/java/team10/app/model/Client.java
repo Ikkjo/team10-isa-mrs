@@ -13,7 +13,7 @@ import java.util.Set;
 public class Client extends User{
 
     //TODO: add @Column for all fields, create client table
-    @Column(nullable = false)
+    @Column(name="loyalty_points" ,nullable = false)
     private int loyaltyPoints = 0;
     private Boolean isPenalized = false;
     private int penaltyPoints = 0;

@@ -22,7 +22,7 @@ public abstract class BusinessClient extends User {
     private String dateOfBirth;
     @OneToMany(mappedBy = "businessClient")
     protected Set<Reservation> reservations;
-    @Column(nullable = false)
+    @Column(name="loyalty_points" ,nullable = false)
     private int loyaltyPoints = 0;
 
 
