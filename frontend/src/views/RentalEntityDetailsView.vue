@@ -77,13 +77,11 @@ export default {
     max-width: 100%;
 }
 
-
-
-.details-view h2 {
+h2 {
     margin-top: 20px;
 }
 
-.details-view info {
+.info {
     margin-top: calc(var(--nav-height) + 40px);
     width: 100%;
     display: flex;
@@ -92,26 +90,26 @@ export default {
     justify-content: center;
 }
 
-.details-view info-items > * {
+.info-items > * {
     padding: 20px 0;
     border-bottom: 1px solid #EBEBEB;
 }
 
-.details-view info-section {
+.info-section {
     width: 600px;
     min-width: 300px;
     max-width: 100%;
 }
 
-.details-view form-control {
+.form-control {
     display: block;
     max-width: 90%;
     margin-top: 10px;
     margin-bottom: 5px;
 }
 
-.details-view form-control input,
-.details-view form-control textarea {
+.form-control input,
+.form-control textarea {
     width: 100%;
 }
 </style>
