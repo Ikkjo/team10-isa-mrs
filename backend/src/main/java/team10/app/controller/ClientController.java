@@ -23,7 +23,7 @@ public class ClientController {
     private final JWTProvider jwtProvider;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('CLIENT')")
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<ClientDto> getUserDetails(Principal principal) {
         try {
             return new ResponseEntity<>(clientService.getUserDetails(principal.getName()), HttpStatus.OK);

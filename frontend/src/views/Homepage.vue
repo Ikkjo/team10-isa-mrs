@@ -7,7 +7,7 @@
 
     </div>
     <div class="page-div">
-    <Paginate v-show="rentalEntities.length > 0" :container-class="'pagination'"
+    <Paginate :container-class="'pagination'"
         v-model="page"
         :click-handler="pageChange"
         :page-count="50"

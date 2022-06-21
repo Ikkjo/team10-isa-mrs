@@ -6,11 +6,11 @@
             <template slot="menu">
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">
-                        <dropdown-item link="/account/manage-account" text="Manage account" iconClass="material-icons" icon="account_circle"></dropdown-item>
-                        <dropdown-item link="/account/my-listings" text="Your listings" iconClass="material-icons" icon="house"></dropdown-item>
-                        <dropdown-item link="/account/reservations" text="Reservations" iconClass="material-icons" icon="calendar_month"></dropdown-item>
-                        <dropdown-item link="nav" text="Reviews" iconClass="material-icons" icon="reviews"></dropdown-item>
-                        <dropdown-item link="nav" text="Statistics" iconClass="material-icons" icon="query_stats"></dropdown-item>
+                        <dropdown-item linkName="business-client-manage-account" text="Manage account" iconClass="material-icons" icon="account_circle"></dropdown-item>
+                        <dropdown-item linkName="my-listings" text="Your listings" iconClass="material-icons" icon="house"></dropdown-item>
+                        <dropdown-item linkName="business-client-reservations" text="Reservations" iconClass="material-icons" icon="calendar_month"></dropdown-item>
+                        <dropdown-item linkName="" text="Reviews" iconClass="material-icons" icon="reviews"></dropdown-item>
+                        <dropdown-item linkName="" text="Statistics" iconClass="material-icons" icon="query_stats"></dropdown-item>
                         <div class="menu-item" @click="logout">
                             <span class="icon-button material-icons">logout</span> Logout
                         </div>                       

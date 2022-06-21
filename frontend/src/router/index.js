@@ -58,7 +58,7 @@ const routes = [
     },
     {
         path: '/account/manage-account',
-        name: 'manage-account',
+        name: 'business-client-manage-account',
         component: () => import('../views/AccountInfo.vue')
     },
     {
@@ -92,8 +92,8 @@ const routes = [
         component: () => import('../views/RentalEntityDetailsView.vue')
     },
     {
-        path: '/my-account',
-        name: 'client-account-view',
+        path: 'client/manage-account',
+        name: 'client-manage-account',
         component: () => import('../components/ClientAccountInfo.vue')
     }
 

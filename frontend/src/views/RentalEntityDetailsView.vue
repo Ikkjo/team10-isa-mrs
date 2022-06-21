@@ -2,21 +2,21 @@
     <div id="rental-entity-details">
         <UniversalNavBar id="nav"/>    
         <div class="info">
-            <RentalEntityBasicInfo ref="basicInfo"
+            <RentalEntityDetails ref="basicInfo"
                 :rentalEntity="rentalEntity" 
             />
             <VacationHomeAdditionalInfo
-                v-if="role === 'HOUSE_OWNER'"
+                v-if="rentalEntity.type === 'VacationHome'"
                 :vacationHome="rentalEntity"
                 ref="vacationHomeInfo"
                 />
             <ShipAdditionalInfo
-                v-if="role === 'SHIP_OWNER'"
+                v-if="rentalEntity.type === 'Ship'"
                 :ship="rentalEntity"
                 ref="shipInfo"
                 />
             <AdventureAdditionalInfo
-                v-if="role === 'FISHING_INSTRUCTOR'"
+                v-if="rentalEntity.type === 'Adventure'"
                 :adventure="rentalEntity"
                 ref="adventureInfo"
                 />
@@ -26,7 +26,7 @@
 
 <script>
 import UniversalNavBar from '@/components/UniversalNavBar.vue'
-import RentalEntityBasicInfo from '@/components/RentalEntityBasicInfo.vue'
+import RentalEntityDetails from '@/components/RentalEntityDetails.vue'
 import VacationHomeAdditionalInfo from '@/components/VacationHomeAdditionalInfo.vue'
 import ShipAdditionalInfo from '@/components/ShipAdditionalInfo.vue'
 import AdventureAdditionalInfo from '@/components/AdventureAdditionalInfo.vue'
@@ -34,7 +34,7 @@ import axios from 'axios'
 export default {
     name: 'RentalEntityDetailsView',
     components: {
-        RentalEntityBasicInfo,
+        RentalEntityDetails,
         VacationHomeAdditionalInfo,
         ShipAdditionalInfo,
         AdventureAdditionalInfo,
@@ -43,7 +43,7 @@ export default {
     data() {
         return {
             rentalEntity: null,
-            role: '',
+            role: ''
         }
     },
     methods: {

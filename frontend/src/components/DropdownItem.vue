@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="link" class="menu-item">
+    <router-link :to="{ name: linkName}" class="menu-item">
         <span :class="'icon-button' + ' ' + iconClass ">{{icon}}</span>
         {{text}}
     </router-link>
@@ -24,6 +24,10 @@ export default {
         icon: {
             type: String,
             default: "disabled_by_default"
+        },
+        linkName: {
+            type: String,
+            default: "homepage"
         }
     },
 }
