@@ -26,8 +26,7 @@
             @on-page-change="onPageChange"
             @on-sort-change="onSortChange"
             @on-column-filter="onColumnFilter"
-            @on-per-page-change="onPerPageChange"
-            @on-cell-click="onCellClick">
+            @on-per-page-change="onPerPageChange">
              <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'review'">
                     <button v-if="props.row.status === 'FINISHED'" class="btn" @click="writeReview(props.row.id)">Review</button>
@@ -153,16 +152,11 @@ export default {
         updateParams(newProps) {
             this.serverParams = Object.assign({}, this.serverParams, newProps);
         },
-        onCellClick(params) {
-            if (params.column.field === "details")
-                console.log(params.row.id)
-        },
         onPageChange(params) {
             this.updateParams({page: params.currentPage-1});
             this.loadItems();
         },
         onPerPageChange(params) {
-            console.log(params.currentPerPage)
             this.updateParams({perPage: params.currentPerPage});
             this.loadItems();
         },
@@ -212,7 +206,6 @@ export default {
         },
         handleEventClick(clickInfo) {
             let event = clickInfo.event;
-            console.log(event)
             if (event._def.extendedProps.status === 'FINISHED')
                 this.writeReview(event.id);
             else
@@ -223,7 +216,6 @@ export default {
         }
     },
     mounted() {
-        console.log("here")
         axios({
                 method: 'get',
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/reservations',
@@ -233,7 +225,6 @@ export default {
                 },
             })
             .then((response) => {
-                console.log(response.data)
                 this.totalRecords = response.data.totalPages * this.serverParams.perPage;
                 this.rows = response.data.reservations
                 this.rows.forEach(this.convertReservationToEvent)
