@@ -193,4 +193,19 @@ public class LoyaltyProgramsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping(path = "{id}/delete")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<HttpStatus> deleteLoyaltyProgram(@PathVariable(name = "id") UUID id) {
+        try {
+            loyaltyProgramsService.deleteLoyaltyProgram(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

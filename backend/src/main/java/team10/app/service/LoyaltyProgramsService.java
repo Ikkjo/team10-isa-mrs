@@ -84,6 +84,11 @@ public class LoyaltyProgramsService {
         loyaltyRepository.save(loyalty);
         return new LoyaltyDto(loyalty);
     }
+
+    public void deleteLoyaltyProgram(UUID id) {
+        loyaltyExists(id);
+        loyaltyRepository.deleteById(id);
+    }
   
     public Loyalty getByLoyaltyPoints(int loyaltyPoints) {
         List<Loyalty> loyalties = loyaltyRepository.getByLoyaltyPoints(loyaltyPoints);
