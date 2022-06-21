@@ -1,13 +1,13 @@
 <template>
     <div class="wrapper">
-        <h1>Account Deletion Requests</h1>
+        <h1>All Users</h1>
         <VueGoodTable
             mode="remote"
             :pagination-options="{
                 enabled: true,
             }"
             :total-rows="totalRecords"
-            :rows="requests"
+            :rows="users"
             :columns="columns"
             :isLoading.sync="isLoading"
             @on-page-change="onPageChange"
@@ -16,81 +16,88 @@
             @on-per-page-change="onPerPageChange"
             >
              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'decide'">
-                    <button class="btn" @click="openDeletionDecisionModal(props.row)">Decide</button>
+                <span v-if="props.column.field == 'deleted'">
+                    <div v-if="props.row.role !== 'MAIN_ADMIN'
+                        || ((props.row.role === 'ADMIN'
+                        || props.row.role ==='UNVERIFIED_ADMIN')
+                        && isMainAdmin)">
+                        <button v-if="props.row.deleted" class="btn" @click="toggleDeletedStatus(props.row)">Enable</button>
+                        <button v-else class="btn disable" @click="toggleDeletedStatus(props.row)">Disable</button>
+                    </div>
                 </span>
                 <span v-else-if="props.column.field == 'role'">
                     <span v-if="props.row.role === 'SHIP_OWNER'" class='material-icons'>directions_boat</span>
                     <span v-else-if="props.row.role === 'HOUSE_OWNER'" class='material-icons'>house</span>
-                    <span v-else class='material-icons'>phishing</span>
+                    <span v-else-if="props.row.role === 'FISHING_INSTRUCTOR'" class='material-icons'>phishing</span>
+                    <span v-else-if="props.row.role === 'CLIENT'" class='material-icons'>person</span>
+                    <span v-else-if="props.row.role === 'MAIN_ADMIN'" class='material-icons'>supervisor_account</span>
+                    <!-- Admin and unsupervized admin -->
+                    <span v-else class='material-icons'>supervised_user_circle</span> 
                 </span>
                 <span v-else>
                     {{props.formattedRow[props.column.field]}}
                 </span>
             </template>
         </VueGoodTable>
-        <DeletionDecisionModal
-            v-if="showModal"
-            :show="showModal"
-            :drUUID="drUUID"
-            @close="showModal=false"
-            @removeRequest="removeRequest"
-            />
     </div>
 </template>
 
 <script>
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
-import DeletionDecisionModal from './DeletionDecisionModal.vue'
 import axios from 'axios'
 
 export default {
+    name: 'UserTable',
     components: {
-        VueGoodTable,
-        DeletionDecisionModal
+        VueGoodTable
     },
     data() {
         return {
-            drUUID: null,
-            showModal: false,
             columns: [
                 {
                     label: 'Type',
                     field: 'role',
                     html: true,
+                    sortable: true,
                     columnIndex: 0,
+                    width: '80px',
                     tdClass: 'td-role',
                 },
                 {
                     label: 'First Name',
                     field: 'firstName',
+                    sortable: true,
                     columnIndex: 1,
                 },
                 {
                     label: 'Last Name',
                     field: 'lastName',
+                    sortable: true,
                     columnIndex: 2,
                 },
                 {
                     label: 'Email',
                     field: 'email',
+                    sortable: true,
                     columnIndex: 3,
                 },
                 {
-                    label: "Deletion Reason",
-                    field: 'deletionReason',
+                    label: 'Phone Number',
+                    field: 'phoneNumber',
+                    sortable: true,
                     columnIndex: 4,
                 },
                 {
-                    label: 'Decide',
-                    field: 'decide',
-                    sortable: false,
-                    width: '120px',
+                    label: 'Enable/Disable',
+                    field: 'deleted',
+                    sortable: true,
+                    width: '160px',
+                    tdClass: 'td-deleted',
                     columnIndex: 5,
                 }
             ],
-            requests: null,
+            users: null,
             totalRecords: 0,
             serverParams: {
                 columnFilters: {
@@ -105,22 +112,15 @@ export default {
                 perPage: 10
             },
             isLoading: false,
+            role: null,
+        }
+    },
+    computed: {
+        isMainAdmin() {
+            return this.role !== null && this.role === 'MAIN_ADMIN' 
         }
     },
     methods: {
-        removeRequest() {
-            for (let i = 0; i < this.requests.length; i++) {
-                console.log(this.requests[i].id)
-                if (this.requests[i].id === this.drUUID){
-                    this.requests.splice(i, 1);
-                    break;
-                }
-            }
-        },
-        openDeletionDecisionModal(data) {
-            this.drUUID = data.id;
-            this.showModal = true;
-        },
         updateParams(newProps) {
             this.serverParams = Object.assign({}, this.serverParams, newProps);
         },
@@ -151,7 +151,7 @@ export default {
             let sortString = ''+this.serverParams.sort[0].field+','+this.serverParams.sort[0].type
             axios({
                 method: 'get',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-requests',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/users',
                 params: {page: this.serverParams.page, size: this.serverParams.perPage, sort: sortString},
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -159,7 +159,23 @@ export default {
             })
             .then((response) => {
                 this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-                this.requests = response.data.deletionRequests
+                this.users = response.data.users
+            })
+            .catch((error) => {
+                alert("Couldn't fetch registration requests. See console for more info.")
+                console.log(error);
+            }) 
+        },
+        toggleDeletedStatus(user) {
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/users/'+user.id+'/toggle-deleted',
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then(() => {
+                user.deleted = !user.deleted;
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")
@@ -168,18 +184,23 @@ export default {
         },
     },
     created () {
+        this.role = window.localStorage.getItem('role');
         axios({
-            method: 'get',
-            url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-requests',
-            headers: {
-                Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
-            },
-        }).then((response) => {
-            this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-            this.requests = response.data.deletionRequests;
-        }).catch((error) => {
-            console.log(error);
-        });
+                method: 'get',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/users',
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then((response) => {
+                console.log(response)
+                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+                this.users = response.data.users
+            })
+            .catch((error) => {
+                alert("Couldn't fetch users. See console for more info.")
+                console.log(error);
+            })
     },
 }
 </script>
@@ -187,5 +208,17 @@ export default {
 <style>
 .td-role {
     text-align: center;
+}
+
+.td-deleted {
+    text-align: center;
+}
+
+.btn.disable {
+    background-color: red;
+}
+
+.btn.disable:hover {
+    background-color: darkred;
 }
 </style>

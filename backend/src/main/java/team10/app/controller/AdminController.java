@@ -11,16 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.*;
 import team10.app.model.DeletionRequest;
-import team10.app.model.Loyalty;
 import team10.app.model.RegistrationRequest;
+import team10.app.model.RentalEntity;
+import team10.app.model.User;
 import team10.app.security.auth.AuthUtil;
 import team10.app.service.AdminService;
+import team10.app.service.RentalEntityService;
+import team10.app.service.UserService;
 import team10.app.util.exceptions.EmailTakenException;
 
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -30,6 +32,8 @@ import java.util.UUID;
 public class AdminController {
 
     private final AdminService adminService;
+    private final UserService userService;
+    private final RentalEntityService rentalEntityService;
     private final AuthUtil authUtil;
 
     @GetMapping
@@ -57,7 +61,7 @@ public class AdminController {
             Page<RegistrationRequest> registrationRequestPage = adminService.getRegistrationRequests(sort, page, size);
             Map<String, Object> response = new HashMap<>();
             response.put(
-                    "reservations", adminService.getRegistrationRequestsDtoList(registrationRequestPage.getContent())
+                    "registrationRequests", adminService.getRegistrationRequestsDtoList(registrationRequestPage.getContent())
             );
             response.put("currentPage", registrationRequestPage.getNumber());
             response.put("totalItems", registrationRequestPage.getTotalElements());
@@ -132,7 +136,7 @@ public class AdminController {
             Page<DeletionRequest> deletionRequestPage = adminService.getDeletionRequests(sort, page, size);
             Map<String, Object> response = new HashMap<>();
             response.put(
-                    "reservations", adminService.getDeletionRequestsDtoList(deletionRequestPage.getContent())
+                    "deletionRequests", adminService.getDeletionRequestsDtoList(deletionRequestPage.getContent())
             );
             response.put("currentPage", deletionRequestPage.getNumber());
             response.put("totalItems", deletionRequestPage.getTotalElements());
@@ -211,4 +215,84 @@ public class AdminController {
         }
     }
 
+    @GetMapping(path = "/users")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<Map<String, Object>> getAllUsers(
+            @RequestParam(defaultValue = "id,desc") String sort,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+            Page<User> userPage = userService.getAllUsers(sort, page, size);
+            Map<String, Object> response = new HashMap<>();
+            response.put(
+                    "users", userService.getUserDtoList(userPage.getContent())
+            );
+            response.put("currentPage", userPage.getNumber());
+            response.put("totalItems", userPage.getTotalElements());
+            response.put("totalPages", userPage.getTotalPages());
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Transactional
+    @PutMapping(path = "/users/{id}/toggle-deleted")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<HttpStatus> toggleUserDeletedStatus(@PathVariable UUID id) {
+        try {
+            adminService.toggleUserDeletedStatus(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/rental-entities")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<Map<String, Object>> getAllRentalEntities(
+            @RequestParam(defaultValue = "id,desc") String sort,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+            Page<RentalEntity> rentalEntitiesPage = rentalEntityService.getAllRentalEntities(sort, page, size);
+            Map<String, Object> response = new HashMap<>();
+            response.put(
+                    "rentalEntities", adminService.getRentalEntityDtoList(rentalEntitiesPage.getContent())
+            );
+            response.put("currentPage", rentalEntitiesPage.getNumber());
+            response.put("totalItems", rentalEntitiesPage.getTotalElements());
+            response.put("totalPages", rentalEntitiesPage.getTotalPages());
+            return ResponseEntity.ok(response);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Transactional
+    @PutMapping(path = "/rental-entities/{id}/toggle-deleted")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<HttpStatus> toggleRentalEntityDeletedStatus(@PathVariable UUID id) {
+        try {
+            adminService.toggleRentalEntityDeletedStatus(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (ObjectOptimisticLockingFailureException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

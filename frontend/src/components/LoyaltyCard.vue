@@ -28,6 +28,10 @@ export default {
 </script>
 
 <style scoped>
+.loyalty-card:hover .center {
+    text-decoration: underline;
+}
+
 .card-padding-container {
     width: 100%;
     height: 100%;

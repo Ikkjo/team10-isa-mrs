@@ -252,7 +252,7 @@ export default {
             })
             .then((response) => {
                 this.totalRequests = response.data.totalPages * this.serverParams.perPage;
-                this.requests = response.data.reservations
+                this.requests = response.data.registrationRequests
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")
@@ -270,7 +270,7 @@ export default {
             })
             .then((response) => {
                 this.totalRequests = response.data.totalPages * this.serverParams.perPage;
-                this.requests = response.data.reservations
+                this.requests = response.data.registrationRequests
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")

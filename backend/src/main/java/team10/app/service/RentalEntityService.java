@@ -1,7 +1,10 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import team10.app.repository.BusinessClientRepository;
 import team10.app.repository.RentalEntityRepository;
 import team10.app.repository.ReservationRepository;
 import team10.app.util.DateTimeUtil;
+import team10.app.util.Sorting;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 import javax.persistence.*;
@@ -264,5 +268,29 @@ public class RentalEntityService {
 
     public String getTitle(UUID id) {
         return rentalEntityRepository.getTitleById(id);
+    }
+
+    public Page<RentalEntity> getAllRentalEntities(String sort, int page, int size) {
+        Pageable paging = PageRequest.of(page, size, Sort.by(rentalEntitiesGetSort(sort)));
+        return rentalEntityRepository.findAll(paging);
+    }
+
+    private List<Sort.Order> rentalEntitiesGetSort(String sort) {
+        List<Sort.Order> orders = new ArrayList<>();
+        String[] sortTokens = sort.split(",");
+        switch (sortTokens[0]) {
+            case "address":
+            case "city":
+            case "country":
+                sortTokens[0] = "address." + sortTokens[0];
+                break;
+            case "owner":
+                sortTokens[0] = "owner.email";
+                break;
+            default:
+                break;
+        }
+        orders.add(Sorting.getSorting(sortTokens));
+        return orders;
     }
 }

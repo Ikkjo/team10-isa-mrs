@@ -78,6 +78,16 @@ const routes = [
                 path: 'earnings-report',
                 name: 'earnings-report',
                 component: () => import("@/components/AdminEarningsReport.vue")
+            },
+            {
+                path: 'users',
+                name: 'users',
+                component: () => import('../components/UsersTable.vue')
+            },
+            {
+                path: 'rental-entities',
+                name: 'rental-entities',
+                component: () => import('../components/RentalEntitiesTable.vue')
             }
             // TODO: Create this component after Ilija implements user complaints
             // {

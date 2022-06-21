@@ -8,6 +8,18 @@
                 icon="group_add"
                 title="Registration Requests"
                 />
+            <AdminMenuItem
+                link="users"
+                iconClass="material-icons"
+                icon="group"
+                title="All Users"
+                />
+            <AdminMenuItem
+                link="rental-entities"
+                iconClass="material-icons-outlined"
+                icon="real_estate_agent"
+                title="All Rental Entities"
+                />
             <!-- TODO: Create this component -->
             <!-- <AdminMenuItem
                 link="user-complaints"
@@ -22,16 +34,16 @@
                 title="Business Client Reports"
                 />
             <AdminMenuItem
-                link="deletion-requests"
-                iconClass="material-icons"
-                icon="person_remove"
-                title="Deletion Requests"
-                />
-            <AdminMenuItem
                 link="loyalty-programs"
                 iconClass="material-icons"
                 icon="card_membership"
                 title="Loyalty Program"
+                />
+            <AdminMenuItem
+                link="deletion-requests"
+                iconClass="material-icons"
+                icon="person_remove"
+                title="Deletion Requests"
                 />
             <AdminMenuItem
                 v-if="isMainAdmin"
@@ -50,7 +62,7 @@
                 <AdminMenuItem
                     link="admin-account-info"
                     iconClass="material-icons"
-                    icon="account_circle"
+                    icon="manage_accounts"
                     title="Account Info"
                     />
                 <div @click="logout" class="option">

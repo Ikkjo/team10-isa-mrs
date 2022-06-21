@@ -1,13 +1,13 @@
 <template>
     <div class="wrapper">
-        <h1>Account Deletion Requests</h1>
+        <h1>All Rental Entities</h1>
         <VueGoodTable
             mode="remote"
             :pagination-options="{
                 enabled: true,
             }"
             :total-rows="totalRecords"
-            :rows="requests"
+            :rows="rentalEntities"
             :columns="columns"
             :isLoading.sync="isLoading"
             @on-page-change="onPageChange"
@@ -16,81 +16,84 @@
             @on-per-page-change="onPerPageChange"
             >
              <template slot="table-row" slot-scope="props">
-                <span v-if="props.column.field == 'decide'">
-                    <button class="btn" @click="openDeletionDecisionModal(props.row)">Decide</button>
+                <span v-if="props.column.field == 'deleted'">
+                    <button v-if="props.row.deleted" class="btn" @click="toggleDeletedStatus(props.row)">Enable</button>
+                    <button v-else class="btn disable" @click="toggleDeletedStatus(props.row)">Disable</button>
                 </span>
-                <span v-else-if="props.column.field == 'role'">
-                    <span v-if="props.row.role === 'SHIP_OWNER'" class='material-icons'>directions_boat</span>
-                    <span v-else-if="props.row.role === 'HOUSE_OWNER'" class='material-icons'>house</span>
-                    <span v-else class='material-icons'>phishing</span>
+                <span v-else-if="props.column.field == 'type'">
+                    <span v-if="props.row.type === 'Ship'" class='material-icons'>directions_boat</span>
+                    <span v-else-if="props.row.type === 'VacationHome'" class='material-icons'>house</span>
+                    <span v-else-if="props.row.type === 'Adventure'" class='material-icons'>phishing</span>
                 </span>
                 <span v-else>
                     {{props.formattedRow[props.column.field]}}
                 </span>
             </template>
         </VueGoodTable>
-        <DeletionDecisionModal
-            v-if="showModal"
-            :show="showModal"
-            :drUUID="drUUID"
-            @close="showModal=false"
-            @removeRequest="removeRequest"
-            />
     </div>
 </template>
 
 <script>
 import 'vue-good-table/dist/vue-good-table.css'
 import { VueGoodTable } from 'vue-good-table';
-import DeletionDecisionModal from './DeletionDecisionModal.vue'
 import axios from 'axios'
 
 export default {
+    name: 'RentalEntitiesTable',
     components: {
         VueGoodTable,
-        DeletionDecisionModal
     },
     data() {
         return {
-            drUUID: null,
-            showModal: false,
             columns: [
                 {
                     label: 'Type',
-                    field: 'role',
+                    field: 'type',
                     html: true,
+                    sortable: false,
                     columnIndex: 0,
-                    tdClass: 'td-role',
+                    width: '80px',
+                    tdClass: 'td-type',
                 },
                 {
-                    label: 'First Name',
-                    field: 'firstName',
+                    label: 'Title',
+                    field: 'title',
+                    sortable: true,
                     columnIndex: 1,
                 },
                 {
-                    label: 'Last Name',
-                    field: 'lastName',
+                    label: 'Owner',
+                    field: 'owner',
+                    sortable: true,
                     columnIndex: 2,
                 },
                 {
-                    label: 'Email',
-                    field: 'email',
+                    label: 'Address',
+                    field: 'address',
+                    sortable: true,
                     columnIndex: 3,
                 },
                 {
-                    label: "Deletion Reason",
-                    field: 'deletionReason',
+                    label: 'City',
+                    field: 'city',
+                    sortable: true,
                     columnIndex: 4,
                 },
                 {
-                    label: 'Decide',
-                    field: 'decide',
-                    sortable: false,
-                    width: '120px',
+                    label: 'Country',
+                    field: 'country',
+                    sortable: true,
                     columnIndex: 5,
+                },
+                {
+                    label: 'Enable/Disable',
+                    field: 'deleted',
+                    sortable: true,
+                    width: '160px',
+                    columnIndex: 6,
                 }
             ],
-            requests: null,
+            rentalEntities: null,
             totalRecords: 0,
             serverParams: {
                 columnFilters: {
@@ -108,19 +111,6 @@ export default {
         }
     },
     methods: {
-        removeRequest() {
-            for (let i = 0; i < this.requests.length; i++) {
-                console.log(this.requests[i].id)
-                if (this.requests[i].id === this.drUUID){
-                    this.requests.splice(i, 1);
-                    break;
-                }
-            }
-        },
-        openDeletionDecisionModal(data) {
-            this.drUUID = data.id;
-            this.showModal = true;
-        },
         updateParams(newProps) {
             this.serverParams = Object.assign({}, this.serverParams, newProps);
         },
@@ -151,7 +141,7 @@ export default {
             let sortString = ''+this.serverParams.sort[0].field+','+this.serverParams.sort[0].type
             axios({
                 method: 'get',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-requests',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/rental-entities',
                 params: {page: this.serverParams.page, size: this.serverParams.perPage, sort: sortString},
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -159,33 +149,61 @@ export default {
             })
             .then((response) => {
                 this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-                this.requests = response.data.deletionRequests
+                this.rentalEntities = response.data.rentalEntities
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")
                 console.log(error);
             }) 
         },
-    },
+        toggleDeletedStatus(rentalEntity) {
+            axios({
+                method: 'put',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/rental-entities/'+rentalEntity.id+'/toggle-deleted',
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then(() => {
+                rentalEntity.deleted = !rentalEntity.deleted;
+            })
+            .catch((error) => {
+                alert("Couldn't fetch registration requests. See console for more info.")
+                console.log(error);
+            }) 
+        },
+    }, 
     created () {
         axios({
-            method: 'get',
-            url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-requests',
-            headers: {
-                Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
-            },
-        }).then((response) => {
-            this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-            this.requests = response.data.deletionRequests;
-        }).catch((error) => {
-            console.log(error);
-        });
+                method: 'get',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/rental-entities',
+                headers: {
+                    Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+                },
+            })
+            .then((response) => {
+                console.log(response)
+                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+                this.rentalEntities = response.data.rentalEntities
+            })
+            .catch((error) => {
+                alert("Couldn't fetch users. See console for more info.")
+                console.log(error);
+            })
     },
 }
 </script>
 
 <style>
-.td-role {
+.td-type {
     text-align: center;
+}
+
+.btn.disable {
+    background-color: red;
+}
+
+.btn.disable:hover {
+    background-color: darkred;
 }
 </style>
