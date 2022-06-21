@@ -1,5 +1,5 @@
 <template>
-    <div id="rental-entity-details">
+    <div id="rental-entity-details" class="details-view">
         <UniversalNavBar id="nav"/>    
         <div class="info" v-if="rentalEntity">
             <RentalEntityDetails ref="basicInfo"
@@ -77,11 +77,13 @@ export default {
     max-width: 100%;
 }
 
-h2 {
+
+
+.details-view h2 {
     margin-top: 20px;
 }
 
-.info {
+.details-view info {
     margin-top: calc(var(--nav-height) + 40px);
     width: 100%;
     display: flex;
@@ -90,26 +92,26 @@ h2 {
     justify-content: center;
 }
 
-.info-items > * {
+.details-view info-items > * {
     padding: 20px 0;
     border-bottom: 1px solid #EBEBEB;
 }
 
-.info-section {
+.details-view info-section {
     width: 600px;
     min-width: 300px;
     max-width: 100%;
 }
 
-.form-control {
+.details-view form-control {
     display: block;
     max-width: 90%;
     margin-top: 10px;
     margin-bottom: 5px;
 }
 
-.form-control input,
-.form-control textarea {
+.details-view form-control input,
+.details-view form-control textarea {
     width: 100%;
 }
 </style>
