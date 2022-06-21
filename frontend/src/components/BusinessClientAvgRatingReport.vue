@@ -4,7 +4,6 @@
             :chartData="getChartData()"
             scales="10"/>
     </div>
-  
 </template>
 
 <script>
@@ -57,9 +56,10 @@ export default {
             },
             })
             .then((response) => {
-                if (response.data == [])
+                if (response.data.length == 0)
                     alert("No ratings")
-                this.ratings = response.data;
+                else
+                    this.ratings = response.data;
             })
             .catch((error) => {
                 alert("Something went wrong")

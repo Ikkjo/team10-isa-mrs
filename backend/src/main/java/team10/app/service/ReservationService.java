@@ -99,20 +99,19 @@ public class ReservationService {
 
     private EarningsReportDto buildEarningsReportDto(List<Reservation> reservations, long fromDate, long toDate) {
         Map<UUID, IndividualEarningsDto> individualEarningsDtoMap = new HashMap<>();
-        Map<Long, DailyEarningsDto> dailyEarningsDtoMap = new HashMap<>();
+        Map<Long, Double> dailyEarningsMap = new HashMap<>();
         for (Reservation reservation : reservations) {
             addIndividualEarnings(individualEarningsDtoMap, reservation, reservation.getRentalEntity()); // Adds earnings for each individual rental entity
-            addDailyEarnings(dailyEarningsDtoMap, reservation.getEndDate(), reservation.getEarnings());
+            addDailyEarnings(dailyEarningsMap, reservation.getEndDate(), reservation.getEarnings());
         }
-        return new EarningsReportDto(fromDate, toDate, individualEarningsDtoMap.values(), dailyEarningsDtoMap.values());
+        return new EarningsReportDto(fromDate, toDate, individualEarningsDtoMap.values(), dailyEarningsMap);
     }
 
-    private void addDailyEarnings(Map<Long, DailyEarningsDto> dailyEarningsDtoMap, long day, double earnings) {
+    private void addDailyEarnings(Map<Long, Double> dailyEarningsDtoMap, long day, double earnings) {
         if (earnings > 0) {
             if (!dailyEarningsDtoMap.containsKey(day))
-                dailyEarningsDtoMap.put(day, new DailyEarningsDto(day, earnings));
-            else
-                dailyEarningsDtoMap.get(day).addEarnings(earnings);
+                dailyEarningsDtoMap.put(day, 0.0);
+            dailyEarningsDtoMap.put(day, dailyEarningsDtoMap.get(day)+earnings);
         }
     }
 

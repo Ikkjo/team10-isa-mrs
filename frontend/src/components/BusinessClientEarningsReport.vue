@@ -1,5 +1,5 @@
 <template>
-    <div v-if="earningsReport" id="earnings-report">
+    <div id="earnings-report">
         <div class="date-range">
             <DatePicker
                 color="yellow"
@@ -20,7 +20,7 @@
                 </template>
           </DatePicker>
         </div>
-        <div class="charts">
+        <div v-if="earningsReport" class="charts">
             <div class="chart">
             <BarChart
                 :chartData="getBarChartData()"
@@ -51,12 +51,7 @@ export default {
     },
     data() {
         return {
-            earningsReport: {
-                fromDate: 0,
-                toDate: 0,
-                dailyEarnings: [],
-                individualEarnings: []
-            },
+            earningsReport: null,
             dateRange: {
                 start: null,
                 end: null
@@ -76,10 +71,27 @@ export default {
                     }
                 ]
             }
-            for (let item of this.earningsReport.dailyEarnings) {
-                data.labels.push(new Date(item.day).toLocaleDateString("en-US"))
+            const sortedKeys = Object.keys(this.earningsReport.dailyEarnings)
+                .sort((a, b) => {
+                    let _a = parseInt(a)
+                    let _b = parseInt(b)
+                    if (_a > _b)
+                        return 1
+                    else if (_a < _b)
+                        return -1
+                    return 0
+                })
+                .reduce((accumulator, key) => {
+                accumulator[key] = this.earningsReport.dailyEarnings[key];
+                return accumulator;
+                }, {})
+            for (let item in sortedKeys) {
+                console.log(item)
+                // console.log(item)
+                // console.log(new Date(parseInt(item)).toLocaleDateString("en-US"))
+                data.labels.push(new Date(parseInt(item)).toLocaleDateString("en-US"))
                 data.datasets[0].backgroundColor.push(this.getRandomColor())
-                data.datasets[0].data.push(item.earnings);
+                data.datasets[0].data.push(this.earningsReport.dailyEarnings[item]);
             }
             return data;
         },
@@ -95,7 +107,6 @@ export default {
                 ]
             }
             for (let item of this.earningsReport.individualEarnings) {
-                console.log(item)
                 data.labels.push(item.rentalEntityTitle)
                 data.datasets[0].backgroundColor.push(this.getRandomColor())
                 data.datasets[0].data.push(item.earnings);
@@ -123,7 +134,6 @@ export default {
                 },
                 })
                 .then((response) => {
-                    console.log(response);
                     if (response.data.individualEarnings.length === 0 || response.data.dailyEarnings.length === 0)
                         alert('No earnings in given period')
                     else
