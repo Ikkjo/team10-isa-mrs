@@ -11,7 +11,6 @@ import team10.app.dto.AddressDto;
 import team10.app.dto.ShipDto;
 import team10.app.model.*;
 import team10.app.repository.AddressRepository;
-import team10.app.repository.PictureRepository;
 import team10.app.repository.ShipOwnerRepository;
 import team10.app.repository.ShipRepository;
 import team10.app.util.Validator;
