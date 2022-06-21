@@ -1,5 +1,5 @@
 <template>
-    <div v-if="rentalEntity" class="info-section">
+    <div class="info-section">
         <PictureCollage :pictures="rentalEntity.pictures" :editable="false"/>
         <h2>Basic info</h2>
         <div class="info-items">

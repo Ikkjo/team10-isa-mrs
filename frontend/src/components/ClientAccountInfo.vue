@@ -1,7 +1,7 @@
 <template>
-    <div id="account-info">
+    <div id="account-info" >
         <ClientNavBar id="nav"/>
-        <div class="info">
+        <div class="info" >
              <div class="info-section">
                 <h2>Personal info</h2>
                 <div class="info-items">
@@ -61,10 +61,8 @@
                             </div>
                         </template>
                     </InfoItem>
-                     <InfoItem icon="loyalty" label="Loyalty points" :text="user.loyalty.loyaltyPoints" buttonText="" :useSlot="false">
-                    </InfoItem>
-                     <InfoItem icon="fmd_bad" label="Penalty points" :text="user.penaltyPoints" buttonText="" :useSlot="false">
-                    </InfoItem>
+                    <InfoItem icon="loyalty" label="Loyalty points" :text="user.loyaltyPoints.toString()" buttonText="" :useSlot="false"/>
+                    <InfoItem icon="fmd_bad" label="Penalty points" :text="user.penaltyPoints.toString()" buttonText="" :useSlot="false"/>
                 </div>
             </div>
             <div class="info-section">
@@ -162,7 +160,7 @@ import PhoneNumberInput from 'vue-phone-number-input'
 import axios from "axios"
 import { required, minLength, maxLength, sameAs, alpha } from 'vuelidate/lib/validators'
 export default {
-    name: 'AccountInfo',
+    name: 'ClientAccountInfo',
     components: {
         ClientNavBar,
         PhoneNumberInput,
@@ -172,6 +170,8 @@ export default {
         return {
             user: {
                 phoneNumber: '',
+                loyaltyPoints: null,
+                penaltyPoints: null
             },
             phoneNumberTmp: null,
             userCopy: {

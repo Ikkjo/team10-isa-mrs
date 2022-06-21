@@ -30,5 +30,6 @@ public class LoyaltyDto {
         this.businessClientCut = loyalty.getBusinessClientCut();
         this.businessClientPointsPerReservation = loyalty.getBusinessClientPointsPerReservation();
         this.color = loyalty.getColor();
+        this.deletable = loyalty.isDeletable();
     }
 }

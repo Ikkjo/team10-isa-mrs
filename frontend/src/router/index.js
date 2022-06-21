@@ -153,7 +153,7 @@ const routes = [
     {
         path: '/account/manage-account',
         name: 'business-client-manage-account',
-        component: () => import('../views/AccountInfo.vue')
+        component: () => import('../views/AccountInfo.vue'),
         meta: {
             businessClient: true,
         },
@@ -219,16 +219,9 @@ const routes = [
         }
     },
     {
-        path: 'client/manage-account',
+        path: '/client/manage-account',
         name: 'client-manage-account',
         component: () => import('../components/ClientAccountInfo.vue'),
-        meta: {
-            client: true,
-        },
-    },
-    {
-        name: 'rental-entity-details',
-        component: () => import('../views/RentalEntityDetails.vue'),
         meta: {
             client: true,
         },

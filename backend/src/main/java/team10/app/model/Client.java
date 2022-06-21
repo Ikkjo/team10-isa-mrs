@@ -14,13 +14,14 @@ public class Client extends User{
 
     @Column(name = "loyalty_points", nullable = false)
     private int loyaltyPoints = 0;
-    private Boolean isPenalized = false;
     @Column(name="is_penalized", nullable = false)
+    private Boolean isPenalized = false;
+    @Column(name="penalty_points", nullable = false)
     private int penaltyPoints = 0;
     @OneToMany(mappedBy = "client",
                fetch = FetchType.LAZY,
                cascade = CascadeType.ALL)
-    private Set<Review> reviews;
+    private Set<Rating> ratings;
   
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private Set<Reservation> reservations;

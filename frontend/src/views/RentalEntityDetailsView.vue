@@ -1,7 +1,7 @@
 <template>
     <div id="rental-entity-details">
         <UniversalNavBar id="nav"/>    
-        <div class="info">
+        <div class="info" v-if="rentalEntity">
             <RentalEntityDetails ref="basicInfo"
                 :rentalEntity="rentalEntity" 
             />
@@ -72,7 +72,7 @@ export default {
 }
 </script>
 
-<style >
+<style>
 #rental-entity-details {
     max-width: 100%;
 }
