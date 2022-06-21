@@ -5,8 +5,8 @@
             <template slot="menu">
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">
-                        <dropdown-item link="/login" text="Log in" iconClass="material-icons-round" icon="login"></dropdown-item>
-                        <dropdown-item link="/client/register" text="Register an account" iconClass="material-icons-round" icon="app_registration"></dropdown-item>
+                        <dropdown-item linkName="login" text="Log in" iconClass="material-icons-round" icon="login"></dropdown-item>
+                        <dropdown-item linkName="client-registration" text="Register an account" iconClass="material-icons-round" icon="app_registration"></dropdown-item>
                     </template>
                 </dropdown-menu>
             </template>

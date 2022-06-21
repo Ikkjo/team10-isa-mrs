@@ -3,7 +3,7 @@
   <nav id="searchbar"
   @keypress.enter="$emit('searchPressed', getSearchQuery())">
   
-      <div class="searchbar">
+      <div class="searchbar" >
         <input class="input" type="text" v-model="countryInput" placeholder="Country" />
         <input class="input" type="text" v-model="cityInput" placeholder="City" />
         <input class="input" type="text" v-model="addressInput" placeholder="Address" />
@@ -23,30 +23,53 @@
         </div>
         <div>
         <button class="btn" @click="$emit('searchPressed', getSearchQuery())">
+        <span class="material-icons-outlined">search</span>
           Search
-          <span class="material-icons-outlined">search</span>
+          
         </button>
         </div>
         
       </div>
-      <div class="button-bar">
+      <div class="filter-bar">
+        <NumberInput class="number-input"
+                            @updated="minPriceUpdated" 
+                            placeholder="" 
+                            label="Min price" 
+                            :increment="5" 
+                            :minValue="0" 
+                            :maxValue="10000"
+                            />
+        <NumberInput class="number-input"
+                            @updated="maxPriceUpdated" 
+                            placeholder="" 
+                            label="Max price" 
+                            :increment="5" 
+                            :minValue="0" 
+                            :maxValue="10000"
+                            />
                          <SearchBarItem
                 :link="'ships'"
                 :iconClass="'material-icons-outlined'"
                 :icon="'directions_boat'"
+                :type="'Ship'"
                 :title="'Ships'"
+                @SearchBarButtonToggled="typeFilterChanged"
        />
               <SearchBarItem
                 :link="'vacation-homes'"
                 :iconClass="'material-icons-outlined'"
                 :icon="'house'"
+                :type="'VacationHome'"
                 :title="'Vacation homes'"
+                @SearchBarButtonToggled="typeFilterChanged"
        />
               <SearchBarItem
                 :link="'adventures'"
                 :iconClass="'material-icons-outlined'"
                 :icon="'phishing'"
+                :type="'Adventure'"
                 :title="'Adventures'"
+                @SearchBarButtonToggled="typeFilterChanged"
        />
       </div>
   </nav>
@@ -55,11 +78,13 @@
 <script>
 import SearchBarItem from './HomepageSearchBarItem.vue'
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+import NumberInput from './NumberInput.vue'
 export default {
     name: 'HomepageSearchBar',
     components: {
     SearchBarItem,
-    DatePicker
+    DatePicker,
+    NumberInput
     },
     data() {
       return {
@@ -70,7 +95,14 @@ export default {
         dateRange: {
           start: null,
           end: null
-        }
+        },
+        minPriceInput: 0,
+        maxPriceInput: 0,
+        typeFilter: {
+        VacationHome: false,
+        Ship: false,
+        Adventure: false
+        },
       }
     },
     created() {
@@ -88,22 +120,81 @@ export default {
       if(!to) {
         to = 0;
       }
+
+
+
       return {
         city: this.cityInput,
         country: this.countryInput,
         address: this.addressInput,
         title: this.titleInput,
         fromDate: from,
-        toDate: to
+        toDate: to,
+        minPrice: this.minPriceInput,
+        maxPrice: this.maxPriceInput,
+        ofType: this.typeFilterToString()
       }
-    }
+    },
+    minPriceUpdated(newPrice) {
+      this.minPriceInput = newPrice
+    },
+    maxPriceUpdated(newPrice) {
+      this.maxPriceInput = newPrice
+    },
+    typeFilterChanged(filterButtonData) {
+      let type = filterButtonData.type
+      let pressed = filterButtonData.state  
+      console.log(filterButtonData)
+      if(pressed) {
+          switch(type) {
+            case "VacationHome":
+              this.typeFilter.VacationHome = true;
+              break;
+            case "Ship":
+              this.typeFilter.Ship = true;
+              break;
+            case "Adventure":
+              this.typeFilter.Adventure = true;
+              break;
+          }
+        } else {
+                    switch(type) {
+            case "VacationHome":
+              this.typeFilter.VacationHome = false;
+              break;
+            case "Ship":
+              this.typeFilter.Ship = false;
+              break;
+            case "Adventure":
+              this.typeFilter.Adventure = false;
+              break;
+          }
+
+        }
+      },
+      typeFilterToString() {
+        let retStr = ""
+        if(this.typeFilter.VacationHome) {
+          retStr = retStr.concat("VacationHome,")
+        }
+        if(this.typeFilter.Ship) {
+          retStr = retStr.concat("Ship,")
+        }
+        if(this.typeFilter.Adventure) {
+          retStr = retStr.concat("Adventure,")
+        }
+        if (retStr){
+          retStr = retStr.substring(0, retStr.length-1) // brise se poslednji , ako se dodalo nesto
+        }
+        return retStr
+      },
   }
 }
 </script>
 
 <style scoped>
 
-.button-bar{
+.filter-bar{
   display: flex;
   justify-content: center;
   background-color: white;
@@ -114,6 +205,9 @@ export default {
 .btn {
   margin: 7px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .searchbar {
   height: calc(var(--nav-height) + 10px);
@@ -147,6 +241,10 @@ export default {
     padding: 10px;
 }
 
+.number-input {
+   margin: 0 7px 0 7px;
+}
+
 .input:hover, .textarea:hover, .select:hover{
     border-color: var(--orange-primary, #f0a500);
 }
@@ -155,17 +253,21 @@ export default {
     outline-color: var(--orange-primary, #f0a500);
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 500px) {
   .searchbar {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+
     align-items: center;
     padding: 0 15px;
     height: auto;
   }
 
   #search {
-    position: absolute;
+    position: relative;
+  }
+
+  .filter-bar{
+    flex-direction: column;
   }
 
 }

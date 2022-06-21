@@ -1,8 +1,8 @@
 package team10.app.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
 import team10.app.model.Loyalty;
 
 import java.util.UUID;

@@ -87,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/registration/*").permitAll()
                 .antMatchers("/api/v1/homepage").permitAll()
                 .antMatchers("/api/v1/rental-entity/search").permitAll()
-                // All requests require authentication
+                .antMatchers("/api/v1/rental-entity/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors()

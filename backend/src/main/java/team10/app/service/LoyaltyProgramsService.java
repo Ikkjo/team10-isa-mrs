@@ -95,7 +95,7 @@ public class LoyaltyProgramsService {
         int max = 0;
         Loyalty loyalty = new Loyalty();
         for (Loyalty l : loyalties) {
-            if (l.getAvailableAtPoints() > max && loyaltyPoints >= l.getAvailableAtPoints()) {
+            if (l.getAvailableAtPoints() >= max && loyaltyPoints >= l.getAvailableAtPoints()) {
                 max = l.getAvailableAtPoints();
                 loyalty = l;
             }

@@ -152,10 +152,9 @@ const routes = [
     },
     {
         path: '/account/manage-account',
-        name: 'manage-account',
+        name: 'business-client-manage-account',
         component: () => import('../views/AccountInfo.vue'),
         meta: {
-            client: true,
             businessClient: true,
         },
     },
@@ -209,10 +208,22 @@ const routes = [
     },
     {
         path: '/listing/:id',
-        name: 'rental-entity-details',
-        component: () => import('../views/RentalEntityDetails.vue'),
+        name: 'listing-details-view',
+        component: () => import('../views/RentalEntityDetailsView.vue'),
         meta: {
+            guest: true,
+            client: true,
             businessClient: true,
+            unverifiedAdmin: true,
+            admin: true,
+        }
+    },
+    {
+        path: '/client/manage-account',
+        name: 'client-manage-account',
+        component: () => import('../components/ClientAccountInfo.vue'),
+        meta: {
+            client: true,
         },
     },
     {
@@ -227,6 +238,7 @@ const routes = [
             admin: true,
         }
     }
+
 ]
 
 const router = new VueRouter({

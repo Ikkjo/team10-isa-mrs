@@ -203,29 +203,33 @@ public class RentalEntityService {
     public List<RentalEntityDto> rentalEntitySearch(
             int page,
             int pageSize,
-//            Long ownerId,
+            String owner,
             String title,
             String country,
             String city,
             String address,
             long fromDate,
-            long toDate
+            long toDate,
+            String ofType,
+            int minPrice,
+            int maxPrice
     ) {
+        List<String> typeFilters = getTypeFilterList(ofType);
+        if(minPrice == maxPrice || maxPrice < minPrice) {
+            minPrice = 0;
+            maxPrice = 10000;
+        }
         boolean shouldCheckAvailability = !(fromDate < DateTimeUtil.getTodayEpochMillisecond());
-        TypedQuery<RentalEntity> query = entityManager.createQuery(
-            String.format("SELECT re FROM RentalEntity re " +
-                "LEFT JOIN Address addr on addr.id=re.address " +
-                "WHERE re.title LIKE '%s' AND " +
-                "addr.country LIKE '%s' AND " +
-                "addr.city LIKE '%s' AND " +
-                "addr.address LIKE '%s'",
-                "%"+title+"%", country, city, address), RentalEntity.class);
 
-        List<RentalEntity> results = query.getResultList();
+        // TODO: add search by owner name
+        List<RentalEntity> results = rentalEntityRepository.searchRentalEntities(
+                    "%" + title + "%", country, city, address, minPrice, maxPrice, PageRequest.of(page, pageSize))
+                    .toList();
 
         List<RentalEntityDto> rentalEntityDtos = new ArrayList<>();
         for (RentalEntity rE:  results) {
-            if(isRentalEntityAvailable(fromDate, toDate, rE, shouldCheckAvailability))
+            if(isRentalEntityAvailable(fromDate, toDate, rE, shouldCheckAvailability) &&
+                    shouldIncludeBasedOnTypeFilter(rE, typeFilters, shouldFilterByType(typeFilters)))
                 rentalEntityDtos.add(setRentalEntityDtoType(rE, rentalEntityToDto(rE.getId(), true)));
         }
 
@@ -265,7 +269,32 @@ public class RentalEntityService {
             throw new RentalEntityReservedException(id);
         rentalEntityRepository.updateDeleted(true, id);
     }
+  
+      private List<String> getTypeFilterList(String ofTypeString) {
+        List<String> filters = Arrays.asList(ofTypeString.split(","));
 
+        if(filters.contains("VacationHome") || filters.contains("Ship") || filters.contains("Adventure")) {
+            return filters;
+        } else {
+            return null;
+        }
+
+    }
+
+    private boolean shouldFilterByType(List<String> filters){
+        if (filters != null) {
+            return filters.size() > 0;
+        }
+        return false;
+    }
+
+    private boolean shouldIncludeBasedOnTypeFilter(RentalEntity rentalEntity, List<String> filters, boolean shouldFilter) {
+        if (shouldFilter) {
+            return filters.contains(rentalEntity.getClass().getSimpleName());
+        }
+        return true;
+    }
+  
     public String getTitle(UUID id) {
         return rentalEntityRepository.getTitleById(id);
     }

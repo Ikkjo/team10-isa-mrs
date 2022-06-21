@@ -18,7 +18,7 @@ public class Rating {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private int rating;
-    @OneToOne
+    @ManyToOne
     private Client client;
     @ManyToOne
     @JoinColumn(name="rental_entity_id")

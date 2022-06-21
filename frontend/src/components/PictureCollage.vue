@@ -1,8 +1,8 @@
 <template>
   <div id="picture-collage">
       <img v-for="(pic, i) in pictures.slice(0, 5)" :key="i" :src="pic" class="photo" :class="i === 0 ? 'cover-picture' : ''">
-      <button class="btn" @click="showAll = !showAll">See All & Edit</button>
-      <portal to="body">
+      <button v-if="editable" class="btn" @click="showAll = !showAll">See All & Edit</button>
+      <portal to="body" v-if="editable">
             <!-- use the modal component, pass in the prop -->
             <PictureUpdateModal
             v-if="showAll"
@@ -27,7 +27,13 @@ export default {
       RentalEntityPictureInput,
       PictureUpdateModal,
     },
-    props: ['pictures'],
+    props: {
+      pictures: null,
+      editable: {
+        type: Boolean,
+        default: true
+      }
+    },
     data() {
       return {
         showAll: false,

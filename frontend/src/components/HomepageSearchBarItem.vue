@@ -23,8 +23,7 @@ export default {
     methods: {
         toggleButton() {
             this.buttonState = !(this.buttonState)
-            this.$emit("SearchBarButtonToggled", {state: this.toggleState, type: this.type})
-
+            this.$emit("SearchBarButtonToggled", {state: this.buttonState, type: this.type})
         }
     }
 }
