@@ -206,12 +206,14 @@ export default {
                 start: new Date(reservation.startDate).toISOString().replace(/T.*$/, ''),
                 end: new Date(reservation.endDate+86400000).toISOString().replace(/T.*$/, ''),
                 color: 'orange',
+                status: reservation.status
             }
             this.calendarOptions.events.push(event);
         },
         handleEventClick(clickInfo) {
             let event = clickInfo.event;
-            if (event.status == 'FINISHED')
+            console.log(event)
+            if (event._def.extendedProps.status === 'FINISHED')
                 this.writeReview(event.id);
             else
                 alert("Reservation is not available for review")
@@ -221,6 +223,7 @@ export default {
         }
     },
     mounted() {
+        console.log("here")
         axios({
                 method: 'get',
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/reservations',
@@ -230,6 +233,7 @@ export default {
                 },
             })
             .then((response) => {
+                console.log(response.data)
                 this.totalRecords = response.data.totalPages * this.serverParams.perPage;
                 this.rows = response.data.reservations
                 this.rows.forEach(this.convertReservationToEvent)
