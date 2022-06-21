@@ -1,13 +1,13 @@
 <template>
     <div class="wrapper">
-        <h1>All Users</h1>
+        <h1>All Rental Entities</h1>
         <VueGoodTable
             mode="remote"
             :pagination-options="{
                 enabled: true,
             }"
             :total-rows="totalRecords"
-            :rows="users"
+            :rows="rentalEntities"
             :columns="columns"
             :isLoading.sync="isLoading"
             @on-page-change="onPageChange"
@@ -17,22 +17,13 @@
             >
              <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'deleted'">
-                    <div v-if="props.row.role !== 'MAIN_ADMIN'
-                        || ((props.row.role === 'ADMIN'
-                        || props.row.role ==='UNVERIFIED_ADMIN')
-                        && isMainAdmin)">
-                        <button v-if="props.row.deleted" class="btn" @click="toggleDeletedStatus(props.row)">Enable</button>
-                        <button v-else class="btn disable" @click="toggleDeletedStatus(props.row)">Disable</button>
-                    </div>
+                    <button v-if="props.row.deleted" class="btn" @click="toggleDeletedStatus(props.row)">Enable</button>
+                    <button v-else class="btn disable" @click="toggleDeletedStatus(props.row)">Disable</button>
                 </span>
-                <span v-else-if="props.column.field == 'role'">
-                    <span v-if="props.row.role === 'SHIP_OWNER'" class='material-icons'>directions_boat</span>
-                    <span v-else-if="props.row.role === 'HOUSE_OWNER'" class='material-icons'>house</span>
-                    <span v-else-if="props.row.role === 'FISHING_INSTRUCTOR'" class='material-icons'>phishing</span>
-                    <span v-else-if="props.row.role === 'CLIENT'" class='material-icons'>person</span>
-                    <span v-else-if="props.row.role === 'MAIN_ADMIN'" class='material-icons'>supervisor_account</span>
-                    <!-- Admin and unsupervized admin -->
-                    <span v-else class='material-icons'>supervised_user_circle</span> 
+                <span v-else-if="props.column.field == 'type'">
+                    <span v-if="props.row.type === 'Ship'" class='material-icons'>directions_boat</span>
+                    <span v-else-if="props.row.type === 'VacationHome'" class='material-icons'>house</span>
+                    <span v-else-if="props.row.type === 'Adventure'" class='material-icons'>phishing</span>
                 </span>
                 <span v-else>
                     {{props.formattedRow[props.column.field]}}
@@ -48,56 +39,61 @@ import { VueGoodTable } from 'vue-good-table';
 import axios from 'axios'
 
 export default {
-    name: 'UserTable',
+    name: 'RentalEntitiesTable',
     components: {
-        VueGoodTable
+        VueGoodTable,
     },
     data() {
         return {
             columns: [
                 {
                     label: 'Type',
-                    field: 'role',
+                    field: 'type',
                     html: true,
-                    sortable: true,
+                    sortable: false,
                     columnIndex: 0,
                     width: '80px',
-                    tdClass: 'td-role',
+                    tdClass: 'td-type',
                 },
                 {
-                    label: 'First Name',
-                    field: 'firstName',
+                    label: 'Title',
+                    field: 'title',
                     sortable: true,
                     columnIndex: 1,
                 },
                 {
-                    label: 'Last Name',
-                    field: 'lastName',
+                    label: 'Owner',
+                    field: 'owner',
                     sortable: true,
                     columnIndex: 2,
                 },
                 {
-                    label: 'Email',
-                    field: 'email',
+                    label: 'Address',
+                    field: 'address',
                     sortable: true,
                     columnIndex: 3,
                 },
                 {
-                    label: 'Phone Number',
-                    field: 'phoneNumber',
+                    label: 'City',
+                    field: 'city',
                     sortable: true,
                     columnIndex: 4,
+                },
+                {
+                    label: 'Country',
+                    field: 'country',
+                    sortable: true,
+                    columnIndex: 5,
                 },
                 {
                     label: 'Enable/Disable',
                     field: 'deleted',
                     sortable: true,
                     width: '160px',
-                    tdClass: 'td-deleted',
-                    columnIndex: 5,
+                    columnIndex: 6,
                 }
             ],
-            users: null,
+            rentalEntities: null,
             totalRecords: 0,
             serverParams: {
                 columnFilters: {
@@ -112,12 +108,6 @@ export default {
                 perPage: 10
             },
             isLoading: false,
-            role: null,
-        }
-    },
-    computed: {
-        isMainAdmin() {
-            return this.role !== null && this.role === 'MAIN_ADMIN' 
         }
     },
     methods: {
@@ -151,7 +141,7 @@ export default {
             let sortString = ''+this.serverParams.sort[0].field+','+this.serverParams.sort[0].type
             axios({
                 method: 'get',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/users',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/rental-entities',
                 params: {page: this.serverParams.page, size: this.serverParams.perPage, sort: sortString},
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -159,35 +149,34 @@ export default {
             })
             .then((response) => {
                 this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-                this.users = response.data.users
+                this.rentalEntities = response.data.rentalEntities
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")
                 console.log(error);
             }) 
         },
-        toggleDeletedStatus(user) {
+        toggleDeletedStatus(rentalEntity) {
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/users/'+user.id+'/toggle-deleted',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/rental-entities/'+rentalEntity.id+'/toggle-deleted',
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
             })
             .then(() => {
-                user.deleted = !user.deleted;
+                rentalEntity.deleted = !rentalEntity.deleted;
             })
             .catch((error) => {
                 alert("Couldn't fetch registration requests. See console for more info.")
                 console.log(error);
             }) 
         },
-    },
+    }, 
     created () {
-        this.role = window.localStorage.getItem('role');
         axios({
                 method: 'get',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/users',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/rental-entities',
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
@@ -195,7 +184,7 @@ export default {
             .then((response) => {
                 console.log(response)
                 this.totalRecords = response.data.totalPages * this.serverParams.perPage;
-                this.users = response.data.users
+                this.rentalEntities = response.data.rentalEntities
             })
             .catch((error) => {
                 alert("Couldn't fetch users. See console for more info.")
@@ -206,11 +195,7 @@ export default {
 </script>
 
 <style>
-.td-role {
-    text-align: center;
-}
-
-.td-deleted {
+.td-type {
     text-align: center;
 }
 
