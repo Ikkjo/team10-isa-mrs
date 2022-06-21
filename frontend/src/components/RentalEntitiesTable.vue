@@ -148,7 +148,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+                this.totalRecords = response.data.totalItems;
                 this.rentalEntities = response.data.rentalEntities
             })
             .catch((error) => {
@@ -183,7 +183,7 @@ export default {
             })
             .then((response) => {
                 console.log(response)
-                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+                this.totalRecords = response.data.totalItems;
                 this.rentalEntities = response.data.rentalEntities
             })
             .catch((error) => {

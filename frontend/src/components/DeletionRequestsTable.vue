@@ -158,7 +158,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+                this.totalRecords = response.data.totalItems;
                 this.requests = response.data.deletionRequests
             })
             .catch((error) => {
@@ -175,7 +175,7 @@ export default {
                 Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
             },
         }).then((response) => {
-            this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+            this.totalRecords = response.data.totalItems;
             this.requests = response.data.deletionRequests;
         }).catch((error) => {
             console.log(error);

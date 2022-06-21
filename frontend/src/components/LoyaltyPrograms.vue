@@ -128,7 +128,6 @@ export default {
     justify-content: center;
     margin-top: 20px;
     display: flex;
-    margin-bottom: 20px;
 }
 
 .loyalty-cards-container {
@@ -138,6 +137,7 @@ export default {
     justify-content: flex-start;
     flex-wrap: wrap;
     gap: 50px;
+    margin-bottom: 20px;
 }
 
 .loyalty-card, .add-loyalty-card{
