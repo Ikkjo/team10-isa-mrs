@@ -144,7 +144,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+                this.totalRecords = response.data.totalItems;
                 this.reports = response.data.reservations
             })
             .catch((error) => {
@@ -195,7 +195,7 @@ export default {
             },
         })
         .then((response) => {
-            this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+            this.totalRecords = response.data.totalItems;
             this.reports = response.data.reservations
         })
         .catch((error) => {

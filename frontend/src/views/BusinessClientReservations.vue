@@ -191,7 +191,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+                this.totalRecords = response.data.totalItems;
                 this.rows = response.data.reservations
             })
             .catch((error) => {
@@ -230,7 +230,7 @@ export default {
                 },
             })
             .then((response) => {
-                this.totalRecords = response.data.totalPages * this.serverParams.perPage;
+                this.totalRecords = response.data.totalItems;
                 this.rows = response.data.reservations
                 this.rows.forEach(this.convertReservationToEvent)
             })
