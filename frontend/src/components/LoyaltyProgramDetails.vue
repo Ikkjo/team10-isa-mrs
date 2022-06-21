@@ -134,6 +134,16 @@
                         </template>
                     </InfoItem>
                 </div>
+                <div v-if="loyaltyProgram.deletable" class="info-items">
+                    <InfoItem icon="info"
+                        label="Remove loyalty"
+                        buttonText="Delete royalty"
+                        style="color: red;"
+                        editButton="Remove"
+                        @save="deleteLoyalty"
+                        >
+                    </InfoItem>
+                </div>
             </div>
         </div>
     </div>
@@ -371,6 +381,23 @@ export default {
                         console.log(error);
                     });
             }
+        },
+        deleteLoyalty() {
+            axios({
+            method: 'delete',
+            url: process.env.VUE_APP_BASE_URL+'/api/v1/loyalty-programs/'+this.$route.params.id+'/delete',
+            headers: {
+                Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
+            },
+            })
+            .then(() => {
+                this.$router.push({name: 'loyalty-programs'});
+                alert("Loyalty succesfully delted.")
+            })
+            .catch((error) => {
+                alert("Couldn't fetch cards. See console for more info.")
+                console.log(error);
+            });
         }
     },
     computed: {
