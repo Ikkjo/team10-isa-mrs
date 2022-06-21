@@ -8,6 +8,12 @@
                 icon="group_add"
                 title="Registration Requests"
                 />
+            <AdminMenuItem
+                link="users"
+                iconClass="material-icons"
+                icon="group"
+                title="All Users"
+                />
             <!-- TODO: Create this component -->
             <!-- <AdminMenuItem
                 link="user-complaints"
@@ -50,7 +56,7 @@
                 <AdminMenuItem
                     link="admin-account-info"
                     iconClass="material-icons"
-                    icon="account_circle"
+                    icon="manage_accounts"
                     title="Account Info"
                     />
                 <div @click="logout" class="option">
