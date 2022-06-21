@@ -58,8 +58,10 @@ public class ReservationService {
     }
 
     public List<ReservationDto> getReservationDtoList(List<Reservation> reservations) {
-        for (Reservation r : reservations)
+        for (Reservation r : reservations) {
             r.updateStatus();
+            reservationRepository.save(r);
+        }
         return reservations.stream().map(ReservationDto::new).collect(Collectors.toList());
     }
 
