@@ -1,5 +1,6 @@
 <template>
-    <div v-if="earningsReport" id="earnings-report">
+    <div id="admin-earnings-report">
+        <h1>Earnings Report</h1>
         <div class="date-range">
             <DatePicker
                 color="yellow"
@@ -20,17 +21,17 @@
                 </template>
           </DatePicker>
         </div>
-        <div class="charts">
+        <div v-if="earningsReport" class="charts">
             <div class="chart">
             <BarChart
-                :chartData="getBarChartData()"
+                :chartData="chartData"
                 tickLabel="$"
                 scales="$"
             />
             </div>
             <div class="chart">
                 <PieChart 
-                    :chartData="getPieChartData()"/>
+                    :chartData="chartData"/>
             </div>
         </div>
         
@@ -43,7 +44,7 @@ import PieChart from '@/components/PieChart.vue'
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 import axios from 'axios'
 export default {
-    name: 'BusinessClientEarningsReport',
+    name: 'AdminEarningsReport',
     components: {
         BarChart,
         PieChart,
@@ -51,21 +52,16 @@ export default {
     },
     data() {
         return {
-            earningsReport: {
-                fromDate: 0,
-                toDate: 0,
-                dailyEarnings: [],
-                individualEarnings: []
-            },
+            earningsReport: null,
             dateRange: {
                 start: null,
                 end: null
             },
-            colors: [],
+            chartData: null,
         }
     },
     methods: {
-        getBarChartData() {
+        getChartData() {
             let data = {
                 labels: [],
                 datasets: [
@@ -76,29 +72,10 @@ export default {
                     }
                 ]
             }
-            for (let item of this.earningsReport.dailyEarnings) {
-                data.labels.push(new Date(item.day).toLocaleDateString("en-US"))
+            for (let item in this.earningsReport) {
+                data.labels.push(item)
                 data.datasets[0].backgroundColor.push(this.getRandomColor())
-                data.datasets[0].data.push(item.earnings);
-            }
-            return data;
-        },
-        getPieChartData() {
-            let data = {
-                labels: [],
-                datasets: [
-                    {
-                        label: 'Earnings',
-                        backgroundColor: [],
-                        data: []
-                    }
-                ]
-            }
-            for (let item of this.earningsReport.individualEarnings) {
-                console.log(item)
-                data.labels.push(item.rentalEntityTitle)
-                data.datasets[0].backgroundColor.push(this.getRandomColor())
-                data.datasets[0].data.push(item.earnings);
+                data.datasets[0].data.push(this.earningsReport[item]);
             }
             return data;
         },
@@ -116,18 +93,20 @@ export default {
             else {
                 axios({
                 method: 'get',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/business-client/report/earnings',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/report',
                 params: {fromDate: this.dateRange.start.getTime(), toDate: this.dateRange.end.getTime()},
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
                 })
                 .then((response) => {
-                    console.log(response);
-                    if (response.data.individualEarnings.length === 0 || response.data.dailyEarnings.length === 0)
+                    if (Object.keys(response.data).length === 0)
                         alert('No earnings in given period')
-                    else
+                    else {
                         this.earningsReport = response.data;
+                        this.chartData = this.getChartData();
+                    }
+
                 })
                 .catch((error) => {
                     alert("Something went wrong")
@@ -139,13 +118,7 @@ export default {
     },
 }
 </script>
-
 <style scoped>
-#earnings-report {
-    padding-top: 65px;
-}
-
-
 .form-control {
     width: 100%;
     display: flex;
@@ -158,14 +131,9 @@ export default {
 }
 
 .form-control div {
-    position: absolute;
     display: flex;
     align-items: center;
     padding-bottom: 50px;
-}
-
-.date-range {
-    position: relative;
 }
 
 .material-icons {

@@ -13,16 +13,10 @@ import java.util.Set;
 public class Client extends User{
 
     //TODO: add @Column for all fields, create client table
-
-/*    @OneToOne(mappedBy = "client",
-              fetch = FetchType.LAZY,
-              cascade = CascadeType.ALL)
-    private Loyalty loyalty;*/
-
+    @Column(nullable = false)
+    private int loyaltyPoints = 0;
     private Boolean isPenalized = false;
-
     private int penaltyPoints = 0;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private Set<Reservation> reservations;
 
