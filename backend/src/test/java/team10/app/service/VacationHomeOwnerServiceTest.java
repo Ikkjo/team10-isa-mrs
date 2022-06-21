@@ -13,7 +13,6 @@ import team10.app.model.Address;
 import team10.app.model.VacationHome;
 import team10.app.model.VacationHomeOwner;
 import team10.app.repository.AddressRepository;
-import team10.app.repository.PictureRepository;
 import team10.app.repository.VacationHomeOwnerRepository;
 import team10.app.repository.VacationHomeRepository;
 import team10.app.util.Validator;
