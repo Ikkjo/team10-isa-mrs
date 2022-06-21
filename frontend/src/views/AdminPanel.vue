@@ -102,8 +102,10 @@ export default {
         }
     },
     created () {
-        if (['ADMIN', 'MAIN_ADMIN'].includes(window.localStorage.getItem('role')))
-            this.role = window.localStorage.getItem('role')
+        if (['ADMIN', 'MAIN_ADMIN'].includes(window.localStorage.getItem('role'))) {
+            this.role = window.localStorage.getItem('role');
+            this.$router.push({name: 'registration-requests'});
+        }
         else
             this.$router.push({name: 'homepage'});
     },
