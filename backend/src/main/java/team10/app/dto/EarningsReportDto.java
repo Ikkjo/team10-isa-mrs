@@ -15,13 +15,13 @@ public class EarningsReportDto {
     private long fromDate;
     private long toDate;
     private List<IndividualEarningsDto> individualEarnings;
-    private List<DailyEarningsDto> dailyEarnings;
+    private Map<Long, Double> dailyEarnings;
 
 
-    public EarningsReportDto(long fromDate, long toDate, Collection<IndividualEarningsDto> individualEarningsDtoCollection, Collection<DailyEarningsDto> dailyEarningsDtoCollection) {
+    public EarningsReportDto(long fromDate, long toDate, Collection<IndividualEarningsDto> individualEarningsDtoCollection, Map<Long, Double> dailyEarnings) {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.individualEarnings = new ArrayList<>(individualEarningsDtoCollection);
-        this.dailyEarnings = new ArrayList<>(dailyEarningsDtoCollection);
+        this.dailyEarnings = dailyEarnings;
     }
 }
