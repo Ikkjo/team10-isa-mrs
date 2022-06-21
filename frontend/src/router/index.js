@@ -65,6 +65,11 @@ const routes = [
                 component: () => import("../components/LoyaltyPrograms.vue")
             },
             {
+                path: 'loyalty-programs/create-new',
+                name: 'create-loyalty-program',
+                component: () => import("../components/LoyaltyProgramCreate.vue"),
+            },
+            {
                 path: 'loyalty-programs/:id',
                 name: 'loyalty-program-details',
                 component: () => import("../components/LoyaltyProgramDetails.vue")

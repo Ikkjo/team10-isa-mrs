@@ -99,23 +99,6 @@
                 </div>
                 <div class="info-items business-client">
                     <h2>Business Client Options</h2>
-                    <InfoItem icon="numbers" label="Business client cut"
-                        :text="loyaltyProgram.businessClientCut.toString()+'%'"
-                        :saveDisabled="isLoyaltyProgramBusinessClientCutDisabled"
-                        @save="saveLoyaltyProgramBusinessClientCut"
-                        @cancelClicked="cancel">
-                        <template slot="edit">
-                            <NumberInput 
-                                @updated="loyaltyProgramBusinessClientCutUpdated" 
-                                placeholder="Required" 
-                                label="" 
-                                :increment="1" 
-                                :minValue="0" 
-                                :maxValue="99"
-                                class="number-input"
-                                />
-                        </template>
-                    </InfoItem>
                     <InfoItem icon="numbers" label="Business client points per reservation"
                         :text="loyaltyProgram.businessClientPointsPerReservation.toString()"
                         :saveDisabled="isLoyaltyProgramBusinessClientPointsPerReservationDisabled"
@@ -129,6 +112,23 @@
                                 :increment="1" 
                                 :minValue="0" 
                                 :maxValue="50"
+                                class="number-input"
+                                />
+                        </template>
+                    </InfoItem>
+                    <InfoItem icon="numbers" label="Business client cut"
+                        :text="loyaltyProgram.businessClientCut.toString()+'%'"
+                        :saveDisabled="isLoyaltyProgramBusinessClientCutDisabled"
+                        @save="saveLoyaltyProgramBusinessClientCut"
+                        @cancelClicked="cancel">
+                        <template slot="edit">
+                            <NumberInput 
+                                @updated="loyaltyProgramBusinessClientCutUpdated" 
+                                placeholder="Required" 
+                                label="" 
+                                :increment="1" 
+                                :minValue="0" 
+                                :maxValue="99"
                                 class="number-input"
                                 />
                         </template>
