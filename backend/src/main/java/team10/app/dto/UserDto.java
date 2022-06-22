@@ -9,6 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDto {
     protected UUID id;
     protected String firstName;
