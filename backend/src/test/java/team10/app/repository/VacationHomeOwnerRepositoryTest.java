@@ -39,7 +39,7 @@ class VacationHomeOwnerRepositoryTest {
 
     @Test
     void itShouldNotReturnUserByEmail() {
-        Optional<VacationHomeOwner> expected = repo.findByEmail("test@gmail.com");
+        Optional<VacationHomeOwner> expected = repo.findByEmail("test123123123@gmail.com");
         assertThat(expected).isEmpty();
     }
 
@@ -59,7 +59,7 @@ class VacationHomeOwnerRepositoryTest {
 
     @Test
     void itShouldNotEnableVacationHomeOwner() {
-        assertThat(repo.enableVacationHomeOwner("test@gmail.com")).isNotEqualTo(1);
+        assertThat(repo.enableVacationHomeOwner("test131123@gmail.com")).isNotEqualTo(1);
     }
 
 }
