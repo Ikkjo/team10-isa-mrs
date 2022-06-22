@@ -70,7 +70,8 @@ public class AdminService {
         try {
             emailService.send(
                     rr.getBusinessClient().getEmail(),
-                    EmailBuilder.getAcceptEmail(rr.getBusinessClient().getFirstName())
+                    EmailBuilder.getAcceptEmail(rr.getBusinessClient().getFirstName()),
+                    "Your registration request has been accepted"
             );
         } catch (Exception e) {
             System.err.println("Email service not available");
@@ -87,7 +88,8 @@ public class AdminService {
         try {
             emailService.send(
                     rr.getBusinessClient().getEmail(),
-                    EmailBuilder.getDeclineEmail(rr.getBusinessClient().getFirstName(), declineReason)
+                    EmailBuilder.getDeclineEmail(rr.getBusinessClient().getFirstName(), declineReason),
+                    "Your registration request has been declined"
             );
         } catch (Exception e) {
             System.err.println("Email service not available");
@@ -143,7 +145,8 @@ public class AdminService {
         try {
             emailService.send(
                     dr.getUser().getEmail(),
-                    EmailBuilder.getAcceptDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response)
+                    EmailBuilder.getAcceptDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response),
+                    "Your deletion request has been accepted"
             );
         } catch (Exception e) {
             System.err.println("Email service not available");
@@ -160,7 +163,8 @@ public class AdminService {
         try {
             emailService.send(
                     dr.getUser().getEmail(),
-                    EmailBuilder.getDeclineDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response)
+                    EmailBuilder.getDeclineDeletionEmail(dr.getUser().getFirstName(), dr.getDeletionReason(), response),
+                    "Your deletion request has been declined"
             );
         } catch (Exception e) {
             System.err.println("Email service not available");
@@ -207,13 +211,17 @@ public class AdminService {
                         EmailBuilder.getClientPenalizedForBusinessClientEmail(
                                 report.getRentalEntity().getOwner().getFirstName(),
                                 report.getClient().getEmail()
-                        ));
+                        ),
+                        "You report has been accepted"
+                );
                 emailService.send(
                         report.getClient().getEmail(),
                         EmailBuilder.getClientPenalizedForClientEmail(
                                 report.getClient().getFirstName(),
                                 report.getRentalEntity().getTitle()
-                        ));
+                        ),
+                        "You have been penalized"
+                );
             }
             else {
                 emailService.send(
@@ -221,13 +229,17 @@ public class AdminService {
                         EmailBuilder.getClientNotPenalizedForBusinessClientEmail(
                                 report.getRentalEntity().getOwner().getFirstName(),
                                 report.getClient().getEmail()
-                        ));
+                        ),
+                        "You report has been declined"
+                );
                 emailService.send(
                         report.getClient().getEmail(),
                         EmailBuilder.getClientNotPenalizedForClientEmail(
                                 report.getClient().getFirstName(),
                                 report.getRentalEntity().getTitle()
-                        ));
+                        ),
+                        "You have been reported, but not penalized"
+                );
             }
         } catch (Exception e) {
             System.err.println("Email service not available.");
