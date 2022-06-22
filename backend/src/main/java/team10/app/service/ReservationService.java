@@ -195,12 +195,12 @@ public class ReservationService {
 
         // email confirmation
         String success = String.format(
-                "Uspešno ste rezervisali %s od datuma %s do datuma %s!\nNadamo se da ćete uživati",
+                "You have successfully made a reservation for %s from %s to %s! \nWe hope that you enjoy your stay!",
                 reservationDto.getRentalEntityTitle(),
                 DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getStartDate()),
                 DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getEndDate()));
         try {
-            emailService.send(success, clientUsername, "Reservation successful!");
+            emailService.send(clientUsername, success, "Reservation successful!");
         } catch (IllegalStateException e) {
             System.out.println("Failed to send email");
         }

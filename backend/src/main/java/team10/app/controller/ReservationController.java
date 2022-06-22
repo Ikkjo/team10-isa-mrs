@@ -41,7 +41,7 @@ public class ReservationController {
             @RequestParam(defaultValue = "id,desc") String sort,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "CREATED") String status
+            @RequestParam(defaultValue = "ACTIVE") String status
     ) {
         String userEmail = principal.getName();
         User u = userService.getByEmail(userEmail);

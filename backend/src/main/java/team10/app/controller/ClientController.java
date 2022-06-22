@@ -1,8 +1,10 @@
 package team10.app.controller;
 
 import lombok.AllArgsConstructor;
+import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Propagation;
@@ -49,7 +51,10 @@ public class ClientController {
             reservationDto.setClientEmail(authUtil.getEmailFromToken(token));
             reservationService.makeReservation(reservationDto);
             return new ResponseEntity<String>(HttpStatus.CREATED);
-        } catch (Exception e) {
+        } catch (ObjectOptimisticLockingFailureException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

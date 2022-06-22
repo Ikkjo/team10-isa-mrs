@@ -187,7 +187,6 @@ export default {
                 this.totalRecords = response.data.totalItems;
                 this.rows = response.data.reservations
                 this.rows.forEach(this.convertReservationToEvent)
-                console.log(response)
             })
             .catch((error) => {
                 alert("Something went wrong. See console for output.")
@@ -221,7 +220,6 @@ export default {
                 this.totalRecords = response.data.totalItems;
                 this.rows = response.data.reservations
                 this.rows.forEach(this.convertReservationToEvent)
-                console.log(response.data.reservations)
             })
             .catch((error) => {
                 alert("Something went wrong. See console for output.")
