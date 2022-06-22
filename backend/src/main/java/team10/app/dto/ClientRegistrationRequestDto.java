@@ -1,12 +1,11 @@
 package team10.app.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import team10.app.model.UserRole;
 
 @Getter
+@Setter
+@NoArgsConstructor
 @ToString
 public class ClientRegistrationRequestDto extends RegistrationRequestDto {
 

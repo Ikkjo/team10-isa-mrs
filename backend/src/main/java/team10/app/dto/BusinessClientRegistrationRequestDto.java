@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class BusinessClientRegistrationRequestDto extends RegistrationRequestDto {
     private String dateOfBirth;
     private String address;
