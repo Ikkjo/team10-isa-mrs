@@ -200,7 +200,7 @@ public class ReservationService {
                 DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getStartDate()),
                 DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getEndDate()));
         try {
-            emailService.send(success, clientUsername);
+            emailService.send(success, clientUsername, "Reservation successful!");
         } catch (IllegalStateException e) {
             System.out.println("Failed to send email");
         }

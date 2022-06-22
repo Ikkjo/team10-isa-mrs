@@ -60,5 +60,4 @@ public class ClientRegistrationService {
         return token;
     }
 
-
 }
