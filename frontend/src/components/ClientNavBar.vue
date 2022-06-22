@@ -6,7 +6,7 @@
                 <dropdown-menu v-show="showMenu">
                     <template slot="items">
                         <dropdown-item linkName="client-manage-account" text="My account" iconClass="material-icons" icon="account_circle"></dropdown-item>
-                        <dropdown-item linkName="" text="My reservations" iconClass="material-icons" icon="card_travel"></dropdown-item>
+                        <dropdown-item linkName="client-my-reservations" text="My reservations" iconClass="material-icons" icon="card_travel"></dropdown-item>
                         <dropdown-item linkName="" text="Reservation history" iconClass="material-icons" icon="calendar_month"></dropdown-item>
                         <div class="menu-item" @click="logout">
                             <span class="icon-button material-icons">logout</span> Logout

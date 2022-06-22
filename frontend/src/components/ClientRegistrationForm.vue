@@ -94,8 +94,7 @@
         </div>
         <div class="btn-div">
             <button class="btn"
-                :disabled="$v.$invalid || (!phone || !phone.isValid) 
-                    || !dateOfBirth.isValid || role==='' || country===''">
+                :disabled="$v.$invalid || (!phone || !phone.isValid)">
                 Create Account
             </button>
             <div class="already-registered">Already have an account? <router-link to="/login">Log in</router-link></div>
@@ -118,6 +117,7 @@ export default {
             password: '',
             confirmPassword: '',
             role: 'CLIENT',
+            phoneTmp: '',
             infocus: {
                 firstName: true,
                 lastName: true,
@@ -177,6 +177,9 @@ export default {
                     // is phone taken
                 })
         },
+        updatePhone(event){
+            this.phone = event
+        },
         isFocused(field) {
             return this.infocus[field]
         },
@@ -202,6 +205,10 @@ export default {
 
 .form-control {
     margin: 15px 10px 15px 0px;
+}
+
+.form-control:last-child {
+    margin-right: 0px;
 }
 
 .wrapper {
@@ -231,15 +238,6 @@ textarea {
     display: block;
 }
 
-#datepicker {
-    display: grid;
-    grid-template-columns: 33.3% 33.3% 33.3%;
-}
-
-#registration-reason {
-    display: block;
-}
-
 .btn-div {
     display: flex;
     flex-direction: column;
@@ -254,6 +252,11 @@ textarea {
 
 .btn-div p {
     margin-top: 0px;
+}
+
+.already-registered {
+    font-size: 0.9rem !important;
+    margin-top: 5px;
 }
 
 .alert {

@@ -227,6 +227,14 @@ const routes = [
         },
     },
     {
+        path: '/client/my-reservations',
+        name: 'client-my-reservations',
+        component: () => import('../views/ClientReservations.vue'),
+        meta: {
+            client: true,
+        },
+    },
+    {
         path: '/404-not-found',
         name: 'not-found-404',
         component: () => import('../views/NotFound404.vue'),

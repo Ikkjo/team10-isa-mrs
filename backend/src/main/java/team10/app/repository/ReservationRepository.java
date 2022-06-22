@@ -20,6 +20,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
 
     Reservation findReservationByClient(Client client);
 
+    @Query(value = "select r from Reservation r where r.client = ?1 and r.status = ?2",
+        countQuery = "select count(r) from Reservation r where r.client = ?1 and r.status = ?2")
+    Page<Reservation> findAllByClient(Client client, ReservationStatus status, Pageable pageable);
+
     @Modifying
     @Query("update Reservation r set r.status = ?1 where r.id = ?2")
     void updateStatus(ReservationStatus status, UUID id);

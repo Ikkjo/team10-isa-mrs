@@ -38,6 +38,13 @@ public class ReservationService {
 
     }
 
+    public Page<Reservation> getAllReservationsByClientPage(String email, ReservationStatus status,
+                                                            String sort, int page, int size) {
+        Client client = clientService.getByUsername(email);
+        Pageable paging = PageRequest.of(page, size, Sort.by(getSort(sort)));
+        return reservationRepository.findAllByClient(client, status, paging);
+    }
+
     private List<Order> getSort(String sort) {
         List<Order> orders = new ArrayList<>();
         String[] sortTokens = sort.split(",");
@@ -192,7 +199,11 @@ public class ReservationService {
                 reservationDto.getRentalEntityTitle(),
                 DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getStartDate()),
                 DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getEndDate()));
-//        emailService.send(success, clientUsername);
+        try {
+            emailService.send(success, clientUsername);
+        } catch (IllegalStateException e) {
+            System.out.println("Failed to send email");
+        }
 
         return success;
     }
