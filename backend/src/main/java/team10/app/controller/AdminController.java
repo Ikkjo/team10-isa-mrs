@@ -10,12 +10,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.*;
-import team10.app.model.DeletionRequest;
-import team10.app.model.RegistrationRequest;
-import team10.app.model.RentalEntity;
-import team10.app.model.User;
+import team10.app.model.*;
 import team10.app.security.auth.AuthUtil;
 import team10.app.service.AdminService;
+import team10.app.service.ClientReviewService;
 import team10.app.service.RentalEntityService;
 import team10.app.service.UserService;
 import team10.app.util.exceptions.EmailTakenException;
@@ -23,6 +21,7 @@ import team10.app.util.exceptions.EmailTakenException;
 import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,6 +33,7 @@ public class AdminController {
     private final AdminService adminService;
     private final UserService userService;
     private final RentalEntityService rentalEntityService;
+    private final ClientReviewService clientReviewService;
     private final AuthUtil authUtil;
 
     @GetMapping
@@ -290,6 +290,50 @@ public class AdminController {
         }
         catch (ObjectOptimisticLockingFailureException e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/reviews")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<List<ClientReviewDto>> getClientReviews() {
+        try {
+            List<ClientReview> clientReviews = clientReviewService.getClientReviews();
+            return ResponseEntity.ok(clientReviewService.getClientReviewDtoList(clientReviews));
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Transactional
+    @PutMapping(path = "/reviews/{id}/accept")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<HttpStatus> acceptClientReview(@PathVariable UUID id) {
+        try {
+            adminService.acceptClientReview(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Transactional
+    @PutMapping(path = "/reviews/{id}/decline")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<HttpStatus> declineClientReview(@PathVariable UUID id, @RequestBody String response) {
+        try {
+            adminService.declineClientReview(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

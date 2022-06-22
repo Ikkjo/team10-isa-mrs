@@ -31,6 +31,7 @@ public class AdminService {
     private final ReportRepository reportRepository;
     private final ClientRepository clientRepository;
     private final RentalEntityRepository rentalEntityRepository;
+    private final ClientReviewRepository clientReviewRepository;
     // services
     private final EmailService emailService;
     private final UserService userService;
@@ -307,5 +308,49 @@ public class AdminService {
         return rentalEntities.stream()
                 .map(AdminRentalEntityDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public void acceptClientReview(UUID id) {
+        ClientReview clientReview = clientReviewRepository.findById(id)
+            .orElseThrow( () -> new EntityNotFoundException("Client review not found"));
+        // TODO: Waiting for Ilija
+//        clientReview.accept();
+//        clientReview.setReviewed();
+//        try {
+//            emailService.send(
+//                    clientReview.getClient().getEmail(),
+//                    EmailBuilder.getAcceptClientReviewForClient(clientReview.getClient().getFirstName(), clientReview.getRentalEntity().getTitle()),
+//                    "Your review has been accepted"
+//            );
+//            emailService.send(
+//                    clientReview.getRentalEntity().getOwner.getEmail(),
+//                    EmailBuilder.getAcceptClientReviewForBusinessClient(clientReview.getRentalEntity().getOwner.getEmail(), clientReview.getRentalEntity().getTitle()),
+//                    "A review for your listing has been accepted"
+//            );
+//        } catch (Exception e) {
+//            System.err.println("Email service not available");
+//        }
+    }
+
+    public void declineClientReview(UUID id) {
+        ClientReview clientReview = clientReviewRepository.findById(id)
+                .orElseThrow( () -> new EntityNotFoundException("Client review not found"));
+        // TODO: Waiting for Ilija
+//        clientReview.decline();
+//        clientReview.setReviewed();
+//        try {
+//            emailService.send(
+//                    clientReview.getClient().getEmail(),
+//                    EmailBuilder.getDeclineClientReviewForClient(clientReview.getClient().getFirstName(), clientReview.getRentalEntity().getTitle()),
+//                    "Your review has been declined"
+//            );
+//            emailService.send(
+//                    clientReview.getRentalEntity().getOwner.getEmail(),
+//                    EmailBuilder.getDeclineClientReviewForBusinessClient(clientReview.getRentalEntity().getOwner.getEmail(), clientReview.getRentalEntity().getTitle()),
+//                    "A review for your listing has been declined"
+//            );
+//        } catch (Exception e) {
+//            System.err.println("Email service not available");
+//        }
     }
 }
