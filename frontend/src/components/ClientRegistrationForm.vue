@@ -167,12 +167,11 @@ export default {
                 .post(process.env.VUE_APP_BASE_URL+"/api/v1/registration/client", clientRegistrationRequestDTO)
                 .then(function(response) {
                     console.log(response)
-                    // notify that awaiting accept
+                    alert("Registration successfull. Check your email.")
                 })
                 .catch(function(error) {
                     console.log(error);
-                    // is email taken
-                    // is phone taken
+                    alert("Email already taken");
                 })
         },
         isFocused(field) {
