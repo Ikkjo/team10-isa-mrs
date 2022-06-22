@@ -9,11 +9,11 @@
             </div>
             <div class="main-text">${{rentalEntity.price}} night</div>
             <div class="btn-container">
-                <button v-if="isBusinessClient()" class="btn" @click.stop="showActionModal()">Add Action</button>
-                <button v-if="isBusinessClient()" class="btn" @click.stop="showReservationModal()">Reserve</button>
+                <button class="btn" @click.stop="showActionModal()">Add Action</button>
+                <button class="btn" @click.stop="showReservationModal()">Reserve</button>
             </div>
         </div>
-        <portal to="body" v-if="isBusinessClient()">
+        <portal to="body">
             <!-- use the modal component, pass in the prop -->
             <ActionCreationModal
                 @save="saveAction()"

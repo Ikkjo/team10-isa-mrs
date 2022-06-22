@@ -2,23 +2,23 @@
     <div id="rental-entity-details" class="details-view">
         <UniversalNavBar id="nav"/>    
         <div class="info" v-if="rentalEntity">
-            <RentalEntityDetails ref="basicInfo"
+            <RentalEntityDetails ref="basicDetails"
                 :rentalEntity="rentalEntity" 
             />
-            <VacationHomeAdditionalInfo
+            <VacationHomeAdditionalDetails
                 v-if="rentalEntity.type === 'VacationHome'"
                 :vacationHome="rentalEntity"
-                ref="vacationHomeInfo"
+                ref="vacationHomeDetails"
                 />
-            <ShipAdditionalInfo
+            <ShipAdditionalDetails
                 v-if="rentalEntity.type === 'Ship'"
                 :ship="rentalEntity"
-                ref="shipInfo"
+                ref="shipDetails"
                 />
-            <AdventureAdditionalInfo
+            <AdventureAdditionalDetails
                 v-if="rentalEntity.type === 'Adventure'"
                 :adventure="rentalEntity"
-                ref="adventureInfo"
+                ref="adventureDetails"
                 />
         </div>
     </div>
@@ -27,19 +27,19 @@
 <script>
 import UniversalNavBar from '@/components/UniversalNavBar.vue'
 import RentalEntityDetails from '@/components/RentalEntityDetails.vue'
-import VacationHomeAdditionalInfo from '@/components/VacationHomeAdditionalInfo.vue'
-import ShipAdditionalInfo from '@/components/ShipAdditionalInfo.vue'
-import AdventureAdditionalInfo from '@/components/AdventureAdditionalInfo.vue'
+import VacationHomeAdditionalDetails from '@/components/VacationHomeAdditionalDetails.vue'
+import ShipAdditionalDetails from '@/components/ShipAdditionalDetails.vue'
+import AdventureAdditionalDetails from '@/components/AdventureAdditionalDetails.vue'
 import axios from 'axios'
 export default {
     name: 'RentalEntityDetailsView',
     components: {
-        RentalEntityDetails,
-        VacationHomeAdditionalInfo,
-        ShipAdditionalInfo,
-        AdventureAdditionalInfo,
-        UniversalNavBar
-    },
+    RentalEntityDetails,
+    VacationHomeAdditionalDetails,
+    AdventureAdditionalDetails,
+    UniversalNavBar,
+    ShipAdditionalDetails
+},
     data() {
         return {
             rentalEntity: null,
@@ -57,13 +57,13 @@ export default {
             .then((response) => {
                 console.log(response.data)
                 this.rentalEntity = response.data;
-                this.$refs.basicInfo.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                this.$refs.basicDetails.setRentalEntityCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 if (this.rentalEntity.type === 'VacationHome')
-                    this.$refs.vacationHomeInfo.setVacationHomeCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                    this.$refs.vacationHomeDetails.setVacationHomeCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 else if (this.rentalEntity.type === 'Ship')
-                    this.$refs.shipInfo.setShipCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                    this.$refs.shipDetails.setShipCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
                 else if (this.rentalEntity.type === 'Adventure')
-                    this.$refs.adventureInfo.setAdventureCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
+                    this.$refs.adventureDetails.setAdventureCopy(JSON.parse(JSON.stringify(this.rentalEntity)));
             })
             .catch(function(error) {
                 console.log(error)

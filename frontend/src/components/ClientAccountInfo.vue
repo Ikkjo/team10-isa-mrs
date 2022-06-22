@@ -61,7 +61,7 @@
                             </div>
                         </template>
                     </InfoItem>
-                    <InfoItem icon="loyalty" label="Loyalty points" :text="user.loyaltyPoints.toString()" buttonText="" :useSlot="false"/>
+                    <InfoItem icon="loyalty" label="Loyalty points" :text="user.loyaltyPoints.toString() + ' (' +  user.loyaltyStatus + ')'" buttonText="" :useSlot="false"/>
                     <InfoItem icon="fmd_bad" label="Penalty points" :text="user.penaltyPoints.toString()" buttonText="" :useSlot="false"/>
                 </div>
             </div>
@@ -170,8 +170,8 @@ export default {
         return {
             user: {
                 phoneNumber: '',
-                loyaltyPoints: null,
-                penaltyPoints: null
+                loyaltyPoints: 0,
+                penaltyPoints: 0
             },
             phoneNumberTmp: null,
             userCopy: {

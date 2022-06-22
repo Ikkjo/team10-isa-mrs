@@ -86,7 +86,7 @@ public class RentalEntityController {
     }
 
     @GetMapping(value = "/{id}/availability")
-    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR', 'CLIENT')")
     public ResponseEntity<List<Long>> getAvailability(@PathVariable UUID id) {
         try {
             return new ResponseEntity<>(rentalEntityService.getAvailability(id), HttpStatus.OK);
@@ -98,7 +98,7 @@ public class RentalEntityController {
     }
 
     @GetMapping(value = "/{id}/taken-dates")
-    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
+    @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR', 'CLIENT')")
     public ResponseEntity<List<Long>> getTakenDates(@PathVariable UUID id) {
         try {
             return new ResponseEntity<>(rentalEntityService.getTakenDates(id), HttpStatus.OK);
@@ -282,7 +282,7 @@ public class RentalEntityController {
             @RequestParam(name = "ofType", defaultValue = "") String ofType,
             @RequestParam(name = "minPrice", defaultValue = "0") int minPrice,
             @RequestParam(name = "maxPrice", defaultValue = "10000") int maxPrice) {
-        int DEFAULT_PAGE_SIZE = 20;
+        int DEFAULT_PAGE_SIZE = 10;
 
         try{
             return ResponseEntity.ok(rentalEntityService.rentalEntitySearch(page, pageSize, owner, title, country, city,
