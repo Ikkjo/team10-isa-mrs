@@ -257,7 +257,7 @@ public class Validator {
                 && validateReservationMaxPersons(createReservationDto.getMaxPersons());
     }
 
-    public boolean validateReservationDto(ReservationDto createReservationDto) {
+    public boolean validateReservationDto(MakeReservationDto createReservationDto) {
 //        return validateReservationDateRange()
 //                && validateRentalEntityPrice(createReservationDto.getPrice())
 //                && validateReservationMaxPersons();

@@ -43,7 +43,13 @@
                 :useSlot="false"
                 :saveDisabled="true"/>
             <!-- Currently implementing reservations -->
-            <EditAvailability v-else :availability="rentalEntity.availability"/>
+            <ClientReservationCreation v-else
+                        :id="rentalEntity.id"
+                        :pricePerNight="rentalEntity.price"
+                        :maxPersons="rentalEntity.maxCapacity"
+                        :rentalEntityTitle="rentalEntity.title"
+                        @updated:dateRange="reservationDateRangeUpdated"
+                        @updated:maxPersons="reservationMaxPersonsUpdated"/>
             <InfoItem icon="rule" label="Rules of Conduct"
                 :text="rentalEntity.rulesOfConduct"
                 :useEditButton="false"
@@ -65,7 +71,7 @@
 <script>
 import InfoItem from '@/components/InfoItem.vue'
 import PictureCollage from '@/components/PictureCollage.vue'
-import EditAvailability from './EditAvailability.vue'
+import ClientReservationCreation from './ClientReservationCreation.vue'
 import GoogleMap from './GoogleMap.vue'
 export default {
     name: 'RentalEntityDetails',
@@ -73,7 +79,7 @@ export default {
     components: {
         InfoItem,
         PictureCollage,
-        EditAvailability,
+        ClientReservationCreation,
         GoogleMap
     },
     data() {
