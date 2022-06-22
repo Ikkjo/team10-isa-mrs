@@ -2,6 +2,7 @@ package team10.app.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.*;
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class RentalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="uuid-char")
     private UUID id;
     @Column(nullable = false)
     protected String title;

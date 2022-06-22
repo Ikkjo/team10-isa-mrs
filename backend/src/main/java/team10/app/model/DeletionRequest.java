@@ -1,6 +1,7 @@
 package team10.app.model;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class DeletionRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="uuid-char")
     private UUID id;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

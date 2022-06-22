@@ -3,6 +3,7 @@ package team10.app.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,5 +18,6 @@ import java.util.UUID;
 public class ClientReport {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="uuid-char")
     private UUID id;
 }

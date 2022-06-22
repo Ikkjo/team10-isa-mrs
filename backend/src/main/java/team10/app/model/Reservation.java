@@ -2,6 +2,7 @@ package team10.app.model;
 
 import lombok.*;
 import org.apache.tomcat.jni.Local;
+import org.hibernate.annotations.Type;
 import team10.app.dto.CreateReservationDto;
 import team10.app.util.DateTimeUtil;
 
@@ -23,6 +24,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="uuid-char")
     private UUID id;
     private long startDate;
     private long endDate;

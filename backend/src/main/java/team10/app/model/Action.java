@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import team10.app.dto.ActionDto;
 import team10.app.util.DateTimeUtil;
 
@@ -23,6 +24,7 @@ public class Action extends Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="uuid-char")
     private UUID id;
     private int maxPersons;
     private long expiresOn;
