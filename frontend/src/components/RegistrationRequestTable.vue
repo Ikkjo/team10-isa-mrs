@@ -20,7 +20,7 @@
                     <button class="btn decline" @click="openDeclineRequestModal(props.row.id)">Decline</button>
                 </span>
                 <span v-else-if="props.column.field == 'accept'">
-                    <button class="btn accept" @click="acceptRequest(props.row.id)">Accept</button>
+                    <button class="btn accept" @click="acceptRequest(props.row)">Accept</button>
                 </span>
                 <span v-else-if="props.column.field == 'role'">
                     <span v-if="props.row.role === 'SHIP_OWNER'" class='material-icons'>directions_boat</span>
