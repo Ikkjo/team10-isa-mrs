@@ -7,14 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
-import team10.app.dto.DailyEarningsDto;
-import team10.app.dto.EarningsReportDto;
-import team10.app.dto.IndividualEarningsDto;
-import team10.app.dto.ReservationDto;
-import team10.app.model.BusinessClient;
-import team10.app.model.RentalEntity;
-import team10.app.model.Reservation;
-import team10.app.model.ReservationStatus;
+import org.springframework.web.client.HttpClientErrorException;
+import team10.app.dto.*;
+import team10.app.model.*;
 import team10.app.repository.ReservationRepository;
 import team10.app.util.DateTimeUtil;
 import team10.app.util.Sorting;
@@ -29,7 +24,10 @@ import java.util.stream.Collectors;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final RentalEntityService rentalEntityService;
     private final BusinessClientService businessClientService;
+    private final ClientService clientService;
+    private final EmailService emailService;
     private final Validator validator;
 
 
@@ -38,6 +36,13 @@ public class ReservationService {
         Pageable paging = PageRequest.of(page, size, Sort.by(getSort(sort)));
         return reservationRepository.findByBusinessClient(businessClient, paging);
 
+    }
+
+    public Page<Reservation> getAllReservationsByClientPage(String email, ReservationStatus status,
+                                                            String sort, int page, int size) {
+        Client client = clientService.getByUsername(email);
+        Pageable paging = PageRequest.of(page, size, Sort.by(getSort(sort)));
+        return reservationRepository.findAllByClient(client, status, paging);
     }
 
     private List<Order> getSort(String sort) {
@@ -176,5 +181,42 @@ public class ReservationService {
 
     public List<Reservation> getAllInRange(long fromDate, long toDate) {
         return reservationRepository.getAllInRange(fromDate, toDate);
+    }
+
+    public String makeReservation(MakeReservationDto reservationDto) {
+        String clientUsername = reservationDto.getClientEmail();
+        if(!validator.validateReservationDto(reservationDto)) {
+            throw new RuntimeException();
+        }
+
+        Reservation newReservation = this.buildNewReservation(reservationDto);
+
+        reservationRepository.save(newReservation);
+
+        // email confirmation
+        String success = String.format(
+                "You have successfully made a reservation for %s from %s to %s! \nWe hope that you enjoy your stay!",
+                reservationDto.getRentalEntityTitle(),
+                DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getStartDate()),
+                DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getEndDate()));
+        try {
+            emailService.send(clientUsername, success, "Reservation successful!");
+        } catch (IllegalStateException e) {
+            System.out.println("Failed to send email");
+        }
+
+        return success;
+    }
+
+    private Reservation buildNewReservation(MakeReservationDto reservationDto) {
+        Reservation newReservation = new Reservation();
+        newReservation.setStartDate(reservationDto.getStartDate());
+        newReservation.setEndDate(reservationDto.getEndDate());
+        newReservation.setBusinessClient(rentalEntityService.getById(UUID.fromString(reservationDto.getRentalEntityId())).getOwner());
+        newReservation.setClient(clientService.getByUsername(reservationDto.getClientEmail()));
+        newReservation.setStatus(ReservationStatus.CREATED);
+        newReservation.setPrice(reservationDto.getPrice());
+        newReservation.setRentalEntity(rentalEntityService.getById(UUID.fromString(reservationDto.getRentalEntityId())));
+        return newReservation;
     }
 }

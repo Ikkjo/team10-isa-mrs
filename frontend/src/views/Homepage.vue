@@ -3,7 +3,7 @@
     <UniversalNavBar/>
     <SearchBar ref="searchBar" @searchPressed="search"/>
     <div class="listings">
-      <RentalEntityCard class="listing" v-for="(rentalEntity, index) in rentalEntities" :key="index" :rentalEntity="rentalEntity"/>
+      <HomepageRentalEntityCard class="listing" v-for="(rentalEntity, index) in rentalEntities" :key="index" :rentalEntity="rentalEntity"/>
 
     </div>
     <div class="page-div">
@@ -25,7 +25,7 @@
 
 <script>
 import SearchBar from "@/components/HomepageSearchBar.vue";
-import RentalEntityCard from "@/components/RentalEntityCard.vue";
+import HomepageRentalEntityCard from "@/components/HomepageRentalEntityCard.vue";
 import axios from 'axios';
 import UniversalNavBar from "@/components/UniversalNavBar.vue";
 import Paginate from 'vuejs-paginate'
@@ -33,7 +33,7 @@ export default {
     name: 'HomepageView',
     components: {
     SearchBar,
-    RentalEntityCard,
+    HomepageRentalEntityCard,
     UniversalNavBar,
     Paginate
 },
@@ -78,7 +78,7 @@ export default {
         axios
           .get(process.env.VUE_APP_BASE_URL+"/api/v1/rental-entity/search", {
             params: {
-              page: this.page-1,
+              page: this.getPage(),
               city: searchQuery.city,
               country: searchQuery.country,
               address: searchQuery.address,
@@ -97,6 +97,9 @@ export default {
               console.log(error)
           })
       },
+      getPage() {
+        return this.page < 0 ? 0 : this.page-1
+      },
       pageChange: function(page) {
         this.page = page
         this.search()
@@ -105,7 +108,7 @@ export default {
   }
 </script>
 
-<style>
+<style scoped>
 
 .homepage input, .homepage select, .homepage textarea {
     padding: 3px 7px;

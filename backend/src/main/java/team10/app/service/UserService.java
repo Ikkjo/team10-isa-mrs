@@ -54,6 +54,10 @@ public class UserService implements UserDetailsService {
                 throw new IllegalArgumentException();
     }
 
+    public User getByEmail(String email) {
+        return userRepository.getByEmail(email);
+    }
+
     public Client buildClient(ClientRegistrationRequestDto dto) throws IllegalArgumentException {
         return new Client(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(), dto.getPhoneNumber());
     }
