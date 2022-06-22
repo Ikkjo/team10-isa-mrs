@@ -52,7 +52,7 @@ export default {
         logout() {
             window.localStorage.removeItem("jwt")
             window.localStorage.removeItem("role")
-            this.$router.push({name: "homepage"})
+            this.$router.go({name: "homepage"})
             location.reload(); 
         }
     },

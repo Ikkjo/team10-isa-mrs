@@ -30,7 +30,7 @@ export default {
             businessClient: ["HOUSE_OWNER", "SHIP_OWNER", "FISHING_INSTRUCTOR"],
         }
     },
-    created() {
+    mounted() {
         this.role = localStorage.getItem('role')
         }
 }

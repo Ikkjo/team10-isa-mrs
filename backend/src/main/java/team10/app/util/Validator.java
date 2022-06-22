@@ -257,6 +257,13 @@ public class Validator {
                 && validateReservationMaxPersons(createReservationDto.getMaxPersons());
     }
 
+    public boolean validateReservationDto(ReservationDto createReservationDto) {
+//        return validateReservationDateRange()
+//                && validateRentalEntityPrice(createReservationDto.getPrice())
+//                && validateReservationMaxPersons();
+        return true;
+    }
+
     private boolean validateReservationMaxPersons(int maxPersons) {
         return inRange(RESERVATION_MIN_PERSONS, RESERVATION_MAX_PERSONS, maxPersons);
     }
