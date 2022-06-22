@@ -91,7 +91,6 @@
 			<groupId>javax.cache</groupId>
 			<artifactId>cache-api</artifactId>
 		</dependency>
-	</dependencies>
 
 		<dependency>
 			<groupId>junit</groupId>
