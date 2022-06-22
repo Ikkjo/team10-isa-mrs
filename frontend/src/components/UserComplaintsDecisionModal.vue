@@ -5,7 +5,7 @@
                 <div class="modal-wrapper" @click.self="$emit('close')">
                     <div class="modal-container">
                         <div class="modal-header">
-                            <h2>Decide Deletion</h2>
+                            <h2>Decide Client Complaint</h2>
                             <div @click="$emit('close')"><span class="material-icons close">close</span></div>
                         </div>
                         <div class="modal-body">
@@ -16,13 +16,13 @@
                                     @focus="inFocus('response')" 
                                     @blur="outFocus('response')" 
                                     :class="getClass('response')" 
-                                    :placeholder="getPlaceholder('response', 'Answer the deletion request.')"/>
+                                    :placeholder="getPlaceholder('response', 'Answer the complaint.')"/>
                                 <div class="alert-info" 
                                     v-if="!isFocused('response')
                                     && !($v.response.minLength 
                                     && $v.response.maxLength)"
                                     >
-                                    Enter a deletion response.
+                                    Enter a complaint response.
                                 </div>
                             </div>
                         </div>
@@ -50,8 +50,9 @@ import { required, minLength, maxLength } from 'vuelidate/lib/validators'
 import axios from 'axios'
 
 export default {
+    name: 'UserComplaintsDecisionModal',
     props: {
-        drUUID: String,
+        crUUID: String,
     },
     data() {
         return {
@@ -65,7 +66,7 @@ export default {
         acceptRequest() {
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-request/'+ this.drUUID +'/accept',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/client-reports/'+ this.crUUID +'/accept',
                 data: this.response,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
@@ -80,7 +81,7 @@ export default {
         declineRequest() {
             axios({
                 method: 'put',
-                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-request/'+ this.drUUID +'/decline',
+                url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/client-reports/'+ this.crUUID +'/decline',
                 data: this.response,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
