@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import team10.app.controller.RentalEntityController;
 import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.repository.*;
@@ -32,6 +33,7 @@ public class AdminService {
     private final ClientRepository clientRepository;
     private final RentalEntityRepository rentalEntityRepository;
     private final ClientReviewRepository clientReviewRepository;
+    private final ClientReportRepository clientReportRepository;
     // services
     private final EmailService emailService;
     private final UserService userService;
@@ -345,9 +347,53 @@ public class AdminService {
 //                    "Your review has been declined"
 //            );
 //            emailService.send(
-//                    clientReview.getRentalEntity().getOwner.getEmail(),
-//                    EmailBuilder.getDeclineClientReviewForBusinessClient(clientReview.getRentalEntity().getOwner.getEmail(), clientReview.getRentalEntity().getTitle()),
+//                    clientReview.getRentalEntity().getOwner().getEmail(),
+//                    EmailBuilder.getDeclineClientReviewForBusinessClient(clientReview.getRentalEntity().getOwner().getEmail(), clientReview.getRentalEntity().getTitle()),
 //                    "A review for your listing has been declined"
+//            );
+//        } catch (Exception e) {
+//            System.err.println("Email service not available");
+//        }
+    }
+
+    public void acceptClientReport(UUID id, String response) {
+        ClientReport clientReport = clientReportRepository.findById(id)
+                .orElseThrow( () -> new EntityNotFoundException("Client review not found"));
+        // TODO: Waiting for Ilija
+//        clientReport.accept();
+//        clientReport.setReviewed();
+//        try {
+//            emailService.send(
+//                    clientReport.getClient().getEmail(),
+//                    EmailBuilder.getAcceptClientReportForClient(clientReport.getClient().getFirstName(), clientReport.getRentalEntity().getTitle(), response),
+//                    "Your report has been accepted"
+//            );
+//            emailService.send(
+//                    clientReport.getBusinessClient().getEmail(),
+//                    EmailBuilder.getAcceptClientReportForBusinessClient(clientReport.getBusinessClient().getFirstName(), clientReport.getRentalEntity().getTitle(), response),
+//                    "We have accepted a report against you"
+//            );
+//        } catch (Exception e) {
+//            System.err.println("Email service not available");
+//        }
+    }
+
+    public void declineClientReport(UUID id, String response) {
+        ClientReport clientReport = clientReportRepository.findById(id)
+                .orElseThrow( () -> new EntityNotFoundException("Client review not found"));
+        // TODO: Waiting for Ilija
+//        clientReport.decline();
+//        clientReport.setReviewed();
+//        try {
+//            emailService.send(
+//                    clientReport.getClient().getEmail(),
+//                    EmailBuilder.getDeclineClientReportForClient(clientReport.getClient().getFirstName(), clientReport.getRentalEntity().getTitle(), response),
+//                    "Your review has been declined"
+//            );
+//            emailService.send(
+//                    clientReport.getRentalEntity().getOwner.getEmail(),
+//                    EmailBuilder.getDeclineClientReportForBusinessClient(clientReport.getBusinessClient().getFirstName(), clientReport.getRentalEntity().getTitle(), response),
+//                    "You have been reported. We have declined the report"
 //            );
 //        } catch (Exception e) {
 //            System.err.println("Email service not available");

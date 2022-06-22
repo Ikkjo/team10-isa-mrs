@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import team10.app.dto.*;
 import team10.app.model.*;
 import team10.app.security.auth.AuthUtil;
-import team10.app.service.AdminService;
-import team10.app.service.ClientReviewService;
-import team10.app.service.RentalEntityService;
-import team10.app.service.UserService;
+import team10.app.service.*;
 import team10.app.util.exceptions.EmailTakenException;
 
 import javax.persistence.EntityNotFoundException;
@@ -35,6 +32,7 @@ public class AdminController {
     private final RentalEntityService rentalEntityService;
     private final ClientReviewService clientReviewService;
     private final AuthUtil authUtil;
+    private final ClientReportService clientReportService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('MAIN_ADMIN', 'ADMIN', 'UNVERIFIED_ADMIN')")
@@ -327,7 +325,7 @@ public class AdminController {
     @Transactional
     @PutMapping(path = "/reviews/{id}/decline")
     @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
-    public ResponseEntity<HttpStatus> declineClientReview(@PathVariable UUID id, @RequestBody String response) {
+    public ResponseEntity<HttpStatus> declineClientReview(@PathVariable UUID id) {
         try {
             adminService.declineClientReview(id);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -339,4 +337,50 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(path = "/client-reports")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<List<ClientReportDto>> getClientReports() {
+        try {
+            List<ClientReport> clientReports = clientReportService.getClientReports();
+            return ResponseEntity.ok(clientReportService.getClientReportDtoList(clientReports));
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Transactional
+    @PutMapping(path = "/client-reports/{id}/accept")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<HttpStatus> acceptClientReport(@PathVariable UUID id, @RequestBody String response) {
+        try {
+            adminService.acceptClientReport(id, response);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Transactional
+    @PutMapping(path = "/client-reports/{id}/decline")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAIN_ADMIN')")
+    public ResponseEntity<HttpStatus> declineClientReport(@PathVariable UUID id, @RequestBody String response) {
+        try {
+            adminService.declineClientReport(id, response);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
