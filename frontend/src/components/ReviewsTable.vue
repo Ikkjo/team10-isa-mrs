@@ -2,17 +2,15 @@
     <div class="wrapper">
         <h1>All Client Reviews</h1>
         <VueGoodTable
-            mode="remote"
-            :total-rows="totalRecords"
             :rows="reviews"
             :columns="columns"
             >
              <template slot="table-row" slot-scope="props">
                 <span v-if="props.column.field == 'accept'">
-                    <button class="btn" @click="acceptReview(props.rows.id)">Accept</button>
+                    <button class="btn accept" @click="acceptReview(props.rows.id)">Accept</button>
                 </span>
                 <span v-else-if="props.column.field == 'decline'">
-                    <button class="btn" @click="declineReview(props.rows.id)">Decline</button>
+                    <button class="btn decline" @click="declineReview(props.rows.id)">Decline</button>
                 </span>
                 <span v-else>
                     {{props.formattedRow[props.column.field]}}
@@ -56,11 +54,18 @@ export default {
                     columnIndex: 3,
                 },
                 {
-                    label: 'Decide',
-                    field: 'decide',
+                    label: 'Accept',
+                    field: 'accept',
                     width: '120px',
                     tdClass: 'td-button',
                     columnIndex: 4,
+                },
+                {
+                    label: 'Decline',
+                    field: 'decline',
+                    width: '120px',
+                    tdClass: 'td-button',
+                    columnIndex: 5,
                 }
             ],
             reviews: null,
@@ -131,5 +136,21 @@ export default {
 <style>
 .td-button {
     text-align: center;
+}
+
+.btn.accept {
+    background-color: green;
+}
+
+.btn.accept:hover {
+    background-color: darkgreen;
+}
+
+.btn.decline {
+    background-color: red;
+}
+
+.btn.decline:hover {
+    background-color: darkred;
 }
 </style>
