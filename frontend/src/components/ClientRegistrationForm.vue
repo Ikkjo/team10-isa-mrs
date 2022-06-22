@@ -94,8 +94,7 @@
         </div>
         <div class="btn-div">
             <button class="btn"
-                :disabled="$v.$invalid || (!phone || !phone.isValid) 
-                    || !dateOfBirth.isValid || role==='' || country===''">
+                :disabled="$v.$invalid || (!phone || !phone.isValid)">
                 Create Account
             </button>
             <div class="already-registered">Already have an account? <router-link to="/login">Log in</router-link></div>
@@ -112,6 +111,7 @@ export default {
     data() {
         return {
             firstName: '',
+            phoneTmp: '',
             lastName: '',
             email: '',
             phone: null,
@@ -161,10 +161,8 @@ export default {
                     lastName: this.lastName,
                     email: this.email,
                     password: this.password,
-                    role: 'CLIENT',
-                    phone: this.phone.formattedNumber,
+                    phoneNumber: this.phone.formattedNumber,
                 }
-            console.log(clientRegistrationRequestDTO)
             axios
                 .post(process.env.VUE_APP_BASE_URL+"/api/v1/registration/client", clientRegistrationRequestDTO)
                 .then(function(response) {
@@ -193,12 +191,15 @@ export default {
         getPlaceholder(field, defaultPlaceholder='') {
             let placeholder = !this.isFocused(field) && this.$v[field].$invalid ? 'Required' : defaultPlaceholder;
             return placeholder;
+        },
+        updatePhone(event) {
+            this.phone = event
         }
     },
 }
 </script>
 
-<style scoped>
+<style>
 
 .form-control {
     margin: 15px 10px 15px 0px;
