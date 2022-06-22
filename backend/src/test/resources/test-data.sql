@@ -186,7 +186,7 @@ VALUES ('1a5c1107-eac5-4dbb-b679-7d7830a65ab8');
 -- mail/username: manja@mail.com
 -- password: fishinginstructor
 INSERT INTO users(id, deleted, email, enabled, first_name, last_name, password, phone_number, role)
-VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', false, 'manja@mail.com', true, 'Marija', 'Ivković',  '$2a$12$YfmPc3cMOG2.Fdndi1hwM.OOXEi8hkQG3KYvx7MBQlxvF9liHi16q', '+2815150020', 'FISHING_INSTRUCTOR');
+VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', false, 'manja@mail.com', false, 'Marija', 'Ivković',  '$2a$12$YfmPc3cMOG2.Fdndi1hwM.OOXEi8hkQG3KYvx7MBQlxvF9liHi16q', '+2815150020', 'FISHING_INSTRUCTOR');
 
 INSERT INTO address(id, address, city, country)
 VALUES ('84acb707-1b0f-4dd2-8fec-2b5333cc88de', 'Puškinova 1', 'Novi Sad', 'Serbia');
@@ -196,6 +196,9 @@ VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25', '12.06.1956.', '84acb707-1b0f-4d
 
 INSERT into ship_owner(id)
 VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c25');
+
+INSERT INTO registration_request(id, business_client_id, description, reviewed)
+VALUES ('611619a9-394f-42b3-aad7-7fb10bf03c95', '611619a9-394f-42b3-aad7-7fb10bf03c25', 'I want to do work job yes.', false);
 
 -- ****** USER TEST DATA ****** END
 
