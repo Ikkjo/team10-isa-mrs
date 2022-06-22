@@ -149,13 +149,15 @@ const routes = [
                 meta: {
                     admin: true,
                 },
+            },
+            {
+                path: 'user-complaints',
+                name: 'user-complaints',
+                component: () => import('../components/UserComplaintsTable.vue'),
+                meta: {
+                    admin: true,
+                },
             }
-            // TODO: Create this component after Ilija implements user complaints
-            // {
-            //     path: 'user-complaints',
-            //     name: 'user-complaints',
-            //     component: () => import('../components/UserComplaintsTable.vue')
-            // }
         ]
     },
     {

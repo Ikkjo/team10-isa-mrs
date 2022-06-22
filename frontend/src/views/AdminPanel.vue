@@ -9,6 +9,36 @@
                 title="Registration Requests"
                 />
             <AdminMenuItem
+                link="client-reviews"
+                iconClass="material-icons"
+                icon="reviews"
+                title="Client Reviews"
+                />
+            <AdminMenuItem
+                link="user-complaints"
+                iconClass="material-icons"
+                icon="flag"
+                title="User Complaints"
+                />
+            <AdminMenuItem
+                link="business-client-reports"
+                iconClass="material-icons"
+                icon="flag"
+                title="Business Client Reports"
+                />
+            <AdminMenuItem
+                link="deletion-requests"
+                iconClass="material-icons"
+                icon="person_remove"
+                title="Deletion Requests"
+                />
+            <AdminMenuItem
+                link="loyalty-programs"
+                iconClass="material-icons"
+                icon="card_membership"
+                title="Loyalty Program"
+                />
+            <AdminMenuItem
                 link="users"
                 iconClass="material-icons"
                 icon="group"
@@ -21,35 +51,10 @@
                 title="All Rental Entities"
                 />
             <AdminMenuItem
-                link="client-reviews"
+                link="earnings-report"
                 iconClass="material-icons"
-                icon="reviews"
-                title="Client Reviews"
-                />
-            <!-- TODO: Create this component -->
-            <!-- <AdminMenuItem
-                link="user-complaints"
-                iconClass="material-icons"
-                icon="flag"
-                title="User Complaints"
-                /> -->
-            <AdminMenuItem
-                link="business-client-reports"
-                iconClass="material-icons"
-                icon="flag"
-                title="Business Client Reports"
-                />
-            <AdminMenuItem
-                link="loyalty-programs"
-                iconClass="material-icons"
-                icon="card_membership"
-                title="Loyalty Program"
-                />
-            <AdminMenuItem
-                link="deletion-requests"
-                iconClass="material-icons"
-                icon="person_remove"
-                title="Deletion Requests"
+                icon="bar_chart"
+                title="Earnings Report"
                 />
             <AdminMenuItem
                 v-if="isMainAdmin"
@@ -57,12 +62,6 @@
                 iconClass="material-icons"
                 icon="person_add"
                 title="Create Admin"
-                />
-            <AdminMenuItem
-                link="earnings-report"
-                iconClass="material-icons"
-                icon="bar_chart"
-                title="Earnings Report"
                 />
             <div class="bottom">
                 <AdminMenuItem
@@ -108,12 +107,9 @@ export default {
         }
     },
     created () {
-        if (['ADMIN', 'MAIN_ADMIN'].includes(window.localStorage.getItem('role'))) {
-            this.role = window.localStorage.getItem('role');
+        this.role = window.localStorage.getItem('role');
+        if (this.$route.name === 'admin-panel')
             this.$router.push({name: 'registration-requests'});
-        }
-        else
-            this.$router.push({name: 'homepage'});
     },
 }
 </script>
