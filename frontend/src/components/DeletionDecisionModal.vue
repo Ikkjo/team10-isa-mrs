@@ -66,7 +66,7 @@ export default {
             axios({
                 method: 'put',
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-request/'+ this.drUUID +'/accept',
-                data: {response: this.response},
+                data: this.response,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
@@ -81,7 +81,7 @@ export default {
             axios({
                 method: 'put',
                 url: process.env.VUE_APP_BASE_URL+'/api/v1/admin/deletion-request/'+ this.drUUID +'/decline',
-                data: {response: this.response},
+                data: this.response,
                 headers: {
                     Authorization: 'Bearer ' + window.localStorage.getItem("jwt"),
                 },
