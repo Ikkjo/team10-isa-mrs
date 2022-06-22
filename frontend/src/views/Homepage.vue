@@ -78,7 +78,7 @@ export default {
         axios
           .get(process.env.VUE_APP_BASE_URL+"/api/v1/rental-entity/search", {
             params: {
-              page: this.page-1,
+              page: this.getPage(),
               city: searchQuery.city,
               country: searchQuery.country,
               address: searchQuery.address,
@@ -96,6 +96,9 @@ export default {
           .catch(function(error) {
               console.log(error)
           })
+      },
+      getPage() {
+        return this.page < 0 ? 0 : this.page-1
       },
       pageChange: function(page) {
         this.page = page

@@ -38,7 +38,7 @@ public class ClientRegistrationService {
 
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userService.saveClient(user);
-
+        user.setPhoneNumber(request.getPhoneNumber());
         user = userService.getClientByEmail(user.getEmail()).orElseThrow();
 
         String token = UUID.randomUUID().toString();
