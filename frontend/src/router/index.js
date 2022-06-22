@@ -141,6 +141,14 @@ const routes = [
                 meta: {
                     admin: true,
                 },
+            },
+            {
+                path: 'client-reviews',
+                name: 'client-reviews',
+                component: () => import('../components/ReviewsTable.vue'),
+                meta: {
+                    admin: true,
+                },
             }
             // TODO: Create this component after Ilija implements user complaints
             // {

@@ -20,6 +20,12 @@
                 icon="real_estate_agent"
                 title="All Rental Entities"
                 />
+            <AdminMenuItem
+                link="client-reviews"
+                iconClass="material-icons"
+                icon="reviews"
+                title="Client Reviews"
+                />
             <!-- TODO: Create this component -->
             <!-- <AdminMenuItem
                 link="user-complaints"
