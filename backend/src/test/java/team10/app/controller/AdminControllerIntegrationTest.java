@@ -33,70 +33,56 @@ public class AdminControllerIntegrationTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    private String mainAdminJwt;
-    private String adminJwt;
-    private String unverifiedAdminJwt;
-
     @Before
     public void setup() throws Exception {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .build();
-        // get main admin jwt
-        {
-            LoginDto dto = new LoginDto();
-            dto.setUsername("admin@rentr.com");
-            dto.setPassword("admin");
-            String json = TestUtil.json(dto);
-            mainAdminJwt = mockMvc.perform(post("/api/v1/login")
-                    .contentType(contentType).content(json))
-                    .andReturn().getResponse().getContentAsString();
-        }
-        // get admin jwt
-        {
-            LoginDto dto = new LoginDto();
-            dto.setUsername("slavko@rentr.com");
-            dto.setPassword("admin");
-            String json = TestUtil.json(dto);
-            adminJwt = mockMvc.perform(post("/api/v1/login")
-                    .contentType(contentType).content(json))
-                    .andReturn().getResponse().getContentAsString();
-        }
-        // get unverified admin jwt
-        {
-            LoginDto dto = new LoginDto();
-            dto.setUsername("damir@rentr.com");
-            dto.setPassword("admin");
-            String json = TestUtil.json(dto);
-            unverifiedAdminJwt = mockMvc.perform(post("/api/v1/login")
-                    .contentType(contentType).content(json))
-                    .andReturn().getResponse().getContentAsString();
-        }
     }
 
     @Test
     @Transactional
     public void testCreateAdmin() throws Exception {
+        LoginDto loginDto = new LoginDto();
+        loginDto.setUsername("admin@rentr.com");
+        loginDto.setPassword("admin");
+        String loginJson = TestUtil.json(loginDto);
+        String mainAdminJwt = mockMvc.perform(post("/api/v1/login")
+                .contentType(contentType).content(loginJson))
+                .andReturn().getResponse().getContentAsString();
+
         AdminRegistrationDto dto = new AdminRegistrationDto();
         dto.setFirstName("Test"); dto.setLastName("Test");
         dto.setEmail("admin.test@test.com");
         dto.setPassword("admin");
-
         String json = TestUtil.json(dto);
+
         mockMvc.perform(
                 post(URL_PREFIX+"/create-admin")
                         .contentType(contentType).content(json)
                         .header("Authorization", "Bearer "+mainAdminJwt)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isOk())
+        .andExpect(jsonPath("$.firstName").value("Test"))
+        .andExpect(jsonPath("$.lastName").value("Test"))
+        .andExpect(jsonPath("$.email").value("admin.test@test.com"))
+        .andExpect(jsonPath("$.role").value("UNVERIFIED_ADMIN"))
+        .andExpect(jsonPath("$.phoneNumber").value(""));
     }
 
     @Test
     @Transactional
     public void testVerifyAdmin() throws Exception {
-        String json = TestUtil.json("newPassword");
+        LoginDto loginDto = new LoginDto();
+        loginDto.setUsername("damir@rentr.com");
+        loginDto.setPassword("admin");
+        String loginJson = TestUtil.json(loginDto);
+        String unverifiedAdminJwt = mockMvc.perform(post("/api/v1/login")
+                .contentType(contentType).content(loginJson))
+                .andReturn().getResponse().getContentAsString();
+
         mockMvc.perform(
                 put(URL_PREFIX+"/verify-admin")
-                        .contentType(contentType).content(json)
+                        .contentType(contentType).content("newPassword")
                         .header("Authorization", "Bearer "+unverifiedAdminJwt)
         ).andExpect(status().isOk())
         .andExpect(jsonPath("$.firstName").value("Damir"))
@@ -104,5 +90,23 @@ public class AdminControllerIntegrationTest {
         .andExpect(jsonPath("$.email").value("damir@rentr.com"))
         .andExpect(jsonPath("$.role").value("ADMIN"))
         .andExpect(jsonPath("$.phoneNumber").value(""));
+    }
+
+    @Test
+    @Transactional
+    public void testRegistrationRequestAccept() throws Exception {
+        LoginDto dto = new LoginDto();
+        dto.setUsername("slavko@rentr.com");
+        dto.setPassword("admin");
+        String json = TestUtil.json(dto);
+        String adminJwt = mockMvc.perform(post("/api/v1/login")
+                .contentType(contentType).content(json))
+                .andReturn().getResponse().getContentAsString();
+
+        String registrationRequest = "611619a9-394f-42b3-aad7-7fb10bf03c95";
+        mockMvc.perform(
+                put(URL_PREFIX+"/registration-request/"+registrationRequest+"/accept")
+                        .header("Authorization", "Bearer "+adminJwt)
+        ).andExpect(status().isOk());
     }
 }
