@@ -1,21 +1,20 @@
 package team10.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team10.app.model.UserRole;
 
 @Getter
 @Setter
-public class RegistrationRequestDto {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
-    private UserRole role;
-    private String phone;
-    private String dateOfBirth;
-    private String address;
-    private String city;
-    private String country;
-    private String registrationReason;
+@NoArgsConstructor
+public abstract class RegistrationRequestDto {
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String password;
+    protected UserRole role;
+    protected String phoneNumber;
+
 }

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -22,7 +23,7 @@ public class PictureService {
 
     private final PictureRepository pictureRepository;
 
-    public Set<Picture> buildPictureSet(List<String> pictures) {
+    public static Set<Picture> buildPictureSet(List<String> pictures) {
         Set<Picture> pictureSet = new HashSet<>();
         for (String file : pictures) {
             String[] tokens = file.split(",");
@@ -70,5 +71,11 @@ public class PictureService {
             ioe.printStackTrace();
         }
         return outputStream.toByteArray();
+    }
+
+    public static Set<Picture> decompressPictures(Set<Picture> pictures) {
+        return pictures.stream().map(
+                picture -> new Picture(picture.getType(), decompressBytes(picture.getBytes()))
+        ).collect(Collectors.toSet());
     }
 }

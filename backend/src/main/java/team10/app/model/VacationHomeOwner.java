@@ -1,29 +1,40 @@
 package team10.app.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team10.app.model.VacationHome;
+import lombok.Setter;
 
 import javax.persistence.*;
-
+import java.util.HashSet;
 import java.util.Set;
 
 import static team10.app.model.UserRole.HOUSE_OWNER;
 
 @Entity
 @NoArgsConstructor
-public class VacationHomeOwner extends BusinessPartner {
+@AllArgsConstructor
+@Getter
+@Setter
+public class VacationHomeOwner extends BusinessClient {
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "vacation_home_owner_homes", joinColumns = @JoinColumn(name = "vacation_home_owner_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "vacation_home_id", referencedColumnName = "id"))
-    private Set<VacationHome> vacationHomes;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<VacationHome> vacationHomes = new HashSet<>();
 
-    public VacationHomeOwner(String firstName, String lastName, String email, String password) {
-        super(firstName, lastName, email, password, HOUSE_OWNER);
+    public VacationHomeOwner(String firstName, String lastName, String email, String password, UserRole appUserRole, String phoneNumber, Address address, String dateOfBirth, Set<VacationHome> vacationHomes) {
+        super(firstName, lastName, email, password, appUserRole, phoneNumber, address, dateOfBirth);
+        this.vacationHomes = vacationHomes;
     }
 
-    public VacationHomeOwner(User user) {
-        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), HOUSE_OWNER);
+    public VacationHomeOwner(String firstName, String lastName, String email, String password, String phoneNumber, Address address, String dateOfBirth) {
+        super(firstName, lastName, email, password, HOUSE_OWNER, phoneNumber, address, dateOfBirth);
+    }
+
+    public VacationHomeOwner(BusinessClient user) {
+        super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(), HOUSE_OWNER, user.getPhoneNumber(), user.getAddress(), user.getDateOfBirth());
+    }
+
+    public void addVacationHome(VacationHome vacationHome) {
+        this.vacationHomes.add(vacationHome);
     }
 }

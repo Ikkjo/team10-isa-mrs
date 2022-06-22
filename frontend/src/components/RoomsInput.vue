@@ -1,6 +1,6 @@
 <template>
     <div id="rooms-input">
-        <div class="form-control">
+        <div v-if="showRoom" class="form-control">
             <label for="rooms">Rooms</label>
             <div class="container">
                 <button @click="decreaseRooms()" :disabled="rooms <= minRooms" class="btn-circle"><span class="material-icons-round">remove</span></button>
@@ -9,7 +9,7 @@
             </div>
             <div v-show="!isFocused('rooms') && $v.rooms.$invalid" class="alert-label">Value must be between {{minRooms}} and {{maxRooms}}</div> 
         </div>
-        <div class="form-control">
+        <div v-if="showBed" class="form-control">
             <label for="beds">Beds</label>
             <div class="container">
                 <button @click="decreaseBeds()" :disabled="beds <= minBeds" class="btn-circle"><span class="material-icons-round">remove</span></button>
@@ -25,6 +25,16 @@
 import {required, between} from 'vuelidate/lib/validators'
 export default {
     name: 'RoomsInput',
+    props: {
+        showRoom: {
+            Boolean,
+            default: true
+        },
+        showBed: {
+            Boolean,
+            default: true,
+        },
+    },
     data() {
         return {
             rooms: 1,
@@ -140,7 +150,7 @@ export default {
 }
 
 .alert-label {
-    color: gray;
+    color: red;
     margin-top: 5px;
 }
 

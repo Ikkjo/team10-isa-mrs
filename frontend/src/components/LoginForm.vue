@@ -1,5 +1,6 @@
 <template>
     <form id="login-form" @submit.prevent="logInPressed">
+           
         <div class="form-control">
             <label for="email">Email</label>
             <input type="text" 
@@ -7,12 +8,8 @@
                 name="email" 
                 @focus="inFocus('email')" 
                 @blur="outFocus('email')" 
-                :class="getClass('email')" 
+                class="email" 
                 :placeholder="getPlaceholder('email', 'example@rentr.com')">
-            <div class="alert-info" 
-                v-if="!this.infocus['email'] && !$v.email.email">
-                Incorrect email format.
-            </div>
         </div>
         <div class="form-control">
             <label for="password">Password</label>
@@ -21,18 +18,18 @@
                 name="password"  
                 @focus="inFocus('password')"
                 @blur="outFocus('password')" 
-                :class="getClass('password')"
+                class="password"
                 :placeholder="getPlaceholder('password', 'Password')">
-            <div class="alert-info" 
-                v-if="!this.infocus['password'] && !( $v.password.length > 0)">
+            <div class="alert-info" v-if="credentialsInvalid">
+                Invalid email or password.
             </div>
         </div>
         <div class="btn-div">
             <button class="btn"
-                :disabled="true">
+                :disabled="$v.invalid">
                 Log In
             </button>
-            <div class="not-registered">Don't have an account yet? <router-link to="/client/register">Register an account</router-link></div>
+            <div class="not-registered">Don't have an account yet? <router-link :to="{name: 'client-registration'}">Register an account</router-link></div>
         </div>
     </form>
 </template>
@@ -49,7 +46,8 @@ export default {
             infocus: {
                 email: true,
                 password: true,
-            }
+            },
+            credentialsInvalid: false
         }
     },
     validations:{
@@ -63,21 +61,32 @@ export default {
         },
     },
     methods: {
-        signUpPressed(){
-            let loginDTO = {
-                    email: this.email,
+        logInPressed(){
+            let loginDto = {
+                    username: this.email,
                     password: this.password
                 }
-            console.log(loginDTO)
             axios
-                .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDTO)
-                .then(function(response) {
-                    console.log(response)
-                    // notify that awaiting accept
+                .post(process.env.VUE_APP_BASE_URL+"/api/v1/login", loginDto)
+                .then((response) => {
+                    window.localStorage.setItem("jwt", response.data);
+                    let jwtData = response.data.split('.')[1];
+                    let decodedJwtJsonData = window.atob(jwtData);
+                    let decodedJwtData = JSON.parse(decodedJwtJsonData);
+                    window.localStorage.setItem("role", decodedJwtData.auth);
+                    if (window.localStorage.role === "UNVERIFIED_ADMIN"){
+                        this.$router.push({name: 'admin-verification'})
+                    }
+                    else if (['MAIN_ADMIN', 'ADMIN'].includes(window.localStorage.role)){
+                        this.$router.push({name: 'admin-panel'})
+                    }
+                    else {
+                        this.$router.push({name: 'homepage'})
+                    }
                 })
-                .catch(function(error) {
+                .catch((error) => {
                     console.log(error);
-                    // is email or password invalid
+                    this.credentialsInvalid = true
                 })
         },
         updateYear(event){
@@ -93,10 +102,6 @@ export default {
         },
         outFocus(field) {
             this.infocus[field] = false
-        },
-        getClass(field) {
-            let cls = !this.isFocused(field) && this.$v[field].$invalid ? 'alert' : '';
-            return cls;
         },
         getPlaceholder(field, defaultPlaceholder='') {
             let placeholder = !this.isFocused(field) && this.$v[field].$invalid ? 'Required' : defaultPlaceholder;
@@ -116,22 +121,7 @@ export default {
     margin: 15px 0px;
 }
 
-.wrapper {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    
-}
-
-.address-wrapper {
-    grid-template-columns: 50% 30% 20%;
-}
-
-textarea {
-    height: auto;
-    width: 100%;
-}
-
-.form-control input, select {
+.form-control input {
     width: 100%;
     height: 48px;
 }
@@ -141,15 +131,6 @@ textarea {
 }
 
 .form-control {
-    display: block;
-}
-
-#datepicker {
-    display: grid;
-    grid-template-columns: 33.3% 33.3% 33.3%;
-}
-
-#registration-reason {
     display: block;
 }
 
@@ -179,10 +160,8 @@ textarea {
 }
 
 .alert-info {
-    position: absolute;
-    transition: 0.05s;
+    margin-top: 7px;
     color: red !important;
-    font-size: 0.9rem;
 }
 
 .not-registered {

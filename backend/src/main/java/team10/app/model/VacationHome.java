@@ -4,11 +4,12 @@ import lombok.*;
 import team10.app.dto.VacationHomeDto;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -28,7 +29,8 @@ public class VacationHome extends RentalEntity {
                         int price,
                         Set<Picture> pictures,
                         int rooms,
-                        int beds) {
+                        int beds,
+                        Set<Availability> availability) {
         this.title = title;
         this.address = address;
         this.description = description;
@@ -38,5 +40,10 @@ public class VacationHome extends RentalEntity {
         this.pictures = pictures;
         this.rooms = rooms;
         this.beds = beds;
+        this.availability = availability;
+        this.reservations = new HashSet<>();
+        this.actions = new HashSet<>();
+        // TODO: Refactor freeCancellation frontend and backend for VacationHome
+        this.freeCancellation = true;
     }
 }

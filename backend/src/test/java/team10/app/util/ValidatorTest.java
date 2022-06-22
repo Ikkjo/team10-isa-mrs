@@ -1,21 +1,18 @@
 package team10.app.util;
 
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import team10.app.dto.AddressDto;
 import team10.app.dto.VacationHomeDto;
-import team10.app.model.Address;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,40 +24,41 @@ class ValidatorTest {
 
     @BeforeEach
     void setUp() {
-        validator = new Validator(addressValidator);
+        validator = new Validator(addressValidator, null);
     }
 
     @Test
     void shouldValidateVacationHomeDTOAsTrue() {
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                new Address("Ulica b.b.", "Grad", "Drzava"),
+                new AddressDto("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
                 12,
-                Arrays.asList("12", "2", "1", "2", "3", "3"),
+                Arrays.asList("a,c2Rmc2Rmc2RmIHNkZiBzZGY=", "b,c2Rmc2Rmc2RmIHNkZiBzZGY=", "b,c2Rmc2Rmc2RmIHNkZiBzZGY=", "b,c2Rmc2Rmc2RmIHNkZiBzZGY=", "b,c2Rmc2Rmc2RmIHNkZiBzZGY="),
                 10,
-                20
+                20,
+                new ArrayList<>()
         );
-        when(addressValidator.test(Mockito.any(Address.class))).thenReturn(true);
-        assertTrue(validator.validateVacationHomeDTO(vacationHomeDTO));
+        when(addressValidator.testVacationHome(Mockito.any(AddressDto.class))).thenReturn(true);
+        assertThat(validator.validateVacationHomeDTO(vacationHomeDTO)).isTrue();
     }
 
     @Test
     void shouldValidateVacationHomeDTOAsFalse() {
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan",
-                new Address("Ulica b.b.", "Grad", "Drzava"),
+                new AddressDto("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponas",
                 "Svasta nesto nudimo",
                 12,
                 Arrays.asList("12", "2"),
                 1,
-                20
+                20,
+                new ArrayList<>()
         );
-        when(addressValidator.test(Mockito.any(Address.class))).thenReturn(false);
-        assertFalse(validator.validateVacationHomeDTO(vacationHomeDTO));
+        assertThat(validator.validateVacationHomeDTO(vacationHomeDTO)).isFalse();
     }
 }

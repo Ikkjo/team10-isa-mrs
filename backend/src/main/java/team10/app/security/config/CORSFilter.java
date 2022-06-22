@@ -24,7 +24,8 @@ public class CORSFilter implements Filter {
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
-        } else {
+        }
+        else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
     }

@@ -7,16 +7,19 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import team10.app.dto.AddressDto;
 import team10.app.dto.VacationHomeDto;
 import team10.app.model.Address;
 import team10.app.model.VacationHome;
+import team10.app.model.VacationHomeOwner;
 import team10.app.repository.AddressRepository;
-import team10.app.repository.PictureRepository;
 import team10.app.repository.VacationHomeOwnerRepository;
 import team10.app.repository.VacationHomeRepository;
 import team10.app.util.Validator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -33,10 +36,6 @@ class VacationHomeOwnerServiceTest {
     @Mock
     private AddressRepository addressRepository;
     @Mock
-    private PictureService pictureService;
-    @Mock
-    private PictureRepository pictureRepository;
-    @Mock
     private Validator validator;
     private VacationHomeOwnerService vacationHomeOwnerService;
 
@@ -45,9 +44,6 @@ class VacationHomeOwnerServiceTest {
         vacationHomeOwnerService = new VacationHomeOwnerService(
                 vacationHomeOwnerRepository,
                 vacationHomeRepository,
-                addressRepository,
-                pictureService,
-                pictureRepository,
                 validator);
     }
 
@@ -56,46 +52,50 @@ class VacationHomeOwnerServiceTest {
         // given
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                new Address("Ulica b.b.", "Grad", "Drzava"),
+                new AddressDto("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
                 12,
-                Arrays.asList("12", "2"),
+                Arrays.asList("a,c2Rmc2Rmc2RmIHNkZiBzZGY=", "b,c2Rmc2Rmc2RmIHNkZiBzZGY="),
                 10,
-                20
+                20,
+                new ArrayList<>()
         );
+        VacationHomeOwner vacationHomeOwner = new VacationHomeOwner();
         VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
+        when(vacationHomeOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(vacationHomeOwner));
         // when
-        vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
+        vacationHomeOwnerService.addVacationHome(vacationHomeDTO, "test@gmail.com");
         // then
         ArgumentCaptor<VacationHome> argumentCaptor = ArgumentCaptor.forClass(VacationHome.class);
         verify(vacationHomeRepository).save(argumentCaptor.capture());
         VacationHome capturedVacationHome = argumentCaptor.getValue();
-        assertThat(capturedVacationHome).isEqualTo(vacationHome);
+        assertThat(capturedVacationHome.getTitle()).isEqualTo(vacationHome.getTitle());
     }
 
     @Test
     void shouldNotAddVacationHomeAndShouldThrowRuntimeException() {
         // given
-        Address address = new Address("Ulica b.b.", "Grad", "Drzava");
+        AddressDto addressDto = new AddressDto("Ulica b.b.", "Grad", "Drzava");
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                address,
+                addressDto,
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
                 12,
                 Arrays.asList("12", "2"),
                 10,
-                20
+                20,
+                new ArrayList<>()
         );
         //given
         given(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).willReturn(false);
         // when
         //then
-        assertThatThrownBy(() -> vacationHomeOwnerService.addVacationHome(vacationHomeDTO)).isInstanceOf(RuntimeException.class);
+        assertThatThrownBy(() -> vacationHomeOwnerService.addVacationHome(vacationHomeDTO, "test@gmail.com")).isInstanceOf(RuntimeException.class);
 
         verify(vacationHomeRepository, never()).save(any());
     }
@@ -104,22 +104,27 @@ class VacationHomeOwnerServiceTest {
     void shouldNotAddVacationHome() {
         // given
         Address address = new Address("Ulica b.b.", "Grad", "Drzava");
+        AddressDto addressDto = new AddressDto("Ulica b.b.", "Grad", "Drzava");
+
         addressRepository.save(address);
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                address,
+                addressDto,
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
                 12,
-                Arrays.asList("12", "2"),
+                Arrays.asList("a,c2Rmc2Rmc2RmIHNkZiBzZGY=", "b,c2Rmc2Rmc2RmIHNkZiBzZGY="),
                 10,
-                20
+                20,
+                new ArrayList<>()
         );
         VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
         when(validator.validateVacationHomeDTO(Mockito.any(VacationHomeDto.class))).thenReturn(true);
+        VacationHomeOwner vacationHomeOwner = new VacationHomeOwner();
+        when(vacationHomeOwnerRepository.findByEmail(Mockito.anyString())).thenReturn(Optional.of(vacationHomeOwner));
         // when
-        vacationHomeOwnerService.addVacationHome(vacationHomeDTO);
+        vacationHomeOwnerService.addVacationHome(vacationHomeDTO, "test@gmail.com");
         //then
 
     }
@@ -128,19 +133,18 @@ class VacationHomeOwnerServiceTest {
     void saveVacationHome() {
         VacationHomeDto vacationHomeDTO = new VacationHomeDto(
                 "Stan na dan",
-                new Address("Ulica b.b.", "Grad", "Drzava"),
+                new AddressDto("Ulica b.b.", "Grad", "Drzava"),
                 "Stan na dan za jedan dan stan",
                 "Ponasalje mora biti lijepo",
                 "Svasta nesto nudimo",
                 12,
-                Arrays.asList("12", "2"),
+                Arrays.asList("a,c2Rmc2Rmc2RmIHNkZiBzZGY=", "b,c2Rmc2Rmc2RmIHNkZiBzZGY="),
                 10,
-                20
+                20,
+                new ArrayList<>()
         );
         VacationHome vacationHome = vacationHomeOwnerService.buildVacationHome(vacationHomeDTO);
-        vacationHomeOwnerService.saveVacationHome(vacationHome);
-
-        verify(addressRepository).save(vacationHome.getAddress());
+        vacationHomeRepository.save(vacationHome);
         verify(vacationHomeRepository).save(vacationHome);
     }
 }

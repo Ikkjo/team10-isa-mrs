@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import team10.app.model.Address;
 import team10.app.model.VacationHomeOwner;
 
 import java.util.Optional;
@@ -28,8 +29,8 @@ class VacationHomeOwnerRepositoryTest {
                 "Jack",
                 "Jackson",
                 email,
-                "password123"
-        );
+                "password123",
+                "+381651726152", new Address("123", "123", "123"), "12.12.1999.");
         repo.save(user);
 
         Optional<VacationHomeOwner> expected = repo.findByEmail(email);
@@ -38,7 +39,7 @@ class VacationHomeOwnerRepositoryTest {
 
     @Test
     void itShouldNotReturnUserByEmail() {
-        Optional<VacationHomeOwner> expected = repo.findByEmail("test@gmail.com");
+        Optional<VacationHomeOwner> expected = repo.findByEmail("test123123123@gmail.com");
         assertThat(expected).isEmpty();
     }
 
@@ -49,8 +50,8 @@ class VacationHomeOwnerRepositoryTest {
                 "Jack",
                 "Jackson",
                 email,
-                "password123"
-        );
+                "password123",
+                "+381651726152", new Address("123", "123", "123"), "12.12.1999.");
         repo.save(user);
 
         assertThat(repo.enableVacationHomeOwner(email)).isEqualTo(1);
@@ -58,7 +59,7 @@ class VacationHomeOwnerRepositoryTest {
 
     @Test
     void itShouldNotEnableVacationHomeOwner() {
-        assertThat(repo.enableVacationHomeOwner("test@gmail.com")).isNotEqualTo(1);
+        assertThat(repo.enableVacationHomeOwner("test131123@gmail.com")).isNotEqualTo(1);
     }
 
 }

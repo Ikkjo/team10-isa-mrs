@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import team10.app.model.Address;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface AddressRepository extends JpaRepository<Address, Long> {
+public interface AddressRepository extends JpaRepository<Address, UUID> {
 
     @Query("select a from Address a where a.address = ?1 and a.city = ?2 and a.country = ?3")
     Optional<Address> getAddressByAddressCityCountry(String address, String city, String country);
