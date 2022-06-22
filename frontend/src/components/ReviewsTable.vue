@@ -28,7 +28,7 @@ import { VueGoodTable } from 'vue-good-table';
 import axios from 'axios'
 
 export default {
-    name: 'UserTable',
+    name: 'ReviewsTable',
     components: {
         VueGoodTable
     },
