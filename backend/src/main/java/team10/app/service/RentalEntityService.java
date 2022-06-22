@@ -58,7 +58,7 @@ public class RentalEntityService {
         return null;
     }
 
-    private RentalEntity getById(UUID id) {
+    public RentalEntity getById(UUID id) {
         return rentalEntityRepository.findById(id).orElseThrow(() -> new RentalEntityNotFoundException(id));
     }
 

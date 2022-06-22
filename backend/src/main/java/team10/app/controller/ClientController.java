@@ -9,8 +9,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.ClientDto;
+import team10.app.dto.CreateReservationDto;
+import team10.app.dto.ReservationDto;
+import team10.app.security.auth.AuthUtil;
 import team10.app.security.auth.JWTProvider;
 import team10.app.service.ClientService;
+import team10.app.service.ReservationService;
 
 import java.security.Principal;
 
@@ -20,6 +24,8 @@ import java.security.Principal;
 public class ClientController {
 
     private final ClientService clientService;
+    private final ReservationService reservationService;
+    private final AuthUtil authUtil;
     private final JWTProvider jwtProvider;
 
     @GetMapping
@@ -30,6 +36,18 @@ public class ClientController {
         }
         catch (UsernameNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Transactional
+    @PostMapping(path = "/make-reservation")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<String> makeReservation(@RequestHeader (name="Authorization") String token,
+                                                  @RequestBody ReservationDto reservationDto) {
+        try {
+            return ResponseEntity.ok(reservationService.makeReservation(reservationDto, authUtil.getEmailFromToken(token)));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
