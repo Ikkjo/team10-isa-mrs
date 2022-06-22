@@ -39,9 +39,9 @@ public class BusinessClientController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
-    public ResponseEntity<BusinessClientDto> getUserDetails(Principal principal) {
+    public ResponseEntity<BusinessClientDto> getUserDetails(@RequestHeader(name = "Authorization") String token) {
         try {
-            return new ResponseEntity<>(businessClientService.getUserDetails(principal.getName()), HttpStatus.OK);
+            return new ResponseEntity<>(businessClientService.getUserDetails(authUtil.getEmailFromToken(token)), HttpStatus.OK);
         }
         catch (UsernameNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
