@@ -176,12 +176,13 @@ public class ReservationService {
         return reservationRepository.getAllInRange(fromDate, toDate);
     }
 
-    public String makeReservation(ReservationDto reservationDto, String clientUsername) {
-        if(validator.validateReservationDto(reservationDto)) {
+    public String makeReservation(MakeReservationDto reservationDto) {
+        String clientUsername = reservationDto.getClientEmail();
+        if(!validator.validateReservationDto(reservationDto)) {
             throw new RuntimeException();
         }
 
-        Reservation newReservation = this.buildReservation(reservationDto);
+        Reservation newReservation = this.buildNewReservation(reservationDto);
 
         reservationRepository.save(newReservation);
 
@@ -191,20 +192,20 @@ public class ReservationService {
                 reservationDto.getRentalEntityTitle(),
                 DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getStartDate()),
                 DateTimeUtil.getDateFromEpochMilliseconds(reservationDto.getEndDate()));
-        emailService.send(success, clientUsername);
+//        emailService.send(success, clientUsername);
 
         return success;
     }
 
-    private Reservation buildReservation(ReservationDto reservationDto) {
+    private Reservation buildNewReservation(MakeReservationDto reservationDto) {
         Reservation newReservation = new Reservation();
         newReservation.setStartDate(reservationDto.getStartDate());
         newReservation.setEndDate(reservationDto.getEndDate());
-        newReservation.setBusinessClient(rentalEntityService.getById(reservationDto.getRentalEntityId()).getOwner());
+        newReservation.setBusinessClient(rentalEntityService.getById(UUID.fromString(reservationDto.getRentalEntityId())).getOwner());
         newReservation.setClient(clientService.getByUsername(reservationDto.getClientEmail()));
         newReservation.setStatus(ReservationStatus.CREATED);
         newReservation.setPrice(reservationDto.getPrice());
-        newReservation.setRentalEntity(rentalEntityService.getById(reservationDto.getRentalEntityId()));
+        newReservation.setRentalEntity(rentalEntityService.getById(UUID.fromString(reservationDto.getRentalEntityId())));
         return newReservation;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import team10.app.dto.ClientDto;
 import team10.app.dto.CreateReservationDto;
+import team10.app.dto.MakeReservationDto;
 import team10.app.dto.ReservationDto;
 import team10.app.security.auth.AuthUtil;
 import team10.app.security.auth.JWTProvider;
@@ -43,9 +44,11 @@ public class ClientController {
     @PostMapping(path = "/make-reservation")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<String> makeReservation(@RequestHeader (name="Authorization") String token,
-                                                  @RequestBody ReservationDto reservationDto) {
+                                                  @RequestBody MakeReservationDto reservationDto) {
         try {
-            return ResponseEntity.ok(reservationService.makeReservation(reservationDto, authUtil.getEmailFromToken(token)));
+            reservationDto.setClientEmail(authUtil.getEmailFromToken(token));
+            reservationService.makeReservation(reservationDto);
+            return new ResponseEntity<String>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

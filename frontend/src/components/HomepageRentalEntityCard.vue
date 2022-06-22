@@ -9,11 +9,11 @@
             </div>
             <div class="main-text">${{rentalEntity.price}} night</div>
             <div class="btn-container">
-                <button class="btn" @click.stop="showActionModal()">Add Action</button>
-                <button class="btn" @click.stop="showReservationModal()">Reserve</button>
+                <button v-if="isClient() && false" class="btn" @click.stop="showActionModal()">Subscribe</button>
+                <button v-if="isClient()" class="btn" @click.stop="showReservationModal()">Reserve</button>
             </div>
         </div>
-        <portal to="body">
+        <portal to="body" v-if="isClient()">
             <!-- use the modal component, pass in the prop -->
             <ActionCreationModal
                 @save="saveAction()"
@@ -58,7 +58,7 @@ import ActionCreationModal from '@/components/ActionCreationModal.vue'
 import axios from 'axios'
 import ReservationCreation from './ReservationCreation.vue'
 export default {
-    name: 'RentalEntityCard',
+    name: 'HomepageRentalEntityCard',
     props: ['rentalEntity'],
     components: {
         ActionCreation,
@@ -88,27 +88,16 @@ export default {
     methods: {
         detailedView() {
             // let role = window.localStorage.getItem('role');
-
-            if (this.isBusinessClient()) {
-                this.$router.push({
-                    name: 'my-listing',
-                    params: {
-                        id: this.rentalEntity.id,
-                    }
-                })
-            } else {
-                console.log('Shows rental entity details for client')
-                this.$router.push({
-                    name: 'listing-details-view',
-                    params: {
-                        id: this.rentalEntity.id,
-                    }
-                })
-                
-            }
+            console.log('Shows rental entity details for client')
+            this.$router.push({
+                name: 'listing-details-view',
+                params: {
+                    id: this.rentalEntity.id,
+                }
+            })
         },
-        isBusinessClient() {
-            return ['HOUSE_OWNER','SHIP_OWNER', 'FISHING_INSTRUCTOR'].includes(window.localStorage.getItem('role'))
+        isClient() {
+            return window.localStorage.getItem('role') === "CLIENT"
         },
         showActionModal() {
             this.isReservationModalActive = false;
