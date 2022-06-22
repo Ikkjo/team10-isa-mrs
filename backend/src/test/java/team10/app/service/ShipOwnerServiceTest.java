@@ -52,7 +52,7 @@ class ShipOwnerServiceTest {
     }
 
     @Test
-    void shouldAddVacationHome() {
+    void shouldAddShip() {
         // given
         ShipDto shipDto = new ShipDto(
                 "Fishinig ship",
@@ -106,7 +106,7 @@ class ShipOwnerServiceTest {
     }
 
     @Test
-    void shouldNotAddVacationHomeAndShouldThrowRuntimeException() {
+    void shouldNotAddShipAndShouldThrowRuntimeException() {
         // given
         ShipDto shipDto = new ShipDto(
                 "Fish",
@@ -135,14 +135,14 @@ class ShipOwnerServiceTest {
     }
 
     @Test
-    void shouldNotAddVacationHome() {
-        // given
-        Address address = new Address("Street", "City", "Country");
-        AddressDto addressDto = new AddressDto("Street", "City", "Country");
-        addressRepository.save(address);
-        ShipDto shipDto = new ShipDto(
-                "Fish",
-                new AddressDto("Street", "City", "Country"),
+        void shouldNotAddVacationHome() {
+            // given
+            Address address = new Address("Street", "City", "Country");
+            AddressDto addressDto = new AddressDto("Street", "City", "Country");
+            addressRepository.save(address);
+            ShipDto shipDto = new ShipDto(
+                    "Fish",
+                    new AddressDto("Street", "City", "Country"),
                 "Some description",
                 "Rules",
                 "Services",

@@ -61,7 +61,7 @@ public class RentalEntityService {
         return null;
     }
 
-    private RentalEntity getById(UUID id) {
+    public RentalEntity getById(UUID id) {
         LOG.info("RentalEntity with id: " + id + " successfully cached!");
         return rentalEntityRepository.findById(id).orElseThrow(() -> new RentalEntityNotFoundException(id));
     }

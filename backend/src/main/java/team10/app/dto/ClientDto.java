@@ -1,11 +1,13 @@
 package team10.app.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import team10.app.model.Client;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class ClientDto extends UserDto{
 
     private int loyaltyPoints;
