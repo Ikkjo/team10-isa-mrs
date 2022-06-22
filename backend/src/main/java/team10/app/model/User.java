@@ -42,6 +42,9 @@ public abstract class User implements UserDetails {
     private Boolean deleted = false;
     private Boolean enabled = false;
 
+    @Version
+    private Long version;
+
     public User(String firstName,
                 String lastName,
                 String email,
