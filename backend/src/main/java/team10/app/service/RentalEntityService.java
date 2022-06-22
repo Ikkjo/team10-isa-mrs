@@ -1,11 +1,12 @@
 package team10.app.service;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team10.app.dto.*;
@@ -18,13 +19,15 @@ import team10.app.util.Sorting;
 import team10.app.util.Validator;
 import team10.app.util.exceptions.*;
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.springframework.cache.annotation.Cacheable;
 
 @Service
 @AllArgsConstructor
 public class RentalEntityService {
+
+    private final org.slf4j.Logger LOG = LoggerFactory.getLogger(RentalEntityService.class);
 
     @PersistenceContext
     private final EntityManager entityManager;
@@ -38,9 +41,9 @@ public class RentalEntityService {
     private final PictureService pictureService;
     private final Validator validator;
 
+    @Cacheable("rental_entity")
     public RentalEntityDto rentalEntityToDto(UUID id, boolean singlePicture) {
-        RentalEntity rentalEntity = rentalEntityRepository.findById(id)
-                .orElseThrow(() -> new RentalEntityNotFoundException(id));
+        RentalEntity rentalEntity = this.getById(id);
         if (singlePicture)
             rentalEntity.setPictures(PictureService.decompressPictures(new HashSet<>(List.of(rentalEntity.getPictures().iterator().next()))));
         else
@@ -59,6 +62,7 @@ public class RentalEntityService {
     }
 
     private RentalEntity getById(UUID id) {
+        LOG.info("RentalEntity with id: " + id + " successfully cached!");
         return rentalEntityRepository.findById(id).orElseThrow(() -> new RentalEntityNotFoundException(id));
     }
 
@@ -321,5 +325,10 @@ public class RentalEntityService {
         }
         orders.add(Sorting.getSorting(sortTokens));
         return orders;
+    }
+
+    @CacheEvict(cacheNames = {"rental_entity"}, allEntries = true)
+    public void removeFromCache() {
+        LOG.info("RentalEntity removed from cache!");
     }
 }
