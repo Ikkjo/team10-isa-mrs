@@ -3,6 +3,7 @@ package team10.app.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Base64;
@@ -16,6 +17,7 @@ public class Picture {
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="uuid-char")
     private UUID id;
     @Column(name = "type")
     private String type;

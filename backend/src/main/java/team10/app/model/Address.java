@@ -1,6 +1,7 @@
 package team10.app.model;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 import team10.app.dto.AddressDto;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Type(type="uuid-char")
     private UUID id;
     @Column(nullable = false)
     private String address;
