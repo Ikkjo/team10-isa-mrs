@@ -109,6 +109,7 @@ public class RentalEntityController {
         }
     }
 
+    @Transactional
     @PostMapping(value = "/{id}/add-action")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<ActionDto> addAction(@RequestHeader (name="Authorization") String token,
@@ -127,6 +128,7 @@ public class RentalEntityController {
         }
     }
 
+    @Transactional
     @PostMapping(value = "/{id}/add-reservation")
     @PreAuthorize("hasAnyRole('HOUSE_OWNER', 'SHIP_OWNER', 'FISHING_INSTRUCTOR')")
     public ResponseEntity<CreateReservationDto> addReservation(@RequestHeader (name="Authorization") String token,
